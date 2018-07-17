@@ -1,0 +1,16 @@
+﻿Coursework 2018-07-17-10-33:
+- (index.html) Created.
+- (index.html) Font changed to 'Montserrat' from 'Google fonts'
+- (index.html) 'WebGL' canvas added, added in 'HTML5'.
+- (index.html) Functions added for 'WebGL' boilerplate setup code ('createCanvas', 'createShader', 'createProgram', 'prepareAttributes', 'render').
+- (index.html) In 'createCanvas' function, added algorithm to check screen orientation and size canvas accordingly.
+- (index.html) 'WebGL' vertex and fragment shaders created, with color attribute.
+- (index.html) 'WebGL' canvas has set of axes drawn in background.
+- (index.html) Added 'drawTriangles' function to add triangle vertices to the GPU array buffer, and draw them.
+- (index.html) Added 'createPolygon' function to add vertices for a new polygon to the vertices array, by creating many small triangles, each rotated by a small amount.
+- (index.html) 'WebGL' canvas supports clicking to add polygon ('mouseDown', 'mouseUp', 'mouseMove' functions handle clicks).
+- (index.html) Added 'canvasYToClipsace' and 'canvasXToClipspace' functions, for converting between clipspace and viewport coordinates for mouse events.
+- (index.html) Added 'rotateVertice' function for rotation a vertice using standard formula with Cosine and Sine.
+- (index.html) Added 'translateVertice' function for moving a vertice horizontally and vertically.
+- (index.html) Added functions for rotating/translating vertices on the 'WebGL' canvas.
+- (index.html) Added functions for drawing polygons and triangles on the 'WebGL' canvas.
