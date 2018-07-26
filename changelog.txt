@@ -14,3 +14,26 @@
 - (index.html) Added 'translateVertice' function for moving a vertice horizontally and vertically.
 - (index.html) Added functions for rotating/translating vertices on the 'WebGL' canvas.
 - (index.html) Added functions for drawing polygons and triangles on the 'WebGL' canvas.
+
+Coursework 2018-07-26-23-40:
+- Changed project from local files to web server.
+- 'Python' web server 'Flask' used to serve web pages.
+- Use the 'Jinja2' template system supported by 'Flask'.
+- Created default 'Flask' directory structure.
+- (templates folder) Created to hold HTML files.
+- (routes.py) Added template editing to hilight navbar item of the current page.
+- (base.html) Created as a template for all other pages.
+- (base.html) Added CSS styles used on each page, CSS variables used to theme page.
+- (base.html) Moved navbar used for each page to this file.
+- (base.html) Fixed bug on mobile where text was scaled up to large sizes on only some pages. Fixed by setting the CSS property "text-size-adjust" to "none" in the HTML body of every page.
+- (index.html) Changed to a simple greeting page.
+- (about_matrices.html) Created.
+- (about_matrices.html) Added explanation of the basic principles of matrix mathematics.
+- (about_matrices.html) 'MathJax' used which is a JavaScript library used to display mathematical notation.
+- (matrix_tools.html) Created.
+- (matrix_tools.html) Will solve matrix equations, but currently an empty placeholder.
+- (help.html) Created.
+- (help.html) Will contain tutorials of how to use the app, but currently a placeholder.
+- (matrix_visualiser.html) Created.
+- (matrix_visualiser.html) 'WebGL' canvas moved here from 'index.html'
+- (about_matrices.html) Added spacing to the equations to prevent them from overflowing left and causing the page to be too wide. Caused whitespace next to navbar.

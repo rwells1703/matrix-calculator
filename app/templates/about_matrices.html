@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Initialises MathJax -->
+<script>
+	// Makes the page invisible to begin with
+	// Once the MathJax has finished loading, the page will become visible
+	var mypage = document.getElementById("mypage")
+	mypage.style.visibility = "hidden";
+</script>
+
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+	MathJax.Hub.Queue(function () {document.getElementById("mypage").style.visibility = "";});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+<div>
+
+<h2>Introduction</h2>
+<br>
+
+A matrix is just a grid of numbers, like the following example of a 3x3 matrix:
+<br><br>
+$
+\begin{bmatrix}
+4 & 1 & 7 \\
+9 & 6 & 2 \\
+2 & 8 & 1 \\
+\end{bmatrix}
+$
+<br><br>
+
+The "order" of a matrix is defined as the number of rows by the number of columns.
+<br>
+Often denoted m x n, the following is an example of a matrix of 2x4 order:
+<br><br>
+$
+\begin{bmatrix}
+4 & 6 & 0 & 9 \\
+6 & 3 & 2 & 8 \\
+\end{bmatrix}
+$
+<br><br>
+
+Matrices with only one row or column are known as vectors.
+<br>
+
+This is an example of a column vector because it only has one column:
+<br><br>
+$
+\begin{bmatrix}
+3 \\
+8 \\
+1 \\
+\end{bmatrix}
+$
+<br><br>
+
+And this is an example of a row vector, because it only has one row:
+<br><br>
+$
+\begin{bmatrix}
+6 & 2 & 5\\
+\end{bmatrix}
+$
+<br><br>
+
+<br><br>
+<h2>Addition and subtraction</h2>
+<br>
+
+Matrices are treated differently to normal mathematical expressions, they are added, subtracted and multiplied in their own specific way.
+<br>
+Note that you cannot divide one matrix by another.
+<br><br>
+
+To add two matrices, you just add together the items in the same spaces, for example:
+<br><br>
+$
+\begin{bmatrix}
+1 & 3 \\
+6 & 4 \\
+\end{bmatrix}
++
+\begin{bmatrix}
+5 & 9 \\
+1 & 7 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+6 & 12 \\
+7 & 11 \\
+\end{bmatrix}
+$
+<br><br>
+
+Similarly, you can do the same process for subtraction, for example:
+<br><br>
+$
+\begin{bmatrix}
+8 & 0 \\
+6 & 1 \\
+\end{bmatrix}
+-
+\begin{bmatrix}
+2 & 1 \\
+3 & 7 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+6 & -1 \\
+3 & -6 \\
+\end{bmatrix}
+$
+<br><br>
+
+<br><br>
+<h2>Tranpose</h2>
+<br>
+
+"Taking the transpose" means swapping all the rows for columns and columns for rows and is denoted by a capital T in superscript.
+<br>
+Here are some examples of taking the transpose:
+<br><br>
+$
+\begin{bmatrix}
+2 & 7\\
+1 & 5\\
+\end{bmatrix}
+^T
+=
+\begin{bmatrix}
+2 & 1\\
+7 & 5\\
+\end{bmatrix}
+$
+<br><br>
+
+For column vectors, this looks like the following:
+<br><br>
+$
+\begin{bmatrix}
+7\\
+3\\
+1\\
+\end{bmatrix}
+^T
+=
+\begin{bmatrix}
+7 & 3 & 1\\
+\end{bmatrix}
+$
+<br><br>
+
+And for row vectors it looks like so:
+<br><br>
+$
+\begin{bmatrix}
+2 & 8 & 5\\
+\end{bmatrix}
+^T
+=
+\begin{bmatrix}
+2\\
+8\\
+5\\
+\end{bmatrix}
+$
+<br><br>
+
+Note that transposing a matrix or vector twice, will give you back the original matrix/vector.
+<br>
+
+<br><br>
+<h2>Multiplication</h2>
+<br>
+
+When it comes to multiplication, matrices are much more complicated than regular scalars.
+<br>
+There are multiple types of matrix multiplication including: matrix-scalar product, matrix-matrix product, dot-product, cross-product.
+<br>
+
+<br><br>
+<h2>Matrix-Scalar Product</h2>
+<br>
+
+Multiplying a matrix by a scalar is very simple, for example:
+<br><br>
+$
+3
+\cdot
+\begin{bmatrix}
+3 & 9 \\
+5 & 1 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+9 & 27 \\
+15 & 3 \\
+\end{bmatrix}
+$
+<br><br>
+
+<br><br>
+<h2>Dot-Product</h2>
+<br>
+
+If you are multiplying with two column vectors, there is a method called "taking the dot product" in which you multiply together elements in corresponding rows and add this to the total.
+<br>
+After calculating dot product, you will get a single scalar value as an output:
+<br><br>
+$
+\begin{bmatrix}
+3\\
+2\\
+8\\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+7\\
+4\\
+3\\
+\end{bmatrix}
+=
+21+8+24
+=
+53
+$
+<br><br>
+
+If you need to calculate the dot product of a column vector and row vector, you must first transpose the row vector.
+<br>
+You can then calculate the dot product as usual:
+<br><br>
+$
+\begin{bmatrix}
+7\\
+1\\
+8\\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+5 & 3 & 2\\
+\end{bmatrix}
+^T
+\\=
+\begin{bmatrix}
+7\\
+1\\
+8\\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+5\\
+3\\
+2\\
+\end{bmatrix}
+\\=
+35+3+16
+\\=
+52
+$
+<br><br>
+
+<br><br>
+<h2>Matrix-Matrix Product</h2>
+<br>
+
+Alternatively, when multiplying together two matrices, we use "matrix multiplication".
+<br>
+The following is the standard result for multiplying two 2x2 matrices:
+<br><br>
+$
+\begin{bmatrix}
+a & b \\
+c & d \\
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+e & f \\
+g & h \\
+\end{bmatrix}
+\\=
+\begin{bmatrix}
+a \cdot e + b \cdot g & a \cdot f + b \cdot h \\
+c \cdot e + d \cdot g & c \cdot f + d \cdot h \\
+\end{bmatrix}
+$
+<br><br>
+
+Although it may be hard to see how this is derived, the process is really very simple:
+<br><br><br>
+<i>
+1. Starting with the first row of the left matrix, take the dot product with the first column of the right matrix. Place this value in row 1 column 1 of the output matrix.
+<br><br>
+2. Next, take the dot product, but using the second column of the right matrix instead.
+<br><br>
+3. Continue this process for all columns in the right matrix.
+<br><br>
+4. Once you have done this, move on to the second row of the left matrix and repeat all the above steps.
+<br><br>
+5. Continue through all rows of the left matrix until you reach the end.
+</i>
+<br><br><br>
+
+<br><br>
+<h2>Determinant</h2>
+<br>
+
+Another property of a matrix is the determinant, which is also single scalar quantity.
+<br>
+The determinant of a matrix is generally denoted by two straight lines either side of it.
+<br>
+Here is an example of finding the determinant of a 3 x 3 matrix using the first column:
+<br><br>
+$
+\begin{vmatrix}
+9 & 5 & 1\\
+4 & 7 & 8\\
+2 & 3 & 4\\
+\end{vmatrix}
+\\=
+9(7 \cdot 4 - 8 \cdot 3) \\ \ \ - 4(5 \cdot 4 - 1 \cdot 3) \\ \ \ + 2(5 \cdot 8 - 1 \cdot 7)
+\\=
+34
+$
+<br><br>
+
+Note that the determinant only exists for a square matrix e.g. 3x3.
+<br><br>
+
+For any matrix, the process to find the determinant is as follows:
+<br><br><br>
+1. Starting from the first element of any row or column, remove from the matrix the row and column that element is on. For this example we will use the first row.
+<br><br>
+2. Using this entire process again, calculate the determinant of the smaller matrix left over (known as the minor matrix) and multiply this value by the original element you chose in step 1. Add the result to the total.
+<br><br>
+3. Move along to the next element in the row, and repeat the process. Instead of adding to the total however, you must subtract from it. You change whether you add or subtract every time you move along an element.
+<br><br>
+4. Once you have reached the end of the row. The total you have calculated will be the determinant.
+</i>
+<br><br><br>
+A general rule of thumb is to choose the row/column with the most zeroes as you can skip these elements entirely.
+
+</div>
+
+{% endblock %}

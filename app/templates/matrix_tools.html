@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- Initialises MathJax -->
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+<div>
+This page will contain matrix functions.<br><br>
+I'm not gonna explain them but if you want to do some further research, check out this <a class="link" href="https://people.richland.edu/james/lecture/m116/matrices/matrices.html">resource</a><br><br>
+</div>
+{% endblock %}

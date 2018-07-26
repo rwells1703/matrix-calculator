@@ -1,0 +1,124 @@
+<html id="mypage">
+	<head>
+		<title>Richard's Website</title>
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		<style>
+			/* The whole of each page */
+			html {
+				margin: 0;
+				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
+				text-size-adjust: none;
+				/* Basic color presets */
+				--color-salmon-pink: #ff4c4c;
+				--color-salmon-pink-light: #ff7c7c;
+				--color-salmon-pink-dark: #ed2d2d;
+				--color-salmon-pink-shadow: #840000;
+				--color-shadow-grey: #9b9b9b;
+			}
+
+			/* The body on each page */		
+			body {
+				margin: 0;
+				font-family: 'Montserrat', sans-serif;
+				font-size: 2.5vh;
+			}
+
+			/* The navbar on the top of each page */
+			ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				background-color: var(--color-salmon-pink);
+			}	
+
+			li {
+				float: left;
+				display: block;
+			}
+
+			li a {
+				color: white;
+				padding: 2vh 2vw;
+				text-decoration: none;
+				font-size: 3vh;
+				float: left;
+			}
+
+			li a:hover {
+				background-color: var(--color-salmon-pink);
+				box-shadow: 2px 0px 15px var(--color-salmon-pink-shadow), -2px 0px 15px var(--color-salmon-pink-shadow);
+			}
+
+			li a.active {
+				background-color: var(--color-salmon-pink-dark);
+				box-shadow: 2px 0px 15px var(--color-salmon-pink-shadow), -2px 0px 15px var(--color-salmon-pink-shadow);
+			}
+
+			/* Regular hyperlinks */
+			a.link {
+				color: var(--color-salmon-pink-dark);
+				text-decoration: none;
+			}
+
+			a.link:hover {
+				color: var(--color-salmon-pink-light);
+			}
+
+			/* Div holding the main body of text on each page */
+			div {
+				padding: 4%;
+				/* Aligns MathJax to the left of the div */
+				/*display: inline-block;*/
+			}
+
+			/* Each image will have a shadow and rounded corners */
+			img {
+				border-radius: 5px;
+				box-shadow: 0 4px 8px 0 var(--color-shadow-grey), 0 6px 20px 0 var(--color-shadow-grey);
+			}
+			
+			canvas {
+				border-style: solid;
+				border-color: black;
+			}
+		</style>
+	</head>
+	<body>
+		<ul id="mynavbar">
+
+		{% if active == "index" %}
+		<li><a class="active" href="/">Home</a></li>
+		{% else %}
+		<li><a href="/">Home</a></li>
+		{% endif %}
+
+		{% if active == "about_matrices" %}
+		<li><a class="active" href="/about_matrices">About Matrices</a></li>
+		{% else %}
+		<li><a href="/about_matrices">About Matrices</a></li>
+		{% endif %}
+
+		{% if active == "matrix_tools" %}
+		<li><a class="active" href="/matrix_tools">Matrix Tools</a></li>
+		{% else %}
+		<li><a href="/matrix_tools">Matrix Tools</a></li>
+		{% endif %}
+
+		{% if active == "matrix_visualiser" %}
+		<li><a class="active" href="/matrix_visualiser">Matrix Visualiser</a></li>
+		{% else %}
+		<li><a href="/matrix_visualiser">Matrix Visualiser</a></li>
+		{% endif %}		
+
+		{% if active == "help" %}
+		<li><a class="active"  href="/help">Help</a></li>
+		{% else %}
+		<li><a href="/help">Help</a></li>
+		{% endif %}
+
+		</ul>
+		
+		{% block content %}{% endblock%}
+	</body>
+</html>
