@@ -1,4 +1,4 @@
-<html id="mypage">
+<html id="mainpage">
 	<head>
 		<title>Richard's Website</title>
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
@@ -56,20 +56,18 @@
 			}
 
 			/* Regular hyperlinks */
-			a.link {
+			a {
 				color: var(--color-salmon-pink-dark);
 				text-decoration: none;
 			}
 
-			a.link:hover {
+			a:hover {
 				color: var(--color-salmon-pink-light);
 			}
 
 			/* Div holding the main body of text on each page */
 			div {
 				padding: 4%;
-				/* Aligns MathJax to the left of the div */
-				/*display: inline-block;*/
 			}
 
 			/* Each image will have a shadow and rounded corners */
@@ -85,7 +83,7 @@
 		</style>
 	</head>
 	<body>
-		<ul id="mynavbar">
+		<ul id="mainnavbar">
 
 		{% if active == "index" %}
 		<li><a class="active" href="/">Home</a></li>

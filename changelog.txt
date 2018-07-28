@@ -37,3 +37,9 @@ Coursework 2018-07-26-23-40:
 - (matrix_visualiser.html) Created.
 - (matrix_visualiser.html) 'WebGL' canvas moved here from 'index.html'
 - (about_matrices.html) Added spacing to the equations to prevent them from overflowing left and causing the page to be too wide. Caused whitespace next to navbar.
+
+Coursework 2018-07-28-22-52:
+- (about_matrices.html) Added more sections.
+- (about_matrices.html) Added a contents list to quickly jump between sections.
+- (about_matrices.html) Link at the bottom to jump back up to the top.
+- (about_matrices.html) Page is now hidden while the 'MathJax' loads, and then un-hidden. This prevents the page from jumping around and resizing while equations resize. Caused errors with whitespace appearing next to the navbar.

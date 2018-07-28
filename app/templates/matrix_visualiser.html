@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<canvas id="mycanvas"></canvas>
+<canvas id="maincanvas"></canvas>
 
 <script id="vertexShader" type="notjs">
 	precision mediump float;
@@ -28,9 +28,9 @@
 <script>
 	// Create new html5 canvas and wegbl context
 	function createCanvas() {
-		canvas = document.getElementById("mycanvas");
+		canvas = document.getElementById("maincanvas");
 		
-		navbar = document.getElementById("mynavbar");
+		navbar = document.getElementById("mainnavbar");
 		navbarheightstring = window.getComputedStyle(navbar).height;
 		navbarheightfloat = parseFloat(navbarheightstring.substring(0, navbarheightstring.length-2));
 
