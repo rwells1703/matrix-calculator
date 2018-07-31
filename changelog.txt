@@ -43,3 +43,7 @@ Coursework 2018-07-28-22-52:
 - (about_matrices.html) Added a contents list to quickly jump between sections.
 - (about_matrices.html) Link at the bottom to jump back up to the top.
 - (about_matrices.html) Page is now hidden while the 'MathJax' loads, and then un-hidden. This prevents the page from jumping around and resizing while equations resize. Caused errors with whitespace appearing next to the navbar.
+
+Coursework 2018-07-31-22-05:
+- (matrix_tools.html) Added buttons for creating 'Scalar' items.
+- (matrix_tools.html) Added 'pxToFloat' function for converting between the string 'px' values in CSS to a float value in Javascript.

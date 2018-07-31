@@ -2,12 +2,118 @@
 
 {% block content %}
 
-<!-- Initialises MathJax -->
-<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
-
-<div>
-This page will contain matrix functions.<br><br>
-I'm not gonna explain them but if you want to do some further research, check out this <a class="link" href="https://people.richland.edu/james/lecture/m116/matrices/matrices.html">resource</a><br><br>
+<div id="maindiv">
+<!--<div id="addScalarButton" value="Add scalar" onclick="addScalar();" style="background-color: yellow;"></div>
+<div id="takeValueButton" value="Take value" onclick="takeValue();" style="background-color: red;"></div>-->
 </div>
+
+<script>
+mainDiv = document.getElementById("maindiv");
+
+// Add scalar button
+scalarButton = document.createElement("div");
+scalarButton.id = "scalarButton"
+scalarButton.style.backgroundColor = "yellow";
+scalarButton.innerHTML = "Add scalar";
+
+scalarButton.style.cursor = "pointer";
+scalarButton.style.padding = 0;
+scalarButton.style.paddingTop = 0.05 * window.innerHeight;	
+scalarButton.style.paddingBottom = 0.05 * window.innerHeight;
+scalarButton.style.paddingLeft = 0.05 * window.innerWidth;
+scalarButton.style.marginBottom = 0.05 * window.innerHeight;
+scalarButton.style.width = pxToFloat(window.getComputedStyle(mainDiv)["width"])/5 - pxToFloat(scalarButton.style.paddingLeft);
+scalarButton.style.display = "inline-block";
+
+scalarButton.onclick = addScalar;
+maindiv.appendChild(scalarButton);
+
+
+// Take value button
+takeValueButton = document.createElement("div");
+takeValueButton.id = "takeValueButton"
+takeValueButton.style.backgroundColor = "red";
+takeValueButton.innerHTML = "Take value";
+
+takeValueButton.style.cursor = "pointer";
+takeValueButton.style.padding = 0;
+takeValueButton.style.paddingTop = 0.05 * window.innerHeight;	
+takeValueButton.style.paddingBottom = 0.05 * window.innerHeight;
+takeValueButton.style.paddingLeft = 0.05 * window.innerWidth;
+takeValueButton.style.marginBottom = 0.05 * window.innerHeight;
+takeValueButton.style.width = pxToFloat(window.getComputedStyle(mainDiv)["width"])/5 - pxToFloat(scalarButton.style.paddingLeft);
+takeValueButton.style.display = "inline-block";
+
+takeValueButton.onclick = takeValue;
+
+maindiv.appendChild(takeValueButton);
+
+matrixNumber = 1;
+scalarNumber = 1;
+operatorNumber = 1;
+equation = [];
+
+function pxToFloat(string) {
+	return parseFloat(string.substring(0, string.length-3));
+}
+
+function addScalar() {
+	// Create a new scalar div
+	var scalarDiv = document.createElement("div");
+	
+	// Styling the scalar div
+	scalarDiv.style.width = 0.8 * window.innerWidth;
+	scalarDiv.style.height = 0.2 * window.innerHeight;
+	scalarDiv.style.border = "1px solid black";
+	scalarDiv.style.padding = 0;
+	scalarDiv.style.marginBottom = 0.1 * window.innerHeight;
+	scalarDiv.style.marginLeft = 0.05 * window.innerWidth;
+	
+	
+	// Create an side div
+	var sideDiv = document.createElement("div");
+	sideDiv.style.border = "1px solid black";
+	sideDiv.style.padding = 0;
+	//sideDiv.style.paddingTop = pxToFloat(scalarDiv.style.height);
+	//sideDiv.style.paddingRight = pxToFloat(scalarDiv.style.width);
+	sideDiv.style.width = pxToFloat(scalarDiv.style.width)/2;
+	sideDiv.id = "sideDiv";
+	scalarDiv.appendChild(sideDiv);
+	
+	// Create a text box
+	var scalarTextbox = document.createElement("input");
+	scalarTextbox.id = "scalarTextbox";
+	scalarTextbox.type = "text";
+	
+	// Styling of text box
+	scalarTextbox.style.height
+	scalarTextbox.style.height = pxToFloat(scalarDiv.style.height) / 3;
+	scalarTextbox.style.width = scalarTextbox.style.height;
+	scalarTextbox.style.fontSize = 0.8 * scalarTextbox.style.height;
+	
+	// Append the text box to the scalar div
+	scalarDiv.appendChild(scalarTextbox);
+	
+	// Append the scalar div to the main div
+	scalarDiv.id = "scalar"+scalarNumber;
+	scalarDiv.class = "scalar";
+	
+	mainDiv.appendChild(scalarDiv);
+	
+	console.log("added scalar " + scalarNumber);
+	scalarNumber += 1;
+}
+
+function takeValue() {
+	var mainDiv = document.getElementById("maindiv");
+	var i = 0
+	while (i < mainDiv.children.length) {
+		if (mainDiv.children[i].class == "scalar") {
+			console.log(mainDiv.children[i].children[0].value);
+		}
+		i += 1
+	}
+}
+</script>
+
 {% endblock %}
