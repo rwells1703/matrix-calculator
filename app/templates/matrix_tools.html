@@ -3,8 +3,6 @@
 {% block content %}
 
 <div id="maindiv">
-<!--<div id="addScalarButton" value="Add scalar" onclick="addScalar();" style="background-color: yellow;"></div>
-<div id="takeValueButton" value="Take value" onclick="takeValue();" style="background-color: red;"></div>-->
 </div>
 
 <script>
@@ -17,10 +15,8 @@ scalarButton.style.backgroundColor = "yellow";
 scalarButton.innerHTML = "Add scalar";
 
 scalarButton.style.cursor = "pointer";
-scalarButton.style.padding = 0;
-scalarButton.style.paddingTop = 0.05 * window.innerHeight;	
-scalarButton.style.paddingBottom = 0.05 * window.innerHeight;
-scalarButton.style.paddingLeft = 0.05 * window.innerWidth;
+scalarButton.padding = "auto";
+
 scalarButton.style.marginBottom = 0.05 * window.innerHeight;
 scalarButton.style.width = pxToFloat(window.getComputedStyle(mainDiv)["width"])/5 - pxToFloat(scalarButton.style.paddingLeft);
 scalarButton.style.display = "inline-block";
@@ -36,28 +32,111 @@ takeValueButton.style.backgroundColor = "red";
 takeValueButton.innerHTML = "Take value";
 
 takeValueButton.style.cursor = "pointer";
-takeValueButton.style.padding = 0;
-takeValueButton.style.paddingTop = 0.05 * window.innerHeight;	
-takeValueButton.style.paddingBottom = 0.05 * window.innerHeight;
-takeValueButton.style.paddingLeft = 0.05 * window.innerWidth;
+takeValueButton.padding = "auto";
+
 takeValueButton.style.marginBottom = 0.05 * window.innerHeight;
 takeValueButton.style.width = pxToFloat(window.getComputedStyle(mainDiv)["width"])/5 - pxToFloat(scalarButton.style.paddingLeft);
 takeValueButton.style.display = "inline-block";
 
 takeValueButton.onclick = takeValue;
-
 maindiv.appendChild(takeValueButton);
 
-matrixNumber = 1;
-scalarNumber = 1;
-operatorNumber = 1;
-equation = [];
+matrixCount = 1;
+scalarCount = 1;
+operatorCount = 1;
 
 function pxToFloat(string) {
 	return parseFloat(string.substring(0, string.length-3));
 }
 
 function addScalar() {
+	var scalarWrapper = document.createElement("div");
+	scalarWrapper.style.display = "grid";
+	scalarWrapper.style.gridTemplateColumns = "repeat(9, 1fr)";
+	scalarWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
+	scalarWrapper.style.width = "100%";
+	scalarWrapper.style.height = 0.3 * window.innerHeight;
+	scalarWrapper.style.background = "#d6d6d6";
+	scalarWrapper.style.padding = 0;
+	scalarWrapper.style.marginBottom = 0.05 * window.innerHeight;
+	scalarWrapper.id = "scalar"+scalarCount
+	scalarCount += 1;
+	
+	var scalarSidebar = document.createElement("div");
+	scalarSidebar.style.gridColumnStart = 1;
+	scalarSidebar.style.gridColumnEnd = 3;
+	scalarSidebar.style.gridRowStart = 1;
+	scalarSidebar.style.gridRowEnd = 10;
+	scalarSidebar.style.background = "#cccccc";
+	
+	var scalarName = document.createElement("div");
+	scalarName.style.gridColumnStart = 1;
+	scalarName.style.gridColumnEnd = 3;
+	scalarName.style.gridRowStart = 1;
+	scalarName.style.gridRowEnd = 2;
+	scalarName.style.background = "#aaaaaa";
+	scalarName.innerHTML = scalarWrapper.id;
+	
+	var scalarMoveUpIcon = document.createElement("img");
+	scalarMoveUpIcon.src = "static/moveup.png";
+	scalarMoveUpIcon.style.cursor = "pointer";
+	scalarMoveUpIcon.style.imageRendering = "pixelated";
+	scalarMoveUpIcon.style.height = "100%";
+	scalarMoveUpIcon.style.margin = "0 auto";
+	scalarMoveUpIcon.style.gridColumnStart = 2;
+	scalarMoveUpIcon.style.gridColumnEnd = 3;
+	scalarMoveUpIcon.style.gridRowStart = 4;
+	scalarMoveUpIcon.style.gridRowEnd = 5;
+	
+	var scalarDeleteIcon = document.createElement("img");
+	scalarDeleteIcon.src = "static/delete.png";
+	scalarDeleteIcon.style.cursor = "pointer";
+	scalarDeleteIcon.style.imageRendering = "pixelated";
+	scalarDeleteIcon.style.height = "100%";
+	scalarDeleteIcon.style.margin = "0 auto";
+	scalarDeleteIcon.style.gridColumnStart = 2;
+	scalarDeleteIcon.style.gridColumnEnd = 3;
+	scalarDeleteIcon.style.gridRowStart = 6;
+	scalarDeleteIcon.style.gridRowEnd = 7;
+	scalarDeleteIcon.onclick = deleteItem;
+	
+	var scalarMoveDownIcon = document.createElement("img");
+	scalarMoveDownIcon.src = "static/movedown.png";
+	scalarMoveDownIcon.style.cursor = "pointer";
+	scalarMoveDownIcon.style.imageRendering = "pixelated";
+	scalarMoveDownIcon.style.height = "100%";
+	scalarMoveDownIcon.style.margin = "0 auto";
+	scalarMoveDownIcon.style.gridColumnStart = 2;
+	scalarMoveDownIcon.style.gridColumnEnd = 3;
+	scalarMoveDownIcon.style.gridRowStart = 8;
+	scalarMoveDownIcon.style.gridRowEnd = 9;
+
+	var scalarTextbox = document.createElement("input");
+	scalarTextbox.style.boxSizing = "border-box";
+	scalarTextbox.style.width = "100%";
+	scalarTextbox.style.gridColumnStart = 6;
+	scalarTextbox.style.gridColumnEnd = 7;
+	scalarTextbox.style.gridRowStart = 5;
+	scalarTextbox.style.gridRowEnd = 6;
+	scalarTextbox.style.textAlign = "center";
+	scalarTextbox.type = "text";
+
+	scalarWrapper.append(scalarSidebar);
+	scalarWrapper.append(scalarName);
+	scalarWrapper.append(scalarMoveUpIcon);
+	scalarWrapper.append(scalarDeleteIcon);
+	scalarWrapper.append(scalarMoveDownIcon);
+	scalarWrapper.append(scalarTextbox);
+	mainDiv.append(scalarWrapper);
+}
+
+function deleteItem(event) {
+	// Gets parent element of the delete icon that was clicked
+	var item = event["path"][1];
+	item.parentNode.removeChild(item);
+}
+
+function addScalar_old() {
 	// Create a new scalar div
 	var scalarDiv = document.createElement("div");
 	

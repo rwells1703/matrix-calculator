@@ -47,3 +47,11 @@ Coursework 2018-07-28-22-52:
 Coursework 2018-07-31-22-05:
 - (matrix_tools.html) Added buttons for creating 'Scalar' items.
 - (matrix_tools.html) Added 'pxToFloat' function for converting between the string 'px' values in CSS to a float value in Javascript.
+
+Coursework 2018-08-03-22-05:
+- (matrix_tools.html) Created the layout of a scalar item using CSS grids. Each item has its own number.
+- (static folder) Created icons for use im the buttons on the scalar item e.g. move up, move down, delete (used in 'matrix_tools.html').
+- (matrix_tools.html) Added 'addScalar' function to add a new scalar item.
+- (matrix_tools.html) Added 'deleteItem' function to remove the selected item.
+- (matrix_tools.html) Move up and move down buttons added but dont work yet.
+- (matrix_tools.html) Copied 'pxToFloat' function here as well.
