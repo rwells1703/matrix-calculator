@@ -55,3 +55,12 @@ Coursework 2018-08-03-22-05:
 - (matrix_tools.html) Added 'deleteItem' function to remove the selected item.
 - (matrix_tools.html) Move up and move down buttons added but dont work yet.
 - (matrix_tools.html) Copied 'pxToFloat' function here as well.
+
+Coursework 2018-08-06-23-19:
+- (matrix_tools.html) Added 'addTopRowButton' function to create new button, to prevent code from being repeated multiple times.
+- (matrix_tools.html) Added 'recalculateTopRowButtonsSizes' function to resize the top row buttons depending on the width and height of the page.
+- (matrix_tools.html) Added 'createEmptyItem' function which returns the basic shell of an item e.g. scalar, matrix or operator. 
+- (matrix_tools.html) Added 'addMatrix' function to add a new matrix item, that is 2x2.
+- (matrix_tools.html) Added functions for adding/removing rows/columns of the matrix.
+- (matrix_tools.html) Added functions for moving items up and down and removing them.
+- (matrix_tools.html) Made the item numbering system dynamically update as you move and delete items.

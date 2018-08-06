@@ -47,7 +47,7 @@ function recalculateTopRowButtonSizes() {
 // Creates a new top row button e.g. add scalar
 function addTopRowButton(id, innerHTML, onclick) {
 	var button = document.createElement("div");
-	button.id = id;
+	button.id = id
 	button.innerHTML = innerHTML;
 	button.class = "button";
 	
@@ -100,10 +100,10 @@ operatorCount = 0;
 // Creates an empty item that can become a scalar, matrix or operator
 function createEmptyItem(itemClass, itemCount) {
 	var itemWrapper = document.createElement("div");
-	itemWrapper.class = itemClass;
+	itemWrapper.class = "itemClass";
 	itemWrapper.id = itemCount;
 	itemWrapper.style.display = "grid";
-	itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
+	itemWrapper.style.gridTemplateColumns = "repeat(9, 1fr)";
 	itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
 	itemWrapper.style.width = "100%";
 	itemWrapper.style.height = 0.3 * window.innerHeight;
@@ -208,38 +208,22 @@ function addMatrix() {
 	matrixCount += 1;
 	var matrixWrapper = createEmptyItem("matrix", matrixCount);
 	
-	var r = 0;
-	while (r < 7) {
-		var c = 0;
-		while (c < 7) {
-			var matrixElementTextbox = document.createElement("input");
-			matrixElementTextbox.class = "matrixElementTextbox";
-			matrixElementTextbox.style.boxSizing = "border-box";
-			matrixElementTextbox.style.width = "100%";
-			matrixElementTextbox.style.textAlign = "center";
-			matrixElementTextbox.type = "text";
-			
-			matrixElementTextbox.style.gridColumnStart = 4+c;
-			matrixElementTextbox.style.gridColumnEnd = 5+c;
-			matrixElementTextbox.style.gridRowStart = 2+r;
-			matrixElementTextbox.style.gridRowEnd = 3+r;
-			
-			matrixWrapper.appendChild(matrixElementTextbox);
-			
-			// Hide any rows or elements so only a 2x2 matrix shows
-			if (r > 1 || c > 1) {
-				matrixWrapper.lastChild.style.visibility = "hidden";
-			}
-			c += 1;
+	matrixWrapper.setAttribute("matrixColumns", 2);
+	matrixWrapper.setAttribute("matrixRows", 2);
+
+	var c = 0;
+	while (c < matrixWrapper.getAttribute("matrixColumns")) {
+		var r = 0;
+		while (r < matrixWrapper.getAttribute("matrixRows")) {
+			addMatrixElement(c, r, matrixWrapper);
+			r += 1;
 		}
-		r += 1;
+		c += 1;
 	}
 	
-	matrixWrapper.setAttribute("rows", 2);
-	matrixWrapper.setAttribute("columns", 2);
-	
 	var addMatrixRowIcon = document.createElement("img");
-	addMatrixRowIcon.class = "addMatrixRowIcon";
+	addMatrixRowIcon.setAttribute("class", "addMatrixRowIcon");
+	//addMatrixRowIcon.class = "addMatrixRowIcon";
 	addMatrixRowIcon.src = "static/add.png";
 	addMatrixRowIcon.style.cursor = "pointer";
 	addMatrixRowIcon.style.imageRendering = "pixelated";
@@ -247,117 +231,113 @@ function addMatrix() {
 	addMatrixRowIcon.style.margin = "0 auto";
 	addMatrixRowIcon.style.gridColumnStart = 4;
 	addMatrixRowIcon.style.gridColumnEnd = 5;
-	addMatrixRowIcon.style.gridRowStart = 9;
-	addMatrixRowIcon.style.gridRowEnd = 10;
+	addMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	addMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
 	addMatrixRowIcon.onclick = addMatrixRow;
 	
-	var removeMatrixRowIcon = document.createElement("img");
-	removeMatrixRowIcon.class = "removeMatrixRowIcon";
-	removeMatrixRowIcon.src = "static/remove.png";
-	removeMatrixRowIcon.style.cursor = "pointer";
-	removeMatrixRowIcon.style.imageRendering = "pixelated";
-	removeMatrixRowIcon.style.height = "100%";
-	removeMatrixRowIcon.style.margin = "0 auto";
-	removeMatrixRowIcon.style.gridColumnStart = 11;
-	removeMatrixRowIcon.style.gridColumnEnd = 12;
-	removeMatrixRowIcon.style.gridRowStart = 3;
-	removeMatrixRowIcon.style.gridRowEnd = 4;
-	removeMatrixRowIcon.onclick = removeMatrixRow;
-	
 	var addMatrixColumnIcon = document.createElement("img");
-	addMatrixColumnIcon.class = "addMatrixColumnIcon";
+	addMatrixColumnIcon.setAttribute("class", "addMatrixColumnIcon");
+	//addMatrixColumnIcon.class = "addMatrixColumnIcon";
 	addMatrixColumnIcon.src = "static/add.png";
 	addMatrixColumnIcon.style.cursor = "pointer";
 	addMatrixColumnIcon.style.imageRendering = "pixelated";
 	addMatrixColumnIcon.style.height = "100%";
-	addMatrixColumnIcon.style.margin = "0 auto";
-	addMatrixColumnIcon.style.gridColumnStart = 11;
-	addMatrixColumnIcon.style.gridColumnEnd = 12;
+	addMatrixColumnIcon.style.gridColumnStart = 4+parseInt(matrixWrapper.getAttribute("matrixColumns"));
+	addMatrixColumnIcon.style.gridColumnEnd = 5+parseInt(matrixWrapper.getAttribute("matrixColumns"));
 	addMatrixColumnIcon.style.gridRowStart = 2;
 	addMatrixColumnIcon.style.gridRowEnd = 3;
-	addMatrixColumnIcon.onclick = addMatrixColumn;
-	
-	var removeMatrixColumnIcon = document.createElement("img");
-	removeMatrixColumnIcon.class = "removeMatrixColumnIcon";
-	removeMatrixColumnIcon.src = "static/remove.png";
-	removeMatrixColumnIcon.style.cursor = "pointer";
-	removeMatrixColumnIcon.style.imageRendering = "pixelated";
-	removeMatrixColumnIcon.style.height = "100%";
-	removeMatrixColumnIcon.style.margin = "0 auto";
-	removeMatrixColumnIcon.style.gridColumnStart = 5;
-	removeMatrixColumnIcon.style.gridColumnEnd = 6;
-	removeMatrixColumnIcon.style.gridRowStart = 9;
-	removeMatrixColumnIcon.style.gridRowEnd = 10;
-	removeMatrixColumnIcon.onclick = removeMatrixColumn;
+	addMatrixColumnIcon.onclick = null;//addMatrixColumn;
 	
 	matrixWrapper.appendChild(addMatrixRowIcon);
-	matrixWrapper.appendChild(removeMatrixRowIcon);
 	matrixWrapper.appendChild(addMatrixColumnIcon);
-	matrixWrapper.appendChild(removeMatrixColumnIcon);
 	itemDiv.appendChild(matrixWrapper);
 	
 	recalculateTopRowButtonSizes();
 }
 
+function moveAddColumnRowIcon(matrixWrapper) {
+	addMatrixRowIcon = matrixWrapper.getElementsByClass("addMatrixColumnIcon")[0];
+	addMatrixRowIcon.style.gridColumnStart = 4;
+	addMatrixRowIcon.style.gridColumnEnd = 5;
+	addMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	addMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	
+	addMatrixColumnIcon = matrixWrapper.getElementsByClass("addMatrixColumnIcon");
+	addMatrixColumnIcon.style.gridColumnStart = 4+parseInt(matrixWrapper.getAttribute("matrixColumns"));
+	addMatrixColumnIcon.style.gridColumnEnd = 5+parseInt(matrixWrapper.getAttribute("matrixColumns"));
+	addMatrixColumnIcon.style.gridRowStart = 2;
+	addMatrixColumnIcon.style.gridRowEnd = 3;
+}
+
+function addMatrixElement(c, r, matrixWrapper) {
+	var matrixElementTextbox = document.createElement("input");
+	matrixElementTextbox.class = "matrixElementTextbox";
+	matrixElementTextbox.style.boxSizing = "border-box";
+	matrixElementTextbox.style.width = "100%";
+	matrixElementTextbox.style.textAlign = "center";
+	matrixElementTextbox.type = "text";
+	
+	matrixElementTextbox.style.gridColumnStart = 4+c;
+	matrixElementTextbox.style.gridColumnEnd = 5+c;
+	matrixElementTextbox.style.gridRowStart = 2+r;
+	matrixElementTextbox.style.gridRowEnd = 3+r;
+	
+	matrixWrapper.appendChild(matrixElementTextbox);
+}
+
 function addMatrixRow() {
 	var matrixWrapper = event["path"][1];
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
+	var matrixColumns = parseInt(matrixWrapper.getAttribute("matrixColumns"));
+	var matrixRows = parseInt(matrixWrapper.getAttribute("matrixRows"));
 	
 	var c = 0;
-	while (c < columns) {
-		elementNumber = 7*rows + c + 5
-		matrixWrapper.children[elementNumber].style.visibility = "";
+	while (c < matrixColumns) {
+		addMatrixElement(c, matrixRows, matrixWrapper);
 		c += 1;
 	}
-	matrixWrapper.setAttribute("rows", rows+1)
+	
+	matrixWrapper.setAttribute("matrixRows", matrixRows+1);
+	
+	addMatrixRowIcon = matrixWrapper.getElementsByClassName("addMatrixRowIcon")[0];
+	addMatrixRowIcon.style.gridColumnStart = 4;
+	addMatrixRowIcon.style.gridColumnEnd = 5;
+	addMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	addMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	
+	removeMatrixRowIcon = matrixWrapper.getElementsByClassName("removeMatrixRowIcon")[0];
+	removeMatrixRowIcon.style.gridColumnStart = 4;
+	removeMatrixRowIcon.style.gridColumnEnd = 5;
+	removeMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	removeMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
 }
 
 function removeMatrixRow() {
 	var matrixWrapper = event["path"][1];
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	matrixWrapper.setAttribute("columns", columns-1)
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	
-	var r = 0;
-	while (r < rows) {
-		elementNumber = 7*r + columns + 5
-		matrixWrapper.children[elementNumber].style.visibility = "hidden";
-		r += 1;
-	}
-}
-
-function addMatrixColumn() {
-	var matrixWrapper = event["path"][1];
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	
-	var r = 0;
-	while (r < rows) {
-		elementNumber = 7*r + columns + 5
-		matrixWrapper.children[elementNumber].style.visibility = "";
-		r += 1;
-	}
-	matrixWrapper.setAttribute("columns", columns+1)
-}
-
-function removeMatrixColumn() {
-	var matrixWrapper = event["path"][1];
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	matrixWrapper.setAttribute("rows", rows-1)
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
+	var matrixColumns = parseInt(matrixWrapper.getAttribute("matrixColumns"));
+	var matrixRows = parseInt(matrixWrapper.getAttribute("matrixRows"));
 	
 	var c = 0;
-	while (c < columns) {
-		elementNumber = 7*rows + c + 5
-		matrixWrapper.children[elementNumber].style.visibility = "hidden";
+	while (c < matrixColumns) {
+		addMatrixElement(c, matrixRows, matrixWrapper);
 		c += 1;
 	}
+	
+	matrixWrapper.setAttribute("matrixRows", matrixRows+1);
+	
+	addMatrixRowIcon = matrixWrapper.getElementsByClassName("addMatrixRowIcon")[0];
+	addMatrixRowIcon.style.gridColumnStart = 4;
+	addMatrixRowIcon.style.gridColumnEnd = 5;
+	addMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	addMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	
+	removeMatrixRowIcon = matrixWrapper.getElementsByClassName("removeMatrixRowIcon")[0];
+	removeMatrixRowIcon.style.gridColumnStart = 4;
+	removeMatrixRowIcon.style.gridColumnEnd = 5;
+	removeMatrixRowIcon.style.gridRowStart = 2+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	removeMatrixRowIcon.style.gridRowEnd = 3+parseInt(matrixWrapper.getAttribute("matrixRows"));
+	
 }
+
 
 function deleteItem(event) {
 	// Gets parent element of the delete icon that was clicked
@@ -375,20 +355,12 @@ function deleteItem(event) {
 				itemDiv.children[i].children[1].innerHTML = itemDiv.children[i].class + itemDiv.children[i].id;
 			}
 		}
-		i += 1;
+		i += 1
 	}
-	
-	if (item.class == "scalar") {
-		scalarCount -= 1;
-	}
-	else if (item.class == "matrix") {
-		matrixCount -= 1;
-	}
-	else {
-		operatorCount -= 1;
-	}
+	scalarCount -= 1;
 	
 	item.parentNode.removeChild(item);
+	
 }
 
 function moveItemUp(event) {
@@ -440,6 +412,16 @@ function moveItemDown(event) {
 			item.children[1].innerHTML = item.class + item.id;
 			nextItem.children[1].innerHTML = nextItem.class + nextItem.id;
 		}
+	}
+}
+
+function takeValues() {
+	var i = 0;
+	while (i < itemDiv.children.length) {
+		if (itemDiv.children[i].class == "scalar") {
+			console.log(itemDiv.children[i].children[5].value);
+		}
+		i += 1
 	}
 }
 </script>
