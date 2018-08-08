@@ -6,44 +6,47 @@
 <script type="text/x-mathjax-config">
 	MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 	MathJax.Hub.Queue(function () {
-		var loadingdiv = document.getElementById("loadingdiv");
-		loadingdiv.parentNode.removeChild(loadingdiv);
+		// This function is run after all mathjax equations have finished rendering
+		// We can hide the loading text and show the navbar and rest of the page
+		var loading_div = document.getElementById("loading_div");
+		loading_div.parentNode.removeChild(loading_div);
 		
-		var maindiv = document.getElementById("maindiv");
-		maindiv.style.visibility = "";
-		var mainnavbar = document.getElementById("mainnavbar");
-		mainnavbar.style.visibility = "";
+		var main_div = document.getElementById("main_div");
+		main_div.style.visibility = "";
+		
+		var navbar = document.getElementsByClassName("navbar")[0];
+		navbar.style.visibility = "";
 	});
 </script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
 
-<div id="loadingdiv">
+<div class="main" id="loading_div">
 
 <h2>Loading...</h2>
 
 </div>
 
-<div id="maindiv">
+<div class="main" id="main_div">
 
 <h2 id="contents">Contents</h2>
 <br>
-<a href="#1_introduction">1. Introduction</a>
+<a class="link" href="#1_introduction">1. Introduction</a>
 <br>
-<a href="#2_addition_and_subtraction">2. Addition and Subtraction</a>
+<a class="link" href="#2_addition_and_subtraction">2. Addition and Subtraction</a>
 <br>
-<a href="#3_transpose">3. Transpose</a>
+<a class="link" href="#3_transpose">3. Transpose</a>
 <br>
-<a href="#4_multiplication">4. Multiplication</a>
+<a class="link" href="#4_multiplication">4. Multiplication</a>
 <br>
-<a href="#5_matrix-scalar_product">5. Matrix-Scalar Product</a>
+<a class="link" href="#5_matrix-scalar_product">5. Matrix-Scalar Product</a>
 <br>
-<a href="#6_dot-product">6. Dot-roduct</a>
+<a class="link" href="#6_dot-product">6. Dot-roduct</a>
 <br>
-<a href="#7_matrix-matrix_product">7. Matrix-Matrix Product</a>
+<a class="link" href="#7_matrix-matrix_product">7. Matrix-Matrix Product</a>
 <br>
-<a href="#8_determinant">8. Determinant</a>
+<a class="link" href="#8_determinant">8. Determinant</a>
 <br>
-<a href="#9_inverse">9. Inverse</a>
+<a class="link" href="#9_inverse">9. Inverse</a>
 
 <br><br>
 <h2 id="1_introduction">1. Introduction</h2>
@@ -655,17 +658,17 @@ Here is the process for finding the inverse:
 <br><br><br>
 
 <br><br>
-<a href="#contents">Back to contents</a>
+<a class="link" href="#contents">Back to contents</a>
 <br>
 </div>
 
 <script>
 	// Makes the page invisible to begin with
 	// Once the MathJax has finished loading, the page will become visible
-	var maindiv = document.getElementById("maindiv");
-	maindiv.style.visibility = "hidden";
-	var mainnavbar = document.getElementById("mainnavbar");
-	mainnavbar.style.visibility = "hidden";
+	var main_div = document.getElementById("main_div");
+	main_div.style.visibility = "hidden";
+	var navbar = document.getElementsByClassName("navbar")[0];
+	navbar.style.visibility = "hidden";
 	
 </script>
 

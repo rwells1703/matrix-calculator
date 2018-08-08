@@ -2,7 +2,9 @@
 
 {% block content %}
 
-<canvas id="maincanvas"></canvas>
+<div class="main" id="main_div">
+	<canvas />
+</div>
 
 <script id="vertexShader" type="notjs">
 	precision mediump float;
@@ -26,37 +28,41 @@
 </script>
 
 <script>
+	window.addEventListener("resize", resizeCanvas, false);
+	
 	// Create new html5 canvas and wegbl context
 	function createCanvas() {
-		canvas = document.getElementById("maincanvas");
+		navbar = document.getElementsByClassName("navbar")[0];
+		main_div = document.getElementById("main_div");
 		
-		navbar = document.getElementById("mainnavbar");
-		navbarheightstring = window.getComputedStyle(navbar).height;
-		navbarheightfloat = parseFloat(navbarheightstring.substring(0, navbarheightstring.length-2));
-
+		canvas = document.getElementsByTagName("canvas")[0];
+		
 		gl = canvas.getContext("webgl");
 		
 		// Make the canvas a square that fits the window
-		marginFraction = 30;
-		borderThickness = 1;
-		
+		canvas.style.borderStyle = "solid";
+		canvas.style.borderColor = "black";
+		borderThickness = 0;
 		canvas.style.borderWidth = borderThickness;
 		
-		// Portrait orientation
-		if (window.innerHeight > window.innerWidth) {
-			
-			margin = window.innerWidth/marginFraction;
-			canvas.style.margin = margin.toString();
-			
-			canvas.width = window.innerWidth - 2*margin - 2*borderThickness;
+		resizeCanvas();
+	}
+	
+	function resizeCanvas() {
+		console.log(window.innerWidth, window.innerHeight);
+		padding = pxToFloat(window.getComputedStyle(main_div).padding);
+		
+		var navbarheightstring = window.getComputedStyle(navbar).height;
+		navbarheightfloat = parseFloat(navbarheightstring.substring(0, navbarheightstring.length-2));
+	
+		// Page taller than wide (portrait orientation)
+		if (window.innerHeight - navbarheightfloat > window.innerWidth) {
+			canvas.width = window.innerWidth - 2*padding - 2*borderThickness;
 			canvas.height = canvas.width;
 		}
-		// Landscape orientation
+		// Page wider than tall (landscape orientation)
 		else {
-			margin = window.innerWidth/marginFraction;
-			canvas.style.margin = margin.toString();
-			
-			canvas.width = window.innerHeight - 2*margin - 2*borderThickness - navbarheightfloat;
+			canvas.width = window.innerHeight - 2*padding - 2*borderThickness - navbarheightfloat;
 			canvas.height = canvas.width;
 		}
 		
@@ -66,11 +72,11 @@
 	
 	// Converts canvas values (pixels) to clipspace values (-1 to 1)
 	function canvasYToClipspace(y) {
-		return (canvas.height - y + margin + borderThickness + navbarheightfloat)/canvas.height*2 - 1;
+		return (canvas.height - y + padding + borderThickness + navbarheightfloat)/canvas.height*2 - 1;
 	}
 	
 	function canvasXToClipspace(x) {
-		return (x - margin - borderThickness)/canvas.height*2 - 1;
+		return (x - padding - borderThickness)/canvas.height*2 - 1;
 	}
 	
 	
@@ -198,7 +204,7 @@
 		// Properties of the axis lines (axisWidth is global because it is used to scale polygons within the axes)
 		var axisThickness = 0.01;
 		axisWidth = 0.9;
-		var axisColor = [255/255, 0/255, 0/255, 255/255];
+		var axisColor = [0/255, 0/255, 0/255, 255/255];
 		
 		// X axis made of two triangles
 		vertices = vertices.concat([-axisWidth,  axisThickness]).concat(axisColor);
@@ -226,7 +232,8 @@
 		gl.useProgram(program);
 		
 		// Clears the screen and temporary buffers
-		gl.clearColor(255/255, 255/255, 255/255, 255/255);
+		//gl.clearColor(255/255, 255/255, 255/255, 255/255);
+		gl.clearColor(242/255, 242/255, 242/255, 255/255);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		
 		// Draws the vertices declared in main
@@ -258,7 +265,7 @@
 		// Add the axes
 		vertices = declareStaticVertices();
 		
-		createPolygon([0, 0], 5, 0.2, [255/255, 255/255, 0/255, 255/255], false);
+		//createPolygon([0, 0], 5, 0.2, [255/255, 255/255, 0/255, 255/255], false);
 		
 		// Begins the render loop
 		requestAnimationFrame(render);

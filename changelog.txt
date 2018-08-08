@@ -64,3 +64,8 @@ Coursework 2018-08-06-23-19:
 - (matrix_tools.html) Added functions for adding/removing rows/columns of the matrix.
 - (matrix_tools.html) Added functions for moving items up and down and removing them.
 - (matrix_tools.html) Made the item numbering system dynamically update as you move and delete items.
+
+Coursework 2018-08-08-23-40:
+- (base.html) Moved 'pxToFloat' function here so it can be shared by all pages.
+- (base.html) Added theme system that uses JavaScript to swap the values of CSS variables. Current themes: 'Salmon Pink', 'Emerald Green'.
+- (matrix_combo.html) Attempted to join 'matrix_tools.html' and 'matrix_visualiser.html' pages side by side in a single page. Not currently functional.

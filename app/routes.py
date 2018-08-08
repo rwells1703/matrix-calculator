@@ -17,6 +17,10 @@ def matrix_tools():
 def matrix_visualiser():
 	return render_template("matrix_visualiser.html", active="matrix_visualiser")
 
+@app.route("/matrix_combo")
+def matrix_combo():
+	return render_template("matrix_combo.html", active="matrix_combo")
+
 @app.route("/help")
 def help():
         return render_template("help.html", active="help")

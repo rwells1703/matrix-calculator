@@ -1,121 +1,119 @@
-<html id="mainpage">
+<html>
 	<head>
-		<title>Richard's Website</title>
+		<title>Matrix Website</title>
+		
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		
 		<style>
-			/* The whole of each page */
-			html {
-				margin: 0;
-				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
-				text-size-adjust: none;
-				/* Basic color presets */
-				--color-salmon-pink: #ff4c4c;
-				--color-salmon-pink-light: #ff7c7c;
-				--color-salmon-pink-dark: #ed2d2d;
-				--color-salmon-pink-shadow: #840000;
-				--color-shadow-grey: #9b9b9b;
-			}
-
 			/* The body on each page */		
 			body {
+				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
+				text-size-adjust: none;
 				margin: 0;
 				font-family: 'Montserrat', sans-serif;
 				font-size: 2.5vh;
 			}
 
+			
 			/* The navbar on the top of each page */
-			ul {
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-				overflow: hidden;
-				background-color: var(--color-salmon-pink);
-			}	
-
-			li {
-				float: left;
+			div.navbar {
+				background-color: var(--colors-navbar);
 				display: block;
+				overflow: auto;
 			}
-
-			li a {
-				color: white;
+			
+			a.navbar-item {
+				display: block;
 				padding: 2vh 2vw;
+				float: left;
+				
+				color: white;
 				text-decoration: none;
 				font-size: 3vh;
-				float: left;
 			}
-
-			li a:hover {
-				background-color: var(--color-salmon-pink);
-				box-shadow: 2px 0px 15px var(--color-salmon-pink-shadow), -2px 0px 15px var(--color-salmon-pink-shadow);
+			
+			a.navbar-item:hover {
+				background-color: var(--colors-navbar);
+				box-shadow: 2px 0px 15px var(--colors-navbar-shadow), -2px 0px 15px var(--colors-navbar-shadow);
 			}
-
-			li a.active {
-				background-color: var(--color-salmon-pink-dark);
-				box-shadow: 2px 0px 15px var(--color-salmon-pink-shadow), -2px 0px 15px var(--color-salmon-pink-shadow);
+			
+			a.navbar-item.active {
+				background-color: var(--colors-navbar-active);
+				box-shadow: 2px 0px 15px var(--colors-navbar-shadow), -2px 0px 15px var(--colors-navbar-shadow);
 			}
-
+			
+			
 			/* Regular hyperlinks */
-			a {
-				color: var(--color-salmon-pink-dark);
+			a.link {
+				color: var(--colors-link);
 				text-decoration: none;
 			}
 
-			a:hover {
-				color: var(--color-salmon-pink-light);
+			a.link:hover {
+				color: var(--colors-link-hover);
 			}
-
+			
+			
 			/* Div holding the main body of text on each page */
-			div {
+			div.main {
 				padding: 4%;
 			}
-
+			
+			
 			/* Each image will have a shadow and rounded corners */
 			img.normal {
 				border-radius: 5px;
-				box-shadow: 0 4px 8px 0 var(--color-shadow-grey), 0 6px 20px 0 var(--color-shadow-grey);
-			}
-			
-			canvas {
-				border-style: solid;
-				border-color: black;
+				box-shadow: 0 4px 8px 0 var(--colors-shadow), 0 6px 20px 0 var(--colors-shadow);
 			}
 		</style>
 	</head>
+	
 	<body>
-		<ul id="mainnavbar">
-
-		{% if active == "index" %}
-		<li><a class="active" href="/">Home</a></li>
-		{% else %}
-		<li><a href="/">Home</a></li>
-		{% endif %}
-
-		{% if active == "about_matrices" %}
-		<li><a class="active" href="/about_matrices">About Matrices</a></li>
-		{% else %}
-		<li><a href="/about_matrices">About Matrices</a></li>
-		{% endif %}
-
-		{% if active == "matrix_tools" %}
-		<li><a class="active" href="/matrix_tools">Matrix Tools</a></li>
-		{% else %}
-		<li><a href="/matrix_tools">Matrix Tools</a></li>
-		{% endif %}
-
-		{% if active == "matrix_visualiser" %}
-		<li><a class="active" href="/matrix_visualiser">Matrix Visualiser</a></li>
-		{% else %}
-		<li><a href="/matrix_visualiser">Matrix Visualiser</a></li>
-		{% endif %}		
-
-		{% if active == "help" %}
-		<li><a class="active"  href="/help">Help</a></li>
-		{% else %}
-		<li><a href="/help">Help</a></li>
-		{% endif %}
-
-		</ul>
+		<script>
+		// Converts a string value "px" on the end, to a float value
+		function pxToFloat(string) {
+			return parseFloat(string.substring(0, string.length-2));
+		}
+		
+		colors_emerald_green = {
+			"navbar":"#00d872",
+			"navbar-active":"#00a557",
+			"navbar-shadow":"#005a1e",
+			"link":"#00a557",
+			"link-hover":"#31f99b",
+			"shadow":"#9b9b9b"
+		};
+		
+		colors_salmon_pink = {
+			"navbar":"#ff4c4c",
+			"navbar-active":"#ed2d2d",
+			"navbar-shadow":"#840000",
+			"link":"#ed2d2d",
+			"link-hover":"#ff7c7c",
+			"shadow":"#9b9b9b"
+		};
+		
+		colors = colors_salmon_pink;
+		
+		document.body.style.setProperty("--colors-navbar", colors["navbar"]);
+		document.body.style.setProperty("--colors-navbar-active", colors["navbar-active"]);
+		document.body.style.setProperty("--colors-navbar-shadow", colors["navbar-shadow"]);
+		document.body.style.setProperty("--colors-link", colors["link"]);
+		document.body.style.setProperty("--colors-link-hover", colors["link-hover"]);
+		document.body.style.setProperty("--colors-shadow", colors["shadow"]);
+		
+		console.log(window.location.pathname);
+		
+		</script>
+		
+		<div class="navbar">
+			<a class="navbar-item" href="/">Home</a>
+			<a class="navbar-item" href="/about_matrices">About Matrices</a>
+			<a class="navbar-item" href="/matrix_tools">Matrix Tools</a>
+			<a class="navbar-item" href="/matrix_visualiser">Matrix Visualiser</a>
+			<a class="navbar-item" href="/matrix_combo">Matrix Combo</a>
+			<a class="navbar-item" href="/help">Help</a>
+		</div>
 		
 		{% block content %}{% endblock%}
 	</body>

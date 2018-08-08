@@ -2,16 +2,10 @@
 
 {% block content %}
 
-<div id="mainDiv">
-</div>
+<div class="main" id="mainDiv" />
 
 <script>
 mainDiv = document.getElementById("mainDiv");
-
-// Converts a string value "px" on the end, to a float value
-function pxToFloat(string) {
-	return parseFloat(string.substring(0, string.length-2));
-}
 
 // Recalculates sizes of top row buttons based on rest of page
 function recalculateTopRowButtonSizes() {
@@ -258,10 +252,10 @@ function addMatrix() {
 	removeMatrixRowIcon.style.imageRendering = "pixelated";
 	removeMatrixRowIcon.style.height = "100%";
 	removeMatrixRowIcon.style.margin = "0 auto";
-	removeMatrixRowIcon.style.gridColumnStart = 11;
-	removeMatrixRowIcon.style.gridColumnEnd = 12;
-	removeMatrixRowIcon.style.gridRowStart = 3;
-	removeMatrixRowIcon.style.gridRowEnd = 4;
+	removeMatrixRowIcon.style.gridColumnStart = 5;
+	removeMatrixRowIcon.style.gridColumnEnd = 6;
+	removeMatrixRowIcon.style.gridRowStart = 9;
+	removeMatrixRowIcon.style.gridRowEnd = 10;
 	removeMatrixRowIcon.onclick = removeMatrixRow;
 	
 	var addMatrixColumnIcon = document.createElement("img");
@@ -284,10 +278,10 @@ function addMatrix() {
 	removeMatrixColumnIcon.style.imageRendering = "pixelated";
 	removeMatrixColumnIcon.style.height = "100%";
 	removeMatrixColumnIcon.style.margin = "0 auto";
-	removeMatrixColumnIcon.style.gridColumnStart = 5;
-	removeMatrixColumnIcon.style.gridColumnEnd = 6;
-	removeMatrixColumnIcon.style.gridRowStart = 9;
-	removeMatrixColumnIcon.style.gridRowEnd = 10;
+	removeMatrixColumnIcon.style.gridColumnStart = 11;
+	removeMatrixColumnIcon.style.gridColumnEnd = 12;
+	removeMatrixColumnIcon.style.gridRowStart = 3;
+	removeMatrixColumnIcon.style.gridRowEnd = 4;
 	removeMatrixColumnIcon.onclick = removeMatrixColumn;
 	
 	matrixWrapper.appendChild(addMatrixRowIcon);
@@ -301,62 +295,74 @@ function addMatrix() {
 
 function addMatrixRow() {
 	var matrixWrapper = event["path"][1];
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	
-	var c = 0;
-	while (c < columns) {
-		elementNumber = 7*rows + c + 5
-		matrixWrapper.children[elementNumber].style.visibility = "";
-		c += 1;
+	var columns = parseInt(matrixWrapper.getAttribute("columns"));
+
+	if (rows < 7) {
+		var c = 0;
+		while (c < columns) {
+			elementNumber = 7*rows + c + 5
+			matrixWrapper.children[elementNumber].style.visibility = "";
+			c += 1;
+		}
+		matrixWrapper.setAttribute("rows", rows+1)
 	}
-	matrixWrapper.setAttribute("rows", rows+1)
+	
+	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function removeMatrixRow() {
 	var matrixWrapper = event["path"][1];
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
-	matrixWrapper.setAttribute("columns", columns-1)
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	
-	var r = 0;
-	while (r < rows) {
-		elementNumber = 7*r + columns + 5
-		matrixWrapper.children[elementNumber].style.visibility = "hidden";
-		r += 1;
+	if (rows > 1) {
+		var c = 0;
+		while (c < columns) {
+			elementNumber = 7*(rows-1) + c + 5
+			matrixWrapper.children[elementNumber].style.visibility = "hidden";
+			c += 1;
+		}
+		matrixWrapper.setAttribute("rows", rows-1)
 	}
+	
+	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function addMatrixColumn() {
 	var matrixWrapper = event["path"][1];
-	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
+	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	
-	var r = 0;
-	while (r < rows) {
-		elementNumber = 7*r + columns + 5
-		matrixWrapper.children[elementNumber].style.visibility = "";
-		r += 1;
+	if (columns < 7) {
+		var r = 0;
+		while (r < rows) {
+			elementNumber = 7*r + columns + 5
+			matrixWrapper.children[elementNumber].style.visibility = "";
+			r += 1;
+		}
+		matrixWrapper.setAttribute("columns", columns+1)
 	}
-	matrixWrapper.setAttribute("columns", columns+1)
+	
+	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function removeMatrixColumn() {
 	var matrixWrapper = event["path"][1];
+	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	matrixWrapper.setAttribute("rows", rows-1)
-	var rows = parseInt(matrixWrapper.getAttribute("rows"));
-	
-	var c = 0;
-	while (c < columns) {
-		elementNumber = 7*rows + c + 5
-		matrixWrapper.children[elementNumber].style.visibility = "hidden";
-		c += 1;
+	if (columns > 1) {
+		var r = 0;
+		while (r < rows) {
+			elementNumber = 7*r + (columns-1) + 5
+			matrixWrapper.children[elementNumber].style.visibility = "hidden";
+			r += 1;
+		}
+		matrixWrapper.setAttribute("columns", columns-1);
 	}
+	
+	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function deleteItem(event) {
