@@ -9,17 +9,9 @@ def index():
 def about_matrices():
 	return render_template("about_matrices.html", active="about_matrices")
 
-@app.route("/matrix_tools")
-def matrix_tools():
-        return render_template("matrix_tools.html", active="matrix_tools")
-
-@app.route("/matrix_visualiser")
-def matrix_visualiser():
-	return render_template("matrix_visualiser.html", active="matrix_visualiser")
-
-@app.route("/matrix_combo")
+@app.route("/matrix_calculator")
 def matrix_combo():
-	return render_template("matrix_combo.html", active="matrix_combo")
+	return render_template("matrix_calculator/matrix_calculator.html", active="matrix_calculator")
 
 @app.route("/help")
 def help():

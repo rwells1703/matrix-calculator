@@ -1,109 +1,14 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-<div class="main" id="mainDiv" />
-
-<script>
-mainDiv = document.getElementById("mainDiv");
-
-// Recalculates sizes of top row buttons based on rest of page
-function recalculateTopRowButtonSizes() {
-	var buttons = [document.getElementById("scalarButton"), document.getElementById("matrixButton"), document.getElementById("operatorButton")];
-	
-	var i = 0;
-	while (i < buttons.length) {
-		var button = buttons[i];
-		button.style.width = pxToFloat(window.getComputedStyle(topRowButtonDiv)["width"])/topRowButtonCount - 2*pxToFloat(button.style.paddingLeft) - 2*pxToFloat(button.style.borderWidth);// - (window.innerWidth - document.body.clientWidth)/topRowButtonCount;
-		i += 1;
-	}
-	
-	var tallestHeight = 0;
-	var i = 0;
-	while (i < buttons.length) {
-		var button = buttons[i];
-		currentHeight = pxToFloat(window.getComputedStyle(button)["height"]);
-		if (currentHeight > tallestHeight) {
-			tallestHeight = currentHeight;
-		}
-		i += 1;
-	}
-	
-	var i = 0;
-	while (i < buttons.length) {
-		var button = buttons[i];
-		button.style.height = tallestHeight;
-		i += 1;
-	}
-	
-}
-
-// Creates a new top row button e.g. add scalar
-function addTopRowButton(id, innerHTML, onclick) {
-	var button = document.createElement("div");
-	button.id = id;
-	button.innerHTML = innerHTML;
-	button.class = "button";
-	
-	button.style.borderWidth = 1;
-	button.style.borderStyle = "solid";
-	button.style.borderColor = "black";
-	button.style.cursor = "pointer";
-	button.style.textAlign = "center";
-	button.style.verticalAlign = "top";
-	button.style.display = "inline-block";
-	button.style.padding = 0;
-	button.style.paddingTop = 0.02*window.innerHeight;
-	button.style.paddingBottom = 0.02*window.innerHeight;
-	button.onclick = onclick;
-	
-	topRowButtonCount += 1;
-	
-	topRowButtonDiv.appendChild(button);
-}
-
-// Create container div for top row buttons
-topRowButtonDiv = document.createElement("div");
-topRowButtonDiv.id = "topRowButtonDiv";
-topRowButtonDiv.style.padding = 0;
-topRowButtonDiv.style.marginBottom = 0.05 * window.innerHeight;
-mainDiv.appendChild(topRowButtonDiv);
- 
-// Used for calculating widths for the top row buttons
-topRowButtonCount = 0;
-
-// Create all buttons for adding new items
-addTopRowButton("scalarButton", "Add scalar", addScalar);
-addTopRowButton("matrixButton", "Add matrix", addMatrix);
-addTopRowButton("operatorButton", "Add operator	", null);
-
-// Caculate the widths that the top row buttons should be
-recalculateTopRowButtonSizes();
-
-// Create container div for all items e.g. scalars, matrices and operators
-itemDiv = document.createElement("div");
-itemDiv.id = "itemDiv";
-itemDiv.style.padding = 0;
-mainDiv.appendChild(itemDiv);
-
-// Counts increase/decrease for every item added/removed from the equation
-matrixCount = 0;
-scalarCount = 0;
-operatorCount = 0;
-
 // Creates an empty item that can become a scalar, matrix or operator
 function createEmptyItem(itemClass, itemCount) {
 	var itemWrapper = document.createElement("div");
-	itemWrapper.class = itemClass;
+	itemWrapper.className = itemClass;
 	itemWrapper.id = itemCount;
 	itemWrapper.style.display = "grid";
 	itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
 	itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
-	itemWrapper.style.width = "100%";
-	itemWrapper.style.height = 0.3 * window.innerHeight;
 	itemWrapper.style.background = "#d6d6d6";
 	itemWrapper.style.padding = 0;
-	itemWrapper.style.marginBottom = 0.05 * window.innerHeight;
+	itemWrapper.style.marginBottom = "2vh";
 	
 	var itemSidebar = document.createElement("div");
 	itemSidebar.class = "itemSidebar";
@@ -114,7 +19,6 @@ function createEmptyItem(itemClass, itemCount) {
 	itemSidebar.style.background = "#cccccc";
 	
 	var itemName = document.createElement("div");
-	itemName.class = "itemName";
 	itemName.style.gridColumnStart = 1;
 	itemName.style.gridColumnEnd = 3;
 	itemName.style.gridRowStart = 1;
@@ -122,12 +26,10 @@ function createEmptyItem(itemClass, itemCount) {
 	itemName.style.background = "#aaaaaa";
 	itemName.style.padding = 0;
 	itemName.style.textAlign = "center";
-	itemName.style.fontSize = pxToFloat(itemWrapper.style.height)/14;
-	itemName.innerHTML = itemWrapper.class + itemWrapper.id;
+	itemName.innerHTML = itemWrapper.className + itemWrapper.id;
 	
 	var itemMoveUpIcon = document.createElement("img");
-	itemMoveUpIcon.class = "itemMoveUpIcon";
-	itemMoveUpIcon.src = "static/moveup.png";
+	itemMoveUpIcon.src = "images/moveup.png";
 	itemMoveUpIcon.style.cursor = "pointer";
 	itemMoveUpIcon.style.imageRendering = "pixelated";
 	itemMoveUpIcon.style.height = "100%";
@@ -139,8 +41,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemMoveUpIcon.onclick = moveItemUp;
 	
 	var itemDeleteIcon = document.createElement("img");
-	itemDeleteIcon.class = "itemDeleteIcon";
-	itemDeleteIcon.src = "static/delete.png";
+	itemDeleteIcon.src = "images/delete.png";
 	itemDeleteIcon.style.cursor = "pointer";
 	itemDeleteIcon.style.imageRendering = "pixelated";
 	itemDeleteIcon.style.height = "100%";
@@ -152,8 +53,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemDeleteIcon.onclick = deleteItem;
 	
 	var itemMoveDownIcon = document.createElement("img");
-	itemMoveDownIcon.class = "itemMoveDownIcon";
-	itemMoveDownIcon.src = "static/movedown.png";
+	itemMoveDownIcon.src = "images/movedown.png";
 	itemMoveDownIcon.style.cursor = "pointer";
 	itemMoveDownIcon.style.imageRendering = "pixelated";
 	itemMoveDownIcon.style.height = "100%";
@@ -168,7 +68,6 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.appendChild(itemName);
 	itemWrapper.appendChild(itemMoveUpIcon);
 	itemWrapper.appendChild(itemDeleteIcon);
-	itemWrapper.appendChild(itemMoveDownIcon);
 	itemWrapper.appendChild(itemMoveDownIcon);
 	
 	return itemWrapper;
@@ -194,7 +93,7 @@ function addScalar() {
 	
 	itemDiv.appendChild(scalarWrapper);
 	
-	recalculateTopRowButtonSizes();
+	resizeTopRowButtons();
 }
 
 // Creates a matrix item
@@ -234,7 +133,7 @@ function addMatrix() {
 	
 	var addMatrixRowIcon = document.createElement("img");
 	addMatrixRowIcon.class = "addMatrixRowIcon";
-	addMatrixRowIcon.src = "static/add.png";
+	addMatrixRowIcon.src = "images/add.png";
 	addMatrixRowIcon.style.cursor = "pointer";
 	addMatrixRowIcon.style.imageRendering = "pixelated";
 	addMatrixRowIcon.style.height = "100%";
@@ -247,7 +146,7 @@ function addMatrix() {
 	
 	var removeMatrixRowIcon = document.createElement("img");
 	removeMatrixRowIcon.class = "removeMatrixRowIcon";
-	removeMatrixRowIcon.src = "static/remove.png";
+	removeMatrixRowIcon.src = "images/remove.png";
 	removeMatrixRowIcon.style.cursor = "pointer";
 	removeMatrixRowIcon.style.imageRendering = "pixelated";
 	removeMatrixRowIcon.style.height = "100%";
@@ -260,7 +159,7 @@ function addMatrix() {
 	
 	var addMatrixColumnIcon = document.createElement("img");
 	addMatrixColumnIcon.class = "addMatrixColumnIcon";
-	addMatrixColumnIcon.src = "static/add.png";
+	addMatrixColumnIcon.src = "images/add.png";
 	addMatrixColumnIcon.style.cursor = "pointer";
 	addMatrixColumnIcon.style.imageRendering = "pixelated";
 	addMatrixColumnIcon.style.height = "100%";
@@ -273,7 +172,7 @@ function addMatrix() {
 	
 	var removeMatrixColumnIcon = document.createElement("img");
 	removeMatrixColumnIcon.class = "removeMatrixColumnIcon";
-	removeMatrixColumnIcon.src = "static/remove.png";
+	removeMatrixColumnIcon.src = "images/remove.png";
 	removeMatrixColumnIcon.style.cursor = "pointer";
 	removeMatrixColumnIcon.style.imageRendering = "pixelated";
 	removeMatrixColumnIcon.style.height = "100%";
@@ -290,7 +189,7 @@ function addMatrix() {
 	matrixWrapper.appendChild(removeMatrixColumnIcon);
 	itemDiv.appendChild(matrixWrapper);
 	
-	recalculateTopRowButtonSizes();
+	resizeTopRowButtons();
 }
 
 function addMatrixRow() {
@@ -307,8 +206,6 @@ function addMatrixRow() {
 		}
 		matrixWrapper.setAttribute("rows", rows+1)
 	}
-	
-	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function removeMatrixRow() {
@@ -325,8 +222,6 @@ function removeMatrixRow() {
 		}
 		matrixWrapper.setAttribute("rows", rows-1)
 	}
-	
-	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function addMatrixColumn() {
@@ -343,8 +238,6 @@ function addMatrixColumn() {
 		}
 		matrixWrapper.setAttribute("columns", columns+1)
 	}
-	
-	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function removeMatrixColumn() {
@@ -361,8 +254,6 @@ function removeMatrixColumn() {
 		}
 		matrixWrapper.setAttribute("columns", columns-1);
 	}
-	
-	console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 }
 
 function deleteItem(event) {
@@ -373,12 +264,12 @@ function deleteItem(event) {
 	var i = 0;
 	while (i < itemDiv.children.length) {
 		// Only change item ids of items with the same class
-		if (itemDiv.children[i].class == item.class) {
+		if (itemDiv.children[i].className == item.className) {
 			if (parseInt(itemDiv.children[i].id) > parseInt(item.id)) {
 				// Change id
 				itemDiv.children[i].id = parseInt(itemDiv.children[i].id) - 1;
 				// Change the name that is displayed
-				itemDiv.children[i].children[1].innerHTML = itemDiv.children[i].class + itemDiv.children[i].id;
+				itemDiv.children[i].children[1].innerHTML = itemDiv.children[i].className + itemDiv.children[i].id;
 			}
 		}
 		i += 1;
@@ -408,13 +299,13 @@ function moveItemUp(event) {
 		parent.insertBefore(item, previousItem);
 		
 		// Swaps id's back if items are both of the same class (e.g. both scalars)
-		if (previousItem.class == item.class) {
+		if (previousItem.className == item.className) {
 			var tempId = item.id;
 			item.id = previousItem.id;
 			previousItem.id = tempId;
 
-			item.children[1].innerHTML = item.class + item.id;
-			previousItem.children[1].innerHTML = previousItem.class + previousItem.id;
+			item.children[1].innerHTML = item.className + item.id;
+			previousItem.children[1].innerHTML = previousItem.className + previousItem.id;
 		}
 	}
 }
@@ -438,16 +329,13 @@ function moveItemDown(event) {
 		}
 		
 		// Swaps id's back if items are both of the same class (e.g. both scalars)
-		if (nextItem.class == item.class) {
+		if (nextItem.class == item.className) {
 			var tempId = item.id;
 			item.id = nextItem.id;
 			nextItem.id = tempId;
 
-			item.children[1].innerHTML = item.class + item.id;
-			nextItem.children[1].innerHTML = nextItem.class + nextItem.id;
+			item.children[1].innerHTML = item.className + item.id;
+			nextItem.children[1].innerHTML = nextItem.className + nextItem.id;
 		}
 	}
 }
-</script>
-
-{% endblock %}

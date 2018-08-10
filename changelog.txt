@@ -77,3 +77,11 @@ Coursework 2018-08-10-19-32:
 - (matrix_combo.html) Added 'pageResize' function that runs all other reisizing functions within the page.
 - (matrix_combo.html) Linked 'pageResize' to the window resize event handler, so that the page resizes every time the window is resized.
 - (matrix_combo.html) Removed border around canvas for aesthetic reasons.
+
+Coursework 2018-08-10-23-33:
+- Removed 'matrix_tools.html' and 'matrix_visualiser.html' in favour of 'matrix_calculator.html'.
+- (matrix_calculator.py) Seperated out the JavaScript into seperate files in the 'matrix_calculator' folder.
+- (__init__.py) Changed the 'Flask' folder structure from using 'static' and 'template' folders, to a single 'webroot' folder.
+- (canvas_webgl.js) Created.
+- (equation_builder.js) Created.
+- (page_layout.js) Created.
