@@ -69,3 +69,11 @@ Coursework 2018-08-08-23-40:
 - (base.html) Moved 'pxToFloat' function here so it can be shared by all pages.
 - (base.html) Added theme system that uses JavaScript to swap the values of CSS variables. Current themes: 'Salmon Pink', 'Emerald Green'.
 - (matrix_combo.html) Attempted to join 'matrix_tools.html' and 'matrix_visualiser.html' pages side by side in a single page. Not currently functional.
+
+Coursework 2018-08-10-19-32:
+- (matrix_combo.html) Completely changed the way the page is rendered...
+- (matrix_combo.html) Added 'main' function to be run on page load.
+- (matrix_combo.html) Added 'createCanvasDiv' and 'createEquationDiv' functions that set up page layout.
+- (matrix_combo.html) Added 'pageResize' function that runs all other reisizing functions within the page.
+- (matrix_combo.html) Linked 'pageResize' to the window resize event handler, so that the page resizes every time the window is resized.
+- (matrix_combo.html) Removed border around canvas for aesthetic reasons.

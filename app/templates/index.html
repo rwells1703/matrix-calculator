@@ -3,7 +3,18 @@
 {% block content %}
 
 <div class="main">
-Hello there
 </div>
 
+<script>
+function windowResize() {
+	var w = window.screen.width;
+	var h = window.screen.height;
+	main_div.innerHTML = ("Width: " + String(w) + "<br />" + "Height: " + String(h) + "<br />" + "<br />").repeat(50);
+}
+
+main_div = document.getElementsByClassName("main")[0];
+
+windowResize()
+window.addEventListener("resize", windowResize, false);
+</script>
 {% endblock %}

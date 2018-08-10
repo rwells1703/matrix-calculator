@@ -2,14 +2,7 @@
 
 {% block content %}
 
-<div id="graph_div">
-	<canvas></canvas>
-</div>
-
-<div id="equation_div">
-</div>
-
-<script id="vertexShader" type="notjs">
+<script id="vertexShader" type="GLSL">
 	precision mediump float;
 	attribute vec2 a_position;
 	attribute vec4 a_vert_color;
@@ -21,7 +14,7 @@
 	}
 </script>
 
-<script id="fragmentShader" type="notjs">
+<script id="fragmentShader" type="GLSL">
 	precision mediump float;
 	varying vec4 v_frag_color;
 	
@@ -31,21 +24,67 @@
 </script>
 
 <script>
-	window.addEventListener("resize", resizeCanvas, false);
-	lastWidth = 0;
-	
-	// Create new html5 canvas and wegbl context
-	function createCanvas() {
+	function main() {
+		window.addEventListener("resize", pageResize, false);
 		navbar = document.getElementsByClassName("navbar")[0];
-		graph_div = document.getElementById("graph_div");
-		graph_div.style.padding = "50 50 50 50";
-		graph_div.style.display = "block";
 		
-		equation_div = document.getElementById("equation_div");
-		equation_div.style.padding = "50 50 50 50";
-		equation_div.style.display = "block";
+		// Canvas div contains the canvas element that the matrices will be drawn to
+		createCanvasDiv();
+		// Equation div contains buttons to add new items to the current equation, as well as the equation itself
+		createEquationDiv();
+		// Resizes all elements of the page to fit the current display size
+		pageResize();
 		
-		canvas = document.getElementsByTagName("canvas")[0];
+		// Functions for handling all mouse events on the canvas
+		mouseDown = false;
+		canvas.onmousedown = mouseDown;
+		canvas.onmouseup = mouseUp;
+		canvas.onmousemove = mouseMove;
+		
+		// Both fundamental GLSL shaders that WebGl uses to render vertices to the canvas element
+		// Vertex shader handles the corners of polygons being rendered to the canvas and then sends this data to the fragment shader
+		vertexShader = createShader(gl.VERTEX_SHADER, document.getElementById("vertexShader").text);
+		// Fragment shader takes vertex shader output and renders the pixels between each vertice to create a filled shape of specified color(s).
+		fragmentShader = createShader(gl.FRAGMENT_SHADER, document.getElementById("fragmentShader").text);
+		
+		// WebGL shader program which links the vertex and fragment shaders, and allows them to be used by the GPU
+		program = createProgram(vertexShader, fragmentShader);
+		
+		// An object for storing vertices
+		vertexBufferObject = gl.createBuffer();
+		// This links the VBO to the array buffer in the GPU
+		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
+		
+		// This tells the shader program what attributes to expect, what data types they will be, how many bytes long etc.
+		prepareAttributes();
+		
+		// Add the axes to the list of vertices
+		vertices = declareStaticVertices();
+		
+		//createPolygon([0, 0], 5, 0.2, [255/255, 255/255, 0/255, 255/255], false);
+		
+		// Begins the render loop
+		requestAnimationFrame(render);
+	}
+	
+	// Reizes all elements on page
+	function pageResize() {
+		resizeCanvas();
+		changePageLayout();
+		resizeTopRowButtons();
+	}
+	
+	// Create a new div to wrap a html5 canvas with a WebGL context
+	function createCanvasDiv() {
+		canvas_div = document.createElement("div");
+		canvas_div.id = "canvas_div";
+		canvas_div.style.padding = "5vh 5vh 5vh 5vh";
+		canvas_div.style.display = "block";
+		canvas_div.style.float = "left";
+		document.body.appendChild(canvas_div);
+		
+		canvas = document.createElement("canvas");
+		canvas_div.appendChild(canvas);
 		
 		gl = canvas.getContext("webgl");
 		
@@ -54,61 +93,165 @@
 		canvas.style.borderColor = "black";
 		canvas_border_thickness = 0;
 		canvas.style.borderWidth = canvas_border_thickness;
-		
-		resizeCanvas();
 	}
 	
+	// Create new div to hold the current matrix equation and the buttons used for editing the equation
+	function createEquationDiv() {
+		equation_div = document.createElement("div");
+		equation_div.id = "equation_div";
+		equation_div.style.padding = "5vh 5vh 5vh 5vh";
+		equation_div.style.display = "block";
+		document.body.appendChild(equation_div);
+		
+		// Create container div for top row buttons
+		topRowButtonDiv = document.createElement("div");
+		topRowButtonDiv.id = "topRowButtonDiv";
+		topRowButtonDiv.style.padding = 0;
+		topRowButtonDiv.style.marginBottom = "4vh";
+
+		equation_div.appendChild(topRowButtonDiv);
+		 
+		// Used for calculating widths for the top row buttons
+		topRowButtonCount = 0;
+
+		// Create all buttons for adding new items
+		addTopRowButton("scalarButton", "Add scalar", addScalar);
+		addTopRowButton("matrixButton", "Add matrix", addMatrix);
+		addTopRowButton("operatorButton", "Add operator	", null);
+		
+		// Create container div for all items e.g. scalars, matrices and operators
+		itemDiv = document.createElement("div");
+		itemDiv.id = "itemDiv";
+		itemDiv.style.padding = 0;
+		equation_div.appendChild(itemDiv);
+		
+		// Counts increase/decrease for every item added/removed from the equation
+		matrixCount = 0;
+		scalarCount = 0;
+		operatorCount = 0;
+	}
+	
+	// Makes the canvas a square shape that fits perfectly within the viewport
 	function resizeCanvas() {
-		console.log("resizing");
-		canvas_padding = pxToFloat(window.getComputedStyle(graph_div).padding);
-		navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
+		var navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
+		var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+		
+		// We use this instead of window.innerHeight because it prevents a bug on mobile
+		// It prevents the whole page rearranging when the mobile URL bar hides during scrolling
+		// Using the computed style, height gets the height of the window, ignoring the url bar.
+		var window_height = pxToFloat(window.getComputedStyle(document.body)["height"]);
 		
 		// Page taller than wide (portrait orientation)
 		if (window.innerHeight - navbar_height > window.innerWidth) {
-			canvas.width = window.innerWidth - 2*canvas_padding - 2*canvas_border_thickness;
+			canvas.width = window.innerWidth - 2*canvas_div_padding - 2*canvas_border_thickness;
 			canvas.height = canvas.width;
 		}
 		// Page wider than tall (landscape orientation)
 		else {
-			canvas.height = window.innerHeight - 2*canvas_padding - 2*canvas_border_thickness - navbar_height;
+			canvas.height = window_height - 2*canvas_div_padding - 2*canvas_border_thickness - navbar_height;
+			//canvas.height = window.innerHeight - 2*canvas_div_padding - 2*canvas_border_thickness - navbar_height;
 			canvas.width = canvas.height;
 		}
 		
-		// Makes the div width equal to the width of the canvas
-		graph_div.style.width = canvas.width;
-		graph_div.style.height = canvas.height;
-		
-		// If the canvas (and its padding) is taking less than half of the horizontal screen space...
-		if (window.innerWidth/2 > canvas.width + 2*canvas_padding) {
-			console.log("beside");
-			graph_div.style.float = "left";
-			equation_div.style.float = "right";
-			equation_div.style.width = window.innerWidth - canvas.width - 2*canvas_padding - 2*pxToFloat(equation_div.style.padding) - 20;
-			equation_div.style.height = window.innerHeight - navbar_height - 2*pxToFloat(equation_div.style.padding);
-		}
-		else {
-			console.log("underneath");
-			//graph_div.style.float = "left";
-			//equation_div.style.float = "left";
-			equation_div.style.width = window.innerWidth - 2*pxToFloat(equation_div.style.padding)// - 6 - 20;
-		}
-		
-		recalculateTopRowButtonSizes()
-
-		//equation_div.style.width = window.innerWidth - window.innerHeight + navbar_height - 2*pxToFloat(equation_div.style.padding);
-		
 		// Size the viewport according to the canvas size
 		gl.viewport(0,0,canvas.width,canvas.height);
-		lastWidth = window.innerWidth;
+	}
+	
+	// This function also decides whether the canvas and equation divs will be side by stacked vertically
+	function changePageLayout() {
+		var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+		var equation_div_padding = pxToFloat(window.getComputedStyle(equation_div).padding);
+		
+		// Check whether equation_div should beside canvas_div, or underneath canvas_div
+		// If the canvas (and its padding) is taking more than half of the horizontal screen space...
+		if (canvas.width + 2*canvas_div_padding > 0.5*window.innerWidth) {
+			console.log("underneath");
+			equation_div.style.float = "left";
+			equation_div.style.width = window.innerWidth - 2*equation_div_padding - 20;
+		}
+		else {
+			console.log("beside");
+			equation_div.style.float = "right";
+			equation_div.style.width = window.innerWidth - canvas.width - 2*canvas_div_padding - 2*equation_div_padding - 20;
+		}
+	}
+	
+	// Recalculates sizes of top row buttons based on rest of page
+	function resizeTopRowButtons() {
+		var buttons = [document.getElementById("scalarButton"), document.getElementById("matrixButton"), document.getElementById("operatorButton")];
+		
+		var i = 0;
+		while (i < buttons.length) {
+			var button = buttons[i];
+			button.style.width = pxToFloat(window.getComputedStyle(topRowButtonDiv)["width"])/topRowButtonCount - 2*pxToFloat(button.style.paddingLeft) - 2*pxToFloat(button.style.borderWidth);// - (window.innerWidth - document.body.clientWidth)/topRowButtonCount;
+			i += 1;
+		}
+		
+		var i = 0;
+		while (i < buttons.length) {
+			buttons[i].style.height = "auto";
+			i+=1
+		}
+
+		var tallestHeight = 0;
+		var i = 0;
+		while (i < buttons.length) {
+			var button = buttons[i];
+			currentHeight = pxToFloat(window.getComputedStyle(button)["height"]);
+			if (currentHeight > tallestHeight) {
+				tallestHeight = currentHeight;
+			}
+			i += 1;
+		}
+		
+		var i = 0;
+		while (i < buttons.length) {
+			var button = buttons[i];
+			button.style.height = tallestHeight;
+			i += 1;
+		}
+	}
+	
+	// Creates a new top row button e.g. add scalar
+	function addTopRowButton(id, innerHTML, onclick) {
+		var button = document.createElement("div");
+		button.id = id;
+		button.innerHTML = innerHTML;
+		button.class = "button";
+		
+		button.style.borderWidth = 1;
+		button.style.borderStyle = "solid";
+		button.style.borderColor = "black";
+		
+		button.style.cursor = "pointer";
+		button.style.textAlign = "center";
+		button.style.verticalAlign = "top";
+		button.style.display = "inline-block";
+		
+		button.style.padding = 0;
+		button.style.paddingTop = "2vh";
+		button.style.paddingBottom = "2vh";
+		
+		button.onclick = onclick;
+		
+		topRowButtonCount += 1;
+		
+		topRowButtonDiv.appendChild(button);
 	}
 	
 	// Converts canvas values (pixels) to clipspace values (-1 to 1)
 	function canvasYToClipspace(y) {
-		return (canvas.height - y + canvas_padding + canvas_border_thickness + navbar_height)/canvas.height*2 - 1;
+		var navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
+		var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+		
+		return (canvas.height - y + canvas_div_padding + canvas_border_thickness + navbar_height)/canvas.height*2 - 1;
 	}
 	
 	function canvasXToClipspace(x) {
-		return (x - canvas_padding - canvas_border_thickness)/canvas.height*2 - 1;
+		var navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
+		var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+		
+		return (x - canvas_div_padding - canvas_border_thickness)/canvas.height*2 - 1;
 	}
 	
 	
@@ -275,130 +418,11 @@
 		requestAnimationFrame(render);
 	}
 	
-	// Main
-	function main() {
-		initialiseEquationDiv();
-		createCanvas();
-		
-		mouseDown = false;
-		canvas.onmousedown = mouseDown;
-		canvas.onmouseup = mouseUp;
-		canvas.onmousemove = mouseMove;
-		
-		vertexShader = createShader(gl.VERTEX_SHADER, document.getElementById("vertexShader").text);
-		fragmentShader = createShader(gl.FRAGMENT_SHADER, document.getElementById("fragmentShader").text);
-		
-		program = createProgram(vertexShader, fragmentShader);
-		
-		vertexBufferObject = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
-		
-		prepareAttributes();
-		
-		// Add the axes
-		vertices = declareStaticVertices();
-		
-		//createPolygon([0, 0], 5, 0.2, [255/255, 255/255, 0/255, 255/255], false);
-		
-		// Begins the render loop
-		requestAnimationFrame(render);
-	}
-	
 	main();
 	
 // ------------------------------------------------------
 // DIVIDER BETWEEN THE FIRST SCRIPT AND THE SECOND SCRIPT
 // ------------------------------------------------------
-
-	// Recalculates sizes of top row buttons based on rest of page
-	function recalculateTopRowButtonSizes() {
-		var buttons = [document.getElementById("scalarButton"), document.getElementById("matrixButton"), document.getElementById("operatorButton")];
-		
-		var i = 0;
-		while (i < buttons.length) {
-			var button = buttons[i];
-			button.style.width = pxToFloat(window.getComputedStyle(topRowButtonDiv)["width"])/topRowButtonCount - 2*pxToFloat(button.style.paddingLeft) - 2*pxToFloat(button.style.borderWidth);// - (window.innerWidth - document.body.clientWidth)/topRowButtonCount;
-			i += 1;
-		}
-		
-		var tallestHeight = 0;
-		var i = 0;
-		while (i < buttons.length) {
-			var button = buttons[i];
-			currentHeight = pxToFloat(window.getComputedStyle(button)["height"]);
-			if (currentHeight > tallestHeight) {
-				tallestHeight = currentHeight;
-			}
-			i += 1;
-		}
-		
-		var i = 0;
-		while (i < buttons.length) {
-			var button = buttons[i];
-			button.style.height = tallestHeight;
-			i += 1;
-		}
-	}
-
-	// Creates a new top row button e.g. add scalar
-	function addTopRowButton(id, innerHTML, onclick) {
-		var button = document.createElement("div");
-		button.id = id;
-		button.innerHTML = innerHTML;
-		button.class = "button";
-		
-		button.style.borderWidth = 1;
-		button.style.borderStyle = "solid";
-		button.style.borderColor = "black";
-		button.style.cursor = "pointer";
-		button.style.textAlign = "center";
-		button.style.verticalAlign = "top";
-		button.style.display = "inline-block";
-		button.style.padding = 0;
-		button.style.paddingTop = 0.02*window.innerHeight;
-		button.style.paddingBottom = 0.02*window.innerHeight;
-		button.onclick = onclick;
-		
-		topRowButtonCount += 1;
-		
-		topRowButtonDiv.appendChild(button);
-	}
-	
-	console.log(equation_div.style.width);
-	
-	function initialiseEquationDiv() {
-		// Create container div for top row buttons
-		topRowButtonDiv = document.createElement("div");
-		topRowButtonDiv.id = "topRowButtonDiv";
-		topRowButtonDiv.style.padding = 0;
-		topRowButtonDiv.style.marginBottom = 0.05 * window.innerHeight;
-		topRowButtonDiv.style.width = pxToFloat(equation_div.style.width)// - 2*pxToFloat(equation_div.style.padding) - 6;
-		topRowButtonDiv.style.display = "block";
-
-		equation_div.appendChild(topRowButtonDiv);
-		 
-		// Used for calculating widths for the top row buttons
-		topRowButtonCount = 0;
-
-		// Create all buttons for adding new items
-		addTopRowButton("scalarButton", "Add scalar", addScalar);
-		addTopRowButton("matrixButton", "Add matrix", addMatrix);
-		addTopRowButton("operatorButton", "Add operator	", null);
-
-		// Caculate the widths that the top row buttons should be
-		recalculateTopRowButtonSizes();
-
-		// Create container div for all items e.g. scalars, matrices and operators
-		itemDiv = document.createElement("div");
-		itemDiv.id = "itemDiv";
-		itemDiv.style.padding = 0;
-		equation_div.appendChild(itemDiv);
-		
-		// Counts increase/decrease for every item added/removed from the equation
-		matrixCount = 0;
-		scalarCount = 0;
-		operatorCount = 0;
-	}
 
 	// Creates an empty item that can become a scalar, matrix or operator
 	function createEmptyItem(itemClass, itemCount) {
@@ -408,11 +432,9 @@
 		itemWrapper.style.display = "grid";
 		itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
 		itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
-		itemWrapper.style.width = "100%";
-		itemWrapper.style.height = 0.3 * window.innerHeight;
 		itemWrapper.style.background = "#d6d6d6";
 		itemWrapper.style.padding = 0;
-		itemWrapper.style.marginBottom = 0.05 * window.innerHeight;
+		itemWrapper.style.marginBottom = "2vh";
 		
 		var itemSidebar = document.createElement("div");
 		itemSidebar.class = "itemSidebar";
@@ -431,7 +453,6 @@
 		itemName.style.background = "#aaaaaa";
 		itemName.style.padding = 0;
 		itemName.style.textAlign = "center";
-		itemName.style.fontSize = pxToFloat(itemWrapper.style.height)/14;
 		itemName.innerHTML = itemWrapper.class + itemWrapper.id;
 		
 		var itemMoveUpIcon = document.createElement("img");
@@ -478,7 +499,7 @@
 		itemWrapper.appendChild(itemMoveUpIcon);
 		itemWrapper.appendChild(itemDeleteIcon);
 		itemWrapper.appendChild(itemMoveDownIcon);
-		itemWrapper.appendChild(itemMoveDownIcon);
+		//itemWrapper.appendChild(itemMoveDownIcon);
 		
 		return itemWrapper;
 	}
@@ -503,7 +524,7 @@
 		
 		itemDiv.appendChild(scalarWrapper);
 		
-		recalculateTopRowButtonSizes();
+		resizeTopRowButtons();
 	}
 
 	// Creates a matrix item
@@ -599,7 +620,7 @@
 		matrixWrapper.appendChild(removeMatrixColumnIcon);
 		itemDiv.appendChild(matrixWrapper);
 		
-		recalculateTopRowButtonSizes();
+		resizeTopRowButtons();
 	}
 
 	function addMatrixRow() {
@@ -616,8 +637,6 @@
 			}
 			matrixWrapper.setAttribute("rows", rows+1)
 		}
-		
-		console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 	}
 
 	function removeMatrixRow() {
@@ -634,8 +653,6 @@
 			}
 			matrixWrapper.setAttribute("rows", rows-1)
 		}
-		
-		console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 	}
 
 	function addMatrixColumn() {
@@ -652,8 +669,6 @@
 			}
 			matrixWrapper.setAttribute("columns", columns+1)
 		}
-		
-		console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 	}
 
 	function removeMatrixColumn() {
@@ -670,8 +685,6 @@
 			}
 			matrixWrapper.setAttribute("columns", columns-1);
 		}
-		
-		console.log(matrixWrapper.getAttribute("rows"), matrixWrapper.getAttribute("columns"));
 	}
 
 	function deleteItem(event) {
