@@ -85,3 +85,7 @@ Coursework 2018-08-10-23-33:
 - (canvas_webgl.js) Created.
 - (equation_builder.js) Created.
 - (page_layout.js) Created.
+
+Coursework 2018-08-11-18-33:
+- (routes.py) Changed the outgoing HTTP response headers so that resource are not cached by browsers during development.
+- (about_matrices.html) Removed the loading screen, using CSS overflow as 'hidden' instead.
