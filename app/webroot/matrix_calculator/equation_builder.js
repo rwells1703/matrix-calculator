@@ -6,32 +6,34 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.style.display = "grid";
 	itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
 	itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
-	itemWrapper.style.background = "#d6d6d6";
+	itemWrapper.style.background = "white";
 	itemWrapper.style.padding = 0;
-	itemWrapper.style.marginBottom = "2vh";
+	itemWrapper.style.height = "30vh";
+	itemWrapper.style.marginBottom = "4vh";
+	itemWrapper.style.boxShadow = document.body.style.getPropertyValue("--theme-box-shadow");
+	itemWrapper.style.animationName = "fade_in";
+	itemWrapper.style.animationDuration = "0.5s";
 	
 	var itemSidebar = document.createElement("div");
-	itemSidebar.class = "itemSidebar";
 	itemSidebar.style.gridColumnStart = 1;
 	itemSidebar.style.gridColumnEnd = 3;
 	itemSidebar.style.gridRowStart = 1;
 	itemSidebar.style.gridRowEnd = 10;
-	itemSidebar.style.background = "#cccccc";
 	
 	var itemName = document.createElement("div");
 	itemName.style.gridColumnStart = 1;
 	itemName.style.gridColumnEnd = 3;
 	itemName.style.gridRowStart = 1;
 	itemName.style.gridRowEnd = 2;
-	itemName.style.background = "#aaaaaa";
 	itemName.style.padding = 0;
 	itemName.style.textAlign = "center";
 	itemName.innerHTML = itemWrapper.className + itemWrapper.id;
 	
 	var itemMoveUpIcon = document.createElement("img");
-	itemMoveUpIcon.src = "images/moveup.png";
+	itemMoveUpIcon.src = "images/moveup.svg";
 	itemMoveUpIcon.style.cursor = "pointer";
-	itemMoveUpIcon.style.imageRendering = "pixelated";
+	//itemMoveUpIcon.style.imageRendering = "crisp-edges";
+	//itemMoveUpIcon.style.backgroundColor = "black";//"var(--theme-color-icon)";
 	itemMoveUpIcon.style.height = "100%";
 	itemMoveUpIcon.style.margin = "0 auto";
 	itemMoveUpIcon.style.gridColumnStart = 2;
@@ -41,9 +43,8 @@ function createEmptyItem(itemClass, itemCount) {
 	itemMoveUpIcon.onclick = moveItemUp;
 	
 	var itemDeleteIcon = document.createElement("img");
-	itemDeleteIcon.src = "images/delete.png";
+	itemDeleteIcon.src = "images/delete.svg";
 	itemDeleteIcon.style.cursor = "pointer";
-	itemDeleteIcon.style.imageRendering = "pixelated";
 	itemDeleteIcon.style.height = "100%";
 	itemDeleteIcon.style.margin = "0 auto";
 	itemDeleteIcon.style.gridColumnStart = 2;
@@ -53,16 +54,15 @@ function createEmptyItem(itemClass, itemCount) {
 	itemDeleteIcon.onclick = deleteItem;
 	
 	var itemMoveDownIcon = document.createElement("img");
-	itemMoveDownIcon.src = "images/movedown.png";
+	itemMoveDownIcon.src = "images/movedown.svg";
 	itemMoveDownIcon.style.cursor = "pointer";
-	itemMoveDownIcon.style.imageRendering = "pixelated";
 	itemMoveDownIcon.style.height = "100%";
 	itemMoveDownIcon.style.margin = "0 auto";
 	itemMoveDownIcon.style.gridColumnStart = 2;
 	itemMoveDownIcon.style.gridColumnEnd = 3;
 	itemMoveDownIcon.style.gridRowStart = 8;
 	itemMoveDownIcon.style.gridRowEnd = 9;
-	itemMoveDownIcon.onclick = moveItemDown;
+	itemMoveDownIcon.onclick = moveItemUp;
 
 	itemWrapper.appendChild(itemSidebar);
 	itemWrapper.appendChild(itemName);
@@ -79,16 +79,17 @@ function addScalar() {
 	var scalarWrapper = createEmptyItem("scalar", scalarCount);
 	
 	var scalarTextbox = document.createElement("input");
-	scalarTextbox.class = "scalarTextbox";
 	scalarTextbox.style.boxSizing = "border-box";
 	scalarTextbox.style.width = "100%";
+	scalarTextbox.style.borderWidth = 1;
+	scalarTextbox.style.borderStyle = "solid";
+	scalarTextbox.style.borderColor = "var(--theme-color-textbox-border)";
 	scalarTextbox.style.gridColumnStart = 4;
 	scalarTextbox.style.gridColumnEnd = 5;
 	scalarTextbox.style.gridRowStart = 2;
 	scalarTextbox.style.gridRowEnd = 3;
 	scalarTextbox.style.textAlign = "center";
 	scalarTextbox.type = "text";
-	
 	scalarWrapper.appendChild(scalarTextbox);
 	
 	itemDiv.appendChild(scalarWrapper);
@@ -106,9 +107,12 @@ function addMatrix() {
 		var c = 0;
 		while (c < 7) {
 			var matrixElementTextbox = document.createElement("input");
-			matrixElementTextbox.class = "matrixElementTextbox";
 			matrixElementTextbox.style.boxSizing = "border-box";
-			matrixElementTextbox.style.width = "100%";
+			matrixElementTextbox.style.width = "90%";
+			matrixElementTextbox.style.height = "90%";
+			matrixElementTextbox.style.borderWidth = 1;
+			matrixElementTextbox.style.borderStyle = "solid";
+			matrixElementTextbox.style.borderColor = "var(--theme-color-textbox-border)";
 			matrixElementTextbox.style.textAlign = "center";
 			matrixElementTextbox.type = "text";
 			
@@ -132,10 +136,8 @@ function addMatrix() {
 	matrixWrapper.setAttribute("columns", 2);
 	
 	var addMatrixRowIcon = document.createElement("img");
-	addMatrixRowIcon.class = "addMatrixRowIcon";
-	addMatrixRowIcon.src = "images/add.png";
+	addMatrixRowIcon.src = "images/add.svg";
 	addMatrixRowIcon.style.cursor = "pointer";
-	addMatrixRowIcon.style.imageRendering = "pixelated";
 	addMatrixRowIcon.style.height = "100%";
 	addMatrixRowIcon.style.margin = "0 auto";
 	addMatrixRowIcon.style.gridColumnStart = 4;
@@ -145,10 +147,8 @@ function addMatrix() {
 	addMatrixRowIcon.onclick = addMatrixRow;
 	
 	var removeMatrixRowIcon = document.createElement("img");
-	removeMatrixRowIcon.class = "removeMatrixRowIcon";
-	removeMatrixRowIcon.src = "images/remove.png";
+	removeMatrixRowIcon.src = "images/remove.svg";
 	removeMatrixRowIcon.style.cursor = "pointer";
-	removeMatrixRowIcon.style.imageRendering = "pixelated";
 	removeMatrixRowIcon.style.height = "100%";
 	removeMatrixRowIcon.style.margin = "0 auto";
 	removeMatrixRowIcon.style.gridColumnStart = 5;
@@ -158,10 +158,8 @@ function addMatrix() {
 	removeMatrixRowIcon.onclick = removeMatrixRow;
 	
 	var addMatrixColumnIcon = document.createElement("img");
-	addMatrixColumnIcon.class = "addMatrixColumnIcon";
-	addMatrixColumnIcon.src = "images/add.png";
+	addMatrixColumnIcon.src = "images/add.svg";
 	addMatrixColumnIcon.style.cursor = "pointer";
-	addMatrixColumnIcon.style.imageRendering = "pixelated";
 	addMatrixColumnIcon.style.height = "100%";
 	addMatrixColumnIcon.style.margin = "0 auto";
 	addMatrixColumnIcon.style.gridColumnStart = 11;
@@ -171,10 +169,8 @@ function addMatrix() {
 	addMatrixColumnIcon.onclick = addMatrixColumn;
 	
 	var removeMatrixColumnIcon = document.createElement("img");
-	removeMatrixColumnIcon.class = "removeMatrixColumnIcon";
-	removeMatrixColumnIcon.src = "images/remove.png";
+	removeMatrixColumnIcon.src = "images/remove.svg";
 	removeMatrixColumnIcon.style.cursor = "pointer";
-	removeMatrixColumnIcon.style.imageRendering = "pixelated";
 	removeMatrixColumnIcon.style.height = "100%";
 	removeMatrixColumnIcon.style.margin = "0 auto";
 	removeMatrixColumnIcon.style.gridColumnStart = 11;
@@ -256,6 +252,61 @@ function removeMatrixColumn() {
 	}
 }
 
+function createOperatorButton(innerHTML, positions_from_left) {
+	button = document.createElement("div");
+	
+	button.innerHTML = innerHTML;
+	button.style.textAlign = "center";
+	button.style.padding = 0;
+	
+	button.style.borderWidth = 1;
+	button.style.borderStyle = "solid";
+	button.style.borderColor = "var(--theme-color-textbox-border)";
+	button.style.backgroundColor = "white";
+	
+	button.style.cursor = "pointer";
+	button.onclick = selectOperator;
+	
+	button.style.gridColumnStart = 4+positions_from_left;
+	button.style.gridColumnEnd = 5+positions_from_left;
+	button.style.gridRowStart = 5;
+	button.style.gridRowEnd = 6;
+		
+	button.style.width = "80%";
+	
+	return button;
+}
+
+function selectOperator() {
+	alert("woa");
+}
+
+// Creates an operator item
+function addOperator() {
+	operatorCount += 1;
+	var operatorWrapper = createEmptyItem("operator", operatorCount);
+	
+	var addButton = createOperatorButton("+", 0);
+	var subtractButton = createOperatorButton("-", 1);
+	var multiplyButton = createOperatorButton("x", 2);
+	var indiceButton = createOperatorButton("^", 3);
+	var inverseButton = createOperatorButton("inv", 4);
+	var transposeButton = createOperatorButton("tra", 5);
+	var determinantButton = createOperatorButton("det", 5);
+	
+	operatorWrapper.appendChild(addButton);
+	operatorWrapper.appendChild(subtractButton);
+	operatorWrapper.appendChild(multiplyButton);
+	operatorWrapper.appendChild(indiceButton);
+	operatorWrapper.appendChild(inverseButton);
+	operatorWrapper.appendChild(transposeButton);
+	operatorWrapper.appendChild(determinantButton);
+	
+	itemDiv.appendChild(operatorWrapper);
+	
+	resizeTopRowButtons();
+}
+
 function deleteItem(event) {
 	// Gets parent element of the delete icon that was clicked
 	var item = event["path"][1];
@@ -275,10 +326,10 @@ function deleteItem(event) {
 		i += 1;
 	}
 	
-	if (item.class == "scalar") {
+	if (item.className == "scalar") {
 		scalarCount -= 1;
 	}
-	else if (item.class == "matrix") {
+	else if (item.className == "matrix") {
 		matrixCount -= 1;
 	}
 	else {
@@ -329,7 +380,7 @@ function moveItemDown(event) {
 		}
 		
 		// Swaps id's back if items are both of the same class (e.g. both scalars)
-		if (nextItem.class == item.className) {
+		if (nextItem.className == item.className) {
 			var tempId = item.id;
 			item.id = nextItem.id;
 			nextItem.id = tempId;

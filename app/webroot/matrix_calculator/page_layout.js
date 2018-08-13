@@ -20,9 +20,12 @@ function createCanvasDiv() {
 	canvas_div.style.padding = "5vh";
 	canvas_div.style.display = "block";
 	canvas_div.style.float = "left";
+	
 	main_div.appendChild(canvas_div);
 	
 	canvas = document.createElement("canvas");
+	canvas.style.boxShadow = document.body.style.getPropertyValue("--theme-box-shadow");
+	canvas.style.borderRadius = "4px";
 	canvas_div.appendChild(canvas);
 	
 	gl = canvas.getContext("webgl");
@@ -47,7 +50,9 @@ function createEquationDiv() {
 	topRowButtonDiv.id = "topRowButtonDiv";
 	topRowButtonDiv.style.padding = 0;
 	topRowButtonDiv.style.marginBottom = "5vh";
-
+	topRowButtonDiv.style.display = "grid";
+	topRowButtonDiv.style.gridTemplateColumns = "repeat(3, 1fr)";
+	
 	equation_div.appendChild(topRowButtonDiv);
 	 
 	// Used for calculating widths for the top row buttons
@@ -56,7 +61,7 @@ function createEquationDiv() {
 	// Create all buttons for adding new items
 	addTopRowButton("scalarButton", "Add scalar", addScalar);
 	addTopRowButton("matrixButton", "Add matrix", addMatrix);
-	addTopRowButton("operatorButton", "Add operator	", null);
+	addTopRowButton("operatorButton", "Add operator	", addOperator);
 	
 	// Create container div for all items e.g. scalars, matrices and operators
 	itemDiv = document.createElement("div");
@@ -102,8 +107,8 @@ function changePageLayout() {
 	var equation_div_padding = pxToFloat(window.getComputedStyle(equation_div).padding);
 	
 	// Check whether equation_div should beside canvas_div, or underneath canvas_div
-	// If the canvas (and its padding) is taking more than half of the horizontal screen space...
-	if (canvas.width + 2*canvas_div_padding > 0.5*window.innerWidth) {
+	// If the canvas (and its padding) is taking more than 60% of the horizontal screen space...
+	if (canvas.width + 2*canvas_div_padding > 0.6*window.innerWidth) {
 		// Position them one on top of the other
 		equation_div.style.float = "left";
 		equation_div.style.width = window.innerWidth - 2*equation_div_padding - 20;
@@ -115,61 +120,49 @@ function changePageLayout() {
 	}
 }
 
-// Recalculates sizes of top row buttons based on rest of page
+// Recalculates sizes of top row buttons based on the space available
 function resizeTopRowButtons() {
-	var buttons = [document.getElementById("scalarButton"), document.getElementById("matrixButton"), document.getElementById("operatorButton")];
+	/*var buttons = [document.getElementById("scalarButton"), document.getElementById("matrixButton"), document.getElementById("operatorButton")];
 	
+	var greatestHeight = 0;
 	var i = 0;
 	while (i < buttons.length) {
-		var button = buttons[i];
-		button.style.width = pxToFloat(window.getComputedStyle(topRowButtonDiv)["width"])/topRowButtonCount - 2*pxToFloat(button.style.paddingLeft) - 2*pxToFloat(button.style.borderWidth);// - (window.innerWidth - document.body.clientWidth)/topRowButtonCount;
-		i += 1;
-	}
-	
-	var i = 0;
-	while (i < buttons.length) {
-		buttons[i].style.height = "auto";
-		i+=1
-	}
-
-	var tallestHeight = 0;
-	var i = 0;
-	while (i < buttons.length) {
-		var button = buttons[i];
-		currentHeight = pxToFloat(window.getComputedStyle(button)["height"]);
-		if (currentHeight > tallestHeight) {
-			tallestHeight = currentHeight;
+		//var currentWidth = pxToFloat(window.getComputedStyle(topRowButtonDiv)["width"])/topRowButtonCount - pxToFloat(window.getComputedStyle(buttons[i])["paddingLeft"]) - pxToFloat(window.getComputedStyle(buttons[i])["paddingRight"]) - pxToFloat(window.getComputedStyle(buttons[i])["marginLeft"]) - pxToFloat(window.getComputedStyle(buttons[i])["marginRight"]);
+		var currentHeight = pxToFloat(window.getComputedStyle(buttons[i])["height"]);// + pxToFloat(window.getComputedStyle(buttons[i])["paddingTop"]) + pxToFloat(window.getComputedStyle(buttons[i])["paddingBottom"]);
+		
+		if (currentHeight > greatestHeight) {
+			greatestHeight = currentHeight;
 		}
+		
 		i += 1;
 	}
 	
-	var i = 0;
+	i = 0;
 	while (i < buttons.length) {
-		var button = buttons[i];
-		button.style.height = tallestHeight;
-		i += 1;
+		buttons[i].style.height = greatestHeight;
+		
+		i += 1
 	}
+	*/
 }
 
 // Creates a new top row button e.g. add scalar
-function addTopRowButton(id, innerHTML, onclick) {
+function addTopRowButton(id, innerHTML, onclick, positions_from_left) {
 	var button = document.createElement("div");
 	button.id = id;
 	button.innerHTML = innerHTML;
-	button.class = "button";
 	
-	button.style.borderWidth = 1;
-	button.style.borderStyle = "solid";
-	button.style.borderColor = "black";
-	
+	button.style.color = "white";
+	button.style.backgroundColor = document.body.style.getPropertyValue("--theme-color-button");
+	button.style.borderRadius = "4px";
+	button.style.boxShadow = document.body.style.getPropertyValue("--theme-box-shadow");
+
 	button.style.cursor = "pointer";
 	button.style.textAlign = "center";
-	button.style.verticalAlign = "top";
-	button.style.display = "inline-block";
 	
-	button.style.padding = 0;
-	button.style.paddingTop = "2vh";
-	button.style.paddingBottom = "2vh";
+	button.style.width = "60%";
+	button.style.padding = "10%";
+	button.style.margin = "auto"
 	
 	button.onclick = onclick;
 	

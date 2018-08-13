@@ -23,15 +23,18 @@
 				margin: 0;
 				font-family: 'Montserrat', sans-serif;
 				font-size: 2.5vh;
+				background-color: #fcfcfc;
 			}
 
 			
 			/* The navbar on the top of each page */
 			div.navbar {
-				background-color: var(--colors-navbar);
+				background-color: var(--theme-color-navbar);
 				display: block;
 				overflow: auto;
 				width: 100%;
+				box-shadow: var(--theme-box-shadow-navbar);
+				
 			}
 			
 			a.navbar-item {
@@ -45,25 +48,26 @@
 			}
 			
 			a.navbar-item:hover {
-				background-color: var(--colors-navbar);
-				box-shadow: 2px 0px 15px var(--colors-navbar-shadow), -2px 0px 15px var(--colors-navbar-shadow);
+				background-color: var(--theme-color-navbar);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
 			}
 			
 			a.navbar-item.active {
-				background-color: var(--colors-navbar-active);
-				box-shadow: 2px 0px 15px var(--colors-navbar-shadow), -2px 0px 15px var(--colors-navbar-shadow);
-				
+				background-color: var(--theme-color-navbar-active);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
 			}
 			
 			
 			/* Regular hyperlinks */
 			a.link {
-				color: var(--colors-link);
+				color: var(--theme-color-link);
 				text-decoration: none;
 			}
 
 			a.link:hover {
-				color: var(--colors-link-hover);
+				color: var(--theme-color-link-hover);
 			}
 			
 			/* Div holding the main body of text on each page */
@@ -71,13 +75,6 @@
 				animation-name: fade_in;
 				animation-duration: 1s;
 				padding: 5vh;
-			}
-			
-			
-			/* Each image will have a shadow and rounded corners */
-			img.normal {
-				border-radius: 5px;
-				box-shadow: 0 4px 8px 0 var(--colors-shadow), 0 6px 20px 0 var(--colors-shadow);
 			}
 		</style>
 	</head>
@@ -89,32 +86,38 @@
 				return parseFloat(string.substring(0, string.length-2));
 			}
 			
-			colors_emerald_green = {
-				"navbar":"#00d872",
-				"navbar-active":"#00a557",
-				"navbar-shadow":"#005a1e",
-				"link":"#00a557",
-				"link-hover":"#31f99b",
-				"shadow":"#9b9b9b"
+			theme_emerald_green = {
+				"color-main":"#00d872",
+				"color-main-dark":"#00a557",
+				"color-main-extra-dark":"#005a1e",
+				"color-main-light":"#00a557",
+				"color-main-extra-light":"#31f99b",
+				"color-shadow":"#cecece",
+				"box-shadow":"3px 4px 10px var(--theme-color-shadow), -3px 4px 10px var(--theme-color-shadow)"
+			};		
+			
+			theme_salmon_pink = {
+				"color-main":"#ff4c4c",
+				"color-main-dark":"#ed2d2d",
+				"color-main-light":"#ff7c7c",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)"
 			};
 			
-			colors_salmon_pink = {
-				"navbar":"#ff4c4c",
-				"navbar-active":"#ed2d2d",
-				"navbar-shadow":"#840000",
-				"link":"#ed2d2d",
-				"link-hover":"#ff7c7c",
-				"shadow":"#9b9b9b"
-			};
+			theme = theme_salmon_pink;
 			
-			colors = colors_salmon_pink;
-			
-			document.body.style.setProperty("--colors-navbar", colors["navbar"]);
-			document.body.style.setProperty("--colors-navbar-active", colors["navbar-active"]);
-			document.body.style.setProperty("--colors-navbar-shadow", colors["navbar-shadow"]);
-			document.body.style.setProperty("--colors-link", colors["link"]);
-			document.body.style.setProperty("--colors-link-hover", colors["link-hover"]);
-			document.body.style.setProperty("--colors-shadow", colors["shadow"]);
+			document.body.style.setProperty("--theme-color-navbar", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-navbar-active", theme["color-main-dark"]);
+			document.body.style.setProperty("--theme-color-link", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-link-hover", theme["color-main-light"]);
+			document.body.style.setProperty("--theme-color-button", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-icon", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-textbox-border", theme["color-textbox-border"]);
+			document.body.style.setProperty("--theme-box-shadow", theme["box-shadow"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar", theme["box-shadow-navbar"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar-item", theme["box-shadow-navbar-item"]);
 		</script>
 		
 		<div class="navbar">

@@ -89,3 +89,14 @@ Coursework 2018-08-10-23-33:
 Coursework 2018-08-11-18-33:
 - (routes.py) Changed the outgoing HTTP response headers so that resource are not cached by browsers during development.
 - (about_matrices.html) Removed the loading screen, using CSS overflow as 'hidden' instead.
+
+Coursework 2018-08-13-21-44:
+- (base.html) Changed the way themes are loaded via CSS variables.
+- (base.html) Slightly changed the default 'Salmon Pink' color scheme.
+- (base.html) Added fade animation on page transition using CSS animation keyframes.
+- (base.html) Added rounded corners to currently selected/hovered navbar item.
+- (base.html) Added shadow to the bottom of the navbar.
+- (matrix_calculator.html) Added rounded corners and shadows to the buttons and canvas.
+- (equation_builder.js) Added 'selectOperator' function, it is currently an empty placeholder.
+- (equation_builder.js) Added 'addOperator' function that adds an operator item, however it is not currently working as it relies on the unfinished 'selectOperator' function.
+- (images folder) Changed item move up, move down and delete icons from PNG to SVG because they are vector graphics, so they scale without pixelation.
