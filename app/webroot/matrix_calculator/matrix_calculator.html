@@ -2,6 +2,13 @@
 
 {% block content %}
 
+<!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
+<script type="text/javascript" src="matrix_calculator/page_layout.js"></script>
+
+<!-- Script that handles drawing to the canvas using WebGL -->
+<script type="text/javascript" src="matrix_calculator/canvas_webgl.js"></script>
+
+<!-- The GLSL vertex shader script for use in WebGL -->
 <script id="vertexShader" type="text/glsl">
 	precision mediump float;
 	attribute vec2 a_position;
@@ -14,6 +21,7 @@
 	}
 </script>
 
+<!-- The GLSL fragment shader script for use in WebGL -->
 <script id="fragmentShader" type="text/glsl">
 	precision mediump float;
 	varying vec4 v_frag_color;
@@ -23,13 +31,12 @@
 	}
 </script>
 
-<script type="text/javascript" src="matrix_calculator/page_layout.js"></script>
-<script type="text/javascript" src="matrix_calculator/canvas_webgl.js"></script>
+<!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
 <script type="text/javascript" src="matrix_calculator/equation_builder.js"></script>
 
-<script>
-	window.addEventListener("resize", pageResize, false);
-	navbar = document.getElementsByClassName("navbar")[0];
+<script type="text/javascript">
+	window.addEventListener("resize", resizePage, false);
+	navbar = document.getElementById("navbar");
 	
 	// Creates a main wrapper div for all elements
 	createMainDiv();
@@ -38,7 +45,7 @@
 	// Equation div contains buttons to add new items to the current equation, as well as the equation itself
 	createEquationDiv();
 	// Resizes all elements of the page to fit the current display size
-	pageResize();
+	resizePage();
 	
 	// Functions for handling all mouse events on the canvas
 	mouseDown = false;

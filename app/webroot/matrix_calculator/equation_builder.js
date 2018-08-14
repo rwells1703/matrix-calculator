@@ -10,8 +10,8 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.style.padding = 0;
 	itemWrapper.style.height = "30vh";
 	itemWrapper.style.marginBottom = "4vh";
-	itemWrapper.style.boxShadow = document.body.style.getPropertyValue("--theme-box-shadow");
-	itemWrapper.style.animationName = "fade_in";
+	itemWrapper.style.boxShadow = "var(--theme-box-shadow)";
+	itemWrapper.style.animationName = "fadeIn";
 	itemWrapper.style.animationDuration = "0.5s";
 	
 	var itemSidebar = document.createElement("div");
@@ -32,8 +32,6 @@ function createEmptyItem(itemClass, itemCount) {
 	var itemMoveUpIcon = document.createElement("img");
 	itemMoveUpIcon.src = "images/moveup.svg";
 	itemMoveUpIcon.style.cursor = "pointer";
-	//itemMoveUpIcon.style.imageRendering = "crisp-edges";
-	//itemMoveUpIcon.style.backgroundColor = "black";//"var(--theme-color-icon)";
 	itemMoveUpIcon.style.height = "100%";
 	itemMoveUpIcon.style.margin = "0 auto";
 	itemMoveUpIcon.style.gridColumnStart = 2;
@@ -62,7 +60,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemMoveDownIcon.style.gridColumnEnd = 3;
 	itemMoveDownIcon.style.gridRowStart = 8;
 	itemMoveDownIcon.style.gridRowEnd = 9;
-	itemMoveDownIcon.onclick = moveItemUp;
+	itemMoveDownIcon.onclick = moveItemDown;
 
 	itemWrapper.appendChild(itemSidebar);
 	itemWrapper.appendChild(itemName);
@@ -93,8 +91,6 @@ function addScalar() {
 	scalarWrapper.appendChild(scalarTextbox);
 	
 	itemDiv.appendChild(scalarWrapper);
-	
-	resizeTopRowButtons();
 }
 
 // Creates a matrix item
@@ -184,8 +180,6 @@ function addMatrix() {
 	matrixWrapper.appendChild(addMatrixColumnIcon);
 	matrixWrapper.appendChild(removeMatrixColumnIcon);
 	itemDiv.appendChild(matrixWrapper);
-	
-	resizeTopRowButtons();
 }
 
 function addMatrixRow() {
@@ -193,7 +187,7 @@ function addMatrixRow() {
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 
-	if (rows < 7) {
+	if (rows < 6) {
 		var c = 0;
 		while (c < columns) {
 			elementNumber = 7*rows + c + 5
@@ -225,7 +219,7 @@ function addMatrixColumn() {
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
 	
-	if (columns < 7) {
+	if (columns < 6) {
 		var r = 0;
 		while (r < rows) {
 			elementNumber = 7*r + columns + 5
@@ -252,12 +246,15 @@ function removeMatrixColumn() {
 	}
 }
 
-function createOperatorButton(innerHTML, positions_from_left) {
+function createOperatorButton(innerHTML, positionsFromLeft) {
 	button = document.createElement("div");
 	
+	button.className = "operatorButton"; 
 	button.innerHTML = innerHTML;
+	button.style.height = "90%";
+	button.style.width = "90%";
+	button.style.boxSizing = "border-box";
 	button.style.textAlign = "center";
-	button.style.padding = 0;
 	
 	button.style.borderWidth = 1;
 	button.style.borderStyle = "solid";
@@ -267,18 +264,29 @@ function createOperatorButton(innerHTML, positions_from_left) {
 	button.style.cursor = "pointer";
 	button.onclick = selectOperator;
 	
-	button.style.gridColumnStart = 4+positions_from_left;
-	button.style.gridColumnEnd = 5+positions_from_left;
-	button.style.gridRowStart = 5;
-	button.style.gridRowEnd = 6;
-		
-	button.style.width = "80%";
+	button.style.gridColumnStart = 4+(positionsFromLeft % 4);
+	button.style.gridColumnEnd = 5+(positionsFromLeft % 4);
+	button.style.gridRowStart = 2+Math.floor(positionsFromLeft/4);
+	button.style.gridRowEnd = 3+Math.floor(positionsFromLeft/4);
 	
 	return button;
 }
 
-function selectOperator() {
-	alert("woa");
+function selectOperator(event) {
+	var operatorItem = event["path"][0].parentNode;
+	var i = 0;
+	while (i < operatorItem.children.length) {
+		if (operatorItem.children[i].className == "operatorButton") {
+			operatorItem.children[i].style.borderColor = "var(--theme-color-textbox-border)";
+			operatorItem.children[i].style.backgroundColor = "white";
+		}
+		i += 1;
+	}
+	
+	var operatorButton = event["path"][0];
+	operatorButton.style.borderColor = "var(--theme-color-main)";
+	operatorButton.style.backgroundColor = "var(--theme-color-main-light)";
+	operatorItem.setAttribute("operator", operatorButton.innerHTML);
 }
 
 // Creates an operator item
@@ -288,23 +296,23 @@ function addOperator() {
 	
 	var addButton = createOperatorButton("+", 0);
 	var subtractButton = createOperatorButton("-", 1);
-	var multiplyButton = createOperatorButton("x", 2);
-	var indiceButton = createOperatorButton("^", 3);
-	var inverseButton = createOperatorButton("inv", 4);
-	var transposeButton = createOperatorButton("tra", 5);
-	var determinantButton = createOperatorButton("det", 5);
+	var dotProductButton = createOperatorButton("·", 2);
+	var crossProductButton = createOperatorButton("x", 3);
+	var exponentButton = createOperatorButton("^", 4);
+	var inverseButton = createOperatorButton("inv", 5);
+	var transposeButton = createOperatorButton("tra", 6);
+	var determinantButton = createOperatorButton("det", 7);
 	
 	operatorWrapper.appendChild(addButton);
 	operatorWrapper.appendChild(subtractButton);
-	operatorWrapper.appendChild(multiplyButton);
-	operatorWrapper.appendChild(indiceButton);
+	operatorWrapper.appendChild(dotProductButton);
+	operatorWrapper.appendChild(crossProductButton);
+	operatorWrapper.appendChild(exponentButton);
 	operatorWrapper.appendChild(inverseButton);
 	operatorWrapper.appendChild(transposeButton);
 	operatorWrapper.appendChild(determinantButton);
 	
 	itemDiv.appendChild(operatorWrapper);
-	
-	resizeTopRowButtons();
 }
 
 function deleteItem(event) {

@@ -8,7 +8,7 @@
 </script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
 
-<div class="main">
+<div id="mainDiv">
 	<h2 id="contents">Contents</h2>
 	<br>
 	<a class="link" href="#1_introduction">1. Introduction</a>
@@ -643,9 +643,10 @@
 	<br>
 </div>
 
-<script>
-	main_div = document.getElementsByClassName("main")[0];
-	main_div.style.overflow = "hidden";
+<script type="text/javascript">
+	// Prevents the page from resizing jarringly on mobile while the MathJax equations load
+	mainDiv = document.getElementById("mainDiv");
+	mainDiv.style.overflow = "hidden";
 </script>
 
 {% endblock %}

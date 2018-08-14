@@ -6,12 +6,12 @@
 		
 		<style>
 			/* Animations */
-			@keyframes fade_in {
+			@keyframes fadeIn {
 				from {opacity: 0;}
 				to {opacity: 1;}
 			}
 			
-			@keyframes fade_out {
+			@keyframes fadeOut {
 				from {opacity: 1;}
 				to {opacity: 0;}
 			}
@@ -23,13 +23,13 @@
 				margin: 0;
 				font-family: 'Montserrat', sans-serif;
 				font-size: 2.5vh;
-				background-color: #fcfcfc;
+				background-color: var(--theme-color-page-background);
 			}
 
 			
 			/* The navbar on the top of each page */
-			div.navbar {
-				background-color: var(--theme-color-navbar);
+			div#navbar {
+				background-color: var(--theme-color-main);
 				display: block;
 				overflow: auto;
 				width: 100%;
@@ -37,6 +37,7 @@
 				
 			}
 			
+			/* The navbar hyperlinks */
 			a.navbar-item {
 				display: block;
 				padding: 2vh 2vw;
@@ -48,13 +49,13 @@
 			}
 			
 			a.navbar-item:hover {
-				background-color: var(--theme-color-navbar);
+				background-color: var(--theme-color-main);
 				box-shadow: var(--theme-box-shadow-navbar-item);
 				border-radius: 5px;
 			}
 			
 			a.navbar-item.active {
-				background-color: var(--theme-color-navbar-active);
+				background-color: var(--theme-color-main-dark);
 				box-shadow: var(--theme-box-shadow-navbar-item);
 				border-radius: 5px;
 			}
@@ -62,17 +63,17 @@
 			
 			/* Regular hyperlinks */
 			a.link {
-				color: var(--theme-color-link);
+				color: var(--theme-color-main-dark);
 				text-decoration: none;
 			}
 
 			a.link:hover {
-				color: var(--theme-color-link-hover);
+				color: var(--theme-color-main-light);
 			}
 			
-			/* Div holding the main body of text on each page */
-			div.main {
-				animation-name: fade_in;
+			/* Div holding the main content on each page */
+			div#mainDiv {
+				animation-name: fadeIn;
 				animation-duration: 1s;
 				padding: 5vh;
 			}
@@ -80,47 +81,69 @@
 	</head>
 	
 	<body>
-		<script>
-			// Converts a string value "px" on the end, to a float value
-			function pxToFloat(string) {
-				return parseFloat(string.substring(0, string.length-2));
-			}
-			
-			theme_emerald_green = {
-				"color-main":"#00d872",
-				"color-main-dark":"#00a557",
-				"color-main-extra-dark":"#005a1e",
-				"color-main-light":"#00a557",
-				"color-main-extra-light":"#31f99b",
-				"color-shadow":"#cecece",
-				"box-shadow":"3px 4px 10px var(--theme-color-shadow), -3px 4px 10px var(--theme-color-shadow)"
-			};		
-			
-			theme_salmon_pink = {
+		<script type="text/javascript">		
+			var themeSalmonPink = {
 				"color-main":"#ff4c4c",
 				"color-main-dark":"#ed2d2d",
 				"color-main-light":"#ff7c7c",
+				"color-page-background":"#fcfcfc",
 				"color-textbox-border":"#b2b2b2",
 				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
 				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
-				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)"
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
 			};
 			
-			theme = theme_salmon_pink;
+			var themeElectricBlue = {
+				"color-main":"#0082d8",
+				"color-main-dark":"#0065a8",
+				"color-main-light":"#5cabe0",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
 			
-			document.body.style.setProperty("--theme-color-navbar", theme["color-main"]);
-			document.body.style.setProperty("--theme-color-navbar-active", theme["color-main-dark"]);
-			document.body.style.setProperty("--theme-color-link", theme["color-main"]);
-			document.body.style.setProperty("--theme-color-link-hover", theme["color-main-light"]);
-			document.body.style.setProperty("--theme-color-button", theme["color-main"]);
-			document.body.style.setProperty("--theme-color-icon", theme["color-main"]);
+			var themeMustardYellow = {
+				"color-main":"#f9c400",
+				"color-main-dark":"#e0af00",
+				"color-main-light":"#ffdc5e",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeSlateGrey = {
+				"color-main":"#424242",
+				"color-main-dark":"#333333",
+				"color-main-light":"#898989",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var theme = themeSlateGrey;
+			
+			document.body.style.setProperty("--theme-color-main", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-main-dark", theme["color-main-dark"]);
+			document.body.style.setProperty("--theme-color-main-light", theme["color-main-light"]);
+			document.body.style.setProperty("--theme-color-page-background", theme["color-page-background"]);
 			document.body.style.setProperty("--theme-color-textbox-border", theme["color-textbox-border"]);
 			document.body.style.setProperty("--theme-box-shadow", theme["box-shadow"]);
 			document.body.style.setProperty("--theme-box-shadow-navbar", theme["box-shadow-navbar"]);
 			document.body.style.setProperty("--theme-box-shadow-navbar-item", theme["box-shadow-navbar-item"]);
+			document.body.style.setProperty("--theme-border-radius", theme["border-radius"]);
 		</script>
 		
-		<div class="navbar">
+		<div id="navbar">
 			{% if active == "index" %}
 			<a class="navbar-item active" href="/">Home</a>
 			{% else %}

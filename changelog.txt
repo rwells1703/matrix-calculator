@@ -100,3 +100,12 @@ Coursework 2018-08-13-21-44:
 - (equation_builder.js) Added 'selectOperator' function, it is currently an empty placeholder.
 - (equation_builder.js) Added 'addOperator' function that adds an operator item, however it is not currently working as it relies on the unfinished 'selectOperator' function.
 - (images folder) Changed item move up, move down and delete icons from PNG to SVG because they are vector graphics, so they scale without pixelation.
+
+Coursework 2018-08-15-00-43:
+- (base.html) Again, reworked the way themes are loaded via CSS variables.
+- (base.html) 3 new themes added, and 'Emerald Green' theme removed. Current themes: 'Salmon Pink', 'Electric Blue', 'Mustard Yellow', 'Slate Grey'.
+- (base.html) Changed default theme to 'Slate Grey'.
+- (equation_builder.js) Added fade in/fade out CSS animations, when items are added or deleted.
+- (equation_builder.js) Changed 'selectOperator' function so that it the user can now select the operator they need, from a small grid in the item.
+- (page_layout.js) Fixed bug where top row buttons do not resize properly with window size. Due button height being scaled down. Fixed by setting button height CSS to 100% in 'addTopRowButton' function.
+- (page_layout.js) Fixed bug where top row button text is incorrectly positioned vertically, caused by the previous fix. Fixed by changing the 'addTopRowButton' function so that text has CSS properties with display as 'table-cell' with vertical align as 'middle'.

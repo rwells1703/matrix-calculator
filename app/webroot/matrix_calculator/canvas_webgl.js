@@ -1,16 +1,16 @@
 // Converts canvas values (pixels) to clipspace values (-1 to 1)
 function canvasYToClipspace(y) {
-	var navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
-	var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+	var navbarHeight = pxToFloat(window.getComputedStyle(navbar).height);
+	var canvasDivPadding = pxToFloat(window.getComputedStyle(canvasDiv).padding);
 	
-	return (canvas.height - y + canvas_div_padding + canvas_border_thickness + navbar_height)/canvas.height*2 - 1;
+	return (canvas.height - y + canvasDivPadding + navbarHeight)/canvas.height*2 - 1;
 }
 
 function canvasXToClipspace(x) {
-	var navbar_height = pxToFloat(window.getComputedStyle(navbar).height);
-	var canvas_div_padding = pxToFloat(window.getComputedStyle(canvas_div).padding);
+	var navbarHeight = pxToFloat(window.getComputedStyle(navbar).height);
+	var canvasDivPadding = pxToFloat(window.getComputedStyle(canvasDiv).padding);
 	
-	return (x - canvas_div_padding - canvas_border_thickness)/canvas.height*2 - 1;
+	return (x - canvasDivPadding)/canvas.height*2 - 1;
 }
 
 
