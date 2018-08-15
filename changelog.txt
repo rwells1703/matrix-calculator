@@ -109,3 +109,12 @@ Coursework 2018-08-15-00-43:
 - (equation_builder.js) Changed 'selectOperator' function so that it the user can now select the operator they need, from a small grid in the item.
 - (page_layout.js) Fixed bug where top row buttons do not resize properly with window size. Due button height being scaled down. Fixed by setting button height CSS to 100% in 'addTopRowButton' function.
 - (page_layout.js) Fixed bug where top row button text is incorrectly positioned vertically, caused by the previous fix. Fixed by changing the 'addTopRowButton' function so that text has CSS properties with display as 'table-cell' with vertical align as 'middle'.
+
+Coursework 2018-08-15-21-54:
+- (base.html) Changed default theme to 'Electric Blue'.
+- (equation_builder.js) Changed 'createEquationDiv' function to add 'solve' and 'export' buttons that appear at the bottom of the equation.	
+- (equation_builder.js) Added 'toggleEquationFinishButtons' function to hide/show the 'solve' and 'export'. Export button currently has no function.
+- (equation_solver.js) Added JavaScript classes for 'Scalar', 'Matrix' and 'Operator' items ready for solving.
+- (equation_solver.js) Added 'parseItemValues' function that loops through all equation item and parses the items into the predefined classes.
+- (equation_solver.js) Added 'validateEquation' function that attempts to make sure an equation is solvable. Currently un-finished.
+- (page_layout.js) Changed 'resizePage' function so that the canvas is centered horizontally all the time. For aesthetic reasons only.

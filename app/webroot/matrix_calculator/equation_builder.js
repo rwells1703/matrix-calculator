@@ -12,7 +12,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.style.marginBottom = "4vh";
 	itemWrapper.style.boxShadow = "var(--theme-box-shadow)";
 	itemWrapper.style.animationName = "fadeIn";
-	itemWrapper.style.animationDuration = "0.5s";
+	itemWrapper.style.animationDuration = "0.25s";
 	
 	var itemSidebar = document.createElement("div");
 	itemSidebar.style.gridColumnStart = 1;
@@ -68,7 +68,103 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.appendChild(itemDeleteIcon);
 	itemWrapper.appendChild(itemMoveDownIcon);
 	
+	toggleEquationFinishButtons();
+	
 	return itemWrapper;
+}
+
+function deleteItem(event) {
+	// Gets parent element of the delete icon that was clicked
+	var item = event["path"][1];
+	
+
+	
+	if (item.className == "scalar") {
+		scalarCount -= 1;
+	}
+	else if (item.className == "matrix") {
+		matrixCount -= 1;
+	}
+	else {
+		operatorCount -= 1;
+	}
+	
+	// Animates the removal of the item
+	item.style.animationName = "fadeOut";
+	
+	toggleEquationFinishButtons();
+	
+	// Deletes the item 200ms later so that deletion occurs slightly before animation ends (prevents flicker)
+	setTimeout(function() {
+		// Changes id, name and count so that each item is still in order
+		var i = 0;
+		while (i < itemDiv.children.length) {
+			// Only change item ids of items with the same class
+			if (itemDiv.children[i].className == item.className) {
+				if (parseInt(itemDiv.children[i].id) > parseInt(item.id)) {
+					// Change id
+					itemDiv.children[i].id = parseInt(itemDiv.children[i].id) - 1;
+					// Change the name that is displayed
+					itemDiv.children[i].children[1].innerHTML = itemDiv.children[i].className + itemDiv.children[i].id;
+				}
+			}
+			i += 1;
+		}
+		
+		item.parentNode.removeChild(item);
+	}, 200);
+}
+
+function moveItemUp(event) {
+	var item = event["path"][0].parentNode;
+	var previousItem = item.previousSibling;
+	
+	if (previousItem != null) {
+		var parent = item.parentNode;
+		
+		parent.removeChild(item);
+		parent.insertBefore(item, previousItem);
+		
+		// Swaps id's back if items are both of the same class (e.g. both scalars)
+		if (previousItem.className == item.className) {
+			var tempId = item.id;
+			item.id = previousItem.id;
+			previousItem.id = tempId;
+
+			item.children[1].innerHTML = item.className + item.id;
+			previousItem.children[1].innerHTML = previousItem.className + previousItem.id;
+		}
+	}
+}
+
+function moveItemDown(event) {
+	var item = event["path"][0].parentNode;
+	var nextItem = item.nextSibling;
+	
+	if (nextItem != null) {
+		var parent = item.parentNode;
+		
+		parent.removeChild(item);
+		
+		// If removing the item before last, it must be re-inserted as the last item
+		// Because it is the item before last, nextItem.nextSibling will be null meaning we have to use parent.appendChild instead of parent.insertBefore
+		if (nextItem.nextSibling == null) {
+			parent.appendChild(item);
+		}
+		else {
+			parent.insertBefore(item, nextItem.nextSibling);
+		}
+		
+		// Swaps id's back if items are both of the same class (e.g. both scalars)
+		if (nextItem.className == item.className) {
+			var tempId = item.id;
+			item.id = nextItem.id;
+			nextItem.id = tempId;
+
+			item.children[1].innerHTML = item.className + item.id;
+			nextItem.children[1].innerHTML = nextItem.className + nextItem.id;
+		}
+	}
 }
 
 // Creates a scalar item
@@ -179,6 +275,7 @@ function addMatrix() {
 	matrixWrapper.appendChild(removeMatrixRowIcon);
 	matrixWrapper.appendChild(addMatrixColumnIcon);
 	matrixWrapper.appendChild(removeMatrixColumnIcon);
+	
 	itemDiv.appendChild(matrixWrapper);
 }
 
@@ -272,24 +369,6 @@ function createOperatorButton(innerHTML, positionsFromLeft) {
 	return button;
 }
 
-function selectOperator(event) {
-	var operatorItem = event["path"][0].parentNode;
-	var i = 0;
-	while (i < operatorItem.children.length) {
-		if (operatorItem.children[i].className == "operatorButton") {
-			operatorItem.children[i].style.borderColor = "var(--theme-color-textbox-border)";
-			operatorItem.children[i].style.backgroundColor = "white";
-		}
-		i += 1;
-	}
-	
-	var operatorButton = event["path"][0];
-	operatorButton.style.borderColor = "var(--theme-color-main)";
-	operatorButton.style.backgroundColor = "var(--theme-color-main-light)";
-	operatorItem.setAttribute("operator", operatorButton.innerHTML);
-}
-
-// Creates an operator item
 function addOperator() {
 	operatorCount += 1;
 	var operatorWrapper = createEmptyItem("operator", operatorCount);
@@ -315,86 +394,43 @@ function addOperator() {
 	itemDiv.appendChild(operatorWrapper);
 }
 
-function deleteItem(event) {
-	// Gets parent element of the delete icon that was clicked
-	var item = event["path"][1];
-	
-	// Changes id, name and count so that each item is still in order
+// Changes the operator of an operator item based on user mouse click
+function selectOperator(event) {
+	var operatorItem = event["path"][0].parentNode;
+	// Resets all the other buttons so that they are unselected
 	var i = 0;
-	while (i < itemDiv.children.length) {
-		// Only change item ids of items with the same class
-		if (itemDiv.children[i].className == item.className) {
-			if (parseInt(itemDiv.children[i].id) > parseInt(item.id)) {
-				// Change id
-				itemDiv.children[i].id = parseInt(itemDiv.children[i].id) - 1;
-				// Change the name that is displayed
-				itemDiv.children[i].children[1].innerHTML = itemDiv.children[i].className + itemDiv.children[i].id;
-			}
+	while (i < operatorItem.children.length) {
+		if (operatorItem.children[i].className == "operatorButton") {
+			operatorItem.children[i].style.borderColor = "var(--theme-color-textbox-border)";
+			operatorItem.children[i].style.backgroundColor = "white";
 		}
 		i += 1;
 	}
 	
-	if (item.className == "scalar") {
-		scalarCount -= 1;
-	}
-	else if (item.className == "matrix") {
-		matrixCount -= 1;
-	}
-	else {
-		operatorCount -= 1;
-	}
+	// Hilights the selected button
+	var operatorButton = event["path"][0];
+	operatorButton.style.borderColor = "var(--theme-color-main)";
+	operatorButton.style.backgroundColor = "var(--theme-color-main-light)";
 	
-	item.parentNode.removeChild(item);
+	// Sets the operator attribute of the item
+	operatorItem.setAttribute("operator", operatorButton.innerHTML);
 }
 
-function moveItemUp(event) {
-	var item = event["path"][0].parentNode;
-	var previousItem = item.previousSibling;
-	
-	if (previousItem != null) {
-		var parent = item.parentNode;
-		
-		parent.removeChild(item);
-		parent.insertBefore(item, previousItem);
-		
-		// Swaps id's back if items are both of the same class (e.g. both scalars)
-		if (previousItem.className == item.className) {
-			var tempId = item.id;
-			item.id = previousItem.id;
-			previousItem.id = tempId;
-
-			item.children[1].innerHTML = item.className + item.id;
-			previousItem.children[1].innerHTML = previousItem.className + previousItem.id;
-		}
-	}
-}
-
-function moveItemDown(event) {
-	var item = event["path"][0].parentNode;
-	var nextItem = item.nextSibling;
-	
-	if (nextItem != null) {
-		var parent = item.parentNode;
-		
-		parent.removeChild(item);
-		
-		// If removing the item before last, it must be re-inserted as the last item
-		// Because it is the item before last, nextItem.nextSibling will be null meaning we have to use parent.appendChild instead of parent.insertBefore
-		if (nextItem.nextSibling == null) {
-			parent.appendChild(item);
-		}
-		else {
-			parent.insertBefore(item, nextItem.nextSibling);
-		}
-		
-		// Swaps id's back if items are both of the same class (e.g. both scalars)
-		if (nextItem.className == item.className) {
-			var tempId = item.id;
-			item.id = nextItem.id;
-			nextItem.id = tempId;
-
-			item.children[1].innerHTML = item.className + item.id;
-			nextItem.children[1].innerHTML = nextItem.className + nextItem.id;
-		}
+// Shows/hides the "solve" and "export" buttons at the bottom of the equation div
+// They are hidden if there are no items, otherwise they are visible
+function toggleEquationFinishButtons() {
+	if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0) {
+		// If there are no items, dont show the finish "solve" and "export" buttons
+		// Resets the animation so it can be played again
+		equationFinishButtonDiv.style.animationName = "fadeOut";
+		setTimeout(function() {
+			equationFinishButtonDiv.style.animationName = "";
+			equationFinishButtonDiv.style.visibility = "hidden";
+		},200);
+	} else {
+		// Otherwise show them
+		// Plays the animation again
+		equationFinishButtonDiv.style.animationName = "fadeIn";
+		equationFinishButtonDiv.style.visibility = "";
 	}
 }
