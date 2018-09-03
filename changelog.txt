@@ -118,3 +118,12 @@ Coursework 2018-08-15-21-54:
 - (equation_solver.js) Added 'parseItemValues' function that loops through all equation item and parses the items into the predefined classes.
 - (equation_solver.js) Added 'validateEquation' function that attempts to make sure an equation is solvable. Currently un-finished.
 - (page_layout.js) Changed 'resizePage' function so that the canvas is centered horizontally all the time. For aesthetic reasons only.
+
+Coursework 2018-09-03-22-35:
+- (equation_builder.js) Added 'addFunction' function that adds a new function.
+- (equation_builder.js) Added 'createItemButton' function to populate operator and function items will selectable buttons.
+- (equation_builder.js) Replaced 'selectOperator' function with a more general "selectButton" function that is used for both operator and function items.
+- (page_layout.js) Changed 'createButton' function to make the font size of the buttons smaller to prevent it from overflowing on smaller screens.
+- (equation_solver.js) Changed 'parseItemValues' function so that it parses operator items (and the newly added function items) slightly differently than before.
+- (equation_solver.js) Changed 'validateEquation' function so that it validates equations by checking the items either side of every item in the equation. Still un-finished. 
+ 

@@ -11,6 +11,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.style.height = "30vh";
 	itemWrapper.style.marginBottom = "4vh";
 	itemWrapper.style.boxShadow = "var(--theme-box-shadow)";
+	itemWrapper.style.borderRadius = "var(--theme-border-radius)";
 	itemWrapper.style.animationName = "fadeIn";
 	itemWrapper.style.animationDuration = "0.25s";
 	
@@ -77,13 +78,14 @@ function deleteItem(event) {
 	// Gets parent element of the delete icon that was clicked
 	var item = event["path"][1];
 	
-
-	
 	if (item.className == "scalar") {
 		scalarCount -= 1;
 	}
 	else if (item.className == "matrix") {
 		matrixCount -= 1;
+	}
+	else if (item.className == "function") {
+		functionCount -= 1;
 	}
 	else {
 		operatorCount -= 1;
@@ -343,10 +345,10 @@ function removeMatrixColumn() {
 	}
 }
 
-function createOperatorButton(innerHTML, positionsFromLeft) {
+function createItemButton(innerHTML, positionsFromLeft) {
 	button = document.createElement("div");
 	
-	button.className = "operatorButton"; 
+	button.className = "selectionButton"; 
 	button.innerHTML = innerHTML;
 	button.style.height = "90%";
 	button.style.width = "90%";
@@ -359,67 +361,85 @@ function createOperatorButton(innerHTML, positionsFromLeft) {
 	button.style.backgroundColor = "white";
 	
 	button.style.cursor = "pointer";
-	button.onclick = selectOperator;
+	button.onclick = selectButton;
 	
-	button.style.gridColumnStart = 4+(positionsFromLeft % 4);
-	button.style.gridColumnEnd = 5+(positionsFromLeft % 4);
-	button.style.gridRowStart = 2+Math.floor(positionsFromLeft/4);
-	button.style.gridRowEnd = 3+Math.floor(positionsFromLeft/4);
+	var buttonsPerRow = 4;
+	button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
+	button.style.gridColumnEnd = 5+(positionsFromLeft % buttonsPerRow);
+	button.style.gridRowStart = 2+Math.floor(positionsFromLeft / buttonsPerRow);
+	button.style.gridRowEnd = 3+Math.floor(positionsFromLeft / buttonsPerRow);
 	
 	return button;
+}
+
+function addFunction() {
+	functionCount += 1;
+	var functionWrapper = createEmptyItem("function", functionCount);
+	
+	var transposeButton = createItemButton("Tra", 0);
+	var determinantButton = createItemButton("Det", 1);
+	var sinButton = createItemButton("Sin", 2);
+	var cosButton = createItemButton("Cos", 3);
+	var tanButton = createItemButton("Tan", 4);
+	
+	functionWrapper.append(transposeButton);
+	functionWrapper.append(determinantButton);
+	functionWrapper.append(sinButton);
+	functionWrapper.append(cosButton);
+	functionWrapper.append(tanButton);
+	
+	itemDiv.appendChild(functionWrapper);
 }
 
 function addOperator() {
 	operatorCount += 1;
 	var operatorWrapper = createEmptyItem("operator", operatorCount);
 	
-	var addButton = createOperatorButton("+", 0);
-	var subtractButton = createOperatorButton("-", 1);
-	var dotProductButton = createOperatorButton("·", 2);
-	var crossProductButton = createOperatorButton("x", 3);
-	var exponentButton = createOperatorButton("^", 4);
-	var inverseButton = createOperatorButton("inv", 5);
-	var transposeButton = createOperatorButton("tra", 6);
-	var determinantButton = createOperatorButton("det", 7);
-	
+	var addButton = createItemButton("+", 0);
+	var subtractButton = createItemButton("-", 1);
+	var dotProductButton = createItemButton("·", 2);
+	var crossProductButton = createItemButton("x", 3);
+	var exponentButton = createItemButton("^", 4);
+	var openBracketButton = createItemButton("(", 5);
+	var closeBracketButton = createItemButton(")", 6);
+
 	operatorWrapper.appendChild(addButton);
 	operatorWrapper.appendChild(subtractButton);
 	operatorWrapper.appendChild(dotProductButton);
 	operatorWrapper.appendChild(crossProductButton);
 	operatorWrapper.appendChild(exponentButton);
-	operatorWrapper.appendChild(inverseButton);
-	operatorWrapper.appendChild(transposeButton);
-	operatorWrapper.appendChild(determinantButton);
+	operatorWrapper.appendChild(openBracketButton);
+	operatorWrapper.appendChild(closeBracketButton);
 	
 	itemDiv.appendChild(operatorWrapper);
 }
 
-// Changes the operator of an operator item based on user mouse click
-function selectOperator(event) {
-	var operatorItem = event["path"][0].parentNode;
+// Changes the function/operator of an function/operator item based on user mouse click
+function selectButton(event) {
+	var selectedButton = event["path"][0];
+	
 	// Resets all the other buttons so that they are unselected
 	var i = 0;
-	while (i < operatorItem.children.length) {
-		if (operatorItem.children[i].className == "operatorButton") {
-			operatorItem.children[i].style.borderColor = "var(--theme-color-textbox-border)";
-			operatorItem.children[i].style.backgroundColor = "white";
+	while (i < selectedButton.parentNode.children.length) {
+		if (selectedButton.parentNode.children[i].className == "selectionButton") {
+			selectedButton.parentNode.children[i].style.borderColor = "var(--theme-color-textbox-border)";
+			selectedButton.parentNode.children[i].style.backgroundColor = "white";
 		}
 		i += 1;
 	}
 	
-	// Hilights the selected button
-	var operatorButton = event["path"][0];
-	operatorButton.style.borderColor = "var(--theme-color-main)";
-	operatorButton.style.backgroundColor = "var(--theme-color-main-light)";
+	// Hilights the selected button with the main color
+	selectedButton.style.borderColor = "var(--theme-color-main)";
+	selectedButton.style.backgroundColor = "var(--theme-color-main-light)";
 	
-	// Sets the operator attribute of the item
-	operatorItem.setAttribute("operator", operatorButton.innerHTML);
+	// Sets the value attribute of the function/operator item
+	selectedButton.parentNode.setAttribute("value", selectedButton.innerHTML);
 }
 
 // Shows/hides the "solve" and "export" buttons at the bottom of the equation div
 // They are hidden if there are no items, otherwise they are visible
 function toggleEquationFinishButtons() {
-	if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0) {
+	if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0 && functionCount == 0) {
 		// If there are no items, dont show the finish "solve" and "export" buttons
 		// Resets the animation so it can be played again
 		equationFinishButtonDiv.style.animationName = "fadeOut";

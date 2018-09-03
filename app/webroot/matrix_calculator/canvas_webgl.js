@@ -167,7 +167,7 @@ function render() {
 	
 	// Clears the screen and temporary buffers
 	gl.clearColor(255/255, 255/255, 255/255, 255/255);
-
+	
 	gl.clear(gl.COLOR_BUFFER_BIT);
 	
 	// Draws the vertices declared in main

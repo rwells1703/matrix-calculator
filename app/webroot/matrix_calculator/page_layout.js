@@ -20,6 +20,8 @@ function createButton(innerHTML, onclick) {
 	text.style.display = "table-cell";
 	text.style.verticalAlign = "middle";
 	text.style.textAlign = "center";
+	// Font size must be small to prevent text from overflowing outside buttons and causing layout issues
+	text.style.fontSize = "2vh";
 	button.appendChild(text);
 	
 	button.style.color = "white";
@@ -72,12 +74,13 @@ function createEquationDiv() {
 	equationAddItemButtonDiv.style.marginBottom = "5vh";
 	equationAddItemButtonDiv.style.height = "10vh";
 	equationAddItemButtonDiv.style.display = "grid";
-	equationAddItemButtonDiv.style.gridTemplateColumns = "repeat(3, 1fr)";
+	equationAddItemButtonDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
 	equationDiv.appendChild(equationAddItemButtonDiv);
 
 	// Create all buttons for adding new items
 	equationAddItemButtonDiv.appendChild(createButton("Add scalar", addScalar));
 	equationAddItemButtonDiv.appendChild(createButton("Add matrix", addMatrix));
+	equationAddItemButtonDiv.appendChild(createButton("Add function", addFunction));
 	equationAddItemButtonDiv.appendChild(createButton("Add operator", addOperator));
 	
 	// Create container div for all items e.g. scalars, matrices and operators
@@ -102,6 +105,7 @@ function createEquationDiv() {
 	// Counts increase/decrease for every item added/removed from the equation
 	matrixCount = 0;
 	scalarCount = 0;
+	functionCount = 0;
 	operatorCount = 0;
 }
 
