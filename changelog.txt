@@ -121,9 +121,13 @@ Coursework 2018-08-15-21-54:
 
 Coursework 2018-09-03-22-35:
 - (equation_builder.js) Added 'addFunction' function that adds a new function.
-- (equation_builder.js) Added 'createItemButton' function to populate operator and function items will selectable buttons.
-- (equation_builder.js) Replaced 'selectOperator' function with a more general "selectButton" function that is used for both operator and function items.
+- (equation_builder.js) Added 'createItemButton' function to populate operator and function items with selectable buttons.
+- (equation_builder.js) Replaced 'selectOperator' function with a more general 'selectButton' function that is used for both operator and function items.
 - (page_layout.js) Changed 'createButton' function to make the font size of the buttons smaller to prevent it from overflowing on smaller screens.
 - (equation_solver.js) Changed 'parseItemValues' function so that it parses operator items (and the newly added function items) slightly differently than before.
 - (equation_solver.js) Changed 'validateEquation' function so that it validates equations by checking the items either side of every item in the equation. Still un-finished. 
- 
+
+Coursework 2018-09-21-15-22:
+- (packages folder) Created a folder to hold all 3rd party packages instead of using a 'venv'. This works for the school computer system, where i cannot use command prompt to start the venv.
+- (startserver.py) Added 'packages/' to the 'Python' system path so that the 3rd party 'Python' packages inside can be used.
+- (runfromcmd.py) Created. Runs the web server in a command prompt window, even though the school policy does not allow direct access to command prompt.

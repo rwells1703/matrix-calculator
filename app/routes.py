@@ -19,6 +19,7 @@ def help():
 
 # This makes sure that JS files are not cached in the browser cache
 # This is useful because it means that I do not have to clear browser cache every time I make a change to a JS script during development
+# This section will be removed in production
 @app.after_request
 def after_request(response):
 	file_extension = flask.request.__dict__["environ"]["PATH_INFO"].split(".")[-1]
