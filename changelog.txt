@@ -131,3 +131,17 @@ Coursework 2018-09-21-15-22:
 - (packages folder) Created a folder to hold all 3rd party packages instead of using a 'venv'. This works for the school computer system, where i cannot use command prompt to start the venv.
 - (startserver.py) Added 'packages/' to the 'Python' system path so that the 3rd party 'Python' packages inside can be used.
 - (runfromcmd.py) Created. Runs the web server in a command prompt window, even though the school policy does not allow direct access to command prompt.
+
+Coursework 2018-09-22-22-40:
+- Completely redesigned the app structure, so that it can be developed/executed on any computer, without need for a web server or command prompt access.
+- HTML files now stored in the '/templates' folder.
+- 3rd party 'Python' packages e.g. 'Jijna2' and 'markupsafe' in the '/packages' folder.
+- Images, scripts and compiled HTML templates in the '/webroot' folder.
+- All JavaScript and HTML changed to accomadate for changes in the file paths of other scripts and images. Now local names are required e.g. '/index' => '/index.html'.
+- (matrix_calculator.html) File moved from its own seperate directory, back to the same directory as other HTML templates.
+- (favicon.ico) Created. Small 32x32 image of an identity matrix made in paint.net. Used as an icon in the tabs/favourites bar of most browsers.
+- (render_templates.py) Created.
+- (render_templates.py) Added 'scan_directory' function to recursively scan through directories/subdirectories and return the paths of all the files it finds.
+- (render_templates.py) Added 'render_template' function to get a template file from the template environment and return the rendered version.
+- (render_templates.py) Added 'template_loader' function to read template files data as requested by the template environment.
+- (render_templates.py) Runs every time enter key is pressed, so templates can be quickly re-rendered during development.

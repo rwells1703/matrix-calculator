@@ -1,0 +1,237 @@
+<html>
+	<head>
+		<title>Matrix Website</title>
+		
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		
+		<style>
+			/* Animations */
+			@keyframes fadeIn {
+				from {opacity: 0;}
+				to {opacity: 1;}
+			}
+			
+			@keyframes fadeOut {
+				from {opacity: 1;}
+				to {opacity: 0;}
+			}
+			
+			/* The body on each page */		
+			body {
+				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
+				text-size-adjust: none;
+				margin: 0;
+				font-family: 'Montserrat', sans-serif;
+				font-size: 2.5vh;
+				background-color: var(--theme-color-page-background);
+			}
+
+			
+			/* The navbar on the top of each page */
+			div#navbar {
+				background-color: var(--theme-color-main);
+				display: block;
+				overflow: auto;
+				width: 100%;
+				box-shadow: var(--theme-box-shadow-navbar);
+				
+			}
+			
+			/* The navbar hyperlinks */
+			a.navbar-item {
+				display: block;
+				padding: 2vh 2vw;
+				float: left;
+				
+				color: white;
+				text-decoration: none;
+				font-size: 3vh;
+			}
+			
+			a.navbar-item:hover {
+				background-color: var(--theme-color-main);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
+			}
+			
+			a.navbar-item.active {
+				background-color: var(--theme-color-main-dark);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
+			}
+			
+			
+			/* Regular hyperlinks */
+			a.link {
+				color: var(--theme-color-main-dark);
+				text-decoration: none;
+			}
+
+			a.link:hover {
+				color: var(--theme-color-main-light);
+			}
+			
+			/* Div holding the main content on each page */
+			div#mainDiv {
+				animation-name: fadeIn;
+				animation-duration: 1s;
+				padding: 5vh;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<script type="text/javascript">		
+			var themeSalmonPink = {
+				"color-main":"#ff4c4c",
+				"color-main-dark":"#ed2d2d",
+				"color-main-light":"#ff7c7c",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeElectricBlue = {
+				"color-main":"#0082d8",
+				"color-main-dark":"#0065a8",
+				"color-main-light":"#5cabe0",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeMustardYellow = {
+				"color-main":"#f9c400",
+				"color-main-dark":"#e0af00",
+				"color-main-light":"#ffdc5e",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeSlateGrey = {
+				"color-main":"#424242",
+				"color-main-dark":"#333333",
+				"color-main-light":"#898989",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var theme = themeSalmonPink;
+			
+			document.body.style.setProperty("--theme-color-main", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-main-dark", theme["color-main-dark"]);
+			document.body.style.setProperty("--theme-color-main-light", theme["color-main-light"]);
+			document.body.style.setProperty("--theme-color-page-background", theme["color-page-background"]);
+			document.body.style.setProperty("--theme-color-textbox-border", theme["color-textbox-border"]);
+			document.body.style.setProperty("--theme-box-shadow", theme["box-shadow"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar", theme["box-shadow-navbar"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar-item", theme["box-shadow-navbar-item"]);
+			document.body.style.setProperty("--theme-border-radius", theme["border-radius"]);
+		</script>
+		
+		<div id="navbar">
+			<a class="navbar-item" href="index.html">Home</a>
+			<a class="navbar-item" href="about_matrices.html">About Matrices</a>
+			<a class="navbar-item" href="matrix_calculator.html">Matrix Calculator</a>
+			<a class="navbar-item" href="help.html">Help</a>
+		</div>
+			
+		
+
+<!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
+<script type="text/javascript" src="scripts/matrix_calculator/page_layout.js"></script>
+
+<!-- Script that handles drawing to the canvas using WebGL -->
+<script type="text/javascript" src="scripts/matrix_calculator/canvas_webgl.js"></script>
+
+<!-- The GLSL vertex shader script for use in WebGL -->
+<script id="vertexShader" type="text/glsl">
+	precision mediump float;
+	attribute vec2 a_position;
+	attribute vec4 a_vert_color;
+	varying vec4 v_frag_color;
+	
+	void main() {
+		v_frag_color = a_vert_color;
+		gl_Position = vec4(a_position,0.0,1.0);
+	}
+</script>
+
+<!-- The GLSL fragment shader script for use in WebGL -->
+<script id="fragmentShader" type="text/glsl">
+	precision mediump float;
+	varying vec4 v_frag_color;
+	
+	void main() {
+		gl_FragColor = v_frag_color;
+	}
+</script>
+
+<!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
+<script type="text/javascript" src="scripts/matrix_calculator/equation_builder.js"></script>
+
+<!-- Script that handles the parsing and solving of the equations the user has inputted -->
+<script type="text/javascript" src="scripts/matrix_calculator/equation_solver.js"></script>
+
+<script type="text/javascript">
+	window.addEventListener("resize", resizePage, false);
+	navbar = document.getElementById("navbar");
+	
+	// Creates a main wrapper div for all elements
+	createMainDiv();
+	// Canvas div contains the canvas element that the matrices will be drawn to
+	createCanvasDiv();
+	// Equation div contains buttons to add new items to the current equation, as well as the equation itself
+	createEquationDiv();
+	// Resizes all elements of the page to fit the current display size
+	resizePage();
+	
+	// Functions for handling all mouse events on the canvas
+	mouseDown = false;
+	canvas.onmousedown = mouseDown;
+	canvas.onmouseup = mouseUp;
+	canvas.onmousemove = mouseMove;
+	
+	// Both fundamental GLSL shaders that WebGl uses to render vertices to the canvas element
+	// Vertex shader handles the corners of polygons being rendered to the canvas and then sends this data to the fragment shader
+	vertexShader = createShader(gl.VERTEX_SHADER, document.getElementById("vertexShader").text);
+	// Fragment shader takes vertex shader output and renders the pixels between each vertice to create a filled shape of specified color(s).
+	fragmentShader = createShader(gl.FRAGMENT_SHADER, document.getElementById("fragmentShader").text);
+	
+	// WebGL shader program which links the vertex and fragment shaders, and allows them to be used by the GPU
+	program = createProgram(vertexShader, fragmentShader);
+	
+	// An object for storing vertices
+	vertexBufferObject = gl.createBuffer();
+	// This links the VBO to the array buffer in the GPU
+	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
+	
+	// This tells the shader program what attributes to expect, what data types they will be, how many bytes long etc.
+	prepareAttributes();
+	
+	// Add the axes to the list of vertices
+	vertices = declareStaticVertices();
+	
+	//createPolygon([0, 0], 5, 0.2, [255/255, 255/255, 0/255, 255/255], false);
+	
+	// Begins the render loop
+	requestAnimationFrame(render);
+</script>
+
+
+	</body>
+</html>

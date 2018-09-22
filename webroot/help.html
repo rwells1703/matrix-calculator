@@ -1,0 +1,171 @@
+<html>
+	<head>
+		<title>Matrix Website</title>
+		
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		
+		<style>
+			/* Animations */
+			@keyframes fadeIn {
+				from {opacity: 0;}
+				to {opacity: 1;}
+			}
+			
+			@keyframes fadeOut {
+				from {opacity: 1;}
+				to {opacity: 0;}
+			}
+			
+			/* The body on each page */		
+			body {
+				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
+				text-size-adjust: none;
+				margin: 0;
+				font-family: 'Montserrat', sans-serif;
+				font-size: 2.5vh;
+				background-color: var(--theme-color-page-background);
+			}
+
+			
+			/* The navbar on the top of each page */
+			div#navbar {
+				background-color: var(--theme-color-main);
+				display: block;
+				overflow: auto;
+				width: 100%;
+				box-shadow: var(--theme-box-shadow-navbar);
+				
+			}
+			
+			/* The navbar hyperlinks */
+			a.navbar-item {
+				display: block;
+				padding: 2vh 2vw;
+				float: left;
+				
+				color: white;
+				text-decoration: none;
+				font-size: 3vh;
+			}
+			
+			a.navbar-item:hover {
+				background-color: var(--theme-color-main);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
+			}
+			
+			a.navbar-item.active {
+				background-color: var(--theme-color-main-dark);
+				box-shadow: var(--theme-box-shadow-navbar-item);
+				border-radius: 5px;
+			}
+			
+			
+			/* Regular hyperlinks */
+			a.link {
+				color: var(--theme-color-main-dark);
+				text-decoration: none;
+			}
+
+			a.link:hover {
+				color: var(--theme-color-main-light);
+			}
+			
+			/* Div holding the main content on each page */
+			div#mainDiv {
+				animation-name: fadeIn;
+				animation-duration: 1s;
+				padding: 5vh;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<script type="text/javascript">		
+			var themeSalmonPink = {
+				"color-main":"#ff4c4c",
+				"color-main-dark":"#ed2d2d",
+				"color-main-light":"#ff7c7c",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeElectricBlue = {
+				"color-main":"#0082d8",
+				"color-main-dark":"#0065a8",
+				"color-main-light":"#5cabe0",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeMustardYellow = {
+				"color-main":"#f9c400",
+				"color-main-dark":"#e0af00",
+				"color-main-light":"#ffdc5e",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var themeSlateGrey = {
+				"color-main":"#424242",
+				"color-main-dark":"#333333",
+				"color-main-light":"#898989",
+				"color-page-background":"#fcfcfc",
+				"color-textbox-border":"#b2b2b2",
+				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
+				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
+				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+				"border-radius":"0.6vh"
+			};
+			
+			var theme = themeSalmonPink;
+			
+			document.body.style.setProperty("--theme-color-main", theme["color-main"]);
+			document.body.style.setProperty("--theme-color-main-dark", theme["color-main-dark"]);
+			document.body.style.setProperty("--theme-color-main-light", theme["color-main-light"]);
+			document.body.style.setProperty("--theme-color-page-background", theme["color-page-background"]);
+			document.body.style.setProperty("--theme-color-textbox-border", theme["color-textbox-border"]);
+			document.body.style.setProperty("--theme-box-shadow", theme["box-shadow"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar", theme["box-shadow-navbar"]);
+			document.body.style.setProperty("--theme-box-shadow-navbar-item", theme["box-shadow-navbar-item"]);
+			document.body.style.setProperty("--theme-border-radius", theme["border-radius"]);
+		</script>
+		
+		<div id="navbar">
+			<a class="navbar-item" href="index.html">Home</a>
+			<a class="navbar-item" href="about_matrices.html">About Matrices</a>
+			<a class="navbar-item" href="matrix_calculator.html">Matrix Calculator</a>
+			<a class="navbar-item" href="help.html">Help</a>
+		</div>
+			
+		
+
+<div id="mainDiv">
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mi est, volutpat ac nisi id, tincidunt porttitor mi. Mauris sollicitudin, metus eget molestie sagittis, nisl massa fermentum ex, id porta nunc diam rhoncus nisi. Aenean vitae egestas nisl. Etiam gravida, lacus in faucibus volutpat, dolor lectus posuere metus, fermentum egestas mi sem nec diam. Proin eu porttitor nisi. Cras libero dolor, faucibus a erat vel, fringilla eleifend libero. Duis non fringilla urna. Donec condimentum est eget arcu cursus, et porttitor erat vulputate. Curabitur fermentum erat in enim scelerisque, at eleifend nisl iaculis. Pellentesque non metus eros. Vestibulum nisi erat, lacinia gravida massa ut, porttitor lobortis turpis. In lacinia imperdiet ligula eu ultricies. Donec quis pellentesque lacus, nec aliquam odio. Nunc sagittis, ipsum in ultrices posuere, mi urna accumsan erat, id faucibus dui nulla ac dui. Aenean auctor libero at sem imperdiet, non accumsan massa interdum.
+<br>
+Aenean ac nulla venenatis, condimentum sem nec, iaculis nulla. Maecenas ultricies ipsum ac elit aliquam fringilla. Nam feugiat dolor porta diam mattis, eget vestibulum velit consequat. Nulla facilisi. Cras massa quam, aliquet in sollicitudin sit amet, pellentesque vel neque. Fusce sed velit iaculis tortor ornare volutpat a a augue. In hac habitasse platea dictumst. Vivamus ac mollis orci. Maecenas in enim euismod, iaculis leo sed, elementum lorem.
+<br>
+Aenean condimentum interdum suscipit. Sed quis magna ante. Fusce vehicula, quam eu vestibulum aliquet, eros nisl luctus dolor, non gravida sem odio id dolor. Nunc at mollis dui. Etiam nec maximus metus. Cras scelerisque ipsum diam, vestibulum pulvinar elit mollis gravida. Phasellus laoreet mi tempor commodo elementum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis eu neque porttitor, maximus turpis ut, interdum sem. Nam orci tellus, consequat eu vehicula eu, viverra id mauris. Mauris pretium mattis urna. Cras volutpat, ligula sed aliquam aliquam, lectus diam congue sapien, et vestibulum mauris risus rhoncus mauris. Quisque sit amet nunc eget lacus tempor varius sed sed leo. Vivamus rhoncus auctor semper. Nullam sed lorem nec quam dignissim interdum sed in risus. Cras a urna neque.
+<br>
+Praesent sed gravida neque, laoreet rutrum eros. Etiam pellentesque erat ut odio tempus, ut auctor mauris mattis. Morbi hendrerit eget sem nec facilisis. Donec sit amet ex ut nunc blandit imperdiet non vel mauris. Nunc pretium id purus sit amet sagittis. Quisque eleifend, mauris quis lacinia egestas, diam arcu congue lorem, eget vestibulum est leo eu neque. Vestibulum cursus dapibus neque, sed pretium justo vehicula eget. Vestibulum imperdiet fermentum ex in euismod. Suspendisse potenti. Ut ultrices urna eget dui ullamcorper congue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse sit amet lacus nisi.
+<br>
+Cras ac leo vitae lorem aliquam elementum at in magna. Aliquam ac feugiat arcu. Suspendisse id convallis nulla. Pellentesque sed mollis odio. Vivamus aliquet mi sit amet orci dictum suscipit. Sed nec urna sollicitudin odio volutpat interdum. Vivamus semper ultricies varius. In ut consectetur lacus, at finibus justo. Quisque mattis quam eget metus aliquam tristique. Ut mollis eleifend tincidunt. Integer placerat odio quis tempor consectetur. Nullam consectetur, lectus ac laoreet imperdiet, ligula risus vulputate nulla, a condimentum dolor nulla sit amet nisi. Ut sollicitudin sed mi nec venenatis. Sed ut tortor mauris.
+
+</div>
+
+
+	</body>
+</html>
