@@ -145,3 +145,7 @@ Coursework 2018-09-22-22-40:
 - (render_templates.py) Added 'render_template' function to get a template file from the template environment and return the rendered version.
 - (render_templates.py) Added 'template_loader' function to read template files data as requested by the template environment.
 - (render_templates.py) Runs every time enter key is pressed, so templates can be quickly re-rendered during development.
+
+Coursework 2018-09-23-23-01:
+- (render_templates.py) Fixed bug in main loop where the same old files are being rendered, instead of the new updated files being rendered. It required a new template environment to be created on each loop.
+

@@ -37,9 +37,6 @@ def template_loader(template_name):
     return data
 
 
-# Create a new Jinja2 template environment used for loading and rendering the templates
-env = jinja2.Environment(loader=jinja2.FunctionLoader(template_loader))
-
 # Specifies the directory where the templates are located
 template_dir = "templates"
 # Specifies the directory where the rendered templates should be output to
@@ -49,6 +46,9 @@ rendered_dir = "webroot"
 # Loop forever rendering templates when the user presses enter, until shell receives KeyboardInterrupt
 while True:
     print("STARTED RENDERING TEMPLATES")
+    
+    # Create a new Jinja2 template environment used for loading and rendering the templates
+    env = jinja2.Environment(loader=jinja2.FunctionLoader(template_loader))
     
     for template_path in scan_directory(template_dir):
         if template_path.split(".")[-1] == "html":

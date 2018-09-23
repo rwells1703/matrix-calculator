@@ -6,7 +6,7 @@ import os
 os.chdir("webroot")
 
 # Run the server on localhost, port 80 (standard http port)
-server_address = ("0.0.0.0", 80)
+server_address = ("0.0.0.0", 8080)
 
 # Creates the server object on the address
 server = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
