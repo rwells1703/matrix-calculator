@@ -2,7 +2,9 @@
 	<head>
 		<title>Matrix Website</title>
 		
+		<!-- Google fonts "Montserrat" and "Raleway" -->
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 		
 		<style>
 			/* Animations */
@@ -21,7 +23,6 @@
 				/* Prevents text from getting larger as the view port decreases in size on mobile devices */
 				text-size-adjust: none;
 				margin: 0;
-				font-family: 'Montserrat', sans-serif;
 				font-size: 2.5vh;
 				background-color: var(--theme-color-page-background);
 			}
@@ -34,10 +35,9 @@
 				overflow: auto;
 				width: 100%;
 				box-shadow: var(--theme-box-shadow-navbar);
-				
 			}
 			
-			/* The navbar hyperlinks */
+			/* The navbar hyperlinks inside each button */
 			a.navbar-item {
 				display: block;
 				padding: 2vh 2vw;
@@ -48,12 +48,14 @@
 				font-size: 3vh;
 			}
 			
+			/* The navbar item being hovered over by the mouse */
 			a.navbar-item:hover {
-				background-color: var(--theme-color-main);
+				background-color: var(--theme-color-main-light);
 				box-shadow: var(--theme-box-shadow-navbar-item);
 				border-radius: 5px;
 			}
 			
+			/* The navbar item of the current page */
 			a.navbar-item.active {
 				background-color: var(--theme-color-main-dark);
 				box-shadow: var(--theme-box-shadow-navbar-item);
@@ -67,6 +69,7 @@
 				text-decoration: none;
 			}
 
+			/* Regular hyperlinks being hovered over by the mouse */
 			a.link:hover {
 				color: var(--theme-color-main-light);
 			}
@@ -81,73 +84,12 @@
 	</head>
 	
 	<body>
-		<script type="text/javascript">		
-			var themeSalmonPink = {
-				"color-main":"#ff4c4c",
-				"color-main-dark":"#ed2d2d",
-				"color-main-light":"#ff7c7c",
-				"color-page-background":"#fcfcfc",
-				"color-textbox-border":"#b2b2b2",
-				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
-				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
-				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
-				"border-radius":"0.6vh"
-			};
-			
-			var themeElectricBlue = {
-				"color-main":"#0082d8",
-				"color-main-dark":"#0065a8",
-				"color-main-light":"#5cabe0",
-				"color-page-background":"#fcfcfc",
-				"color-textbox-border":"#b2b2b2",
-				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
-				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
-				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
-				"border-radius":"0.6vh"
-			};
-			
-			var themeMustardYellow = {
-				"color-main":"#f9c400",
-				"color-main-dark":"#e0af00",
-				"color-main-light":"#ffdc5e",
-				"color-page-background":"#fcfcfc",
-				"color-textbox-border":"#b2b2b2",
-				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
-				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
-				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
-				"border-radius":"0.6vh"
-			};
-			
-			var themeSlateGrey = {
-				"color-main":"#424242",
-				"color-main-dark":"#333333",
-				"color-main-light":"#898989",
-				"color-page-background":"#fcfcfc",
-				"color-textbox-border":"#b2b2b2",
-				"box-shadow":"0px 2px 5px rgba(0,0,0,0.3)",
-				"box-shadow-navbar":"0px 2px 5px rgba(0,0,0,0.2)",
-				"box-shadow-navbar-item":"2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
-				"border-radius":"0.6vh"
-			};
-			
-			var theme = themeSalmonPink;
-			
-			document.body.style.setProperty("--theme-color-main", theme["color-main"]);
-			document.body.style.setProperty("--theme-color-main-dark", theme["color-main-dark"]);
-			document.body.style.setProperty("--theme-color-main-light", theme["color-main-light"]);
-			document.body.style.setProperty("--theme-color-page-background", theme["color-page-background"]);
-			document.body.style.setProperty("--theme-color-textbox-border", theme["color-textbox-border"]);
-			document.body.style.setProperty("--theme-box-shadow", theme["box-shadow"]);
-			document.body.style.setProperty("--theme-box-shadow-navbar", theme["box-shadow-navbar"]);
-			document.body.style.setProperty("--theme-box-shadow-navbar-item", theme["box-shadow-navbar-item"]);
-			document.body.style.setProperty("--theme-border-radius", theme["border-radius"]);
-		</script>
-		
 		<div id="navbar">
 			<a class="navbar-item" href="index.html">Home</a>
 			<a class="navbar-item" href="about_matrices.html">About Matrices</a>
 			<a class="navbar-item" href="matrix_calculator.html">Matrix Calculator</a>
 			<a class="navbar-item" href="help.html">Help</a>
+			<a class="navbar-item" href="settings.html">Settings</a>
 		</div>
 			
 		
@@ -800,5 +742,8 @@
 </script>
 
 
+		
+		<!-- Dynamically applies a theme to every page e.g. color and font -->
+		<script type="text/javascript" src="scripts/page_theme.js"></script>
 	</body>
 </html>

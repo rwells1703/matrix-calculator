@@ -20,8 +20,6 @@ function createButton(innerHTML, onclick) {
 	text.style.display = "table-cell";
 	text.style.verticalAlign = "middle";
 	text.style.textAlign = "center";
-	// Font size must be small to prevent text from overflowing outside buttons and causing layout issues
-	text.style.fontSize = "2vh";
 	button.appendChild(text);
 	
 	button.style.color = "white";
@@ -47,10 +45,9 @@ function createMainDiv() {
 function createCanvasDiv() {
 	canvasDiv = document.createElement("div");
 	canvasDiv.id = "canvasDiv";
-	canvasDiv.style.padding = "5vh";
+	canvasDiv.style.padding = "30px";
 	canvasDiv.style.display = "block";
 	canvasDiv.style.float = "left";
-	
 	mainDiv.appendChild(canvasDiv);
 	
 	canvas = document.createElement("canvas");
@@ -65,7 +62,7 @@ function createCanvasDiv() {
 function createEquationDiv() {
 	equationDiv = document.createElement("div");
 	equationDiv.id = "equationDiv";
-	equationDiv.style.padding = "5vh";
+	equationDiv.style.padding = "30px";
 	mainDiv.appendChild(equationDiv);
 	
 	// Create container div for top row buttons
@@ -102,6 +99,7 @@ function createEquationDiv() {
 	equationFinishButtonDiv.appendChild(createButton("Solve", solveEquation));
 	equationFinishButtonDiv.appendChild(createButton("Export", null));
 	
+
 	// Counts increase/decrease for every item added/removed from the equation
 	matrixCount = 0;
 	scalarCount = 0;
@@ -112,46 +110,42 @@ function createEquationDiv() {
 // Makes the canvas a square shape that fits perfectly within the viewport
 // Then fit the equation div into the remaining space, either beside or below the canvas
 function resizePage() {
-	var navbarHeight = pxToFloat(window.getComputedStyle(navbar).height);
-	var canvasDivPadding = pxToFloat(window.getComputedStyle(canvasDiv).padding);
-	var canvasDivMargin = pxToFloat(window.getComputedStyle(canvasDiv).margin);
-	var equationDivPadding = pxToFloat(window.getComputedStyle(equationDiv).padding);
+	// Gets computed properties. Must use window.getComputedStyle because element.clientHeight rounds to integer values
+    var navbarHeight = pxToFloat(window.getComputedStyle(navbar).height);
+    var canvasDivPadding = pxToFloat(window.getComputedStyle(canvasDiv).padding);
+    var equationDivPadding = pxToFloat(window.getComputedStyle(equationDiv).padding);
 	
-	// We use this instead of window.innerHeight because it prevents a bug on mobile
-	// It prevents the whole page rearranging when the mobile URL bar hides during scrolling
-	// Using the computed style, height gets the height of the window, ignoring the url bar.
-	var windowHeight = pxToFloat(window.getComputedStyle(document.body)["height"]);
-	
-	// Page taller than wide (portrait orientation)
-	if (window.innerHeight - navbarHeight > window.innerWidth) {
-		canvas.width = window.innerWidth - 2*canvasDivPadding;
-		canvas.height = canvas.width;
-	}
-	// Page wider than tall (landscape orientation)
-	else {
-		canvas.height = windowHeight - 2*canvasDivPadding - navbarHeight;
-		canvas.width = canvas.height;
-	}
-	
-	// Size the viewport according to the canvas size
-	gl.viewport(0,0,canvas.width,canvas.height);
-	
-	// Check whether equationDiv should beside canvasDiv, or underneath canvasDiv
-	// If the canvas (and its padding) is taking more than 60% of the horizontal screen space...
-	if (canvas.width + 2*canvasDivPadding + 2*canvasDivMargin> 0.6*window.innerWidth) {
-		// Position them one on top of the other
-		equationDiv.style.float = "left";
-		// Make equation div fill all available horizontal space
-		equationDiv.style.width = window.innerWidth - 2*equationDivPadding - 20;
-		// Makes sure that the canvas is centered horizontally using margins
-		canvasDiv.style.marginLeft = (window.innerWidth - canvas.width - 2*canvasDivPadding) / 2;
-		canvasDiv.style.marginRight = canvasDiv.style.marginLeft;
-	// ...otherwise position them side by side
-	} else {
-		equationDiv.style.float = "right";
-		// Make equation div fit into remaining horizontal space
-		equationDiv.style.width = window.innerWidth - canvas.width - 2*canvasDivPadding - 2*equationDivPadding - 20;
-		// Removes horizontal centering margins
-		canvasDiv.style.margin = "0px";
-	}
+    // Page taller than wide (portrait orientation)
+    if (document.body.offsetHeight - navbarHeight > document.body.offsetWidth) {
+        canvas.width = document.body.offsetWidth - 2 * canvasDivPadding;
+        canvas.height = canvas.width;
+    }
+    // Page wider than tall (landscape orientation)
+    else {
+        canvas.height = document.body.offsetHeight - 2 * canvasDivPadding - navbarHeight;
+        canvas.width = canvas.height;
+    }
+
+    // Size the viewport according to the canvas size
+    gl.viewport(0, 0, canvas.width, canvas.height);
+		
+    // Check whether equationDiv should beside canvasDiv, or underneath canvasDiv
+    // If the canvas (and its padding) is taking more than 60% of the horizontal screen space...
+    if (canvas.width + 2 * canvasDivPadding > 0.6 * document.body.offsetWidth) {
+        // Position them one on top of the other
+        equationDiv.style.float = "left";
+        // Make equation div fill all available horizontal space
+        equationDiv.style.width = document.body.offsetWidth - 2 * equationDivPadding;
+        // Makes sure that the canvas is centered horizontally using margins
+        canvasDiv.style.marginLeft = (document.body.offsetWidth - canvas.width - 2 * canvasDivPadding) / 2;
+        canvasDiv.style.marginRight = canvasDiv.style.marginLeft;
+    } else {
+		// ...otherwise position them side by side
+        equationDiv.style.float = "right";
+        // Make equation div fit into remaining horizontal space
+		// Must take 17 pixels to account for a scrollbar
+        equationDiv.style.width = document.body.offsetWidth - canvas.width - 2 * canvasDivPadding - 2 * equationDivPadding - 17;
+        // Removes horizontal centering margins
+        canvasDiv.style.margin = "0px";
+    }
 }

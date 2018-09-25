@@ -149,3 +149,19 @@ Coursework 2018-09-22-22-40:
 Coursework 2018-09-23-23-01:
 - (render_templates.py) Fixed bug in main loop where the same old files are being rendered, instead of the new updated files being rendered. It required a new template environment to be created on each loop.
 
+Coursework 2018-09-25-22-36:
+- (render_templates.py) Fixes bug where jinja2 does not get imported from packages folder on school computers. Added "packages" to the system path to fix this.
+- (page_layout.js) Fixed bug causing a scrollbar to appear on the left in landscape view. Was caused by rounding errors in window.innerWidth/window.innerHeight so replaced them with document.body.clientWidth/document.body.clientHeight.
+- (matrix_calculator.html) The above bug may also may have been due to the page not fully loading when dimensions are calculated so added a 1ms time wait before the page is initially resized.
+- (page_layout.js) Fixed bug causing buttons to appear below the graph, even in landscape view. Had to take 17 pixels from the equation div width to account for the standard chrome scrollbar width (17px).
+- (page_layout.js) Fixing the above bugs also fixed the problem with zooming in on mobile causing whitespace next to the navbar. Not sure how the fix worked.
+- (page_theme.js) Created. Will handle themeing of each page. Replaces the script in "base.html".
+- (base.html) Added link to new font "Raleway".
+- (page_theme.js) Made the fonts switchable, similar to the color theme system.
+- (page_theme.js) Re-added hilighting for the current page in the navbar. Was previously removed when moving from "Flask" web server to local files + "Python WSGI" server, but is now back.
+- (base.html) Added/edited some of the comments.
+- (settings.html) Created. Will contain settings for changing theme/font and possibly more. Incomplete for now.
+- (base.html) Added navbar item for "settings" page.
+- (page_theme.js) Added navbar hilightning for "settings" navbar item.
+- (web_server.py) Changed default port number from 80 to 8080. Did this so I can use "Chrome" dev tools remote device port forwarding to view the page on my phone over USB. This feature does not support the use of port 80.
+

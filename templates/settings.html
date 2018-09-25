@@ -1,0 +1,39 @@
+{% extends "templates\\base.html" %}
+
+{% block content %}
+
+<script type="text/javascript" src="scripts/matrix_calculator/page_layout.js"></script>
+
+<div id="mainDiv">
+</div>
+
+<script>
+	function changeTheme() {
+		console.log(event.srcElement.innerHTML);
+	}
+	
+	var mainDiv = document.getElementById("mainDiv");
+	
+	var themePickerDiv = document.createElement("div");
+	themePickerDiv.id = "themePickerDiv";
+	themePickerDiv.style.height = "20%";
+	themePickerDiv.style.display = "grid";
+	themePickerDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
+	themePickerDiv.style.marginBottom = "5vh";
+	mainDiv.appendChild(themePickerDiv);
+	
+	var salmonPink = createButton("Salmon Pink",null);
+	salmonPink.addEventListener("click", changeTheme)
+	var electricBlue = createButton("Electric Blue",null);
+	electricBlue.addEventListener("click", changeTheme)
+	var mustardYellow = createButton("Mustard Yellow",null);
+	mustardYellow.addEventListener("click", changeTheme)
+	var slateGrey = createButton("Slate Grey",null);
+	slateGrey.addEventListener("click", changeTheme)
+	
+	themePickerDiv.append(salmonPink);
+	themePickerDiv.append(electricBlue);
+	themePickerDiv.append(mustardYellow);
+	themePickerDiv.append(slateGrey);
+</script>
+{% endblock %}

@@ -48,8 +48,8 @@
 	// Equation div contains buttons to add new items to the current equation, as well as the equation itself
 	createEquationDiv();
 	// Resizes all elements of the page to fit the current display size
-	resizePage();
-	
+	window.setTimeout(resizePage, 1);
+	//resizePage();
 	// Functions for handling all mouse events on the canvas
 	mouseDown = false;
 	canvas.onmousedown = mouseDown;
