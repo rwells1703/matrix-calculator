@@ -3,10 +3,10 @@
 {% block content %}
 
 <!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
-<script type="text/javascript" src="scripts/matrix_calculator/page_layout.js"></script>
+<script type="text/javascript" src="scripts/matrix_calculator_layout.js"></script>
 
 <!-- Script that handles drawing to the canvas using WebGL -->
-<script type="text/javascript" src="scripts/matrix_calculator/canvas_webgl.js"></script>
+<script type="text/javascript" src="scripts/matrix_calculator_canvas.js"></script>
 
 <!-- The GLSL vertex shader script for use in WebGL -->
 <script id="vertexShader" type="text/glsl">
@@ -32,11 +32,23 @@
 </script>
 
 <!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
-<script type="text/javascript" src="scripts/matrix_calculator/equation_builder.js"></script>
+<script type="text/javascript" src="scripts/matrix_calculator_equation_builder.js"></script>
 
 <!-- Script that handles the parsing and solving of the equations the user has inputted -->
-<script type="text/javascript" src="scripts/matrix_calculator/equation_solver.js"></script>
+<!--<script type="text/javascript" src="scripts/matrix_calculator_equation_solver.js"></script>-->
 
+<script type="text/javascript">
+	window.addEventListener("resize", matrix_calculator_layout.resizePage, false);
+	matrix_calculator_layout.createMainDiv();
+	matrix_calculator_layout.createCanvasDiv();
+	matrix_calculator_layout.createEquationDiv();
+	matrix_calculator_canvas.registerMouseEvents();
+	matrix_calculator_canvas.setupWebGL();
+	matrix_calculator_layout.resizePage();
+	requestAnimationFrame(matrix_calculator_canvas.render);
+</script>
+
+<!--
 <script type="text/javascript">
 	window.addEventListener("resize", resizePage, false);
 	navbar = document.getElementById("navbar");
@@ -81,5 +93,5 @@
 	// Begins the render loop
 	requestAnimationFrame(render);
 </script>
-
+-->
 {% endblock %}

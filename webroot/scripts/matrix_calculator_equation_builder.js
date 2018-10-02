@@ -1,12 +1,15 @@
+// Declare namespace
+matrix_calculator_equation_builder = {};
+
 // Creates an empty item that can become a scalar, matrix or operator
-function createEmptyItem(itemClass, itemCount) {
+matrix_calculator_equation_builder.createEmptyItem = function(itemClass, itemCount) {
 	var itemWrapper = document.createElement("div");
 	itemWrapper.className = itemClass;
 	itemWrapper.id = itemCount;
 	itemWrapper.style.display = "grid";
 	itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
 	itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
-	itemWrapper.style.background = "white";
+	itemWrapper.style.background = "var(--theme-color-page-background-light)";
 	itemWrapper.style.padding = 0;
 	itemWrapper.style.height = "30vh";
 	itemWrapper.style.marginBottom = "4vh";
@@ -39,7 +42,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemMoveUpIcon.style.gridColumnEnd = 3;
 	itemMoveUpIcon.style.gridRowStart = 4;
 	itemMoveUpIcon.style.gridRowEnd = 5;
-	itemMoveUpIcon.onclick = moveItemUp;
+	itemMoveUpIcon.onclick = matrix_calculator_equation_builder.moveItemUp;
 	
 	var itemDeleteIcon = document.createElement("img");
 	itemDeleteIcon.src = "images/delete.svg";
@@ -50,7 +53,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemDeleteIcon.style.gridColumnEnd = 3;
 	itemDeleteIcon.style.gridRowStart = 6;
 	itemDeleteIcon.style.gridRowEnd = 7;
-	itemDeleteIcon.onclick = deleteItem;
+	itemDeleteIcon.onclick = matrix_calculator_equation_builder.deleteItem;
 	
 	var itemMoveDownIcon = document.createElement("img");
 	itemMoveDownIcon.src = "images/move_down.svg";
@@ -61,7 +64,7 @@ function createEmptyItem(itemClass, itemCount) {
 	itemMoveDownIcon.style.gridColumnEnd = 3;
 	itemMoveDownIcon.style.gridRowStart = 8;
 	itemMoveDownIcon.style.gridRowEnd = 9;
-	itemMoveDownIcon.onclick = moveItemDown;
+	itemMoveDownIcon.onclick = matrix_calculator_equation_builder.moveItemDown;
 
 	itemWrapper.appendChild(itemSidebar);
 	itemWrapper.appendChild(itemName);
@@ -69,12 +72,13 @@ function createEmptyItem(itemClass, itemCount) {
 	itemWrapper.appendChild(itemDeleteIcon);
 	itemWrapper.appendChild(itemMoveDownIcon);
 	
-	toggleEquationFinishButtons();
+	matrix_calculator_equation_builder.toggleEquationFinishButtons();
 	
 	return itemWrapper;
-}
+};
 
-function deleteItem(event) {
+// Deletes the selected item when the user clicks the delete icon
+matrix_calculator_equation_builder.deleteItem = function(event) {
 	// Gets parent element of the delete icon that was clicked
 	var item = event["path"][1];
 	
@@ -94,7 +98,7 @@ function deleteItem(event) {
 	// Animates the removal of the item
 	item.style.animationName = "fadeOut";
 	
-	toggleEquationFinishButtons();
+	matrix_calculator_equation_builder.toggleEquationFinishButtons();
 	
 	// Deletes the item 200ms later so that deletion occurs slightly before animation ends (prevents flicker)
 	setTimeout(function() {
@@ -115,9 +119,10 @@ function deleteItem(event) {
 		
 		item.parentNode.removeChild(item);
 	}, 200);
-}
+};
 
-function moveItemUp(event) {
+// Moves an item upwards in the equation, swapping it with the item above
+matrix_calculator_equation_builder.moveItemUp = function(event) {
 	var item = event["path"][0].parentNode;
 	var previousItem = item.previousSibling;
 	
@@ -137,9 +142,10 @@ function moveItemUp(event) {
 			previousItem.children[1].innerHTML = previousItem.className + previousItem.id;
 		}
 	}
-}
+};
 
-function moveItemDown(event) {
+// Moves an item downwards in the equation, swapping it with the item below
+matrix_calculator_equation_builder.moveItemDown = function(event) {
 	var item = event["path"][0].parentNode;
 	var nextItem = item.nextSibling;
 	
@@ -167,54 +173,54 @@ function moveItemDown(event) {
 			nextItem.children[1].innerHTML = nextItem.className + nextItem.id;
 		}
 	}
-}
+};
+
+// Creates a new text box for inputting values e.g. in a scalar or matrix item
+matrix_calculator_equation_builder.createInputTextbox = function() {
+	var inputTextbox = document.createElement("input");
+	inputTextbox.style.boxSizing = "border-box";
+	inputTextbox.style.width = "90%";
+	inputTextbox.style.height = "90%";
+	inputTextbox.style.margin = "auto auto";
+	inputTextbox.style.borderWidth = 1;
+	inputTextbox.style.borderStyle = "solid";
+	inputTextbox.style.borderColor = "var(--theme-color-textbox-border)";
+	inputTextbox.style.backgroundColor = "var(--theme-color-page-background)";
+	inputTextbox.style.color = "var(--theme-color-text)";
+	inputTextbox.style.textAlign = "center";
+	inputTextbox.type = "text";
+	
+	return inputTextbox;
+};
 
 // Creates a scalar item
-function addScalar() {
+matrix_calculator_equation_builder.addScalar = function() {
 	scalarCount += 1;
-	var scalarWrapper = createEmptyItem("scalar", scalarCount);
+	var scalarWrapper = matrix_calculator_equation_builder.createEmptyItem("scalar", scalarCount);
 	
-	var scalarTextbox = document.createElement("input");
-	scalarTextbox.style.boxSizing = "border-box";
-	scalarTextbox.style.width = "100%";
-	scalarTextbox.style.borderWidth = 1;
-	scalarTextbox.style.borderStyle = "solid";
-	scalarTextbox.style.borderColor = "var(--theme-color-textbox-border)";
+	var scalarTextbox = matrix_calculator_equation_builder.createInputTextbox();
 	scalarTextbox.style.gridColumnStart = 4;
 	scalarTextbox.style.gridColumnEnd = 5;
 	scalarTextbox.style.gridRowStart = 2;
 	scalarTextbox.style.gridRowEnd = 3;
-	scalarTextbox.style.textAlign = "center";
-	scalarTextbox.type = "text";
 	scalarWrapper.appendChild(scalarTextbox);
-	
 	itemDiv.appendChild(scalarWrapper);
-}
+};
 
 // Creates a matrix item
-function addMatrix() {
+matrix_calculator_equation_builder.addMatrix = function() {
 	matrixCount += 1;
-	var matrixWrapper = createEmptyItem("matrix", matrixCount);
+	var matrixWrapper = matrix_calculator_equation_builder.createEmptyItem("matrix", matrixCount);
 	
 	var r = 0;
 	while (r < 7) {
 		var c = 0;
 		while (c < 7) {
-			var matrixElementTextbox = document.createElement("input");
-			matrixElementTextbox.style.boxSizing = "border-box";
-			matrixElementTextbox.style.width = "90%";
-			matrixElementTextbox.style.height = "90%";
-			matrixElementTextbox.style.borderWidth = 1;
-			matrixElementTextbox.style.borderStyle = "solid";
-			matrixElementTextbox.style.borderColor = "var(--theme-color-textbox-border)";
-			matrixElementTextbox.style.textAlign = "center";
-			matrixElementTextbox.type = "text";
-			
+			var matrixElementTextbox = matrix_calculator_equation_builder.createInputTextbox();
 			matrixElementTextbox.style.gridColumnStart = 4+c;
 			matrixElementTextbox.style.gridColumnEnd = 5+c;
 			matrixElementTextbox.style.gridRowStart = 2+r;
 			matrixElementTextbox.style.gridRowEnd = 3+r;
-			
 			matrixWrapper.appendChild(matrixElementTextbox);
 			
 			// Hide any rows or elements so only a 2x2 matrix shows
@@ -238,7 +244,7 @@ function addMatrix() {
 	addMatrixRowIcon.style.gridColumnEnd = 5;
 	addMatrixRowIcon.style.gridRowStart = 9;
 	addMatrixRowIcon.style.gridRowEnd = 10;
-	addMatrixRowIcon.onclick = addMatrixRow;
+	addMatrixRowIcon.onclick = matrix_calculator_equation_builder.addMatrixRow;
 	
 	var removeMatrixRowIcon = document.createElement("img");
 	removeMatrixRowIcon.src = "images/remove.svg";
@@ -249,7 +255,7 @@ function addMatrix() {
 	removeMatrixRowIcon.style.gridColumnEnd = 6;
 	removeMatrixRowIcon.style.gridRowStart = 9;
 	removeMatrixRowIcon.style.gridRowEnd = 10;
-	removeMatrixRowIcon.onclick = removeMatrixRow;
+	removeMatrixRowIcon.onclick = matrix_calculator_equation_builder.removeMatrixRow;
 	
 	var addMatrixColumnIcon = document.createElement("img");
 	addMatrixColumnIcon.src = "images/add.svg";
@@ -260,7 +266,7 @@ function addMatrix() {
 	addMatrixColumnIcon.style.gridColumnEnd = 12;
 	addMatrixColumnIcon.style.gridRowStart = 2;
 	addMatrixColumnIcon.style.gridRowEnd = 3;
-	addMatrixColumnIcon.onclick = addMatrixColumn;
+	addMatrixColumnIcon.onclick = matrix_calculator_equation_builder.addMatrixColumn;
 	
 	var removeMatrixColumnIcon = document.createElement("img");
 	removeMatrixColumnIcon.src = "images/remove.svg";
@@ -271,7 +277,7 @@ function addMatrix() {
 	removeMatrixColumnIcon.style.gridColumnEnd = 12;
 	removeMatrixColumnIcon.style.gridRowStart = 3;
 	removeMatrixColumnIcon.style.gridRowEnd = 4;
-	removeMatrixColumnIcon.onclick = removeMatrixColumn;
+	removeMatrixColumnIcon.onclick = matrix_calculator_equation_builder.removeMatrixColumn;
 	
 	matrixWrapper.appendChild(addMatrixRowIcon);
 	matrixWrapper.appendChild(removeMatrixRowIcon);
@@ -279,9 +285,10 @@ function addMatrix() {
 	matrixWrapper.appendChild(removeMatrixColumnIcon);
 	
 	itemDiv.appendChild(matrixWrapper);
-}
+};
 
-function addMatrixRow() {
+// Adds a new row to a matrix item
+matrix_calculator_equation_builder.addMatrixRow = function() {
 	var matrixWrapper = event["path"][1];
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
@@ -295,9 +302,10 @@ function addMatrixRow() {
 		}
 		matrixWrapper.setAttribute("rows", rows+1)
 	}
-}
+};
 
-function removeMatrixRow() {
+// Removes a row from the matrix item
+matrix_calculator_equation_builder.removeMatrixRow = function() {
 	var matrixWrapper = event["path"][1];
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
@@ -311,9 +319,10 @@ function removeMatrixRow() {
 		}
 		matrixWrapper.setAttribute("rows", rows-1)
 	}
-}
+};
 
-function addMatrixColumn() {
+// Adds a new column to a matrix item
+matrix_calculator_equation_builder.addMatrixColumn = function() {
 	var matrixWrapper = event["path"][1];
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
@@ -327,9 +336,10 @@ function addMatrixColumn() {
 		}
 		matrixWrapper.setAttribute("columns", columns+1)
 	}
-}
+};
 
-function removeMatrixColumn() {
+// Removes a column from the matrix item
+matrix_calculator_equation_builder.removeMatrixColumn = function() {
 	var matrixWrapper = event["path"][1];
 	var rows = parseInt(matrixWrapper.getAttribute("rows"));
 	var columns = parseInt(matrixWrapper.getAttribute("columns"));
@@ -343,25 +353,27 @@ function removeMatrixColumn() {
 		}
 		matrixWrapper.setAttribute("columns", columns-1);
 	}
-}
+};
 
-function createItemButton(innerHTML, positionsFromLeft) {
+// Creates a selectable button in an item, for selecting one value out of many
+matrix_calculator_equation_builder.createItemButton = function(innerHTML, positionsFromLeft) {
 	button = document.createElement("div");
 	
 	button.className = "selectionButton"; 
 	button.innerHTML = innerHTML;
 	button.style.height = "90%";
 	button.style.width = "90%";
+	button.style.margin = "auto auto";
 	button.style.boxSizing = "border-box";
 	button.style.textAlign = "center";
 	
 	button.style.borderWidth = 1;
 	button.style.borderStyle = "solid";
 	button.style.borderColor = "var(--theme-color-textbox-border)";
-	button.style.backgroundColor = "white";
+	button.style.backgroundColor = "var(--theme-color-page-background)";
 	
 	button.style.cursor = "pointer";
-	button.onclick = selectButton;
+	button.onclick = matrix_calculator_equation_builder.selectButton;
 	
 	var buttonsPerRow = 4;
 	button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
@@ -370,17 +382,18 @@ function createItemButton(innerHTML, positionsFromLeft) {
 	button.style.gridRowEnd = 3+Math.floor(positionsFromLeft / buttonsPerRow);
 	
 	return button;
-}
+};
 
-function addFunction() {
+// Creates a function item
+matrix_calculator_equation_builder.addFunction = function() {
 	functionCount += 1;
-	var functionWrapper = createEmptyItem("function", functionCount);
+	var functionWrapper = matrix_calculator_equation_builder.createEmptyItem("function", functionCount);
 	
-	var transposeButton = createItemButton("Tra", 0);
-	var determinantButton = createItemButton("Det", 1);
-	var sinButton = createItemButton("Sin", 2);
-	var cosButton = createItemButton("Cos", 3);
-	var tanButton = createItemButton("Tan", 4);
+	var transposeButton = matrix_calculator_equation_builder.createItemButton("Tra", 0);
+	var determinantButton = matrix_calculator_equation_builder.createItemButton("Det", 1);
+	var sinButton = matrix_calculator_equation_builder.createItemButton("Sin", 2);
+	var cosButton = matrix_calculator_equation_builder.createItemButton("Cos", 3);
+	var tanButton = matrix_calculator_equation_builder.createItemButton("Tan", 4);
 	
 	functionWrapper.append(transposeButton);
 	functionWrapper.append(determinantButton);
@@ -389,19 +402,20 @@ function addFunction() {
 	functionWrapper.append(tanButton);
 	
 	itemDiv.appendChild(functionWrapper);
-}
+};
 
-function addOperator() {
+// Creates a operator item
+matrix_calculator_equation_builder.addOperator = function() {
 	operatorCount += 1;
-	var operatorWrapper = createEmptyItem("operator", operatorCount);
+	var operatorWrapper = matrix_calculator_equation_builder.createEmptyItem("operator", operatorCount);
 	
-	var addButton = createItemButton("+", 0);
-	var subtractButton = createItemButton("-", 1);
-	var dotProductButton = createItemButton("·", 2);
-	var crossProductButton = createItemButton("x", 3);
-	var exponentButton = createItemButton("^", 4);
-	var openBracketButton = createItemButton("(", 5);
-	var closeBracketButton = createItemButton(")", 6);
+	var addButton = matrix_calculator_equation_builder.createItemButton("+", 0);
+	var subtractButton = matrix_calculator_equation_builder.createItemButton("-", 1);
+	var dotProductButton = matrix_calculator_equation_builder.createItemButton("·", 2);
+	var crossProductButton = matrix_calculator_equation_builder.createItemButton("x", 3);
+	var exponentButton = matrix_calculator_equation_builder.createItemButton("^", 4);
+	var openBracketButton = matrix_calculator_equation_builder.createItemButton("(", 5);
+	var closeBracketButton = matrix_calculator_equation_builder.createItemButton(")", 6);
 
 	operatorWrapper.appendChild(addButton);
 	operatorWrapper.appendChild(subtractButton);
@@ -412,10 +426,10 @@ function addOperator() {
 	operatorWrapper.appendChild(closeBracketButton);
 	
 	itemDiv.appendChild(operatorWrapper);
-}
+};
 
 // Changes the function/operator of an function/operator item based on user mouse click
-function selectButton(event) {
+matrix_calculator_equation_builder.selectButton = function(event) {
 	var selectedButton = event["path"][0];
 	
 	// Resets all the other buttons so that they are unselected
@@ -423,7 +437,7 @@ function selectButton(event) {
 	while (i < selectedButton.parentNode.children.length) {
 		if (selectedButton.parentNode.children[i].className == "selectionButton") {
 			selectedButton.parentNode.children[i].style.borderColor = "var(--theme-color-textbox-border)";
-			selectedButton.parentNode.children[i].style.backgroundColor = "white";
+			selectedButton.parentNode.children[i].style.backgroundColor = "var(--theme-color-page-background)";
 		}
 		i += 1;
 	}
@@ -434,11 +448,11 @@ function selectButton(event) {
 	
 	// Sets the value attribute of the function/operator item
 	selectedButton.parentNode.setAttribute("value", selectedButton.innerHTML);
-}
+};
 
 // Shows/hides the "solve" and "export" buttons at the bottom of the equation div
 // They are hidden if there are no items, otherwise they are visible
-function toggleEquationFinishButtons() {
+matrix_calculator_equation_builder.toggleEquationFinishButtons = function() {
 	if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0 && functionCount == 0) {
 		// If there are no items, dont show the finish "solve" and "export" buttons
 		// Resets the animation so it can be played again
@@ -453,4 +467,4 @@ function toggleEquationFinishButtons() {
 		equationFinishButtonDiv.style.animationName = "fadeIn";
 		equationFinishButtonDiv.style.visibility = "";
 	}
-}
+};

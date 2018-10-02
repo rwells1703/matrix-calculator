@@ -162,6 +162,18 @@ Coursework 2018-09-25-22-36:
 - (base.html) Added/edited some of the comments.
 - (settings.html) Created. Will contain settings for changing theme/font and possibly more. Incomplete for now.
 - (base.html) Added navbar item for "settings" page.
-- (page_theme.js) Added navbar hilightning for "settings" navbar item.
+- (page_theme.js) Added navbar hilighting for "settings" navbar item.
 - (web_server.py) Changed default port number from 80 to 8080. Did this so I can use "Chrome" dev tools remote device port forwarding to view the page on my phone over USB. This feature does not support the use of port 80.
 
+Coursework 2018-10-02-09-21:
+- Changed the names of many of the scripts in the "/scripts" folder and also changed their names. There are no folders in the "/scripts" folder any more, they are all in the same directory level.
+- Added namespacing to every javascript script, to prevent global namespace from becoming polluted. Uses a plain js object for each file, and dot notation e.g. module.submodule.function()
+- (base.html) Removed javascript at the bottom of the page that loads the selected theme into the css variables.
+- (theme.js) Changed the way that themes are applied. Themes are seperated into "Color", "Shade" and "Style". Removed the font option due to it being unecessary and causing performance issues.
+- (theme.js) Created. This applies the theme to each page of the website and is run by "base.html".
+- (theme.js) Changed the name of the themes to reflect the names of gemstones e.g. "Ruby Red", "Sapphire Blue" etc.
+- (theme.js) Added new theme "Amethyst Purple".
+- (theme.js) Made themes work across every page by using HTML5 local storage to store the current theme.
+- (theme.js) Fixed bug where clicking on the edge of one of the theme select buttons would cause an error. Was caused by the padding padding on the buttons being treated differently to main body, leading to different click events. Created function "settings.getButtonValue" to handle button click events and produce the same value for both body and padding.
+- (layout.js) Moved all relevent functions for creating the layout of a page here e.g. "layout.pxToFloat".
+- (matrix_calculator_canvas.js) Added more comments throughout code.

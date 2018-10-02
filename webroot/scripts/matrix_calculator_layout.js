@@ -1,48 +1,16 @@
-// Converts a string value "px" on the end, to a float value
-function pxToFloat(string) {
-	return parseFloat(string.substring(0, string.length-2));
-}
-
-// Creates a new top row button e.g. add scalar
-function createButton(innerHTML, onclick) {
-	var button = document.createElement("div");
-	button.style.display = "table";
-	button.style.height = "100%";
-	// Keeps gaps between buttons and makes sure each is centered within its grid square
-	button.style.width = "70%";
-	button.style.margin = "0 auto";
-	// Prevents text from being too close to side of button
-	button.style.padding = "5%";
-	
-	// Create a small table cell div that holds the button text so that it can be perfectly central
-	var text = document.createElement("div");
-	text.innerHTML = innerHTML;
-	text.style.display = "table-cell";
-	text.style.verticalAlign = "middle";
-	text.style.textAlign = "center";
-	button.appendChild(text);
-	
-	button.style.color = "white";
-	button.style.backgroundColor = "var(--theme-color-main)";
-	button.style.borderRadius = "var(--theme-border-radius)";
-	button.style.boxShadow = "var(--theme-box-shadow)";
-
-	button.style.cursor = "pointer";
-	button.onclick = onclick;
-	
-	return button;
-}
+// Declare namespace
+matrix_calculator_layout = {};
 
 // Creates a main wrapper div for all elements
-function createMainDiv() {
+matrix_calculator_layout.createMainDiv = function() {
 	mainDiv = document.createElement("div");
 	mainDiv.id = "mainDiv";
 	mainDiv.style.padding = 0;
 	document.body.appendChild(mainDiv);
-}
+};
 
 // Create a new div to wrap a html5 canvas with a WebGL context
-function createCanvasDiv() {
+matrix_calculator_layout.createCanvasDiv = function() {
 	canvasDiv = document.createElement("div");
 	canvasDiv.id = "canvasDiv";
 	canvasDiv.style.padding = "30px";
@@ -56,64 +24,59 @@ function createCanvasDiv() {
 	canvasDiv.appendChild(canvas);
 	
 	gl = canvas.getContext("webgl");
-}
+};
 
 // Create new div to hold the current matrix equation and the buttons used for editing the equation
-function createEquationDiv() {
+matrix_calculator_layout.createEquationDiv = function() {
+	// Creates a div for holding all elements for building the equation
 	equationDiv = document.createElement("div");
 	equationDiv.id = "equationDiv";
 	equationDiv.style.padding = "30px";
 	mainDiv.appendChild(equationDiv);
 	
-	// Create container div for top row buttons
-	equationAddItemButtonDiv = document.createElement("div");
-	equationAddItemButtonDiv.id = "equationAddItemButtonDiv";
-	equationAddItemButtonDiv.style.marginBottom = "5vh";
-	equationAddItemButtonDiv.style.height = "10vh";
-	equationAddItemButtonDiv.style.display = "grid";
-	equationAddItemButtonDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
-	equationDiv.appendChild(equationAddItemButtonDiv);
-
-	// Create all buttons for adding new items
-	equationAddItemButtonDiv.appendChild(createButton("Add scalar", addScalar));
-	equationAddItemButtonDiv.appendChild(createButton("Add matrix", addMatrix));
-	equationAddItemButtonDiv.appendChild(createButton("Add function", addFunction));
-	equationAddItemButtonDiv.appendChild(createButton("Add operator", addOperator));
+	// Creates all buttons for adding new items to the equation
+	var addItemButtons = [];
+	addItemButtons.push(layout.createButton("Add scalar", matrix_calculator_equation_builder.addScalar, "var(--theme-color-main)"));
+	addItemButtons.push(layout.createButton("Add matrix", matrix_calculator_equation_builder.addMatrix, "var(--theme-color-main)"));
+	addItemButtons.push(layout.createButton("Add function", matrix_calculator_equation_builder.addFunction, "var(--theme-color-main)"));
+	addItemButtons.push(layout.createButton("Add operator", matrix_calculator_equation_builder.addOperator, "var(--theme-color-main)"));
 	
-	// Create container div for all items e.g. scalars, matrices and operators
+	// Creates a row of the add item buttons
+	equationAddItemButtonDiv = layout.createButtonRow("equationAddItemButtonDiv", addItemButtons);
+	equationDiv.appendChild(equationAddItemButtonDiv);
+	
+	// Creates a container div for all items e.g. scalars, matrices and operators
 	itemDiv = document.createElement("div");
 	itemDiv.id = "itemDiv";
 	equationDiv.appendChild(itemDiv);
 	
-	// Create container div for bottom row buttons
-	equationFinishButtonDiv = document.createElement("div");
-	equationFinishButtonDiv.id = "equationFinishButtonDiv";
-	equationFinishButtonDiv.style.height = "10vh";
-	equationFinishButtonDiv.style.display = "grid";
-	equationFinishButtonDiv.style.gridTemplateColumns = "repeat(2, 1fr)";
+	// Create buttons for solving the equation and importing/exporting it to a file
+	var finishItemButtons = [];
+	finishItemButtons.push(layout.createButton("Solve", null, "var(--theme-color-main)"));
+	finishItemButtons.push(layout.createButton("Import", null, "var(--theme-color-main)"));
+	finishItemButtons.push(layout.createButton("Export", null, "var(--theme-color-main)"));
+	
+	// Create the finishButtonDiv
+	equationFinishButtonDiv = layout.createButtonRow("equationFinishButtonDiv", finishItemButtons);
 	equationFinishButtonDiv.style.visibility = "hidden";
 	equationFinishButtonDiv.style.animationDuration = "0.25s";
 	equationDiv.appendChild(equationFinishButtonDiv);
 	
-	// Create all buttons for adding new items
-	equationFinishButtonDiv.appendChild(createButton("Solve", solveEquation));
-	equationFinishButtonDiv.appendChild(createButton("Export", null));
-	
-
 	// Counts increase/decrease for every item added/removed from the equation
 	matrixCount = 0;
 	scalarCount = 0;
 	functionCount = 0;
 	operatorCount = 0;
-}
+};
 
 // Makes the canvas a square shape that fits perfectly within the viewport
 // Then fit the equation div into the remaining space, either beside or below the canvas
-function resizePage() {
+matrix_calculator_layout.resizePage = function() {
 	// Gets computed properties. Must use window.getComputedStyle because element.clientHeight rounds to integer values
-    var navbarHeight = pxToFloat(window.getComputedStyle(navbar).height);
-    var canvasDivPadding = pxToFloat(window.getComputedStyle(canvasDiv).padding);
-    var equationDivPadding = pxToFloat(window.getComputedStyle(equationDiv).padding);
+	// The +2 is necessary because the "montserrat" font takes a small time to load, but is 2 pixels taller than the default font
+    var navbarHeight = layout.pxToFloat(window.getComputedStyle(navbar).height) + 2;
+    var canvasDivPadding = layout.pxToFloat(window.getComputedStyle(canvasDiv).padding);
+    var equationDivPadding = layout.pxToFloat(window.getComputedStyle(equationDiv).padding);
 	
     // Page taller than wide (portrait orientation)
     if (document.body.offsetHeight - navbarHeight > document.body.offsetWidth) {
@@ -128,7 +91,7 @@ function resizePage() {
 
     // Size the viewport according to the canvas size
     gl.viewport(0, 0, canvas.width, canvas.height);
-		
+
     // Check whether equationDiv should beside canvasDiv, or underneath canvasDiv
     // If the canvas (and its padding) is taking more than 60% of the horizontal screen space...
     if (canvas.width + 2 * canvasDivPadding > 0.6 * document.body.offsetWidth) {
@@ -148,4 +111,4 @@ function resizePage() {
         // Removes horizontal centering margins
         canvasDiv.style.margin = "0px";
     }
-}
+};
