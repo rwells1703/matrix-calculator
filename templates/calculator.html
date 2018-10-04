@@ -1,0 +1,60 @@
+{% extends "templates\\base.html" %}
+
+{% block content %}
+
+<!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
+<script type="text/javascript" src="scripts/calculator_layout.js"></script>
+
+<!-- Script that handles drawing to the canvas using WebGL -->
+<script type="text/javascript" src="scripts/calculator_canvas.js"></script>
+
+<!-- The GLSL vertex shader script for use in WebGL -->
+<script id="vertexShader" type="text/glsl">
+	precision mediump float;
+	attribute vec2 a_position;
+	attribute vec4 a_vert_color;
+	varying vec4 v_frag_color;
+	
+	void main() {
+		v_frag_color = a_vert_color;
+		gl_Position = vec4(a_position,0.0,1.0);
+	}
+</script>
+
+<!-- The GLSL fragment shader script for use in WebGL -->
+<script id="fragmentShader" type="text/glsl">
+	precision mediump float;
+	varying vec4 v_frag_color;
+	
+	void main() {
+		gl_FragColor = v_frag_color;
+	}
+</script>
+
+<!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
+<script type="text/javascript" src="scripts/calculator_equation_builder.js"></script>
+
+<!-- Script that handles the parsing and solving of the equations the user has inputted -->
+<script type="text/javascript" src="scripts/calculator_equation_solver.js"></script>
+
+<script type="text/javascript">
+	window.addEventListener("resize", calculator_layout.resizePage, false);
+	
+	calculator_layout.createMainDiv();
+	calculator_layout.createCanvasDiv();
+	calculator_layout.createEquationDiv();
+	
+	calculator_equation_builder.setItemCounts();
+	
+	calculator_canvas.registerMouseEvents();
+	calculator_canvas.setupWebGL();
+	
+	calculator_layout.resizePage();
+	
+	// Solves equation
+	calculator_equation_solver.solve();
+	
+	requestAnimationFrame(calculator_canvas.render);
+</script>
+
+{% endblock %}

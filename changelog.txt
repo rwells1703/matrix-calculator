@@ -177,3 +177,14 @@ Coursework 2018-10-02-09-21:
 - (theme.js) Fixed bug where clicking on the edge of one of the theme select buttons would cause an error. Was caused by the padding padding on the buttons being treated differently to main body, leading to different click events. Created function "settings.getButtonValue" to handle button click events and produce the same value for both body and padding.
 - (layout.js) Moved all relevent functions for creating the layout of a page here e.g. "layout.pxToFloat".
 - (matrix_calculator_canvas.js) Added more comments throughout code.
+
+Coursework 2018-10-04-20-21:
+- Changed the way namespacing is declared. Now using the "module pattern" which mimics object orientated design using self invoking functions, closures and javascript objects. This allows for easier way to change the names of modules. It also allows us to simulate private and public variables/functions by only having the self invoking function return the public ones, leaving the private ones available only within the closure.
+- Changed the name "about_matrices.html" to "about.html".
+- Changed the name of "matrix_calculator.html" to "calculator.html".
+- Changed all files and namespaces starting with "matrix_calculator" to "calculator" to reflect the change in filename. This drastically simplifies the namespace to make code much more readable because function/variable names are shorter.
+- (calculator_equation_solver.js) Implemented half complete "solveEquation" function that will solve normal equations involving scalars e.g. "4x5^(12+3)-4/2". Currently there is little error checking, matrices are not supported and functions are not supported.
+- (calculator.html) Added debug line to run "solveEquation" on page load for quick development.
+- (about.html) Fixed typo in contents section. Changed "Dot-roduct" to "Dot-Product".
+- (calculator_equation_builder.js) Fixed problem with text encoding in HTML where the middle dot operator is displayed as ·. Fixed it by replacing js string with "&middot" which is parsed by the browser.
+- (theme.js) Changed navbar hilighting to reflect changes in the names of "about_matrices" and "matrix_calculator" navbar items.
