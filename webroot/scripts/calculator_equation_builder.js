@@ -390,7 +390,7 @@ calculator_equation_builder = {};
 		button.style.cursor = "pointer";
 		button.onclick = context.selectButton;
 		
-		var buttonsPerRow = 4;
+		var buttonsPerRow = 6;
 		button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
 		button.style.gridColumnEnd = 5+(positionsFromLeft % buttonsPerRow);
 		button.style.gridRowStart = 2+Math.floor(positionsFromLeft / buttonsPerRow);
@@ -430,17 +430,21 @@ calculator_equation_builder = {};
 		
 		var addButton = context.createItemButton("+", 0);
 		var subtractButton = context.createItemButton("-", 1);
-		var dotProductButton = context.createItemButton("&middot", 2);
-		var crossProductButton = context.createItemButton("x", 3);
-		var exponentButton = context.createItemButton("^", 4);
-		var openBracketButton = context.createItemButton("(", 5);
-		var closeBracketButton = context.createItemButton(")", 6);
-
+		var multiplyButton = context.createItemButton("*", 2);
+		var divideButton = context.createItemButton("/", 3);
+		var exponentialButton = context.createItemButton("^", 4);
+		var dotProductButton = context.createItemButton("&middot", 5);
+		var crossProductButton = context.createItemButton("x", 6);
+		var openBracketButton = context.createItemButton("(", 7);
+		var closeBracketButton = context.createItemButton(")", 8);
+		
 		operatorWrapper.appendChild(addButton);
 		operatorWrapper.appendChild(subtractButton);
+		operatorWrapper.appendChild(multiplyButton);
+		operatorWrapper.appendChild(divideButton);
+		operatorWrapper.appendChild(exponentialButton);
 		operatorWrapper.appendChild(dotProductButton);
 		operatorWrapper.appendChild(crossProductButton);
-		operatorWrapper.appendChild(exponentButton);
 		operatorWrapper.appendChild(openBracketButton);
 		operatorWrapper.appendChild(closeBracketButton);
 		

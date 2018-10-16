@@ -188,3 +188,10 @@ Coursework 2018-10-04-20-21:
 - (about.html) Fixed typo in contents section. Changed "Dot-roduct" to "Dot-Product".
 - (calculator_equation_builder.js) Fixed problem with text encoding in HTML where the middle dot operator is displayed as ·. Fixed it by replacing js string with "&middot" which is parsed by the browser.
 - (theme.js) Changed navbar hilighting to reflect changes in the names of "about_matrices" and "matrix_calculator" navbar items.
+
+Coursework 2018-10-16-21-36:
+- (calculator_equation_solver.js) Changed from using new ES6 "Class" keyword to using generator functions to create objects with closures. These are more compatible with older browsers as ES6 is a relatively new standard, and this also allows for private functions/variables.
+- (calculator_equation_solver.js) Fixed a major bug with the "solveEquation" function that causes it to jump ahead when there are multiple add/subtract or multiply/divide operators in a row.
+- (calculator_equation_builder.js) Changed the selectable buttons in the "operator" item so that all possible operators are available.
+- (calculator_equation_solver.js) Added "Vector" item that inherits from "Matrix".
+- (calculator_equation_solver.js) Added "dotProduct" function to "Vector" item.
