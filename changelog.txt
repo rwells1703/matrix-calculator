@@ -195,3 +195,6 @@ Coursework 2018-10-16-21-36:
 - (calculator_equation_builder.js) Changed the selectable buttons in the "operator" item so that all possible operators are available.
 - (calculator_equation_solver.js) Added "Vector" item that inherits from "Matrix".
 - (calculator_equation_solver.js) Added "dotProduct" function to "Vector" item.
+
+Coursework 2018-10-17-08-30:
+- (calculator_equation_solver.js) Fixed the way that dot product works. Before it produced a vector output, but it now produces the correct scalar output. This was an error in my mathematical knowledge.

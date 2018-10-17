@@ -59,23 +59,14 @@ calculator_equation_solver = {};
 				return false
 			}
 			
-			var newVectorValues = [];
-			
+			var total = 0;
 			var r = 0;
 			while (r < self.rows) {
-				newVectorValues.push([]);
-				r += 1;
-			};
-			
-			var r = 0;
-			while (r < self.rows) {
-				newVectorValues[r][0] = self.value[r][0] * otherVector.value[r][0];
+				total += self.value[r][0] * otherVector.value[r][0];
 				r += 1;
 			}
 			
-			var newVector = context.Vector(newVectorValues);
-			
-			return newVector;
+			return total;
 		};
 		
 		return self;
