@@ -198,3 +198,12 @@ Coursework 2018-10-16-21-36:
 
 Coursework 2018-10-17-08-30:
 - (calculator_equation_solver.js) Fixed the way that dot product works. Before it produced a vector output, but it now produces the correct scalar output. This was an error in my mathematical knowledge.
+
+Coursework 2018-10-19-15-20:
+- (calculator_equation_solver.js) Began to implement cross product for vectors but decided that it makes more sense to implement more of the "Matrix" class first because cross product can be calculated using matrices.
+- (calculator_equation_solver.js) Created "specialOperations" function as a wrapper object for all operations that dont belong to a paticular item.
+- (calculator_equation_solver.js) Added "generateZeroMatrix" function to "specialOperations"
+- (calculator_equation_solver.js) Added "generateIdentityMatrix" function to "specialOperations"
+- (calculator_equation_solver.js) Added "dotProduct" function to "specialOperations"
+- (calculator_equation_solver.js) Added "matrixMatrixProduct" function to "specialOperations"
+- (calculator_equation_solver.js) Added "scalarMatrixProduct" function to "specialOperations"

@@ -2,12 +2,125 @@
 calculator_equation_solver = {};
 
 (function(context) {
+	var replaceArraySection = function(array, start, end, replacement) {
+		return array.slice(0, start).concat(replacement).concat(array.slice(end + 1, array.length));
+	}
+    
+    context.specialOperations = (function(self) {
+        self.dotProduct = function(left, right) {
+            if (left.type != "Vector" || right.type != "Vector") {
+				return false
+			}
+
+			if (left.rows != right.rows) {
+				return false
+			}
+			
+			var total = 0;
+
+			var r = 0;
+			while (r < left.rows) {
+				total += left.value[r][0] * right.value[r][0];
+				r += 1;
+			}
+
+			return total;
+        };
+
+        self.generateZeroMatrix = function(rows, columns) {
+            var elements = [];
+
+            var r = 0;
+            while (r < rows) {
+                elements.push([]);
+                var c = 0;
+                while (c < columns) {
+                    elements[r].push(0);
+                    c += 1;
+                }
+                r += 1;
+            }
+
+            return context.Matrix(elements);
+        };
+
+        self.generateIdentityMatrix = function(size) {
+            var elements = [];
+
+            var r = 0;
+            while (r < size ) {
+                elements.push([]);
+                var c = 0;
+                while (c < size) {
+                    if (r == c) {
+                        elements[r].push(1);
+                    }
+                    else {
+                        elements[r].push(0);
+                    }
+                    c += 1;
+                }
+                r += 1;
+            }
+
+            return context.Matrix(elements);
+        };
+
+        
+        self.matrixMatrixProduct = function(left, right) {
+            if (left.type != "Matrix" && right.type != "Matrix") {
+                return false;
+            }
+
+            if (left.columns != right.rows) {
+                return false;
+            }
+
+            var product = context.specialOperations.generateZeroMatrix(left.rows, right.columns);
+            var left_row = 0;
+            while (left_row < left.rows) {
+                var right_column = 0;
+                while (right_column < right.columns) {
+                    var shift = 0;
+                    while (shift < left.columns) {
+                        product.value[left_row][right_column] += left.value[left_row][shift] * right.value[shift][right_column];
+                        shift += 1;
+                    }
+                    right_column += 1;
+                }
+                left_row += 1;
+            }
+
+            return product;
+        };
+
+        self.scalarMatrixProduct = function(scalar, matrix) {
+            if (scalar.type != "Scalar" && matrix.type != "Matrix") {
+                return false;
+            }
+
+            var r = 0;
+            while (r < matrix.rows) {
+                var c = 0;
+                while (c < matrix.columns) {
+                        matrix.value[r][c] *= scalar;
+                    c += 1;
+                }
+                r += 1;
+            }
+
+            return matrix;
+        };
+
+        return self;
+	})({});
+
 	context.Scalar = function(value) {
 		var self = {};
 		
 		self.type = "Scalar";
 		self.value = value;
-	
+	    
 		self.display = function() {
 			console.log(self.value);
 		};
@@ -17,17 +130,10 @@ calculator_equation_solver = {};
 	
 	context.Matrix = function(value) {
 		var self = {};
-		
+
 		self.type = "Matrix";
 		self.value = value;
 		self.rows = value.length;
-		
-		/*if (Array.isArray(value[0])) {
-			self.columns = value[0].length;
-		}
-		else {
-			self.columns = 1;
-		}*/
 		self.columns = value[0].length;
 	
 		self.display = function() {
@@ -41,7 +147,8 @@ calculator_equation_solver = {};
 				r += 1;
 			}
 		};
-		
+
+        
 		return self;
 	};
 	
@@ -50,25 +157,8 @@ calculator_equation_solver = {};
 		
 		self.type = "Vector";
 		
-		self.dotProduct = function(otherVector) {
-			if (self.rows != otherVector.rows) {
-				return false
-			}
-			
-			if (otherVector.type != "Vector") {
-				return false
-			}
-			
-			var total = 0;
-			var r = 0;
-			while (r < self.rows) {
-				total += self.value[r][0] * otherVector.value[r][0];
-				r += 1;
-			}
-			
-			return total;
-		};
 		
+
 		return self;
 	};
 	
@@ -218,13 +308,10 @@ calculator_equation_solver = {};
 		console.log(equation);
 		console.log(context.solveEquation(equation));
 		*/
-		var x = context.Vector([[2],[5],[6]]);
-		var y = context.Vector([[1],[3],[4]]);
-		console.log(x.dotProduct(y));
-	}
-
-	var replaceArraySection = function(array, start, end, replacement) {
-		return array.slice(0, start).concat(replacement).concat(array.slice(end + 1, array.length));
+		var x = context.Matrix([[2,3],[5,2]]);
+        var y = context.Matrix([[2,3],[5,2]]);
+		//var y = context.Vector([[1],[3],[4]]);
+		console.log(context.specialOperations.matrixMatrixProduct(x,y));
 	}
 	
 	context.solveEquation = function(equation) {
