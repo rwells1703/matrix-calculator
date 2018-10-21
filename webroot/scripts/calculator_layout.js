@@ -1,9 +1,9 @@
 // Declare namespace
-calculator_layout = {};
-
-(function(context) {
+calculator_layout = (function(context)
+{
 	// Creates a main wrapper div for all elements
-	context.createMainDiv = function() {
+	context.createMainDiv = function()
+	{
 		var mainDiv = document.createElement("div");
 		mainDiv.id = "mainDiv";
 		mainDiv.style.padding = 0;
@@ -11,7 +11,8 @@ calculator_layout = {};
 	};
 
 	// Create a new div to wrap a html5 canvas with a WebGL context
-	context.createCanvasDiv = function() {
+	context.createCanvasDiv = function()
+	{
 		var mainDiv = document.getElementById("mainDiv");
 		
 		var canvasDiv = document.createElement("div");
@@ -31,7 +32,8 @@ calculator_layout = {};
 	};
 
 	// Create new div to hold the current matrix equation and the buttons used for editing the equation
-	context.createEquationDiv = function() {
+	context.createEquationDiv = function()
+	{
 		var mainDiv = document.getElementById("mainDiv");
 		
 		// Creates a div for holding all elements for building the equation
@@ -73,7 +75,8 @@ calculator_layout = {};
 	
 	// Makes the canvas a square shape that fits perfectly within the viewport
 	// Then fit the equation div into the remaining space, either beside or below the canvas
-	context.resizePage = function() {
+	context.resizePage = function()
+	{
 		// Gets computed properties. Must use window.getComputedStyle because element.clientHeight rounds to integer values
 		// The +2 is necessary because the "montserrat" font takes a small time to load, but is 2 pixels taller than the default font
 		var navbarHeight = layout.pxToFloat(window.getComputedStyle(navbar).height) + 2;
@@ -81,12 +84,14 @@ calculator_layout = {};
 		var equationDivPadding = layout.pxToFloat(window.getComputedStyle(equationDiv).padding);
 		
 		// Page taller than wide (portrait orientation)
-		if (document.body.offsetHeight - navbarHeight > document.body.offsetWidth) {
+		if (document.body.offsetHeight - navbarHeight > document.body.offsetWidth)
+		{
 			canvas.width = document.body.offsetWidth - 2 * canvasDivPadding;
 			canvas.height = canvas.width;
 		}
 		// Page wider than tall (landscape orientation)
-		else {
+		else
+		{
 			canvas.height = document.body.offsetHeight - 2 * canvasDivPadding - navbarHeight;
 			canvas.width = canvas.height;
 		}
@@ -96,7 +101,8 @@ calculator_layout = {};
 
 		// Check whether equationDiv should beside canvasDiv, or underneath canvasDiv
 		// If the canvas (and its padding) is taking more than 60% of the horizontal screen space...
-		if (canvas.width + 2 * canvasDivPadding > 0.6 * document.body.offsetWidth) {
+		if (canvas.width + 2 * canvasDivPadding > 0.6 * document.body.offsetWidth)
+		{
 			// Position them one on top of the other
 			equationDiv.style.float = "left";
 			// Make equation div fill all available horizontal space
@@ -104,7 +110,9 @@ calculator_layout = {};
 			// Makes sure that the canvas is centered horizontally using margins
 			canvasDiv.style.marginLeft = (document.body.offsetWidth - canvas.width - 2 * canvasDivPadding) / 2;
 			canvasDiv.style.marginRight = canvasDiv.style.marginLeft;
-		} else {
+		}
+		else
+		{
 			// ...otherwise position them side by side
 			equationDiv.style.float = "right";
 			// Make equation div fit into remaining horizontal space
@@ -114,4 +122,6 @@ calculator_layout = {};
 			canvasDiv.style.margin = "0px";
 		}
 	};
-})(calculator_layout);
+	
+	return context;
+})({});

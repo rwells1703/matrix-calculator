@@ -1,11 +1,12 @@
 // Declare namespace
-settings = {};
-
-(function(context) {
+settings = (function(context)
+{
 	// Gets the label of the button that was pressed as text. Necessary because the buttons have padding and clicking inside the padding vs clicking outside, causes different click events to be registered.
-	context.getButtonValue = function(clickEvent) {
+	context.getButtonValue = function(clickEvent)
+	{
 		// If the user clicks directly on the button label, take the value from there
-		if (event["path"][0].style.display == "table-cell") {
+		if (event["path"][0].style.display == "table-cell")
+		{
 			return event["path"][0].innerHTML;
 		}
 		// Otherwise, the user clicked on the button padding, so we must take the value from its child, the label
@@ -13,25 +14,29 @@ settings = {};
 	};
 
 	// Updates the color aspect of theme
-	context.updateColor = function(event) {
+	context.updateColor = function(event)
+	{
 		var value = context.getButtonValue(event)
 		theme.setColor(value);
 	};
 
 	// Updates the shade aspect of theme
-	context.updateShade = function(event) {
+	context.updateShade = function(event)
+	{
 		var value = context.getButtonValue(event)
 		theme.setShade(value);
 	};
 
 	// Updates the style aspect of theme
-	context.updateStyle = function(event) {
+	context.updateStyle = function(event)
+	{
 		var value = context.getButtonValue(event)
 		theme.setStyle(value);
 	};
 
 	// Creates 3 seperate, labelled rows of buttons for each theme setting
-	context.createThemeButtons = function (event) {
+	context.createThemeButtons = function (event)
+	{
 		// The color label above the buttons
 		var colorLabel = document.createElement("div");
 		colorLabel.innerHTML = "Color<br><br><br>";
@@ -85,4 +90,6 @@ settings = {};
 		// Add the style buttons to the mainDiv
 		mainDiv.appendChild(themeShadeButtonDiv);
 	};
-})(settings);
+	
+	return context;
+})({});

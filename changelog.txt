@@ -207,3 +207,11 @@ Coursework 2018-10-19-15-20:
 - (calculator_equation_solver.js) Added "dotProduct" function to "specialOperations"
 - (calculator_equation_solver.js) Added "matrixMatrixProduct" function to "specialOperations"
 - (calculator_equation_solver.js) Added "scalarMatrixProduct" function to "specialOperations"
+
+Coursework 2018-10-21-22-09:
+- Small change to the way the module pattern is implemented in all javascript files, to make it easier to read.
+- Made all curly brackets go underneath the corresponding statement for easier readability, instead of on the same line.
+- (calculator_equation_solver.js) Fixed "specialOperations.scalarMatrixProduct" so that it does not edit the Matrix object passed in by reference.
+- (calculator_equation_solver.js) Also changed "specialOperations.scalarMatrixProduct" so that it takes a Scalar objects as one of the argument, instead of a primitive integer.
+- (calculator_equation_solver.js) Fixed issue where "specialOperations.scalarMatrixProduct" and "specialOperations.matrixMatrixProduct" do not check the types of their input items properly. They use && (and) instead of || (or) meaning that both inputs would have to be the incorrect type for an error to occur, instead of just one input.
+- (calculator_equation_solver.js) Added many more comments throughout.

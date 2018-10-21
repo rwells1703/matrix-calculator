@@ -1,9 +1,9 @@
 // Declare namespace
-calculator_canvas = {};
-
-(function(context) {
+calculator_canvas = (function(context)
+{
 	// Registers functions to events listeners for handling all mouse events on the canvas
-	context.registerMouseEvents = function() {
+	context.registerMouseEvents = function()
+	{
 		var canvas = document.getElementById("canvas");
 		
 		mouseDown = false;
@@ -12,7 +12,8 @@ calculator_canvas = {};
 		canvas.onmousemove = context.mouseMove;
 	};
 	
-	context.setupWebGL = function() {
+	context.setupWebGL = function()
+	{
 		// Both fundamental GLSL shaders that WebGl uses to render vertices to the canvas element
 		// Vertex shader handles the corners of polygons being rendered to the canvas and then sends this data to the fragment shader
 		var vertexShader = context.createShader(gl.VERTEX_SHADER, document.getElementById("vertexShader").text);
@@ -35,7 +36,8 @@ calculator_canvas = {};
 	};
 	
 	// Converts canvas values (pixels) to clipspace values (-1 to 1)
-	context.canvasYToClipspace = function(y) {
+	context.canvasYToClipspace = function(y)
+	{
 		var navbar = document.getElementById("navbar");
 		var canvas = document.getElementById("canvas");
 		var canvasDiv = document.getElementById("canvasDiv");
@@ -46,7 +48,8 @@ calculator_canvas = {};
 		return (canvas.height - y + canvasDivPadding + navbarHeight)/canvas.height*2 - 1;
 	};
 	
-	context.canvasXToClipspace = function(x) {
+	context.canvasXToClipspace = function(x)
+	{
 		var navbar = document.getElementById("navbar");
 		var canvas = document.getElementById("canvas");
 		var canvasDiv = document.getElementById("canvasDiv");
@@ -58,26 +61,30 @@ calculator_canvas = {};
 	};
 
 	// Handles mouse events
-	context.mouseDown = function(event) {
+	context.mouseDown = function(event)
+	{
 		mouseDownX = event.clientX;
 		mouseDownY = event.clientY;
 		mouseDown = true;
 	};
 
-	context.mouseUp = function(event) {
+	context.mouseUp = function(event)
+	{
 		mouseX = context.canvasXToClipspace(event.clientX);
 		mouseY = context.canvasYToClipspace(event.clientY);
 		mouseDown = false;
 		context.createPolygon([mouseX, mouseY], 10, 0.04, [255/255, 0/255, 0/255, 255/255], false);
 	};
 
-	context.mouseMove = function(event) {
+	context.mouseMove = function(event)
+	{
 		mouseX = context.canvasXToClipspace(event.clientX);
 		mouseY = context.canvasYToClipspace(event.clientY);
 	};
 
 	// Create a new shader of the specified type
-	context.createShader = function(type, source) {
+	context.createShader = function(type, source)
+	{
 		var shader = gl.createShader(type);
 		
 		// Compiles the shader
@@ -85,7 +92,8 @@ calculator_canvas = {};
 		gl.compileShader(shader);
 		
 		// If there was an error while compiling, log to the console
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+		{
 			console.error("Shader failed to compile", gl.getShaderInfoLog(shader));
 			return false;
 		}
@@ -94,7 +102,8 @@ calculator_canvas = {};
 	};
 
 	// Create a program using a vertex and fragment shader
-	context.createProgram = function(vertexShader, fragmentShader) {
+	context.createProgram = function(vertexShader, fragmentShader)
+	{
 		var program = gl.createProgram();
 		
 		// Attatch the vertex and fragment shaders to the program
@@ -108,7 +117,8 @@ calculator_canvas = {};
 	};
 
 	// Prepare the attributes in the program to be interfaced by the rest of the program
-	context.prepareAttributes = function () {
+	context.prepareAttributes = function()
+	{
 		// 2 position elements per vertice (x, y)
 		var positionElements = 2;
 		// 4 color elements per vertice (red, green, blue, alpha)
@@ -129,7 +139,8 @@ calculator_canvas = {};
 	};
 
 	// Rotates a 2D point about 0,0 by the specified angle
-	context.rotateVertice = function(vertice, angle) {
+	context.rotateVertice = function(vertice, angle)
+	{
 		var rotatedVertice = [];
 		rotatedVertice[0] = (vertice[0]) * Math.cos(angle) - (vertice[1]) * Math.sin(angle);
 		rotatedVertice[1] = (vertice[0]) * Math.sin(angle) + (vertice[1]) * Math.cos(angle);
@@ -138,7 +149,8 @@ calculator_canvas = {};
 	};
 
 	// Translates a 2D point by a certain amount horizontally and vertically
-	context.translateVertice = function(vertice, translation) {
+	context.translateVertice = function(vertice, translation)
+	{
 		vertice[0] += translation[0];
 		vertice[1] += translation[1];
 		
@@ -146,8 +158,10 @@ calculator_canvas = {};
 	};
 
 	// Keeps drawing triangles until we run out of vertices
-	context.drawTriangles = function(vertices) {
-		if (vertices.length >= totalElements*3) {
+	context.drawTriangles = function(vertices)
+	{
+		if (vertices.length >= totalElements*3)
+		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, vertexBufferObject);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 			gl.drawArrays(gl.TRIANGLES, 0, vertices.length/totalElements);
@@ -155,9 +169,11 @@ calculator_canvas = {};
 	};
 
 	// Generates vertices for any polygon
-	context.createPolygon = function(origin, sides, radius, color, constrainToAxes) {
+	context.createPolygon = function(origin, sides, radius, color, constrainToAxes)
+	{
 		// Makes sure that you cannot draw outside the axes
-		if (constrainToAxes) {
+		if (constrainToAxes)
+		{
 			origin[0] *= axisWidth;
 			origin[1] *= axisWidth;
 		}
@@ -165,7 +181,8 @@ calculator_canvas = {};
 		var centralAngle = 2*Math.PI/sides;
 		
 		var s = 0;
-		while (s < sides) {
+		while (s < sides)
+		{
 			// Stores the current triangular fragment of the polygon before it is added to the vertices
 			var currentTriangle = [];
 
@@ -174,7 +191,8 @@ calculator_canvas = {};
 			currentTriangle[2] = context.rotateVertice([0, radius], -centralAngle/2);
 
 			var t = 0;
-			while (t < 3) {
+			while (t < 3)
+			{
 				currentTriangle[t] = context.rotateVertice(currentTriangle[t], centralAngle*s);
 				currentTriangle[t] = context.translateVertice(currentTriangle[t], [origin[0],origin[1]]);
 				currentTriangle[t] = currentTriangle[t].concat(color);
@@ -186,7 +204,8 @@ calculator_canvas = {};
 	};
 
 	// Declares all the static vertices that will be drawn
-	context.declareStaticVertices = function() {
+	context.declareStaticVertices = function()
+	{
 		var vertices = [];
 
 		// Properties of the axis lines (axisWidth is global because it is used to scale polygons within the axes)
@@ -216,7 +235,8 @@ calculator_canvas = {};
 	};
 
 	// Render loop called every frame update
-	context.render = function() {
+	context.render = function()
+	{
 		gl.useProgram(program);
 		
 		// Clears the screen and temporary buffers
@@ -230,4 +250,6 @@ calculator_canvas = {};
 		// Render the next frame
 		requestAnimationFrame(context.render);
 	};
-})(calculator_canvas);
+	
+	return context;
+})({});

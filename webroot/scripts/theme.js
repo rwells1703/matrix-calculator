@@ -1,35 +1,40 @@
 // Declare namespace
-theme = {};
-
-(function(context) {
+theme = (function(context) {
 	// Color schemes
-	context.colors = {
-		"Ruby Red": {
+	context.colors =
+	{
+		"Ruby Red":
+		{
 			"color-main": "#ff4c4c",
 			"color-main-dark": "#ed2d2d",
 			"color-main-light": "#ff7c7c"
 		},
-		"Sapphire Blue": {
+		"Sapphire Blue":
+		{
 			"color-main": "#0082d8",
 			"color-main-dark": "#0065a8",
 			"color-main-light": "#5cabe0"
 		},
-		"Amber Yellow": {
+		"Amber Yellow":
+		{
 			"color-main": "#e5b106",
 			"color-main-dark": "#e2a516",
 			"color-main-light": "#f7cf40"
 		},
-		"Slate Grey": {
+		"Slate Grey":
+		{
 			"color-main": "#424242",
 			"color-main-dark": "#333333",
 			"color-main-light": "#898989"
 		},
-		"Amethyst Purple": {
+		"Amethyst Purple":
+		{
 			"color-main": "#9f18ba",
 			"color-main-dark": "#7d1393",
 			"color-main-light": "#c055d6"
 		},
-		"Emerald Green": {
+		"Emerald Green":
+		{
 			"color-main": "#15af70",
 			"color-main-dark": "#0f9e60",
 			"color-main-light": "#1bd67e"
@@ -37,8 +42,10 @@ theme = {};
 	};
 
 	// Dark and Light modes
-	context.shades = {
-		"Light": {
+	context.shades =
+	{
+		"Light":
+		{
 			"color-page-background": "#fcfcfc",
 			"color-page-background-light": "#ffffff",
 			"color-text": "#000000",
@@ -55,14 +62,17 @@ theme = {};
 	};
 
 	// Flat and Material modes
-	context.styles = {
-		"Material": {
+	context.styles =
+	{
+		"Material":
+		{
 			"box-shadow": "0px 2px 5px rgba(0,0,0,0.3)",
 			"box-shadow-navbar": "0px 2px 5px rgba(0,0,0,0.2)",
 			"box-shadow-navbar-item": "2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
 			"border-radius": "0.6vh"
 		},
-		"Flat": {
+		"Flat":
+		{
 			"box-shadow": "none",
 			"box-shadow-navbar": "none",
 			"box-shadow-navbar-item": "none",
@@ -71,8 +81,10 @@ theme = {};
 	};
 
 	// Sets the color aspect of theme in local storage and in css variables
-	context.setColor = function(color) {
-		if (color == null) {
+	context.setColor = function(color)
+	{
+		if (color == null)
+		{
 			color = "Slate Grey";
 		}
 		
@@ -83,8 +95,10 @@ theme = {};
 	};
 
 	// Sets the shade aspect of theme in local storage and in css variables
-	context.setShade = function(shade) {
-		if (shade == null) {
+	context.setShade = function(shade)
+	{
+		if (shade == null)
+		{
 			shade = "Light";
 		}
 		
@@ -97,8 +111,10 @@ theme = {};
 	};
 
 	// Sets the style aspect of theme in local storage and in css variables
-	context.setStyle = function(style) {
-		if (style == null) {
+	context.setStyle = function(style)
+	{
+		if (style == null)
+		{
 			style = "Material";
 		}
 		
@@ -110,27 +126,35 @@ theme = {};
 	};
 
 	// Hilights the navbar item of the currently opened page in the navbar
-	context.hilightNavbar = function() {
+	context.hilightNavbar = function()
+	{
 		// Gets the relative path of the current page being viewed
 		var url = window.location.pathname.split("/");
 		var page = url[url.length - 1];
 
 		// Sets the class of chosen navbar item to "active" so that its color is different
 		navbarItems = document.getElementById("navbar").children;
-		if (page == "index.html") {
+		if (page == "index.html")
+		{
 			navbarItems[0].className = "navbar-item active";
 		}
-		else if (page == "about.html") {
+		else if (page == "about.html")
+		{
 			navbarItems[1].className = "navbar-item active";
 		}
-		else if (page == "calculator.html") {
+		else if (page == "calculator.html")
+		{
 			navbarItems[2].className = "navbar-item active";
 		}
-		else if (page == "help.html") {
+		else if (page == "help.html")
+		{
 			navbarItems[3].className = "navbar-item active";
 		}
-		else if (page == "settings.html") {
+		else if (page == "settings.html")
+		{
 			navbarItems[4].className = "navbar-item active";
 		}
 	};
-})(theme);
+	
+	return context;
+})({});

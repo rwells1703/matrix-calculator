@@ -1,9 +1,9 @@
 // Declare namespace
-calculator_equation_builder = {};
-
-(function(context) {
+calculator_equation_builder = (function(context)
+{
 	// Counts increase/decrease for every item added/removed from the equation
-	context.setItemCounts = function() {
+	context.setItemCounts = function()
+	{
 		matrixCount = 0;
 		scalarCount = 0;
 		functionCount = 0;
@@ -11,7 +11,8 @@ calculator_equation_builder = {};
 	};
 	
 	// Creates an empty item that can become a scalar, matrix or operator
-	context.createEmptyItem = function(itemClass, itemCount) {
+	context.createEmptyItem = function(itemClass, itemCount)
+	{
 		var itemWrapper = document.createElement("div");
 		itemWrapper.className = itemClass;
 		itemWrapper.id = itemCount;
@@ -87,20 +88,25 @@ calculator_equation_builder = {};
 	};
 	
 	// Deletes the selected item when the user clicks the delete icon
-	context.deleteItem = function(event) {
+	context.deleteItem = function(event)
+	{
 		// Gets parent element of the delete icon that was clicked
 		var item = event["path"][1];
 		
-		if (item.className == "scalar") {
+		if (item.className == "scalar")
+		{
 			scalarCount -= 1;
 		}
-		else if (item.className == "matrix") {
+		else if (item.className == "matrix")
+		{
 			matrixCount -= 1;
 		}
-		else if (item.className == "function") {
+		else if (item.className == "function")
+		{
 			functionCount -= 1;
 		}
-		else {
+		else
+		{
 			operatorCount -= 1;
 		}
 		
@@ -112,13 +118,17 @@ calculator_equation_builder = {};
 		var itemDiv = document.getElementById("itemDiv");
 		
 		// Deletes the item 200ms later so that deletion occurs slightly before animation ends (prevents flicker)
-		setTimeout(function() {
+		setTimeout(function()
+		{
 			// Changes id, name and count so that each item is still in order
 			var i = 0;
-			while (i < itemDiv.children.length) {
+			while (i < itemDiv.children.length)
+			{
 				// Only change item ids of items with the same class
-				if (itemDiv.children[i].className == item.className) {
-					if (parseInt(itemDiv.children[i].id) > parseInt(item.id)) {
+				if (itemDiv.children[i].className == item.className)
+				{
+					if (parseInt(itemDiv.children[i].id) > parseInt(item.id))
+					{
 						// Change id
 						itemDiv.children[i].id = parseInt(itemDiv.children[i].id) - 1;
 						// Change the name that is displayed
@@ -133,18 +143,21 @@ calculator_equation_builder = {};
 	};
 	
 	// Moves an item upwards in the equation, swapping it with the item above
-	context.moveItemUp = function(event) {
+	context.moveItemUp = function(event)
+	{
 		var item = event["path"][0].parentNode;
 		var previousItem = item.previousSibling;
 		
-		if (previousItem != null) {
+		if (previousItem != null)
+		{
 			var parent = item.parentNode;
 			
 			parent.removeChild(item);
 			parent.insertBefore(item, previousItem);
 			
 			// Swaps id's back if items are both of the same class (e.g. both scalars)
-			if (previousItem.className == item.className) {
+			if (previousItem.className == item.className)
+			{
 				var tempId = item.id;
 				item.id = previousItem.id;
 				previousItem.id = tempId;
@@ -156,26 +169,31 @@ calculator_equation_builder = {};
 	};
 
 	// Moves an item downwards in the equation, swapping it with the item below
-	context.moveItemDown = function(event) {
+	context.moveItemDown = function(event)
+	{
 		var item = event["path"][0].parentNode;
 		var nextItem = item.nextSibling;
 		
-		if (nextItem != null) {
+		if (nextItem != null)
+		{
 			var parent = item.parentNode;
 			
 			parent.removeChild(item);
 			
 			// If removing the item before last, it must be re-inserted as the last item
 			// Because it is the item before last, nextItem.nextSibling will be null meaning we have to use parent.appendChild instead of parent.insertBefore
-			if (nextItem.nextSibling == null) {
+			if (nextItem.nextSibling == null)
+			{
 				parent.appendChild(item);
 			}
-			else {
+			else
+			{
 				parent.insertBefore(item, nextItem.nextSibling);
 			}
 			
 			// Swaps id's back if items are both of the same class (e.g. both scalars)
-			if (nextItem.className == item.className) {
+			if (nextItem.className == item.className)
+			{
 				var tempId = item.id;
 				item.id = nextItem.id;
 				nextItem.id = tempId;
@@ -187,7 +205,8 @@ calculator_equation_builder = {};
 	};
 
 	// Creates a new text box for inputting values e.g. in a scalar or matrix item
-	context.createInputTextbox = function() {
+	context.createInputTextbox = function()
+	{
 		var inputTextbox = document.createElement("input");
 		inputTextbox.style.boxSizing = "border-box";
 		inputTextbox.style.width = "90%";
@@ -205,7 +224,8 @@ calculator_equation_builder = {};
 	};
 
 	// Creates a scalar item
-	context.addScalar = function() {
+	context.addScalar = function()
+	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		scalarCount += 1;
@@ -221,16 +241,19 @@ calculator_equation_builder = {};
 	};
 
 	// Creates a matrix item
-	context.addMatrix = function() {
+	context.addMatrix = function()
+	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		matrixCount += 1;
 		var matrixWrapper = context.createEmptyItem("matrix", matrixCount);
 		
 		var r = 0;
-		while (r < 7) {
+		while (r < 7)
+		{
 			var c = 0;
-			while (c < 7) {
+			while (c < 7)
+			{
 				var matrixElementTextbox = context.createInputTextbox();
 				matrixElementTextbox.style.gridColumnStart = 4+c;
 				matrixElementTextbox.style.gridColumnEnd = 5+c;
@@ -239,11 +262,14 @@ calculator_equation_builder = {};
 				matrixWrapper.appendChild(matrixElementTextbox);
 				
 				// Hide any rows or elements so only a 2x2 matrix shows
-				if (r > 1 || c > 1) {
+				if (r > 1 || c > 1)
+				{
 					matrixWrapper.lastChild.style.visibility = "hidden";
 				}
+				
 				c += 1;
 			}
+			
 			r += 1;
 		}
 		
@@ -303,75 +329,92 @@ calculator_equation_builder = {};
 	};
 	
 	// Adds a new row to a matrix item
-	context.addMatrixRow = function() {
+	context.addMatrixRow = function()
+	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
 		var columns = parseInt(matrixWrapper.getAttribute("columns"));
 		
-		if (rows < 6) {
+		if (rows < 6)
+		{
 			var c = 0;
-			while (c < columns) {
+			while (c < columns)
+			{
 				elementNumber = 7*rows + c + 5
 				matrixWrapper.children[elementNumber].style.visibility = "";
 				c += 1;
 			}
+			
 			matrixWrapper.setAttribute("rows", rows+1)
 		}
 	};
 	
 	// Removes a row from the matrix item
-	context.removeMatrixRow = function() {
+	context.removeMatrixRow = function()
+	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
 		var columns = parseInt(matrixWrapper.getAttribute("columns"));
 		
-		if (rows > 1) {
+		if (rows > 1)
+		{
 			var c = 0;
-			while (c < columns) {
+			while (c < columns)
+			{
 				elementNumber = 7*(rows-1) + c + 5
 				matrixWrapper.children[elementNumber].style.visibility = "hidden";
 				c += 1;
 			}
+			
 			matrixWrapper.setAttribute("rows", rows-1)
 		}
 	};
 
 	// Adds a new column to a matrix item
-	context.addMatrixColumn = function() {
+	context.addMatrixColumn = function()
+	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
 		var columns = parseInt(matrixWrapper.getAttribute("columns"));
 		
-		if (columns < 6) {
+		if (columns < 6)
+		{
 			var r = 0;
-			while (r < rows) {
+			while (r < rows)
+			{
 				elementNumber = 7*r + columns + 5
 				matrixWrapper.children[elementNumber].style.visibility = "";
 				r += 1;
 			}
+			
 			matrixWrapper.setAttribute("columns", columns+1)
 		}
 	};
 
 	// Removes a column from the matrix item
-	context.removeMatrixColumn = function() {
+	context.removeMatrixColumn = function()
+	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
 		var columns = parseInt(matrixWrapper.getAttribute("columns"));
 		
-		if (columns > 1) {
+		if (columns > 1)
+		{
 			var r = 0;
-			while (r < rows) {
+			while (r < rows)
+			{
 				elementNumber = 7*r + (columns-1) + 5
 				matrixWrapper.children[elementNumber].style.visibility = "hidden";
 				r += 1;
 			}
+			
 			matrixWrapper.setAttribute("columns", columns-1);
 		}
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
-	context.createItemButton = function(innerHTML, positionsFromLeft) {
+	context.createItemButton = function(innerHTML, positionsFromLeft)
+	{
 		var button = document.createElement("div");
 		
 		button.className = "selectionButton"; 
@@ -400,7 +443,8 @@ calculator_equation_builder = {};
 	};
 
 	// Creates a function item
-	context.addFunction = function() {
+	context.addFunction = function()
+	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		functionCount += 1;
@@ -422,7 +466,8 @@ calculator_equation_builder = {};
 	};
 
 	// Creates a operator item
-	context.addOperator = function() {
+	context.addOperator = function()
+	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		operatorCount += 1;
@@ -452,16 +497,20 @@ calculator_equation_builder = {};
 	};
 
 	// Changes the function/operator of an function/operator item based on user mouse click
-	context.selectButton = function(event) {
+	context.selectButton = function(event)
+	{
 		var selectedButton = event["path"][0];
 		
 		// Resets all the other buttons so that they are unselected
 		var i = 0;
-		while (i < selectedButton.parentNode.children.length) {
-			if (selectedButton.parentNode.children[i].className == "selectionButton") {
+		while (i < selectedButton.parentNode.children.length)
+		{
+			if (selectedButton.parentNode.children[i].className == "selectionButton")
+			{
 				selectedButton.parentNode.children[i].style.borderColor = "var(--theme-color-textbox-border)";
 				selectedButton.parentNode.children[i].style.backgroundColor = "var(--theme-color-page-background)";
 			}
+			
 			i += 1;
 		}
 		
@@ -475,22 +524,29 @@ calculator_equation_builder = {};
 	
 	// Shows/hides the "solve" and "export" buttons at the bottom of the equation div
 	// They are hidden if there are no items, otherwise they are visible
-	context.toggleEquationFinishButtons = function() {
+	context.toggleEquationFinishButtons = function()
+	{
 		var equationFinishButtonDiv = document.getElementById("equationFinishButtonDiv");
 		
-		if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0 && functionCount == 0) {
+		if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0 && functionCount == 0)
+		{
 			// If there are no items, dont show the finish "solve" and "export" buttons
 			// Resets the animation so it can be played again
 			equationFinishButtonDiv.style.animationName = "fadeOut";
-			setTimeout(function() {
+			setTimeout(function()
+			{
 				equationFinishButtonDiv.style.animationName = "";
 				equationFinishButtonDiv.style.visibility = "hidden";
 			},200);
-		} else {
+		}
+		else
+		{
 			// Otherwise show them
 			// Plays the animation again
 			equationFinishButtonDiv.style.animationName = "fadeIn";
 			equationFinishButtonDiv.style.visibility = "";
 		}
 	};
-})(calculator_equation_builder);
+	
+	return context;
+})({});
