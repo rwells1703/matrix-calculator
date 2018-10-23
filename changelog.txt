@@ -215,3 +215,15 @@ Coursework 2018-10-21-22-09:
 - (calculator_equation_solver.js) Also changed "specialOperations.scalarMatrixProduct" so that it takes a Scalar objects as one of the argument, instead of a primitive integer.
 - (calculator_equation_solver.js) Fixed issue where "specialOperations.scalarMatrixProduct" and "specialOperations.matrixMatrixProduct" do not check the types of their input items properly. They use && (and) instead of || (or) meaning that both inputs would have to be the incorrect type for an error to occur, instead of just one input.
 - (calculator_equation_solver.js) Added many more comments throughout.
+
+Coursework 2018-10-23-23-17:
+- (calculator_equation_solver.js) Changed "Matrix" so that the square property is now replaced by the "getSquare" function.
+- (calculator_equation_solver.js) Fixed "Matrix.getDeterminant" so that it now returns a "Scalar" object instead of a primitive float.
+- (calculator_equation_solver.js) Added "getMatrixOfCofactors" function to "Matrix" that returns a new "Matrix" object (used for finding inverse of a matrix).
+- (calculator_equation_solver.js) Added "getTranspose" function to "Matrix" that returns a new "Matrix" object with the same values as the original, but has rows and columns swapped.
+- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object containing the adjugate (used for finding inverse of a matrix).
+- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object that, when multiplied by the original matrix object will produce the identity matrix.
+- (calculator_equation_solver.js) Added a new "Vector" class that inherits the "Matrix" class for 1xn or mx1 order matrices.
+- (calculator_equation_solver.js) Added "getMagnitude" function to "Vector" that returns the magnitude (length) of the vector as a "Scalar" object using pythagoras theorum.
+- (calculator_equation_solver.js) Added "getUnitVector" function to "Vector" that returns a vector with magnitude 1, but in the same direction as the original vector.
+- (calculator_equation_solver.js) Added "vectorAngle" function to "specialOperations", that takes two "Vector" objects as arguments and returns the angle between them in radians, using the dot product identity formula.

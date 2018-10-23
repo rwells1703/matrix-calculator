@@ -38,7 +38,35 @@ calculator_equation_solver = (function(context)
 
 			return total;
 		};
+		
+		// Gets the angle between two vectors using the dot product identity
+		self.vectorAngle = function(left, right, angleType)
+		{
+			var dotProduct = context.specialOperations.dotProduct(left,right);
+			var magnitudeProduct = left.getMagnitude() * right.getMagnitude();
+			
+			if (magnitudeProduct == 0)
+			{
+				return false;
+			}
+			
+			var cosineAngle = dotProduct/magnitudeProduct;
 
+			// Return the angle in the specified unit
+			if (angleType == "degrees")
+			{
+				return Math.acos(cosineAngle)*180/Math.PI;
+			}
+			else if (angleType == "radians")
+			{
+				return Math.acos(cosineAngle);
+			}
+			else
+			{
+				return false;
+			}
+		};
+		
 		// Creates a matrix containing all zeros of the specified order
 		self.generateZeroMatrix = function(rows, columns)
 		{
@@ -196,25 +224,16 @@ calculator_equation_solver = (function(context)
 		return self;
 	};
 
-	// Matrix class that holds a grid of numerical values
+	// Matrix class, that holds a grid of numerical values
 	context.Matrix = function(value)
 	{
 		var self = {};
 
 		self.type = "Matrix";
 		self.value = value;
+		
 		self.rows = value.length;
 		self.columns = value[0].length;
-		
-		// Check if the matrix is square (number of rows = number of columns) and set the square property accordingly
-		if (self.rows == self.columns)
-		{
-			self.square = true;
-		}
-		else
-		{
-			self.square = false;
-		}
 
 		// Function to display the matrix to the console
 		self.display = function()
@@ -233,11 +252,23 @@ calculator_equation_solver = (function(context)
 			}
 		};
 		
+		// Returns if the matrix (number of rows = number of columns) is square or not
+		self.getSquare = function()
+		{
+			if (self.rows == self.columns)
+			{
+				// The matrix is square
+				return true;
+			}
+			// Otherwise the matrix is not square
+			return false;
+		};
+		
 		// Returns the determinant of the matrix
 		self.getDeterminant = function()
 		{
 			// Must be a square matrix otherwise the determinant is undefined
-			if (!self.square)
+			if (self.getSquare() == false)
 			{
 				return false;
 			}
@@ -247,7 +278,7 @@ calculator_equation_solver = (function(context)
 			// Recursive base case, we have reached the smallest matrix possible, a 1 x 1
 			if (self.rows == 1 && self.columns == 1)
 			{
-				return self.value[0][0];
+				return context.Scalar(self.value[0][0]);
 			}
 			
 			// Start out positive and then switch sign on each row change
@@ -262,14 +293,14 @@ calculator_equation_solver = (function(context)
 				if (positive)
 				{
 					// Add the minor determinant to the major determinant if we are on a positive row
-					determinant += self.value[row][0] * minor.getDeterminant();
+					determinant += self.value[row][0] * minor.getDeterminant().value;
 					// Switch from positive to negative
 					positive = false;
 				}
 				else
 				{
 					// Otherwise subtract it
-					determinant -= self.value[row][0] * minor.getDeterminant();
+					determinant -= self.value[row][0] * minor.getDeterminant().value;
 					// Switch from negative to positive
 					positive = true;
 				}
@@ -277,7 +308,7 @@ calculator_equation_solver = (function(context)
 				row += 1;
 			}
 			
-			return determinant;
+			return context.Scalar(determinant);
 		};
 		
 		// Returns the minor matrix for a specific element of the matrix  
@@ -295,8 +326,10 @@ calculator_equation_solver = (function(context)
 				var majorColumn = 0;
 				while (majorColumn < self.columns)
 				{
+					// Avoid the row/column if it is the target row/column
 					if (majorColumn != targetColumn && majorRow != targetRow)
 					{
+						// Store corresponding the value in the minor matrix
 						minor.value[minorRow][minorColumn] = self.value[majorRow][majorColumn];
 						
 						// Taking 1 away from minor.rows and minor.columns is necessary because they start from 1 whereas arrays start from 0
@@ -324,19 +357,146 @@ calculator_equation_solver = (function(context)
 				majorRow += 1;
 			}
 		};
-						
+		
+		self.getMatrixOfMinors = function()
+		{
+			var minors = context.specialOperations.generateZeroMatrix(self.rows, self.columns);
+			
+			var row = 0;
+			while (row < self.rows)
+			{
+				var column = 0;
+				while (column < self.columns)
+				{
+					minors.value[row][column] = self.getMinorMatrix(row,column).getDeterminant().value;
+					
+					column += 1;
+				}
+				
+				row += 1;
+			}
+			
+			return minors;
+		};
+		
+		self.getMatrixOfCofactors = function()
+		{
+			var minor = self.getMatrixOfMinors();
+			
+			var multiplier = 1;
+			
+			var row = 0;
+			while (row < self.rows)
+			{
+				var column = 0;
+				while (column < self.columns)
+				{
+					minor.value[row][column] *= multiplier;
+					
+					multiplier *= -1;
+					column += 1;
+				}
+				
+				multiplier = Math.pow(-1,row+1);
+				row += 1;
+			}
+			
+			return minor;
+		};
+		
+		self.getTranspose = function()
+		{
+			var transpose = context.specialOperations.generateZeroMatrix(self.rows, self.columns);
+			
+			var row = 0;
+			while (row < self.rows)
+			{
+				var column = 0;
+				while (column < self.columns)
+				{
+					transpose.value[column][row] = self.value[row][column];
+					
+					column += 1;
+				}
+				
+				row += 1;
+			}
+			
+			return transpose;
+		};
+		
+		self.getAdjugate = function()
+		{
+			var cofactors = self.getMatrixOfCofactors();
+			var adjugate = cofactors.getTranspose();
+			
+			return adjugate;
+		};
+		
+		self.getInverse = function()
+		{
+			var adjugate = self.getAdjugate();
+			var determinant = self.getDeterminant();
+			determinant.value = 1/determinant.value;
+
+			var inverse = context.specialOperations.scalarMatrixProduct(determinant, adjugate);
+			
+			return inverse;
+		};
+		
 		return self;
 	};
 
-	context.Vector = function(value) {
+	// Vector class, that holds a single row of numerical values
+	context.Vector = function(value)
+	{
+		// Inherit from the matrix class, vectors are a subset of matrices
 		var self = context.Matrix(value);
 
 		self.type = "Vector";
-
+		
+		// Returns the magnitude (length) of the vector, denoted |v| where v is a vector
+		self.getMagnitude = function()
+		{
+			var total = 0;
+			
+			// Loop throughy every element in the vector
+			var r = 0;
+			while (r < self.rows)
+			{
+				// Add together the square of every element in the vector
+				total += Math.pow(self.value[r][0], 2);
+				r += 1;
+			}
+			
+			// Return the square root of the total (pythagoras theorum)
+			return context.Scalar(Math.pow(total, 0.5));
+		};
+		
+		// Returns a vector object, with the magnitude 1 in the same direction as this vector
+		self.getUnitVector = function()
+		{
+			var unitValue = new Array(self.rows);
+			var magnitude = self.getMagnitude();
+			
+			// Loop throughy every element in the vector
+			var r = 0;
+			while (r < self.rows)
+			{
+				unitValue[r] = [self.value[r] / magnitude];
+				r += 1;
+			}
+			
+			// Return a new vector object with the correct unit vector values
+			return context.Vector(unitValue);
+		};
+		
 		return self;
 	};
 
-	context.Function = function(value) {
+	// Function class, that holds a function that will take an input and return and output
+	context.Function = function(value)
+	{
 		var self = {};
 
 		self.type = "Function";
@@ -345,7 +505,9 @@ calculator_equation_solver = (function(context)
 		return self;
 	};
 
-	context.Operator = function(value) {
+	// Operator class, that will take one or more inputs and return an output
+	context.Operator = function(value)
+	{
 		var self = {};
 
 		self.type = "Operator";
@@ -355,7 +517,8 @@ calculator_equation_solver = (function(context)
 	};
 
 	// Returns an array containing objects for each item in the equation
-	context.parseItemValues = function() {
+	context.parseItemValues = function()
+	{
 		var itemDiv = document.getElementById("itemDiv");
 		// Returns a new array object for storing scalar, matrix, function and operator objects
 		// Cannot use a fixed size array because each item uses a different amount of memory space and js does not support them natively
@@ -603,33 +766,9 @@ calculator_equation_solver = (function(context)
 	}
 	
 	context.solve = function()
-	{
-		//var equation = [context.Scalar(24), context.Operator("Divide"), context.Scalar(8), context.Operator("Indice"), context.Scalar(2)];
-		//var equation = [context.Scalar(2), context.Operator("Multiply"), "(", context.Scalar(3), context.Operator("Add"), context.Scalar(5), ")", context.Operator("Mulitply"), context.Scalar(0.5)];
-		//var equation = ["(", context.Scalar(3), context.Operator("Indice"), context.Scalar(2), ")", context.Operator("Indice"), context.Scalar(3)];
-		//var equation = [context.Scalar(8), context.Operator("Subtract"), "(", "(", context.Scalar(8), context.Operator("Add"), context.Scalar(8), ")", context.Operator("Exponential"), "(", context.Scalar(1), context.Operator("Divide"), context.Scalar(2), ")", ")", context.Operator("Exponential"), "(", context.Scalar(1), context.Operator("Divide"), context.Scalar(2), ")"];
-
-		/*
-		var equation = [
-		context.Scalar(4),
-		context.Operator("Multiply"),
-		context.Scalar(3),
-		context.Operator("Multiply"),
-		context.Scalar(2)
-		]
-
-		console.log(equation);
-		console.log(context.solveEquation(equation));
-		*/
-		var x = context.Matrix([[2,3,1],[9,5,2],[3,4,6]]);
-		console.log(x.getDeterminant());
-
-		//var a = context.specialOperations.matrixMatrixProduct(x,y);
-		//console.log(a);
-		
-		//var n = context.Scalar(9);
-		//var b = context.specialOperations.scalarMatrixProduct(n, a);
-		//console.log(b);
+	{	
+		var x = context.Matrix([[3,0,2],[2,0,-2],[0,1,1]]);
+		console.log(x.getInverse());
 	}
 	
 	return context;
