@@ -227,3 +227,9 @@ Coursework 2018-10-23-23-17:
 - (calculator_equation_solver.js) Added "getMagnitude" function to "Vector" that returns the magnitude (length) of the vector as a "Scalar" object using pythagoras theorum.
 - (calculator_equation_solver.js) Added "getUnitVector" function to "Vector" that returns a vector with magnitude 1, but in the same direction as the original vector.
 - (calculator_equation_solver.js) Added "vectorAngle" function to "specialOperations", that takes two "Vector" objects as arguments and returns the angle between them in radians, using the dot product identity formula.
+
+Coursework 2018-10-31-08-30:
+- (calculator_equation_solver.js) Changed "specialOperations.vectorAngle" so that it returns a "Scalar" object instead of a primitive float.
+- (calculator_equation_solver.js) Added comments to all the new functions of "Matrix" introduced in the previous version.
+- (calculator_equation_solver.js) Added matrix-matrix, matrix-vector and matrix-scalar multiplication to the "solveEquation" function.
+- (calculator_equation_solver.js) Changed all special operator functions so that they do not check inputs. The inputs are checked where the functions are called instead.
