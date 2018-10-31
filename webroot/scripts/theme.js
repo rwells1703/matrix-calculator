@@ -1,5 +1,6 @@
 // Declare namespace
-theme = (function(context) {
+theme = (function (context)
+{
 	// Color schemes
 	context.colors =
 	{
@@ -52,7 +53,8 @@ theme = (function(context) {
 			"color-icon": "#000000",
 			"color-textbox-border": "#b2b2b2"
 		},
-		"Dark": {
+		"Dark":
+		{
 			"color-page-background": "#232323",
 			"color-page-background-light": "#3f3f3f",
 			"color-text": "#ffffff",
@@ -79,9 +81,24 @@ theme = (function(context) {
 			"border-radius": "0"
 		}
 	};
+	
+	context.calculatorLayouts = 
+	{
+		"Equation before graph":
+		{
+			"canvasDivFloat": "right",
+			"equationDivFloat": "left"
+		},
+		"Graph before equation":
+		{
+			"canvasDivFloat": "left",
+			"equationDivFloat": "right"
+		}
+	};
+		
 
 	// Sets the color aspect of theme in local storage and in css variables
-	context.setColor = function(color)
+	context.setColor = function (color)
 	{
 		if (color == null)
 		{
@@ -95,7 +112,7 @@ theme = (function(context) {
 	};
 
 	// Sets the shade aspect of theme in local storage and in css variables
-	context.setShade = function(shade)
+	context.setShade = function (shade)
 	{
 		if (shade == null)
 		{
@@ -111,7 +128,7 @@ theme = (function(context) {
 	};
 
 	// Sets the style aspect of theme in local storage and in css variables
-	context.setStyle = function(style)
+	context.setStyle = function (style)
 	{
 		if (style == null)
 		{
@@ -125,8 +142,21 @@ theme = (function(context) {
 		document.body.style.setProperty("--theme-border-radius", context.styles[style]["border-radius"]);
 	};
 
+	// Sets the calculator layout aspect of theme in local storage and in css variables
+	context.setCalculatorLayout = function (calculatorLayout)
+	{
+		if (calculatorLayout == null)
+		{
+			calculatorLayout = "Equation before graph";
+		}
+		
+		localStorage.setItem("themeCalculatorLayout", calculatorLayout);
+		document.body.style.setProperty("--theme-canvas-div-float", context.calculatorLayouts[calculatorLayout]["canvasDivFloat"]);
+		document.body.style.setProperty("--theme-equation-div-float", context.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
+	}
+	
 	// Hilights the navbar item of the currently opened page in the navbar
-	context.hilightNavbar = function()
+	context.hilightNavbar = function ()
 	{
 		// Gets the relative path of the current page being viewed
 		var url = window.location.pathname.split("/");

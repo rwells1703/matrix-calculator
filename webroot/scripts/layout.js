@@ -1,14 +1,14 @@
 // Declare namespace
-layout = (function(context)
+layout = (function (context)
 {
 	// Converts a string value "px" on the end, to a float value
-	context.pxToFloat = function(string)
+	context.pxToFloat = function (string)
 	{
 		return parseFloat(string.substring(0, string.length-2));
 	};
 
 	// Creates a new button with a label and a click event
-	context.createButton = function(innerHTML, clickFunction, backgroundColor)
+	context.createButton = function (innerHTML, clickFunction, backgroundColor)
 	{
 		var button = document.createElement("div");
 		
@@ -41,7 +41,7 @@ layout = (function(context)
 	};
 
 	// Creates a container filled with a row of buttons
-	context.createButtonRow = function(buttons)
+	context.createButtonRow = function (buttons)
 	{
 		var buttonRow = document.createElement("div");
 		

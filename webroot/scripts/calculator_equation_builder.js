@@ -1,8 +1,8 @@
 // Declare namespace
-calculator_equation_builder = (function(context)
+calculator_equation_builder = (function (context)
 {
 	// Counts increase/decrease for every item added/removed from the equation
-	context.setItemCounts = function()
+	context.setItemCounts = function ()
 	{
 		matrixCount = 0;
 		scalarCount = 0;
@@ -11,7 +11,7 @@ calculator_equation_builder = (function(context)
 	};
 	
 	// Creates an empty item that can become a scalar, matrix or operator
-	context.createEmptyItem = function(itemClass, itemCount)
+	context.createEmptyItem = function (itemClass, itemCount)
 	{
 		var itemWrapper = document.createElement("div");
 		itemWrapper.className = itemClass;
@@ -88,7 +88,7 @@ calculator_equation_builder = (function(context)
 	};
 	
 	// Deletes the selected item when the user clicks the delete icon
-	context.deleteItem = function(event)
+	context.deleteItem = function (event)
 	{
 		// Gets parent element of the delete icon that was clicked
 		var item = event["path"][1];
@@ -118,7 +118,7 @@ calculator_equation_builder = (function(context)
 		var itemDiv = document.getElementById("itemDiv");
 		
 		// Deletes the item 200ms later so that deletion occurs slightly before animation ends (prevents flicker)
-		setTimeout(function()
+		setTimeout(function ()
 		{
 			// Changes id, name and count so that each item is still in order
 			var i = 0;
@@ -143,7 +143,7 @@ calculator_equation_builder = (function(context)
 	};
 	
 	// Moves an item upwards in the equation, swapping it with the item above
-	context.moveItemUp = function(event)
+	context.moveItemUp = function (event)
 	{
 		var item = event["path"][0].parentNode;
 		var previousItem = item.previousSibling;
@@ -169,7 +169,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Moves an item downwards in the equation, swapping it with the item below
-	context.moveItemDown = function(event)
+	context.moveItemDown = function (event)
 	{
 		var item = event["path"][0].parentNode;
 		var nextItem = item.nextSibling;
@@ -205,7 +205,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a new text box for inputting values e.g. in a scalar or matrix item
-	context.createInputTextbox = function()
+	context.createInputTextbox = function ()
 	{
 		var inputTextbox = document.createElement("input");
 		inputTextbox.style.boxSizing = "border-box";
@@ -224,7 +224,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a scalar item
-	context.addScalar = function()
+	context.addScalar = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
@@ -241,7 +241,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a matrix item
-	context.addMatrix = function()
+	context.addMatrix = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
@@ -329,7 +329,7 @@ calculator_equation_builder = (function(context)
 	};
 	
 	// Adds a new row to a matrix item
-	context.addMatrixRow = function()
+	context.addMatrixRow = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -350,7 +350,7 @@ calculator_equation_builder = (function(context)
 	};
 	
 	// Removes a row from the matrix item
-	context.removeMatrixRow = function()
+	context.removeMatrixRow = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -371,7 +371,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Adds a new column to a matrix item
-	context.addMatrixColumn = function()
+	context.addMatrixColumn = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -392,7 +392,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Removes a column from the matrix item
-	context.removeMatrixColumn = function()
+	context.removeMatrixColumn = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -413,7 +413,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
-	context.createItemButton = function(innerHTML, positionsFromLeft)
+	context.createItemButton = function (innerHTML, positionsFromLeft)
 	{
 		var button = document.createElement("div");
 		
@@ -443,7 +443,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a function item
-	context.addFunction = function()
+	context.addFunction = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
@@ -466,7 +466,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Creates a operator item
-	context.addOperator = function()
+	context.addOperator = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
@@ -497,7 +497,7 @@ calculator_equation_builder = (function(context)
 	};
 
 	// Changes the function/operator of an function/operator item based on user mouse click
-	context.selectButton = function(event)
+	context.selectButton = function (event)
 	{
 		var selectedButton = event["path"][0];
 		
@@ -524,7 +524,7 @@ calculator_equation_builder = (function(context)
 	
 	// Shows/hides the "solve" and "export" buttons at the bottom of the equation div
 	// They are hidden if there are no items, otherwise they are visible
-	context.toggleEquationFinishButtons = function()
+	context.toggleEquationFinishButtons = function ()
 	{
 		var equationFinishButtonDiv = document.getElementById("equationFinishButtonDiv");
 		
@@ -533,7 +533,7 @@ calculator_equation_builder = (function(context)
 			// If there are no items, dont show the finish "solve" and "export" buttons
 			// Resets the animation so it can be played again
 			equationFinishButtonDiv.style.animationName = "fadeOut";
-			setTimeout(function()
+			setTimeout(function ()
 			{
 				equationFinishButtonDiv.style.animationName = "";
 				equationFinishButtonDiv.style.visibility = "hidden";

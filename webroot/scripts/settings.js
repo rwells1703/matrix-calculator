@@ -1,8 +1,8 @@
 // Declare namespace
-settings = (function(context)
+settings = (function (context)
 {
 	// Gets the label of the button that was pressed as text. Necessary because the buttons have padding and clicking inside the padding vs clicking outside, causes different click events to be registered.
-	context.getButtonValue = function(clickEvent)
+	context.getButtonValue = function (clickEvent)
 	{
 		// If the user clicks directly on the button label, take the value from there
 		if (event["path"][0].style.display == "table-cell")
@@ -14,26 +14,33 @@ settings = (function(context)
 	};
 
 	// Updates the color aspect of theme
-	context.updateColor = function(event)
+	context.updateColor = function (event)
 	{
 		var value = context.getButtonValue(event)
 		theme.setColor(value);
 	};
 
 	// Updates the shade aspect of theme
-	context.updateShade = function(event)
+	context.updateShade = function (event)
 	{
 		var value = context.getButtonValue(event)
 		theme.setShade(value);
 	};
 
 	// Updates the style aspect of theme
-	context.updateStyle = function(event)
+	context.updateStyle = function (event)
 	{
 		var value = context.getButtonValue(event)
 		theme.setStyle(value);
 	};
 
+	// Updates the calculator layout aspect of theme
+	context.updateCalculatorLayout = function (event)
+	{
+		var value = context.getButtonValue(event)
+		theme.setCalculatorLayout(value);
+	};
+	
 	// Creates 3 seperate, labelled rows of buttons for each theme setting
 	context.createThemeButtons = function (event)
 	{
@@ -89,6 +96,21 @@ settings = (function(context)
 
 		// Add the style buttons to the mainDiv
 		mainDiv.appendChild(themeShadeButtonDiv);
+		
+		
+		// The calculator layout label above the buttons
+		var calculatorLayoutLabel = document.createElement("div");
+		calculatorLayoutLabel.innerHTML = "Calculator Layout<br><br><br>";
+		mainDiv.appendChild(calculatorLayoutLabel);
+
+		// The calculator layout buttons
+		var themeCalculatorLayoutButtons = [];
+		themeCalculatorLayoutButtons.push(layout.createButton("Equation before graph", context.updateCalculatorLayout, "var(--theme-color-main)"));
+		themeCalculatorLayoutButtons.push(layout.createButton("Graph before equation", context.updateCalculatorLayout, "var(--theme-color-main)"));
+		themeCalculatorLayoutButtonDiv = layout.createButtonRow(themeCalculatorLayoutButtons);
+
+		// Add the calculator layout buttons to the mainDiv
+		mainDiv.appendChild(themeCalculatorLayoutButtonDiv);
 	};
 	
 	return context;

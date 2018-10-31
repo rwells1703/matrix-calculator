@@ -1,17 +1,31 @@
 // Declare namespace
-calculator_layout = (function(context)
+calculator_layout = (function (context)
 {
 	// Creates a main wrapper div for all elements
-	context.createMainDiv = function()
+	context.createMainDiv = function ()
 	{
 		var mainDiv = document.createElement("div");
 		mainDiv.id = "mainDiv";
 		mainDiv.style.padding = 0;
 		document.body.appendChild(mainDiv);
+		
+		var calculatorLayout = localStorage.getItem("themeCalculatorLayout");
+		if (calculatorLayout == "Equation before graph")
+		{
+			// Create the equation div before the canvas div
+			context.createEquationDiv();
+			context.createCanvasDiv();
+		}
+		else
+		{
+			// Create the graph div before the equation div
+			context.createCanvasDiv();
+			context.createEquationDiv();
+		}
 	};
 
 	// Create a new div to wrap a html5 canvas with a WebGL context
-	context.createCanvasDiv = function()
+	context.createCanvasDiv = function ()
 	{
 		var mainDiv = document.getElementById("mainDiv");
 		
@@ -19,7 +33,7 @@ calculator_layout = (function(context)
 		canvasDiv.id = "canvasDiv";
 		canvasDiv.style.padding = "30px";
 		canvasDiv.style.display = "block";
-		canvasDiv.style.float = "left";
+		canvasDiv.style.float = "var(--theme-canvas-div-float)";
 		mainDiv.appendChild(canvasDiv);
 		
 		var canvas = document.createElement("canvas");
@@ -32,7 +46,7 @@ calculator_layout = (function(context)
 	};
 
 	// Create new div to hold the current matrix equation and the buttons used for editing the equation
-	context.createEquationDiv = function()
+	context.createEquationDiv = function ()
 	{
 		var mainDiv = document.getElementById("mainDiv");
 		
@@ -40,6 +54,7 @@ calculator_layout = (function(context)
 		var equationDiv = document.createElement("div");
 		equationDiv.id = "equationDiv";
 		equationDiv.style.padding = "30px";
+		equationDiv.style.float = "var(--theme-equation-div-float)";
 		mainDiv.appendChild(equationDiv);
 		
 		// Creates all buttons for adding new items to the equation
@@ -75,7 +90,7 @@ calculator_layout = (function(context)
 	
 	// Makes the canvas a square shape that fits perfectly within the viewport
 	// Then fit the equation div into the remaining space, either beside or below the canvas
-	context.resizePage = function()
+	context.resizePage = function ()
 	{
 		// Gets computed properties. Must use window.getComputedStyle because element.clientHeight rounds to integer values
 		// The +2 is necessary because the "montserrat" font takes a small time to load, but is 2 pixels taller than the default font
@@ -104,7 +119,6 @@ calculator_layout = (function(context)
 		if (canvas.width + 2 * canvasDivPadding > 0.6 * document.body.offsetWidth)
 		{
 			// Position them one on top of the other
-			equationDiv.style.float = "left";
 			// Make equation div fill all available horizontal space
 			equationDiv.style.width = document.body.offsetWidth - 2 * equationDivPadding;
 			// Makes sure that the canvas is centered horizontally using margins
@@ -114,7 +128,6 @@ calculator_layout = (function(context)
 		else
 		{
 			// ...otherwise position them side by side
-			equationDiv.style.float = "right";
 			// Make equation div fit into remaining horizontal space
 			// Must take 17 pixels to account for a scrollbar
 			equationDiv.style.width = document.body.offsetWidth - canvas.width - 2 * canvasDivPadding - 2 * equationDivPadding - 17;
