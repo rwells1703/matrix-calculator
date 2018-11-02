@@ -237,3 +237,8 @@ Coursework 2018-10-31-08-30:
 Coursework 2018-10-31-18-50:
 - Fixed errors with the styling in the code caused by opening in Visual Studio. Fixes included: moving brackets onto new lines, changing 4 spaces into tabs, adding a space between function names and their arguments.
 - Added a new setting so that users can choose whether to display the graph before or after  the equation on the calculator page (toggles between above or below on mobile).
+
+Coursework 2018-11-02-15-19:
+- (calculator_equation_solver.js) Changed the Matrix object, so that it extends with the vector properties only when it has 1 column. This replaces the method of inheritance used before.
+- (calculator_equation_solver.js) Added an abstract function "specialOperations.scalarMatrixElementWiseOperation" that performs a specified operation to each element of a matrix e.g. multiplying it by a scalar. This will prevent code from being duplicated, for example seperate functions for addition, subtraction, multiplication and division.
+- (calculator_equation_solver.js) Fixed bug where the solution of a Vector multiplied by a Scalar (and vice versa) would return false. The solveEquation function was only checking for "Matrix" items and not "Vector" items also.

@@ -166,11 +166,11 @@ calculator_equation_solver = (function (context)
 			return product;
 		};
 
-		// Multiplies each element of a matrix by a scalar
-		self.scalarMatrixProduct = function (scalar, matrix)
+		// Performs an operation involving a scalar, on every element of a matrix e.g. multiplication or addition
+		self.scalarMatrixElementWiseOperation = function (matrix, scalar, operation)
 		{
-			// Generate a new zero matrix, the same size as the origial matrix, that will hold the product
-			var product = context.specialOperations.generateZeroMatrix(matrix.rows, matrix.columns);
+			// Generate a new zero matrix, the same size as the origial matrix, that will hold the output
+			var output = context.specialOperations.generateZeroMatrix(matrix.rows, matrix.columns);
 
 			var r = 0;
 			while (r < matrix.rows)
@@ -178,17 +178,18 @@ calculator_equation_solver = (function (context)
 				var c = 0;
 				while (c < matrix.columns)
 				{
-					// Multiply the original matrix by the scalar, and place its value in the corresponding spot in the product matrix
-					product.value[r][c] = matrix.value[r][c] * scalar.value;
+					// Perform the operation on the specified input matrix element and save it to the output matrix
+					output.value[r][c] = operation(matrix.value[r][c], scalar.value);
+
 					c += 1;
 				}
 
 				r += 1;
 			}
 
-			return product;
+			return output;
 		};
-		
+
 		return self;
 	})({});
 
@@ -218,6 +219,12 @@ calculator_equation_solver = (function (context)
 
 		self.rows = value.length;
 		self.columns = value[0].length;
+
+		// If it has 1 column, it is a column vector
+		if (self.columns == 1)
+		{
+			self = context.Vector(self);
+		}
 
 		// Function to display the matrix to the console
 		self.display = function ()
@@ -444,11 +451,9 @@ calculator_equation_solver = (function (context)
 	};
 
 	// Vector class, that holds a single row of numerical values
-	context.Vector = function (value)
+	// Inherits from the matrix class, as vectors are a subset of matrices
+	context.Vector = function (self)
 	{
-		// Inherit from the matrix class, vectors are a subset of matrices
-		var self = context.Matrix(value);
-
 		self.type = "Vector";
 
 		// Returns the magnitude (length) of the vector, denoted |v| where v is a vector
@@ -721,8 +726,20 @@ calculator_equation_solver = (function (context)
 		{
 			if (equation[i].value == "Divide")
 			{
-				var value = equation[i - 1].value / equation[i + 1].value;
-				var solution = context.Scalar(value);
+				if (equation[i - 1].type == "Scalar" && equation[i + 1].type == "Scalar")
+				{
+					var value = equation[i - 1].value / equation[i + 1].value;
+					var solution = context.Scalar(value);
+				}
+				else if (equation[i - 1].type == "Matrix" && equation[i + 1].type == "Scalar")
+				{
+					var solution = context.specialOperations.scalarMatrixElementWiseOperation(equation[i - 1], equation[i + 1], function (a, b) { return a / b });
+				}
+				else
+				{
+					return false;
+				}
+
 				equation = replaceArraySection(equation, i - 1, i + 1, solution);
 			}
 			else if (equation[i].value == "Multiply")
@@ -732,17 +749,19 @@ calculator_equation_solver = (function (context)
 					var value = equation[i - 1].value * equation[i + 1].value;
 					var solution = context.Scalar(value);
 				}
-				else if (equation[i - 1].type == "Scalar" && equation[i + 1].type == "Matrix")
+				else if (equation[i - 1].type == "Scalar" && equation[i + 1].type == "Matrix" || equation[i - 1].type == "Scalar" && equation[i + 1].type == "Vector")
 				{
-					var solution = context.specialOperations.scalarMatrixProduct(equation[i - 1], equation[i + 1]);
+					var solution = context.specialOperations.scalarMatrixElementWiseOperation(equation[i + 1], equation[i- 1], function (a, b) { return a * b });
 				}
-				else if (equation[i - 1].type == "Matrix" && equation[i + 1].type == "Scalar")
+				else if (equation[i - 1].type == "Matrix" && equation[i + 1].type == "Scalar" || equation[i - 1].type == "Vector" && equation[i + 1].type == "Scalar")
 				{
-					var solution = context.specialOperations.scalarMatrixProduct(equation[i + 1], equation[i - 1]);
+					var solution = context.specialOperations.scalarMatrixElementWiseOperation(equation[i - 1], equation[i + 1], function (a, b) { return a * b });
+
 				}
 				else if (equation[i - 1].type == "Matrix" && equation[i + 1].type == "Matrix" || equation[i - 1].type == "Matrix" && equation[i + 1].type == "Vector")
 				{
 					var solution = context.specialOperations.matrixMatrixProduct(equation[i - 1], equation[i + 1]);
+
 				}
 				else
 				{
@@ -784,11 +803,11 @@ calculator_equation_solver = (function (context)
 
 	context.solve = function ()
 	{
-		var a = context.Scalar(12);
+		var a = context.Scalar(2);
 		var x = context.Matrix([[2,4],[1,8]]);
-		var y = context.Vector([[5],[7]]);
+		var y = context.Matrix([[5],[7]]);
 
-		var equation = [a, context.Operator("Multiply"), x];
+		var equation = [x, context.Operator("Multiply"), y];
 		console.log(context.solveEquation(equation));
 	}
 
