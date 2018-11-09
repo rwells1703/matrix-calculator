@@ -516,6 +516,12 @@ calculator_equation_solver = (function (context)
 
 		return self;
 	};
+	
+	context.parseTextValues = function ()
+	{
+		// NOT YET IMPLEMENTED
+		// WILL PARSE TEXT EQUATIONS AND ALSO WILL PARSE THE TEXT INSIDE TEXT BOXES TO ALLOW FOR FRACTIONS WITHIN MATRICES ETC.
+	};
 
 	// Returns an array containing objects for each item in the equation
 	context.parseItemValues = function ()
