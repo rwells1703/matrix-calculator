@@ -252,3 +252,16 @@ Coursework 2018-11-11-21-08:
 - (calculator_equation_solver.js) "Matrices" and "Vectors" now inherit from base class "Grid".
 - (calculator_equation_solver.js) Lots of common operations abstracted into functions e.g. "gridGridElementWiseOperation".
 - (calculator_equation_solver.js) Many new operations added including trigonometric functions, logs, permutations and combinations.
+
+Coursework 2018-11-13-12-55:
+- (calculator_equation_solver.js) Fixed major bug with "Grid" inheritance. The variable "self" was being initialised in the global scope, instead of locally within the "Grid" closure, meaning methods on self e.g. "getTranspose" failed to give correct output. Added "var" keyword to start of "self" brought it into local scope.
+- (calculator_equation_solver.js) Added more verification to "Grid" to make sure its value is a uniform m x n array.
+- (calculator_equation_solver.js) Moved "getTranpose" to "Grid" so it will be available to both "Matrix" and "Vector".
+- (calculator_equation_solver.js) Removed incorrect restriction on "matrix.getMinorMatrix" that returned false if matrix was not square. Added check to make sure it has greater than 1 rows and columns instead.
+- (calculator_equation_solver.js) "matrix.getMatrixOfMinors" now only works for square matrices.
+- (calculator_equation_solver.js) Added more checks to "matrix.getMatrixOfCofactors", "matrix.getAdjugate" and "matrix.getInverse" so that they return false if there are any errors in the calculation.
+- (calculator_equation_solver.js) Added new "dotProduct" and "vectorVectorAngle" actions for use in their corresponding operations.
+- (calculator_equation_solver.js) Fixed bug in action "vectorVectorAngle" where error would be returned if angle (degrees or radians) unit was not specified. Angle now defaults to radians unless otherwise specified in parameters.
+- (calculator_equation_solver.js) Nearl finished adding operations: "tranpose", "determinant", "minor", "minors", "cofactors", "adjugate", "dotProduct", "vectorVectorAngle". Only "crossProduct" is left due to problem with different amount of inputs depending on dimensions.
+- (calculator_equation_solver.js) Small changes to variable names passed into "function" operations e.g. sin, log. Changed from "operand" to either "left" or "right" depending on where the operand appears in the equation in relation to the functions name.
+- (calculator_equation_solver.js) More major changes to structure. Not yet finished.

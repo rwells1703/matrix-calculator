@@ -26,15 +26,72 @@ calculator_equation_solver = function ()
 		
 		self.Grid = function (value)
 		{
+			var verifyGridValue = function (gridValue)
+			{
+				if (gridValue)
+				{
+					// The grid exists
+
+					if (Array.isArray(gridValue))
+					{
+						// The grid is an array
+						var rows = gridValue.length;
+			
+						var r = 0;
+						while (r < rows)
+						{
+							var columns;
+			
+							if (gridValue[r])
+							{
+								// The row exists
+
+								if (Array.isArray(gridValue[r]))
+								{
+									// The row is an array
+						
+									if (gridValue[r].length != columns && columns != undefined)
+									{
+										// The size of this column is different than the others
+										// This condition is not triggered if it is the first column being checked
+										// Cannot be a grid is some columns are longer than others
+										return false;
+									}
+									else
+									{
+										// Set the column length to be the length of the current column
+										columns = gridValue[r].length;
+									}
+								}
+								else
+								{
+									// This row is not an array
+									return false;
+								}
+							}
+			
+							r += 1;
+						}
+					}
+				}
+	
+				return true;
+			}
+			
+			if (verifyGridValue(value) == false)
+			{
+				return false;
+			}
+
 			// If it has 1 column and more than 1 row, it is a vector
 			if (value[0].length == 1 && value.length != 1)
 			{
-				self = calculator_equation_solver.Items.Vector(value);
+				var self = calculator_equation_solver.Items.Vector(value);
 			}
 			// Otherwise it is a matrix
 			else
 			{
-				self = calculator_equation_solver.Items.Matrix(value);
+				var self = calculator_equation_solver.Items.Matrix(value);
 			}
 			
 			self.value = value;
@@ -42,6 +99,29 @@ calculator_equation_solver = function ()
 			self.rows = value.length;
 			self.columns = value[0].length;
 			
+			// Returns the orignal grid but with the rows and columns swapped
+			self.getTranspose = function ()
+			{
+				var transpose = calculator_equation_solver.Actions.generateZeroGrid(self.columns, self.rows);
+
+				var row = 0;
+				while (row < self.rows)
+				{
+					var column = 0;
+					while (column < self.columns)
+					{
+
+						// Swap the rows and columns of the element, and insert it into the transpose matrix
+						transpose.value[column][row] = self.value[row][column];
+						column += 1;
+					}
+
+					row += 1;
+				}
+
+				return transpose;
+			};
+
 			return self;
 		};
 		
@@ -115,6 +195,11 @@ calculator_equation_solver = function ()
 			// Returns the minor matrix for a specific element of the matrix  
 			self.getMinorMatrix = function (targetRow, targetColumn)
 			{
+				if (self.rows < 2 || self.columns < 2)
+				{
+					return false;
+				}
+
 				// Create zero matrix with 1 less row and 1 less column than the matrix object
 				var minor = calculator_equation_solver.Actions.generateZeroGrid(self.rows - 1, self.columns - 1);
 
@@ -162,6 +247,12 @@ calculator_equation_solver = function ()
 			// Returns a matrix, where every element is equal to the determinant of the minor matrix of that element in the original matrix
 			self.getMatrixOfMinors = function ()
 			{
+				// Must be a square matrix otherwise the matrix of minors is undefined
+				if (self.getSquare() == false)
+				{
+					return false;
+				}
+
 				var minors = calculator_equation_solver.Actions.generateZeroGrid(self.rows, self.columns);
 
 				var row = 0;
@@ -185,7 +276,12 @@ calculator_equation_solver = function ()
 			// Returns the matrix of cofactors but where the sign (+ or -) or each element follows a checkerboard pattern
 			self.getMatrixOfCofactors = function ()
 			{
-				var minor = self.getMatrixOfMinors();
+				var minors = self.getMatrixOfMinors();
+
+				if (minors == false)
+				{
+					return false;
+				}
 
 				// Multiplier value that will be either 1 or -1 depending on the location of the element
 				var multiplier = 1;
@@ -197,7 +293,7 @@ calculator_equation_solver = function ()
 					while (column < self.columns)
 					{
 						// Changes the sign of that element according to the checker board pattern
-						minor.value[row][column] *= multiplier;
+						minors.value[row][column] *= multiplier;
 
 						// Changes the multiplier for the element to the left
 						multiplier *= -1;
@@ -209,36 +305,19 @@ calculator_equation_solver = function ()
 					row += 1;
 				}
 
-				return minor;
-			};
-
-			// Returns the orignal matrix but with the rows and columns swapped
-			self.getTranspose = function ()
-			{
-				var transpose = calculator_equation_solver.Actions.generateZeroGrid(self.rows, self.columns);
-
-				var row = 0;
-				while (row < self.rows)
-				{
-					var column = 0;
-					while (column < self.columns)
-					{
-						// Swap the rows and columns of the element, and insert it into the transpose matrix
-						transpose.value[column][row] = self.value[row][column];
-
-						column += 1;
-					}
-
-					row += 1;
-				}
-
-				return transpose;
+				return minors;
 			};
 
 			// Returns a matrix equal to the transpose of the matrix of cofactors, used in finding inverse matrices
 			self.getAdjugate = function ()
 			{
 				var cofactors = self.getMatrixOfCofactors();
+
+				if (cofactors == false)
+				{
+					return false;
+				}
+
 				var adjugate = cofactors.getTranspose();
 
 				return adjugate;
@@ -249,7 +328,18 @@ calculator_equation_solver = function ()
 			self.getInverse = function ()
 			{
 				var adjugate = self.getAdjugate();
+
+				if (adjugate == false)
+				{
+					return false;
+				}
+
 				var determinant = self.getDeterminant();
+
+				if (determinant.value == 0)
+				{
+					return false;
+				}
 
 				// Inverse is equal to: adjugate * 1/determinant
 				var inverse = calculator_equation_solver.Actions.scalarGridOperation(determinant, adjugate, function (a, b) { return a / b });
@@ -415,7 +505,7 @@ calculator_equation_solver = function ()
 			{
 				return calculator_equation_solver.Actions.scalarScalarOperation(left, right, function (a, b) { return a ** b });
 			}
-			//MS
+			// MS
 			if (left.type == "Matrix" && right.type == "Scalar")
 			{
 				return calculator_equation_solver.Actions.matrixExponent(left, right);
@@ -446,140 +536,198 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.factorial = function (operand)
+		self.factorial = function (left)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (left.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.factorial(operand);
+				return calculator_equation_solver.Actions.factorial(left);
 			}
 			
 			return false;
 		};
 		
-		self.sin = function (operand)
+		self.sin = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.sin(operand);
+				return calculator_equation_solver.Actions.sin(right);
 			}
 			
 			return false;
 		};
 		
-		self.cos = function (operand)
+		self.cos = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.cos(operand);
+				return calculator_equation_solver.Actions.cos(right);
 			}
 			
 			return false;
 		};
 		
-		self.tan = function (operand)
+		self.tan = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.tan(operand);
+				return calculator_equation_solver.Actions.tan(right);
 			}
 			
 			return false;
 		};
 		
-		self.arcsin = function (operand)
+		self.arcsin = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arcsin(operand);
+				return calculator_equation_solver.Actions.arcsin(right);
 			}
 			
 			return false;
 		};
 		
-		self.arccos = function (operand)
+		self.arccos = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arccos(operand);
+				return calculator_equation_solver.Actions.arccos(right);
 			}
 			
 			return false;
 		};
 		
-		self.arctan = function (operand)
+		self.arctan = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arctan(operand);
+				return calculator_equation_solver.Actions.arctan(right);
 			}
 			
 			return false;
 		};
 		
-		self.log = function (operand)
+		self.log = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.log(operand);
+				return calculator_equation_solver.Actions.log(right);
 			}
 			
 			return false;
 		};
 		
-		self.ln = function (operand)
+		self.ln = function (right)
 		{
 			// S
-			if (operand.type == "Scalar")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.ln(operand);
+				return calculator_equation_solver.Actions.ln(right);
 			}
 			
 			return false;
 		};
 		
+		
+		
+		self.transpose = function (left)
+		{
+			// M V
+			if (left.type == "Matrix" || left.type == "Vector")
+			{
+				return left.getTranspose();
+			}
 
+			return false;
+		};
 		
+		self.determinant = function (right)
+		{
+			// M
+			if (right.type == "Matrix")
+			{
+				return right.getDeterminant();
+			}
 
-		
-		self.transpose = function ()
-		{
+			return false;
 		};
 		
-		self.determinant = function ()
+		self.minor = function (operand, row, column)
 		{
+			// M
+			if (operand.type == "Matrix")
+			{
+				return right.getMinorMatrix(row, column);
+			}
+
+			return false;
 		};
 		
-		self.minor = function ()
+		self.minors = function (right)
 		{
+			// M
+			if (right.type == "Matrix")
+			{
+				return right.getMatrixOfMinors();
+			}
+
+			return false;
 		};
 		
-		self.minors = function ()
+		self.cofactors = function (right)
 		{
+			// M
+			if (right.type == "Matrix")
+			{
+				return right.getCofactors();
+			}
+			
+			return false;
 		};
 		
-		self.cofactors = function ()
+		self.adjugate = function (right)
 		{
+			// M
+			if (right.type == "Matrix")
+			{
+				return right.getAdjugate();
+			}
+			
+			return false;
 		};
 		
-		self.adjugate = function ()
+		
+		
+		self.dotProduct = function (left, right)
 		{
+			// V V
+			if (left.type == "Vector" && right.type == "Vector")
+			{
+				return calculator_equation_solver.Actions.dotProduct(left, right);
+			}
+			
+			return false;
+		};
+
+		self.vectorVectorAngle = function(left, right)
+		{
+			// V V
+			if (left.type == "Vector" && right.type == "Vector")
+			{
+				return calculator_equation_solver.Actions.vectorVectorAngle(left, right);
+			}
+			
+			return false;
 		};
 		
-		
-		
-		self.dot = function ()
-		{
-		};
-		
-		self.cross = function ()
+		self.crossProduct = function ()
 		{
 		};
 		
@@ -792,7 +940,7 @@ calculator_equation_solver = function ()
 		
 		// Creates a grid containing all zeros of the specified order
 		self.generateZeroGrid = function (rows, columns)
-		{	
+		{
 			var elements = [];
 
 			var r = 0;
@@ -866,18 +1014,74 @@ calculator_equation_solver = function ()
 			return output;
 		};
 		
+		self.dotProduct = function(left, right)
+		{
+			// Verify that the vectors are of the same dimension
+			if (left.rows != right.rows)
+			{
+				return false;
+			}
+
+			var total = 0;
+
+			// Loop through each row (dimension) of the vectors
+			var r = 0;
+			while (r < left.rows)
+			{
+				// Multiply the vectors together in the same dimension, and add this value to the total
+				total += left.value[r][0] * right.value[r][0];
+				r += 1;
+			}
+
+			return calculator_equation_solver.Items.Scalar(total);
+		};
+
+		// Gets the angle between two vectors using the dot product identity
+		self.vectorVectorAngle = function (left, right, angleType)
+		{
+			var dotProduct = calculator_equation_solver.Actions.dotProduct(left,right)
+			var magnitudeProduct = left.getMagnitude().value * right.getMagnitude().value;
+			
+			if (magnitudeProduct == 0)
+			{
+				return false;
+			}
+
+			var cosineAngle = dotProduct.value / magnitudeProduct;
+
+			// Return the angle in the specified unit
+			// In degrees
+			if (angleType == "degrees")
+			{
+				var angle = Math.acos(cosineAngle) * 180 / Math.PI;
+			}
+			// Otherwise use radians
+			else
+			{
+				var angle = Math.acos(cosineAngle);
+			}
+
+			return calculator_equation_solver.Items.Scalar(angle);
+		};
+
 		return self;
 	}();
 	
 	self.solve = function ()
 	{
-		var x = calculator_equation_solver.Items.Scalar(4);
-		var y = calculator_equation_solver.Items.Scalar(2);
+		var sa = calculator_equation_solver.Items.Scalar(4);
+		var sb = calculator_equation_solver.Items.Scalar(2);
 		
-		var a = calculator_equation_solver.Items.Grid([[2,4],[5,3]]);
-		var b = calculator_equation_solver.Items.Grid([[5,1],[9,5]]);
-		
-		console.log(calculator_equation_solver.Operations.combinations(x,y));
+		var ma = calculator_equation_solver.Items.Grid([[2,4,3]]);
+		var mb = calculator_equation_solver.Items.Grid([[5,1,4],[9,5,2]]);
+		var mc = calculator_equation_solver.Items.Grid([[5,1],[9,5]]);
+		var md = calculator_equation_solver.Items.Grid([[5,1,3],[9,5,0],[4,7,1]]);
+		var me = calculator_equation_solver.Items.Grid([[1,0],[0,1]]);
+
+		var va = calculator_equation_solver.Items.Grid([[3],[5],[1]]);
+		var vb = calculator_equation_solver.Items.Grid([[2],[0],[9]]);
+
+		console.log(calculator_equation_solver.Operations.vectorVectorAngle(va,vb));
 	};
 	
 	return self;
