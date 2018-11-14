@@ -154,12 +154,12 @@ calculator_equation_solver = function ()
 					return false;
 				}
 
-				var determinant = 0;
+				var determinant = calculator_equation_solver.Items.Scalar(0);
 
 				// Recursive base case, we have reached the smallest matrix possible, a 1 x 1
 				if (self.rows == 1 && self.columns == 1)
 				{
-					return calculator_equation_solver.Items.Scalar(self.value[0][0]);
+					return self.value[0][0];
 				}
 
 				// Start out positive and then switch sign on each row change
@@ -174,22 +174,24 @@ calculator_equation_solver = function ()
 					if (positive)
 					{
 						// Add the minor determinant to the major determinant if we are on a positive row
-						determinant += self.value[row][0] * minor.getDeterminant().value;
+						var determinantAddition = calculator_equation_solver.Operations.multiply(self.value[row][0], minor.getDeterminant());
+						determinant = calculator_equation_solver.Operations.add(determinant, determinantAddition);
 						// Switch from positive to negative
 						positive = false;
 					}
 					else
 					{
 						// Otherwise subtract it
-						determinant -= self.value[row][0] * minor.getDeterminant().value;
+						var determinantAddition = calculator_equation_solver.Operations.multiply(self.value[row][0], minor.getDeterminant());
+						determinant = calculator_equation_solver.Operations.subtract(determinant, determinantAddition);
 						// Switch from negative to positive
 						positive = true;
 					}
 
 					row += 1;
 				}
-
-				return calculator_equation_solver.Items.Scalar(determinant);
+				
+				return determinant;
 			};
 
 			// Returns the minor matrix for a specific element of the matrix  
@@ -354,7 +356,7 @@ calculator_equation_solver = function ()
 		// Inherits from the grid class, along with martrix
 		self.Vector = function (value)
 		{
-			self = {};
+			var self = {};
 			
 			self.type = "Vector";
 
@@ -1014,7 +1016,7 @@ calculator_equation_solver = function ()
 			return output;
 		};
 		
-		self.dotProduct = function(left, right)
+		self.dotProduct = function (left, right)
 		{
 			// Verify that the vectors are of the same dimension
 			if (left.rows != right.rows)
@@ -1035,7 +1037,11 @@ calculator_equation_solver = function ()
 
 			return calculator_equation_solver.Items.Scalar(total);
 		};
-
+		
+		self.crossProduct = function (left, right)
+		{
+		};
+		
 		// Gets the angle between two vectors using the dot product identity
 		self.vectorVectorAngle = function (left, right, angleType)
 		{
@@ -1077,11 +1083,14 @@ calculator_equation_solver = function ()
 		var mc = calculator_equation_solver.Items.Grid([[5,1],[9,5]]);
 		var md = calculator_equation_solver.Items.Grid([[5,1,3],[9,5,0],[4,7,1]]);
 		var me = calculator_equation_solver.Items.Grid([[1,0],[0,1]]);
-
+		
 		var va = calculator_equation_solver.Items.Grid([[3],[5],[1]]);
 		var vb = calculator_equation_solver.Items.Grid([[2],[0],[9]]);
-
-		console.log(calculator_equation_solver.Operations.vectorVectorAngle(va,vb));
+		
+		
+		// testing CROSS PRODUCT for two vectors of size 3
+		var mat = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Grid([[1],[0],[0]]), calculator_equation_solver.Items.Grid([[0],[1],[0]]), calculator_equation_solver.Items.Grid([[0],[0],[1]])],[calculator_equation_solver.Items.Scalar(2), calculator_equation_solver.Items.Scalar(5), calculator_equation_solver.Items.Scalar(1)], [calculator_equation_solver.Items.Scalar(6), calculator_equation_solver.Items.Scalar(0), calculator_equation_solver.Items.Scalar(9)]]);
+		console.log(calculator_equation_solver.Operations.determinant(mat));
 	};
 	
 	return self;

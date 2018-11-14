@@ -265,3 +265,7 @@ Coursework 2018-11-13-12-55:
 - (calculator_equation_solver.js) Nearl finished adding operations: "tranpose", "determinant", "minor", "minors", "cofactors", "adjugate", "dotProduct", "vectorVectorAngle". Only "crossProduct" is left due to problem with different amount of inputs depending on dimensions.
 - (calculator_equation_solver.js) Small changes to variable names passed into "function" operations e.g. sin, log. Changed from "operand" to either "left" or "right" depending on where the operand appears in the equation in relation to the functions name.
 - (calculator_equation_solver.js) More major changes to structure. Not yet finished.
+
+Coursework 2018-11-14-10-50:
+- (calculator_equation_solver.js) Fixed another major bug in "Vector" due to "self" being initialised in global scope.
+- (calculator_equation_solver.js) Changed "matrix.getDeterminant" so that it now supports values other than primitive floats inside the matrix. Works for vectors inside matrices which is used to calculate cross product via laplace decomposition.
