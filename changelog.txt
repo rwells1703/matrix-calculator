@@ -269,3 +269,14 @@ Coursework 2018-11-13-12-55:
 Coursework 2018-11-14-10-50:
 - (calculator_equation_solver.js) Fixed another major bug in "Vector" due to "self" being initialised in global scope.
 - (calculator_equation_solver.js) Changed "matrix.getDeterminant" so that it now supports values other than primitive floats inside the matrix. Works for vectors inside matrices which is used to calculate cross product via laplace decomposition.
+
+Coursework 2018-11-15-20-18:
+- (calculator_equation_solver.js) Renamed private "verifyGridValue" function in "Grid" to "verifyGridSize" to better reflect its use.
+- (calculator_equation_solver.js) Changed from using primitve floats in "Grid" objects, to using "Scalar" objects within the value elements of "Grid" objects. This required many changes in other functions, especially operations, so that instead of using normal js + - / *, I used my own "Operations" to verify each operation and better work with "Scalar" objects.
+- (calculator_equation_solver.js) Re-added support for "solveEquation" so that it will solve an equation in the form of an array of items and operations.
+- (calculator_equation_solver.js) Added two new items "Bracket" and "Operation" which will replace the old items/strings previously used in equations e.g. "(", ")", "Functions" and "Operators".
+- (calculator_equation_solver.js) Added "crossProduct" operation that takes operands as an array and verifies the amount of them and their dimensions.
+- (calculator_equation_solver.js) Implemented "dotProduct" and "crossProduct" to "solveEquation" so that it will solve them in with a normal equation.
+- (calculator_equation_solver.js) Also began to implement other function like operations to "solveEquation" as they will use the same loop as "crossProduct" however this is not yet complete. It will rely on function brackets [] which will specify where the operands begin and end.
+- (calculator_equation_solver.js) Renamed all references of "exponent" to "exponential" to be more technically correct.
+- (calculator_equation_solver.js) Added "generateBasisVectors" action which will create a set of basis vectors to a specific amount of dimensions e.g. for 3 dimensions it will return i, j and k which look like (1,0,0) (0,1,0) (0,0,1).

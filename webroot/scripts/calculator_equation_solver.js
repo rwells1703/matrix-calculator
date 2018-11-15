@@ -12,7 +12,31 @@ calculator_equation_solver = function ()
 	self.Items = function ()
 	{
 		var self = {};
+
+		// Bracket class that will be either of the following:
+		// Equation bracket ( ) or operation bracket [ ]
+		self.Bracket = function (value)
+		{
+			var self = {};
+			
+			self.type = "Bracket";
+			self.value = value;
+			
+			return self;
+		};
 		
+		// Operation class, that holds a function or operator
+		// It will take one or more inputs and return an output
+		self.Operation = function (value)
+		{
+			var self = {};
+
+			self.type = "Operation";
+			self.value = value;
+
+			return self;
+		};
+
 		// Scalar class, that holds a single numerical value
 		self.Scalar = function (value)
 		{
@@ -24,63 +48,55 @@ calculator_equation_solver = function ()
 			return self;
 		};
 		
+		// Grid class, holds a grid of numbers, both matrix and vector inherit from this
 		self.Grid = function (value)
 		{
-			var verifyGridValue = function (gridValue)
+			// Verifies that the grid of numbers is correctly structured so that it is an nxm rectangle
+			if (value)
 			{
-				if (gridValue)
+				// The grid exists
+
+				if (Array.isArray(value))
 				{
-					// The grid exists
-
-					if (Array.isArray(gridValue))
+					// The grid is an array
+					var rows = value.length;
+		
+					var r = 0;
+					while (r < rows)
 					{
-						// The grid is an array
-						var rows = gridValue.length;
-			
-						var r = 0;
-						while (r < rows)
+						var columns;
+		
+						if (value[r])
 						{
-							var columns;
-			
-							if (gridValue[r])
-							{
-								// The row exists
+							// The row exists
 
-								if (Array.isArray(gridValue[r]))
+							if (Array.isArray(value[r]))
+							{
+								// The row is an array
+					
+								if (value[r].length != columns && columns != undefined)
 								{
-									// The row is an array
-						
-									if (gridValue[r].length != columns && columns != undefined)
-									{
-										// The size of this column is different than the others
-										// This condition is not triggered if it is the first column being checked
-										// Cannot be a grid is some columns are longer than others
-										return false;
-									}
-									else
-									{
-										// Set the column length to be the length of the current column
-										columns = gridValue[r].length;
-									}
+									// The size of this column is different than the others
+									// This condition is not triggered if it is the first column being checked
+									// Cannot be a grid is some columns are longer than others
+									return false;
 								}
 								else
 								{
-									// This row is not an array
-									return false;
+									// Set the column length to be the length of the current column
+									columns = value[r].length;
 								}
 							}
-			
-							r += 1;
+							else
+							{
+								// This row is not an array
+								return false;
+							}
 						}
+		
+						r += 1;
 					}
 				}
-	
-				return true;
-			}
-			
-			if (verifyGridValue(value) == false)
-			{
-				return false;
 			}
 
 			// If it has 1 column and more than 1 row, it is a vector
@@ -363,19 +379,20 @@ calculator_equation_solver = function ()
 			// Returns the magnitude (length) of the vector, denoted |v| where v is a vector
 			self.getMagnitude = function ()
 			{
-				var total = 0;
+				var total = calculator_equation_solver.Items.Scalar(0);
 
 				// Loop throughy every element in the vector
 				var r = 0;
 				while (r < self.rows)
 				{
 					// Add together the square of every element in the vector
-					total += Math.pow(self.value[r][0], 2);
+					var squareValue = calculator_equation_solver.Operations.exponential(self.value[r][0], calculator_equation_solver.Items.Scalar(2));
+					total = calculator_equation_solver.Operations.add(total, squareValue);
 					r += 1;
 				}
 
 				// Return the square root of the total (pythagoras theorum)
-				return calculator_equation_solver.Items.Scalar(Math.pow(total, 0.5));
+				return calculator_equation_solver.Operations.exponential(total, calculator_equation_solver.Items.Scalar(0.5));
 			};
 
 			// Returns a vector object, with the magnitude 1 in the same direction as this vector
@@ -402,6 +419,7 @@ calculator_equation_solver = function ()
 		return self;
 	}();
 	
+	// Holds all the operations that can be performed on items
 	self.Operations = function ()
 	{
 		var self = {};
@@ -416,17 +434,17 @@ calculator_equation_solver = function ()
 			// SM SV 
 			else if (left.type == "Scalar" && right.type == "Matrix" || left.type == "Scalar" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return a + b });
+				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return calculator_equation_solver.Operations.add(a,b) });
 			}
 			// MS VS
 			else if (left.type == "Matrix" && right.type == "Scalar" || left.type == "Vector" && right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return a + b });
+				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return calculator_equation_solver.Operations.add(a,b) });
 			}
 			// MM VV
 			else if (left.type == "Matrix" && right.type == "Matrix" || left.type == "Vector" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.gridGridElementWiseOperation(left, right, function (a, b) { return a + b });
+				return calculator_equation_solver.Actions.gridGridElementWiseOperation(left, right, function (a, b) { return calculator_equation_solver.Operations.add(a,b) });
 			}
 			
 			return false;
@@ -442,17 +460,17 @@ calculator_equation_solver = function ()
 			// SM SV 
 			else if (left.type == "Scalar" && right.type == "Matrix" || left.type == "Scalar" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return a - b });
+				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return calculator_equation_solver.Operations.subtract(a,b) });
 			}
 			// MS VS
 			else if (left.type == "Matrix" && right.type == "Scalar" || left.type == "Vector" && right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return a - b });
+				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return calculator_equation_solver.Operations.subtract(a,b) });
 			}
 			// MM VV
 			else if (left.type == "Matrix" && right.type == "Matrix" || left.type == "Vector" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.gridGridElementWiseOperation(left, right, function (a, b) { return a - b });
+				return calculator_equation_solver.Actions.gridGridElementWiseOperation(left, right, function (a, b) { return calculator_equation_solver.Operations.subtract(a,b) });
 			}
 			
 			return false;
@@ -468,12 +486,12 @@ calculator_equation_solver = function ()
 			// SM SV 
 			else if (left.type == "Scalar" && right.type == "Matrix" || left.type == "Scalar" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return a * b });
+				return calculator_equation_solver.Actions.scalarGridOperation(left, right, function (a, b) { return calculator_equation_solver.Operations.multiply(a,b) });
 			}
 			// MS VS
 			else if (left.type == "Matrix" && right.type == "Scalar" || left.type == "Vector" && right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return a * b });
+				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return calculator_equation_solver.Operations.multiply(a,b) });
 			}
 			// MM MV
 			else if (left.type == "Matrix" && right.type == "Matrix" || left.type == "Matrix" && right.type == "Vector")
@@ -494,13 +512,13 @@ calculator_equation_solver = function ()
 			// MS VS
 			else if (left.type == "Matrix" && right.type == "Scalar" || left.type == "Vector" && right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return a / b });
+				return calculator_equation_solver.Actions.scalarGridOperation(right, left, function (a, b) { return calculator_equation_solver.Operations.divide(a,b) });
 			}
 			
 			return false;
 		};
 		
-		self.exponent = function (left, right)
+		self.exponential = function (left, right)
 		{
 			// SS
 			if (left.type == "Scalar" && right.type == "Scalar")
@@ -637,8 +655,6 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		
-		
 		self.transpose = function (left)
 		{
 			// M V
@@ -705,11 +721,9 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		
-		
 		self.dotProduct = function (left, right)
 		{
-			// V V
+			// VV
 			if (left.type == "Vector" && right.type == "Vector")
 			{
 				return calculator_equation_solver.Actions.dotProduct(left, right);
@@ -717,10 +731,10 @@ calculator_equation_solver = function ()
 			
 			return false;
 		};
-
+		
 		self.vectorVectorAngle = function(left, right)
 		{
-			// V V
+			// VV
 			if (left.type == "Vector" && right.type == "Vector")
 			{
 				return calculator_equation_solver.Actions.vectorVectorAngle(left, right);
@@ -729,8 +743,21 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.crossProduct = function ()
+		self.crossProduct = function (vectors)
 		{
+			// V VV VVV VVVV and so on...
+			var i = 0;
+			while (i < vectors.length)
+			{
+				if (vectors[i].type != "Vector")
+				{
+					return false;
+				}
+				
+				i += 1;
+			}
+			
+			return calculator_equation_solver.Actions.crossProduct(vectors);
 		};
 		
 		return self;
@@ -857,8 +884,8 @@ calculator_equation_solver = function ()
 				while (c < grid.columns)
 				{
 					// Perform the operation on the specified input grid element and save it to the output grid
-					output.value[r][c] = operation(grid.value[r][c], scalar.value);
-
+					output.value[r][c] = operation(grid.value[r][c], scalar);
+					
 					c += 1;
 				}
 
@@ -897,7 +924,8 @@ calculator_equation_solver = function ()
 					while (shift < left.columns)
 					{
 						// Perform the multiplication and place the product in the correct place in the product grid
-						product.value[left_row][right_column] += left.value[left_row][shift] * right.value[shift][right_column];
+						var additionValue = calculator_equation_solver.Operations.multiply(left.value[left_row][shift],right.value[shift][right_column]);
+						product.value[left_row][right_column] = calculator_equation_solver.Operations.add(product.value[left_row][right_column], additionValue);
 						shift += 1;
 					}
 
@@ -955,7 +983,7 @@ calculator_equation_solver = function ()
 				var c = 0;
 				while (c < columns)
 				{
-					elements[r].push(0);
+					elements[r].push(calculator_equation_solver.Items.Scalar(0));
 					c += 1;
 				}
 
@@ -983,12 +1011,12 @@ calculator_equation_solver = function ()
 					if (r == c)
 					{
 						// If it is on a diagonal, set the value to 1
-						elements[r].push(1);
+						elements[r].push(calculator_equation_solver.Items.Scalar(1));
 					}
 					else
 					{
 						// Otherwise set the value to 0
-						elements[r].push(0);
+						elements[r].push(calculator_equation_solver.Items.Scalar(0));
 					}
 
 					c += 1;
@@ -1001,6 +1029,7 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Grid(elements);
 		};
 		
+		// Multiplies a matrix by itself the corresponding number of times
 		self.matrixExponent = function (matrix, scalar)
 		{
 			// Create zero grid to the same order as the matrix
@@ -1016,6 +1045,7 @@ calculator_equation_solver = function ()
 			return output;
 		};
 		
+		// Takes two vectors and returns their dot product (corresponding components multiplied together)
 		self.dotProduct = function (left, right)
 		{
 			// Verify that the vectors are of the same dimension
@@ -1024,74 +1054,334 @@ calculator_equation_solver = function ()
 				return false;
 			}
 
-			var total = 0;
+			var total = calculator_equation_solver.Items.Scalar(0);
 
 			// Loop through each row (dimension) of the vectors
 			var r = 0;
 			while (r < left.rows)
 			{
 				// Multiply the vectors together in the same dimension, and add this value to the total
-				total += left.value[r][0] * right.value[r][0];
+				var product = calculator_equation_solver.Operations.multiply(left.value[r][0], right.value[r][0]);
+				total = calculator_equation_solver.Operations.add(total, product);
 				r += 1;
 			}
 
-			return calculator_equation_solver.Items.Scalar(total);
+			return total;
+			//return calculator_equation_solver.Items.Scalar(total);
 		};
 		
-		self.crossProduct = function (left, right)
+		// Takes n-1 vectors of n dimensions and calculates a vector orthogonal to all the input vectors
+		self.crossProduct = function (vectors)
 		{
+			// Check that all the vectors have the same dimensions
+			var len;
+
+			var i = 0;
+			while (i < vectors.length)
+			{
+				if (vectors[i].value)
+				{
+					if (Array.isArray(vectors[i].value))
+					{
+						if (vectors[i].value.length != len && len != undefined)
+						{
+							return false;
+						}
+						else
+						{
+							// Set the column length to be the length of the current column
+							len = vectors[i].value.length;
+						}
+					}
+				}
+
+				i += 1;
+			}
+
+			// Verify that we have n vectors, each of n+1 dimensions e.g. we need 2 lots of 3d vectors, or 4 lots of 5d vectors
+			if (vectors.length != len - 1)
+			{
+				return false;
+			}
+
+			// Create the an empty nxn Grid where n is the dimension of all the vectors
+			var matrix = calculator_equation_solver.Actions.generateZeroGrid(len, len);
+			
+			// Gets a set of basis vectors to be inserted into the top row of the matrix
+			var basisVectors = calculator_equation_solver.Actions.generateBasisVectors(len);
+
+			// Inserts the basis vectors into the top row of the matrix
+			var c = 0;
+			while (c < len)
+			{
+				matrix.value[0][c] = basisVectors[c];
+				
+				c += 1;
+			}
+			
+			// Inserts the input vectors into the other rows of the matrix
+			var r = 1;
+			while (r < len)
+			{
+				var c = 0;
+				while (c < len)
+				{
+					matrix.value[r][c] = vectors[r-1].value[c][0];
+					
+					c += 1;
+				}
+				
+				r += 1;
+			}
+			
+			// Calculates the determiant of the matrix via laplace decomposition to get a value for cross product
+			var crossProduct = matrix.getDeterminant();
+			
+			return crossProduct;
 		};
 		
 		// Gets the angle between two vectors using the dot product identity
 		self.vectorVectorAngle = function (left, right, angleType)
 		{
-			var dotProduct = calculator_equation_solver.Actions.dotProduct(left,right)
-			var magnitudeProduct = left.getMagnitude().value * right.getMagnitude().value;
+			var dotProduct = calculator_equation_solver.Actions.dotProduct(left,right);
+			var magnitudeProduct = calculator_equation_solver.Operations.multiply(left.getMagnitude(), right.getMagnitude());
 			
-			if (magnitudeProduct == 0)
+			if (magnitudeProduct.value == 0)
 			{
 				return false;
 			}
 
-			var cosineAngle = dotProduct.value / magnitudeProduct;
+			var cosineAngle = calculator_equation_solver.Operations.divide(dotProduct, magnitudeProduct);
 
 			// Return the angle in the specified unit
 			// In degrees
 			if (angleType == "degrees")
 			{
-				var angle = Math.acos(cosineAngle) * 180 / Math.PI;
+				var angle = calculator_equation_solver.Operations.multiply(calculator_equation_solver.Operations.arccos(cosineAngle), calculator_equation_solver.Items.Scalar(180 / Math.PI));
 			}
 			// Otherwise use radians
 			else
 			{
-				var angle = Math.acos(cosineAngle);
+				var angle = calculator_equation_solver.Operations.arccos(cosineAngle);
 			}
 
-			return calculator_equation_solver.Items.Scalar(angle);
+			return angle;
+		};
+
+		// Returns an array of basis vectors for the specified number of dimensions e.g. for 2 dimensions it will return [1,0] and [0,1]
+		self.generateBasisVectors = function (dimensions)
+		{
+			// Create an empty array to hold all the new basis vectors
+			var vectors = [];
+
+			var d = 0;
+			while (d < dimensions)
+			{
+				// Create an empty vector of the correct dimension
+				var basisVector = calculator_equation_solver.Actions.generateZeroGrid(dimensions, 1);
+				// Assign the correct component of the vector a scalar value of 1
+				basisVector.value[d] = [calculator_equation_solver.Items.Scalar(1)];
+				// Add the new basis vector to the array of basis vectors
+				vectors.push(basisVector);
+
+				d += 1;
+			}
+
+			return vectors;
 		};
 
 		return self;
 	}();
 	
+	// Solves the mathematical equation passed in, and returns the answer
+	self.solveEquation = function (equation)
+	{
+		// BRACKETS
+		// Counter and location of brackets
+		var unclosedBrackets = 0;
+		var openBracketLocation = -1;
+
+		// Continues recursion inside brackets if necessary
+		var i = 0;
+		while (i < equation.length)
+		{
+			if (equation[i].value == "(")
+			{
+				if (unclosedBrackets == 0)
+				{
+					openBracketLocation = i;
+				}
+
+				unclosedBrackets += 1;
+			}
+			else if (equation[i].value == ")")
+			{
+				if (openBracketLocation == -1)
+				{
+					console.log("ERR: Bracket closed where there was no open bracket");
+					return false;
+				}
+
+				unclosedBrackets -= 1;
+				if (unclosedBrackets == 0)
+				{
+					var bracketSolution = calculator_equation_solver.solveEquation(equation.slice(openBracketLocation + 1, i));
+					if (bracketSolution == false)
+					{
+						console.log("ERR: Solving brackets was not possible");
+						return false;
+					}
+
+					equation = replaceArraySection(equation, openBracketLocation, i, bracketSolution);
+
+					// Go back to the location just before the start of where the brackets where before
+					i = openBracketLocation - 2;
+					openBracketLocation = -1;
+				}
+			}
+
+			i += 1;
+		}
+
+		// EXPONENTIALS
+		var i = equation.length - 2;
+		while (i > 0)
+		{
+			if (equation[i].value == "Exponential")
+			{
+				//var value = Math.pow(equation[i - 1].value, equation[i + 1].value);
+				var solution = calculator_equation_solver.Operations.exponential(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+
+			i -= 1;
+		}
+
+		// DIVISION AND MULTIPLICATION
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Divide")
+			{
+				var solution = calculator_equation_solver.Operations.divide(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else if (equation[i].value == "Multiply")
+			{
+				var solution = calculator_equation_solver.Operations.multiply(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+		
+		// ADDITION AND SUBTRACTION
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Add")
+			{
+				var solution = calculator_equation_solver.Operations.add(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else if (equation[i].value == "Subtract")
+			{
+				var solution = calculator_equation_solver.Operations.subtract(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+		
+		// DOT PRODUCT
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Dot Product")
+			{
+				var solution = calculator_equation_solver.Operations.dotProduct(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+		
+		// All operations in the form operation[operand] e.g. log[3] or cross[v1,v2,v3]
+		var i = 0;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Cross Product")
+			{
+				// If the item after the operation name is not an open operation bracket, return false
+				if (equation[i+1].value != "[")
+				{
+					return false;
+				}
+				
+				// Empty array to hold all the operands of the operation
+				var operands = [];
+				
+				// Used to keep track of where the operands of this operation end
+				var bracketClosed = false;
+				var bracketClosedLocation = 0;
+				
+				// Start on the item after the open operation bracket
+				var j = i + 2;
+				while (j < equation.length && bracketClosed == false)
+				{
+					if (equation[j].value == "]")
+					{
+						// Save where the close operation bracket is so that solveEquation knows what part of the equation to replaec with the solution
+						bracketClosed = true;
+						bracketClosedLocation = j;
+					}
+					else
+					{
+						// Otherwise add the operand to the list of operands
+						operands.push(equation[j]);
+					}
+					
+					j += 1;
+				}
+				
+				var solution = calculator_equation_solver.Operations.crossProduct(operands);
+				equation = replaceArraySection(equation, i, bracketClosedLocation, solution);
+			}
+			
+			i += 1;
+		}
+		
+		return equation;
+	};
+	
 	self.solve = function ()
 	{
-		var sa = calculator_equation_solver.Items.Scalar(4);
-		var sb = calculator_equation_solver.Items.Scalar(2);
+		var scalarA = calculator_equation_solver.Items.Scalar(2);
+		var scalarB = calculator_equation_solver.Items.Scalar(4);
 		
-		var ma = calculator_equation_solver.Items.Grid([[2,4,3]]);
-		var mb = calculator_equation_solver.Items.Grid([[5,1,4],[9,5,2]]);
-		var mc = calculator_equation_solver.Items.Grid([[5,1],[9,5]]);
-		var md = calculator_equation_solver.Items.Grid([[5,1,3],[9,5,0],[4,7,1]]);
-		var me = calculator_equation_solver.Items.Grid([[1,0],[0,1]]);
+		var vectorA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(3)],[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(1)]]);
+		var vectorB = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(7)],[calculator_equation_solver.Items.Scalar(1)],[calculator_equation_solver.Items.Scalar(3)]]);
+		var vectorC = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(2)],[calculator_equation_solver.Items.Scalar(0)],[calculator_equation_solver.Items.Scalar(3)]]);
 		
-		var va = calculator_equation_solver.Items.Grid([[3],[5],[1]]);
-		var vb = calculator_equation_solver.Items.Grid([[2],[0],[9]]);
+		var matrixA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(5),calculator_equation_solver.Items.Scalar(1)],[calculator_equation_solver.Items.Scalar(9),calculator_equation_solver.Items.Scalar(5)]]);
 		
+		var add = calculator_equation_solver.Items.Operation("Add");
+		var exponential = calculator_equation_solver.Items.Operation("Exponential");
+		var dot = calculator_equation_solver.Items.Operation("Dot Product");
+		var cross = calculator_equation_solver.Items.Operation("Cross Product");
 		
-		// testing CROSS PRODUCT for two vectors of size 3
-		var mat = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Grid([[1],[0],[0]]), calculator_equation_solver.Items.Grid([[0],[1],[0]]), calculator_equation_solver.Items.Grid([[0],[0],[1]])],[calculator_equation_solver.Items.Scalar(2), calculator_equation_solver.Items.Scalar(5), calculator_equation_solver.Items.Scalar(1)], [calculator_equation_solver.Items.Scalar(6), calculator_equation_solver.Items.Scalar(0), calculator_equation_solver.Items.Scalar(9)]]);
-		console.log(calculator_equation_solver.Operations.determinant(mat));
-	};
+		var oob = calculator_equation_solver.Items.Bracket("[");
+		var cob = calculator_equation_solver.Items.Bracket("]");
+		
+		var equation = [cross, oob, vectorA, vectorB, cob];
+		console.log(calculator_equation_solver.solveEquation(equation));
+	}
 	
 	return self;
 }();
