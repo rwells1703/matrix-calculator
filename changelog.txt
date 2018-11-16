@@ -280,3 +280,18 @@ Coursework 2018-11-15-20-18:
 - (calculator_equation_solver.js) Also began to implement other function like operations to "solveEquation" as they will use the same loop as "crossProduct" however this is not yet complete. It will rely on function brackets [] which will specify where the operands begin and end.
 - (calculator_equation_solver.js) Renamed all references of "exponent" to "exponential" to be more technically correct.
 - (calculator_equation_solver.js) Added "generateBasisVectors" action which will create a set of basis vectors to a specific amount of dimensions e.g. for 3 dimensions it will return i, j and k which look like (1,0,0) (0,1,0) (0,0,1).
+
+Coursework 2018-11-16-20-11:
+- (calculator_equation_solver.js) Changed name of "Vector.getUnitVector" to "Vector.normalize" to make it more techincally correct and to simplify the name.
+- (calculator_equation_solver.js) Changed back from using single "Operation" item to using seperate "Operator" and "Function" items, as they will be treated differently by "solveEquation".
+- (calculator_equation_solver.js) Renamed "operationBrackets" to "functionBrackets" to in line with the new item names. Only functions will use these brackets.
+- (calculator_equation_solver.js) Added new "Flag" item for use in specifying the output of certain functions e.g. use "radians" or "degrees" for Trigonometric functions.
+- (calculator_equation_solver.js) Renamed "crossProduct" to "normalVector" to be more technically specific. "crossProduct" is now an operator that calls "normalVector" but only for 3d vectors.
+- (calculator_equation_solver.js) Added support for chaning the unit used in trigonometric functions via the new "Flag" item, as well as the base used for "log"
+- (calculator_equation_solver.js) Changed "minor" so that it now takes in "Scalar" items for row and column, instead of primitive floats.
+- (calculator_equation_solver.js) Added more checks to "Grid" and "Scalar" items so that if any of the values passed in are false, no object will be created and instead false will be returned. This stops the need for more checks on every function that creates these items.
+- (calculator_equation_solver.js) Worked on adding functions to the "solveEquation" function and allowed any number of arguments to the function.
+- (calculator_equation_solver.js) Added check to make sure that the closed function bracket is always present when a function is called.
+- (calculator_equation_solver.js) Simplied the way that sections of the equation are replaced in "solveEquation" by using "solved" variable to reduce the amount of repeated code for each individual operator/function.
+- (calculator_equation_solver.js) Moved the evaluation of functions in "solveEquation" to before the normal arithmetic operators.
+- (calculator_equation_solver.js) Added "dotProduct" and "crossProduct" operators to "solveEquation". They are evaluated after functions but before the other normal operations.

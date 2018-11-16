@@ -12,9 +12,9 @@ calculator_equation_solver = function ()
 	self.Items = function ()
 	{
 		var self = {};
-
+			
 		// Bracket class that will be either of the following:
-		// Equation bracket ( ) or operation bracket [ ]
+		// equation bracket ( ) or function bracket [ ]
 		self.Bracket = function (value)
 		{
 			var self = {};
@@ -25,13 +25,34 @@ calculator_equation_solver = function ()
 			return self;
 		};
 		
-		// Operation class, that holds a function or operator
-		// It will take one or more inputs and return an output
-		self.Operation = function (value)
+		// Operator class, holds an operator that takes in a fixed number of inputs and gives an output
+		self.Operator = function (value)
 		{
 			var self = {};
 
-			self.type = "Operation";
+			self.type = "Operator";
+			self.value = value;
+
+			return self;
+		};
+
+		// Function class, holds a function that takes in one or more inputs and gives an output
+		self.Function = function (value)
+		{
+			var self = {};
+
+			self.type = "Function";
+			self.value = value;
+
+			return self;
+		};
+
+		// Flag class will be used in equations for specifying what type of output a function should give e.g. You can either use the "Radians" or "Degrees" flag for Trigonometric functions.
+		self.Flag = function (value)
+		{
+			var self = {};
+
+			self.type = "Flag";
 			self.value = value;
 
 			return self;
@@ -40,8 +61,15 @@ calculator_equation_solver = function ()
 		// Scalar class, that holds a single numerical value
 		self.Scalar = function (value)
 		{
+			// Returns false if the input value was false
+			// Must verify that it is a boolean as js evaluates the number 0 to be false, causing problems
+			if (value == false && typeof(value) == "boolean")
+			{
+				return false;
+			}
+			
 			var self = {};
-
+			
 			self.type = "Scalar";
 			self.value = value;
 
@@ -79,6 +107,11 @@ calculator_equation_solver = function ()
 									// The size of this column is different than the others
 									// This condition is not triggered if it is the first column being checked
 									// Cannot be a grid is some columns are longer than others
+									return false;
+								}
+								else if (value[r] == false)
+								{
+									// Return false instead of a Grid object if any of the values are false
 									return false;
 								}
 								else
@@ -185,7 +218,7 @@ calculator_equation_solver = function ()
 				var row = 0;
 				while (row < self.rows)
 				{
-					var minor = self.getMinorMatrix(row, 0);
+					var minor = self.getMinorMatrix(calculator_equation_solver.Items.Scalar(row), calculator_equation_solver.Items.Scalar(0));
 
 					if (positive)
 					{
@@ -231,7 +264,7 @@ calculator_equation_solver = function ()
 					while (majorColumn < self.columns)
 					{
 						// Avoid the row/column if it is the target row/column
-						if (majorColumn != targetColumn && majorRow != targetRow)
+						if (majorColumn != targetColumn.value && majorRow != targetRow.value)
 						{
 							// Store corresponding the value in the minor matrix
 							minor.value[minorRow][minorColumn] = self.value[majorRow][majorColumn];
@@ -280,7 +313,7 @@ calculator_equation_solver = function ()
 					while (column < self.columns)
 					{
 						// Gets the determinant of the minor matrix in that location, as a primitive float
-						minors.value[row][column] = self.getMinorMatrix(row, column).getDeterminant().value;
+						minors.value[row][column] = self.getMinorMatrix(calculator_equation_solver.Items.Scalar(row), calculator_equation_solver.Items.Scalar(column)).getDeterminant().value;
 
 						column += 1;
 					}
@@ -396,7 +429,7 @@ calculator_equation_solver = function ()
 			};
 
 			// Returns a vector object, with the magnitude 1 in the same direction as this vector
-			self.getUnitVector = function ()
+			self.normalize = function ()
 			{
 				var unitValue = new Array(self.rows);
 				var magnitude = self.getMagnitude();
@@ -419,7 +452,7 @@ calculator_equation_solver = function ()
 		return self;
 	}();
 	
-	// Holds all the operations that can be performed on items
+	// Holds all the operations that can be performed on items (both functions and operators)
 	self.Operations = function ()
 	{
 		var self = {};
@@ -567,78 +600,78 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.sin = function (right)
+		self.sin = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.sin(right);
+				return calculator_equation_solver.Actions.sin(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.cos = function (right)
+		self.cos = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.cos(right);
+				return calculator_equation_solver.Actions.cos(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.tan = function (right)
+		self.tan = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.tan(right);
+				return calculator_equation_solver.Actions.tan(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.arcsin = function (right)
+		self.arcsin = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.arcsin(right);
+				return calculator_equation_solver.Actions.arcsin(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.arccos = function (right)
+		self.arccos = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.arccos(right);
+				return calculator_equation_solver.Actions.arccos(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.arctan = function (right)
+		self.arctan = function (right, angleUnit)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (right.type == "Scalar" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.arctan(right);
+				return calculator_equation_solver.Actions.arctan(right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.log = function (right)
+		self.log = function (argument, base)
 		{
 			// S
-			if (right.type == "Scalar")
+			if (argument.type == "Scalar" && base.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.log(right);
+				return calculator_equation_solver.Actions.log(argument, base);
 			}
 			
 			return false;
@@ -680,9 +713,9 @@ calculator_equation_solver = function ()
 		self.minor = function (operand, row, column)
 		{
 			// M
-			if (operand.type == "Matrix")
+			if (operand.type == "Matrix" && row.type == "Scalar" && column.type == "Scalar")
 			{
-				return right.getMinorMatrix(row, column);
+				return operand.getMinorMatrix(row, column);
 			}
 
 			return false;
@@ -732,18 +765,29 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.vectorVectorAngle = function(left, right)
+		self.vectorVectorAngle = function(left, right, angleUnit)
 		{
 			// VV
-			if (left.type == "Vector" && right.type == "Vector")
+			if (left.type == "Vector" && right.type == "Vector" && angleUnit.type == "Flag")
 			{
-				return calculator_equation_solver.Actions.vectorVectorAngle(left, right);
+				return calculator_equation_solver.Actions.vectorVectorAngle(left, right, angleUnit);
 			}
 			
 			return false;
 		};
 		
-		self.crossProduct = function (vectors)
+		self.crossProduct = function (left, right)
+		{
+			// VV
+			if (left.type == "Vector" && right.type == "Vector")
+			{
+				return calculator_equation_solver.Actions.normalVector([left, right]);
+			}
+			
+			return false;
+		};
+		
+		self.normalVector = function (vectors)
 		{
 			// V VV VVV VVVV and so on...
 			var i = 0;
@@ -757,9 +801,9 @@ calculator_equation_solver = function ()
 				i += 1;
 			}
 			
-			return calculator_equation_solver.Actions.crossProduct(vectors);
+			return calculator_equation_solver.Actions.normalVector(vectors);
 		};
-		
+
 		return self;
 	}();
 	
@@ -790,6 +834,7 @@ calculator_equation_solver = function ()
 			
 			// General case, continue recursion for n - 1
 			var value = calculator_equation_solver.Operations.multiply(scalar, calculator_equation_solver.Actions.factorial(calculator_equation_solver.Items.Scalar(scalar.value - 1)));
+			
 			return value;
 		};
 		
@@ -809,47 +854,89 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Operations.divide(permutations, divisor);
 		};
 		
-		self.sin = function (scalar)
+		self.sin = function (scalar, angleUnit)
 		{
-			return calculator_equation_solver.Items.Scalar(Math.sin(scalar.value));
+			var inputValue = scalar.value;
+			
+			if (angleUnit == "degrees")
+			{
+				inputValue *= Math.PI/180;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(Math.sin(inputValue));
 		};
 		
-		self.cos = function (scalar)
+		self.cos = function (scalar, angleUnit)
 		{
-			return calculator_equation_solver.Items.Scalar(Math.cos(scalar.value));
+			var inputValue = scalar.value;
+			
+			if (angleUnit == "degrees")
+			{
+				inputValue *= Math.PI/180;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(Math.cos(inputValue));
 		};
 		
-		self.tan = function (scalar)
+		self.tan = function (scalar, angleUnit)
 		{
-			return calculator_equation_solver.Items.Scalar(Math.tan(scalar.value));
+			var inputValue = scalar.value;
+			
+			if (angleUnit == "degrees")
+			{
+				inputValue *= Math.PI/180;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(Math.tan(inputValue));
 		};
 		
-		self.arcsin = function(scalar)
+		self.arcsin = function (scalar, angleUnit)
 		{
 			if (scalar.value < -1 || scalar.value > 1)
 			{
 				return false;
 			}
 			
-			return calculator_equation_solver.Items.Scalar(Math.asin(scalar.value));
+			var angle = Math.asin(scalar.value);
+			
+			if (angleUnit == "degrees")
+			{
+				angle *= 180/Math.PI;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.arccos = function(scalar)
+		self.arcsin = function (scalar, angleUnit)
 		{
 			if (scalar.value < -1 || scalar.value > 1)
 			{
 				return false;
 			}
 			
-			return calculator_equation_solver.Items.Scalar(Math.acos(scalar.value));
+			var angle = Math.acos(scalar.value);
+			
+			if (angleUnit == "degrees")
+			{
+				angle *= 180/Math.PI;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.arctan = function(scalar)
+		self.arctan = function (scalar, angleUnit)
 		{
-			return calculator_equation_solver.Items.Scalar(Math.atan(scalar.value));
+			var angle = Math.atan(scalar.value);
+			
+			if (angleUnit == "degrees")
+			{
+				angle *= 180/Math.PI;
+			}
+			
+			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.log = function(scalar)
+		self.log = function (scalar, base)
 		{
 			// Logs are undefined for negative numbers
 			if (scalar.value < 0)
@@ -857,10 +944,19 @@ calculator_equation_solver = function ()
 				return false;
 			}
 			
-			return calculator_equation_solver.Items.Scalar(Math.log10(scalar.value));
+			if (base == undefined)
+			{
+				var base = calculator_equation_solver.Items.Scalar(10);
+			}
+			
+			var numerator = Math.log(scalar.value);
+			var denominator = Math.log(base.value);
+			
+			// "log base b of a" is equal to "log a / log b"
+			return calculator_equation_solver.Items.Scalar(numerator / denominator);
 		};
 		
-		self.ln = function(scalar)
+		self.ln = function (scalar)
 		{
 			// Logs are undefined for negative numbers
 			if (scalar.value < 0)
@@ -1071,7 +1167,7 @@ calculator_equation_solver = function ()
 		};
 		
 		// Takes n-1 vectors of n dimensions and calculates a vector orthogonal to all the input vectors
-		self.crossProduct = function (vectors)
+		self.normalVector = function (vectors)
 		{
 			// Check that all the vectors have the same dimensions
 			var len;
@@ -1134,10 +1230,10 @@ calculator_equation_solver = function ()
 				r += 1;
 			}
 			
-			// Calculates the determiant of the matrix via laplace decomposition to get a value for cross product
-			var crossProduct = matrix.getDeterminant();
+			// Calculates the determiant of the matrix via laplace decomposition to get a value for a normal vector
+			var normalVector = matrix.getDeterminant();
 			
-			return crossProduct;
+			return normalVector;
 		};
 		
 		// Gets the angle between two vectors using the dot product identity
@@ -1243,80 +1339,11 @@ calculator_equation_solver = function ()
 			i += 1;
 		}
 
-		// EXPONENTIALS
-		var i = equation.length - 2;
-		while (i > 0)
-		{
-			if (equation[i].value == "Exponential")
-			{
-				//var value = Math.pow(equation[i - 1].value, equation[i + 1].value);
-				var solution = calculator_equation_solver.Operations.exponential(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-
-			i -= 1;
-		}
-
-		// DIVISION AND MULTIPLICATION
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			if (equation[i].value == "Divide")
-			{
-				var solution = calculator_equation_solver.Operations.divide(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			else if (equation[i].value == "Multiply")
-			{
-				var solution = calculator_equation_solver.Operations.multiply(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			else
-			{
-				i += 1;
-			}
-		}
-		
-		// ADDITION AND SUBTRACTION
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			if (equation[i].value == "Add")
-			{
-				var solution = calculator_equation_solver.Operations.add(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			else if (equation[i].value == "Subtract")
-			{
-				var solution = calculator_equation_solver.Operations.subtract(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			else
-			{
-				i += 1;
-			}
-		}
-		
-		// DOT PRODUCT
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			if (equation[i].value == "Dot Product")
-			{
-				var solution = calculator_equation_solver.Operations.dotProduct(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			else
-			{
-				i += 1;
-			}
-		}
-		
-		// All operations in the form operation[operand] e.g. log[3] or cross[v1,v2,v3]
+		// FUNCTIONS
 		var i = 0;
-		while (i < equation.length - 1)
+		while (i < equation.length - 3)
 		{
-			if (equation[i].value == "Cross Product")
+			if (equation[i].type == "Function")
 			{
 				// If the item after the operation name is not an open operation bracket, return false
 				if (equation[i+1].value != "[")
@@ -1350,36 +1377,231 @@ calculator_equation_solver = function ()
 					j += 1;
 				}
 				
-				var solution = calculator_equation_solver.Operations.crossProduct(operands);
+				if (bracketClosed == false)
+				{
+					return false;
+				}
+				
+				if (equation[i].value == "Normal Vector")
+				{
+					var solution = calculator_equation_solver.Operations.normalVector.apply(this, operands);
+				}
+				if (equation[i].value == "Vector Vector Angle")
+				{
+					var solution = calculator_equation_solver.Operations.vectorVectorAngle.apply(this, operands);
+				}
+				if (equation[i].value == "Minor")
+				{
+					var solution = calculator_equation_solver.Operations.minor.apply(this, operands);
+				}
+				else if (equation[i].value == "Log")
+				{
+					var solution = calculator_equation_solver.Operations.log.apply(this, operands);
+				}
+				else if (equation[i].value == "Ln")
+				{
+					var solution = calculator_equation_solver.Operations.ln.apply(this, operands);
+				}
+				else if (equation[i].value == "Sin")
+				{
+					var solution = calculator_equation_solver.Operations.sin.apply(this, operands);
+				}
+				else if (equation[i].value == "Cos")
+				{
+					var solution = calculator_equation_solver.Operations.cos.apply(this, operands);
+				}
+				else if (equation[i].value == "Tan")
+				{
+					var solution = calculator_equation_solver.Operations.tan.apply(this, operands);
+				}
+				else if (equation[i].value == "Arcsin")
+				{
+					var solution = calculator_equation_solver.Operations.arcsin.apply(this, operands);
+				}
+				else if (equation[i].value == "Arccos")
+				{
+					var solution = calculator_equation_solver.Operations.arccos.apply(this, operands);
+				}
+				else if (equation[i].value == "Arctan")
+				{
+					var solution = calculator_equation_solver.Operations.arctan.apply(this, operands);
+				}
+				else if (equation[i].value == "Permutations")
+				{
+					var solution = calculator_equation_solver.Operations.permutations.apply(this, operands);
+				}
+				else if (equation[i].value == "Combinations")
+				{
+					var solution = calculator_equation_solver.Operations.combinations.apply(this, operands);
+				}
+				else
+				{
+					// Function brackets were used when there is no function
+					return false;
+				}
+				
+				if (solution == false)
+				{
+					return false;
+				}
+				
 				equation = replaceArraySection(equation, i, bracketClosedLocation, solution);
 			}
 			
 			i += 1;
 		}
 		
+		// CROSS PRODUCT
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			var solved = false;
+			if (equation[i].value == "Cross Product")
+			{
+				var solution = calculator_equation_solver.Operations.crossProduct(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+				else
+				{
+					equation = replaceArraySection(equation, i - 1, i + 1, solution);
+				}
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+
+		// DOT PRODUCT
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			var solved = false;
+			if (equation[i].value == "Dot Product")
+			{
+				var solution = calculator_equation_solver.Operations.dotProduct(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+				else
+				{
+					equation = replaceArraySection(equation, i - 1, i + 1, solution);
+				}
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+
+		// EXPONENTIALS
+		var i = equation.length - 2;
+		while (i > 0)
+		{
+			var solved = false;
+			if (equation[i].value == "Exponential")
+			{
+				//var value = Math.pow(equation[i - 1].value, equation[i + 1].value);
+				var solution = calculator_equation_solver.Operations.exponential(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+			
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+				else
+				{
+					equation = replaceArraySection(equation, i - 1, i + 1, solution);
+				}
+			}
+			
+			i -= 1;
+		}
+
+		// DIVISION AND MULTIPLICATION
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Divide")
+			{
+				var solution = calculator_equation_solver.Operations.divide(equation[i - 1], equation[i + 1]);
+				if (solution == false)
+				{
+					return false;
+				}
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else if (equation[i].value == "Multiply")
+			{
+				var solution = calculator_equation_solver.Operations.multiply(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+		
+		// ADDITION AND SUBTRACTION
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			if (equation[i].value == "Add")
+			{
+				var solution = calculator_equation_solver.Operations.add(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else if (equation[i].value == "Subtract")
+			{
+				var solution = calculator_equation_solver.Operations.subtract(equation[i - 1], equation[i + 1]);
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
+			else
+			{
+				i += 1;
+			}
+		}
+
 		return equation;
 	};
 	
 	self.solve = function ()
 	{
-		var scalarA = calculator_equation_solver.Items.Scalar(2);
-		var scalarB = calculator_equation_solver.Items.Scalar(4);
+		var scalarA = calculator_equation_solver.Items.Scalar(1);
+		var scalarB = calculator_equation_solver.Items.Scalar(0);
 		
 		var vectorA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(3)],[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(1)]]);
 		var vectorB = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(7)],[calculator_equation_solver.Items.Scalar(1)],[calculator_equation_solver.Items.Scalar(3)]]);
-		var vectorC = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(2)],[calculator_equation_solver.Items.Scalar(0)],[calculator_equation_solver.Items.Scalar(3)]]);
+		var vectorC = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(2)],[calculator_equation_solver.Items.Scalar(0)]]);
 		
-		var matrixA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(5),calculator_equation_solver.Items.Scalar(1)],[calculator_equation_solver.Items.Scalar(9),calculator_equation_solver.Items.Scalar(5)]]);
+		var matrixA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(1),calculator_equation_solver.Items.Scalar(2)],[calculator_equation_solver.Items.Scalar(3),calculator_equation_solver.Items.Scalar(4)]]);
 		
-		var add = calculator_equation_solver.Items.Operation("Add");
-		var exponential = calculator_equation_solver.Items.Operation("Exponential");
-		var dot = calculator_equation_solver.Items.Operation("Dot Product");
-		var cross = calculator_equation_solver.Items.Operation("Cross Product");
+		var add = calculator_equation_solver.Items.Operator("Add");
+		var exponential = calculator_equation_solver.Items.Operator("Exponential");
+		var dot = calculator_equation_solver.Items.Operator("Dot Product");
+		var cross = calculator_equation_solver.Items.Operator("Cross Product");
+		var determinant = calculator_equation_solver.Items.Operator("Determinant");
+		var minor = calculator_equation_solver.Items.Function("Minor");
+		var normal = calculator_equation_solver.Items.Function("Normal Vector");
 		
-		var oob = calculator_equation_solver.Items.Bracket("[");
-		var cob = calculator_equation_solver.Items.Bracket("]");
+		var openOperationBracket = calculator_equation_solver.Items.Bracket("[");
+		var closeOperationBracket = calculator_equation_solver.Items.Bracket("]");
 		
-		var equation = [cross, oob, vectorA, vectorB, cob];
+		var equation = [minor, openOperationBracket, matrixA, scalarA, scalarB, closeOperationBracket];
 		console.log(calculator_equation_solver.solveEquation(equation));
 	}
 	
