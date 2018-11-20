@@ -3,6 +3,8 @@ calculator_equation_solver = function ()
 {
 	var self = {};
 	
+	var angleUnit = localStorage.getItem("settingAngleUnit");
+	
 	// Takes an array, and replaces a specified section of that array with a new array
 	var replaceArraySection = function (array, start, end, replacement)
 	{
@@ -37,23 +39,13 @@ calculator_equation_solver = function ()
 		};
 
 		// Function class, holds a function that takes in one or more inputs and gives an output
-		self.Function = function (value)
+		self.Function = function (value, parameterCount)
 		{
 			var self = {};
 
 			self.type = "Function";
 			self.value = value;
-
-			return self;
-		};
-
-		// Flag class will be used in equations for specifying what type of output a function should give e.g. You can either use the "Radians" or "Degrees" flag for Trigonometric functions.
-		self.Flag = function (value)
-		{
-			var self = {};
-
-			self.type = "Flag";
-			self.value = value;
+			self.parameterCount = parameterCount;
 
 			return self;
 		};
@@ -72,7 +64,19 @@ calculator_equation_solver = function ()
 			
 			self.type = "Scalar";
 			self.value = value;
-
+			
+			self.getMagnitude = function ()
+			{
+				// Make a negative number positive
+				if (self.value < 0)
+				{
+					return self.value * -1;
+				}
+				
+				// Otherwise return the value as it is
+				return self.value;
+			};
+			
 			return self;
 		};
 		
@@ -246,11 +250,24 @@ calculator_equation_solver = function ()
 			// Returns the minor matrix for a specific element of the matrix  
 			self.getMinorMatrix = function (targetRow, targetColumn)
 			{
-				if (self.rows < 2 || self.columns < 2)
+				// If the amount of rows or columns of the matrix is 1 or less, a minor cannot be found
+				if (self.rows <= 1 || self.columns <= 1)
 				{
 					return false;
 				}
-
+				
+				// If the target row or column is outside the bounds of the matrix, return false
+				if (self.rows - 1 < targetRow.value || self.columns - 1 < targetColumn.value)
+				{
+					return false;
+				}
+				
+				// If the target row or column is less than 0, a minor cannot be found
+				if (targetRow.value < 0 || targetColumn.value < 0)
+				{
+					return false;
+				}
+				
 				// Create zero matrix with 1 less row and 1 less column than the matrix object
 				var minor = calculator_equation_solver.Actions.generateZeroGrid(self.rows - 1, self.columns - 1);
 
@@ -600,67 +617,67 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.sin = function (right, angleUnit)
+		self.sin = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.sin(right, angleUnit);
+				return calculator_equation_solver.Actions.sin(right);
 			}
 			
 			return false;
 		};
 		
-		self.cos = function (right, angleUnit)
+		self.cos = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.cos(right, angleUnit);
+				return calculator_equation_solver.Actions.cos(right);
 			}
 			
 			return false;
 		};
 		
-		self.tan = function (right, angleUnit)
+		self.tan = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.tan(right, angleUnit);
+				return calculator_equation_solver.Actions.tan(right);
 			}
 			
 			return false;
 		};
 		
-		self.arcsin = function (right, angleUnit)
+		self.arcsin = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arcsin(right, angleUnit);
+				return calculator_equation_solver.Actions.arcsin(right);
 			}
 			
 			return false;
 		};
 		
-		self.arccos = function (right, angleUnit)
+		self.arccos = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arccos(right, angleUnit);
+				return calculator_equation_solver.Actions.arccos(right);
 			}
 			
 			return false;
 		};
 		
-		self.arctan = function (right, angleUnit)
+		self.arctan = function (right)
 		{
 			// S
-			if (right.type == "Scalar" && angleUnit.type == "Flag")
+			if (right.type == "Scalar")
 			{
-				return calculator_equation_solver.Actions.arctan(right, angleUnit);
+				return calculator_equation_solver.Actions.arctan(right);
 			}
 			
 			return false;
@@ -765,12 +782,29 @@ calculator_equation_solver = function ()
 			return false;
 		};
 		
-		self.vectorVectorAngle = function(left, right, angleUnit)
+		self.vectorVectorAngle = function(left, right)
 		{
 			// VV
-			if (left.type == "Vector" && right.type == "Vector" && angleUnit.type == "Flag")
+			if (left.type == "Vector" && right.type == "Vector")
 			{
-				return calculator_equation_solver.Actions.vectorVectorAngle(left, right, angleUnit);
+				return calculator_equation_solver.Actions.vectorVectorAngle(left, right);
+			}
+			
+			return false;
+		};
+		
+		self.magnitude = function(right)
+		{
+			// S
+			if (right.type == "Scalar")
+			{
+				return right.getMagnitude();
+			}
+			
+			// V
+			else if (right.type == "Vector")
+			{
+				return right.getMagnitude();
 			}
 			
 			return false;
@@ -854,11 +888,11 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Operations.divide(permutations, divisor);
 		};
 		
-		self.sin = function (scalar, angleUnit)
+		self.sin = function (scalar)
 		{
 			var inputValue = scalar.value;
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				inputValue *= Math.PI/180;
 			}
@@ -866,11 +900,11 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(Math.sin(inputValue));
 		};
 		
-		self.cos = function (scalar, angleUnit)
+		self.cos = function (scalar)
 		{
 			var inputValue = scalar.value;
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				inputValue *= Math.PI/180;
 			}
@@ -878,11 +912,11 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(Math.cos(inputValue));
 		};
 		
-		self.tan = function (scalar, angleUnit)
+		self.tan = function (scalar)
 		{
 			var inputValue = scalar.value;
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				inputValue *= Math.PI/180;
 			}
@@ -890,7 +924,7 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(Math.tan(inputValue));
 		};
 		
-		self.arcsin = function (scalar, angleUnit)
+		self.arcsin = function (scalar)
 		{
 			if (scalar.value < -1 || scalar.value > 1)
 			{
@@ -899,7 +933,7 @@ calculator_equation_solver = function ()
 			
 			var angle = Math.asin(scalar.value);
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				angle *= 180/Math.PI;
 			}
@@ -907,7 +941,7 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.arcsin = function (scalar, angleUnit)
+		self.arcsin = function (scalar)
 		{
 			if (scalar.value < -1 || scalar.value > 1)
 			{
@@ -916,7 +950,7 @@ calculator_equation_solver = function ()
 			
 			var angle = Math.acos(scalar.value);
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				angle *= 180/Math.PI;
 			}
@@ -924,11 +958,11 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.arctan = function (scalar, angleUnit)
+		self.arctan = function (scalar)
 		{
 			var angle = Math.atan(scalar.value);
 			
-			if (angleUnit == "degrees")
+			if (angleUnit == "Degrees")
 			{
 				angle *= 180/Math.PI;
 			}
@@ -1237,7 +1271,7 @@ calculator_equation_solver = function ()
 		};
 		
 		// Gets the angle between two vectors using the dot product identity
-		self.vectorVectorAngle = function (left, right, angleType)
+		self.vectorVectorAngle = function (left, right)
 		{
 			var dotProduct = calculator_equation_solver.Actions.dotProduct(left,right);
 			var magnitudeProduct = calculator_equation_solver.Operations.multiply(left.getMagnitude(), right.getMagnitude());
@@ -1249,16 +1283,13 @@ calculator_equation_solver = function ()
 
 			var cosineAngle = calculator_equation_solver.Operations.divide(dotProduct, magnitudeProduct);
 
-			// Return the angle in the specified unit
-			// In degrees
-			if (angleType == "degrees")
+			// Return the angle in radians
+			var angle = calculator_equation_solver.Operations.arccos(cosineAngle);
+			
+			// Convert angle to degrees if necessaryS
+			if (angleUnit == "Degrees")
 			{
-				var angle = calculator_equation_solver.Operations.multiply(calculator_equation_solver.Operations.arccos(cosineAngle), calculator_equation_solver.Items.Scalar(180 / Math.PI));
-			}
-			// Otherwise use radians
-			else
-			{
-				var angle = calculator_equation_solver.Operations.arccos(cosineAngle);
+				angle = calculator_equation_solver.Operations.multiply(angle, calculator_equation_solver.Items.Scalar(180 / Math.PI));
 			}
 
 			return angle;
@@ -1339,105 +1370,130 @@ calculator_equation_solver = function ()
 			i += 1;
 		}
 
-		// FUNCTIONS
+		// FUNCTIONS WITH A SINGLE PARAMETER
 		var i = 0;
-		while (i < equation.length - 3)
+		while (i < equation.length - 1)
 		{
 			if (equation[i].type == "Function")
 			{
-				// If the item after the operation name is not an open operation bracket, return false
-				if (equation[i+1].value != "[")
+				if (equation[i].parameterCount == 1)
 				{
-					return false;
-				}
-				
-				// Empty array to hold all the operands of the operation
-				var operands = [];
-				
-				// Used to keep track of where the operands of this operation end
-				var bracketClosed = false;
-				var bracketClosedLocation = 0;
-				
-				// Start on the item after the open operation bracket
-				var j = i + 2;
-				while (j < equation.length && bracketClosed == false)
-				{
-					if (equation[j].value == "]")
+					inputEndIndex = i+1;
+					
+					if (equation[i].value == "Ln")
 					{
-						// Save where the close operation bracket is so that solveEquation knows what part of the equation to replaec with the solution
-						bracketClosed = true;
-						bracketClosedLocation = j;
+						var solution = calculator_equation_solver.Operations.ln(equation[i+1]);
+					}
+					else if (equation[i].value == "Sin")
+					{
+						var solution = calculator_equation_solver.Operations.sin(equation[i+1]);
+					}
+					else if (equation[i].value == "Cos")
+					{
+						var solution = calculator_equation_solver.Operations.cos(equation[i+1]);
+					}
+					else if (equation[i].value == "Tan")
+					{
+						var solution = calculator_equation_solver.Operations.tan(equation[i+1]);
+					}
+					else if (equation[i].value == "Arcsin")
+					{
+						var solution = calculator_equation_solver.Operations.arcsin(equation[i+1]);
+					}
+					else if (equation[i].value == "Arccos")
+					{
+						var solution = calculator_equation_solver.Operations.arccos(equation[i+1]);
+					}
+					else if (equation[i].value == "Arctan")
+					{
+						var solution = calculator_equation_solver.Operations.arctan(equation[i+1]);
+					}
+					else if (equation[i].value == "Vector Magnitude")
+					{
+						var solution = calculator_equation_solver.Operations.arctan(equation[i+1]);
 					}
 					else
 					{
-						// Otherwise add the operand to the list of operands
-						operands.push(equation[j]);
+						// Unknown single parameter function listed
+						return false;
 					}
-					
-					j += 1;
-				}
-				
-				if (bracketClosed == false)
-				{
-					return false;
-				}
-				
-				if (equation[i].value == "Normal Vector")
-				{
-					var solution = calculator_equation_solver.Operations.normalVector.apply(this, operands);
-				}
-				if (equation[i].value == "Vector Vector Angle")
-				{
-					var solution = calculator_equation_solver.Operations.vectorVectorAngle.apply(this, operands);
-				}
-				if (equation[i].value == "Minor")
-				{
-					var solution = calculator_equation_solver.Operations.minor.apply(this, operands);
-				}
-				else if (equation[i].value == "Log")
-				{
-					var solution = calculator_equation_solver.Operations.log.apply(this, operands);
-				}
-				else if (equation[i].value == "Ln")
-				{
-					var solution = calculator_equation_solver.Operations.ln.apply(this, operands);
-				}
-				else if (equation[i].value == "Sin")
-				{
-					var solution = calculator_equation_solver.Operations.sin.apply(this, operands);
-				}
-				else if (equation[i].value == "Cos")
-				{
-					var solution = calculator_equation_solver.Operations.cos.apply(this, operands);
-				}
-				else if (equation[i].value == "Tan")
-				{
-					var solution = calculator_equation_solver.Operations.tan.apply(this, operands);
-				}
-				else if (equation[i].value == "Arcsin")
-				{
-					var solution = calculator_equation_solver.Operations.arcsin.apply(this, operands);
-				}
-				else if (equation[i].value == "Arccos")
-				{
-					var solution = calculator_equation_solver.Operations.arccos.apply(this, operands);
-				}
-				else if (equation[i].value == "Arctan")
-				{
-					var solution = calculator_equation_solver.Operations.arctan.apply(this, operands);
-				}
-				else if (equation[i].value == "Permutations")
-				{
-					var solution = calculator_equation_solver.Operations.permutations.apply(this, operands);
-				}
-				else if (equation[i].value == "Combinations")
-				{
-					var solution = calculator_equation_solver.Operations.combinations.apply(this, operands);
 				}
 				else
 				{
-					// Function brackets were used when there is no function
-					return false;
+					// If the item after the operation name is not an open operation bracket, return false
+					if (equation[i+1].value != "[")
+					{
+						return false;
+					}
+					
+					// Empty array to hold all the operands of the operation
+					var operands = [];
+					
+					// Used to keep track of where the operands of this operation end
+					var bracketClosed = false;
+					var inputEndIndex = 0;
+					
+					// Start on the item after the open operation bracket
+					var j = i + 2;
+					while (j < equation.length && bracketClosed == false)
+					{
+						if (equation[j].value == "]")
+						{
+							// Save where the close operation bracket is so that solveEquation knows what part of the equation to replaec with the solution
+							bracketClosed = true;
+							inputEndIndex = j;
+						}
+						else
+						{
+							// Otherwise add the operand to the list of operands
+							operands.push(equation[j]);
+						}
+						
+						j += 1;
+					}
+					
+					// If the function brackets were not closed, return false
+					if (bracketClosed == false)
+					{
+						return false;
+					}
+					
+					// If the amount of parameters entered does not match the amount the function takes, return false
+					// Unless the amount of paramters required is 0 (which means that it can take any amount of parameters)
+					if (operands.length != equation[i].parameterCount && equation[i].parameterCount != 0)
+					{
+						return false;
+					}
+					
+					if (equation[i].value == "Normal Vector")
+					{
+						var solution = calculator_equation_solver.Operations.normalVector(operands);
+					}
+					else if (equation[i].value == "Vector Vector Angle")
+					{
+						var solution = calculator_equation_solver.Operations.vectorVectorAngle.apply(this, operands);
+					}
+					else if (equation[i].value == "Minor")
+					{
+						var solution = calculator_equation_solver.Operations.minor.apply(this, operands);
+					}
+					else if (equation[i].value == "Log")
+					{
+						var solution = calculator_equation_solver.Operations.log.apply(this, operands);
+					}
+					else if (equation[i].value == "Permutations")
+					{
+						var solution = calculator_equation_solver.Operations.permutations.apply(this, operands);
+					}
+					else if (equation[i].value == "Combinations")
+					{
+						var solution = calculator_equation_solver.Operations.combinations.apply(this, operands);
+					}
+					else
+					{
+						// Function brackets were used when there is no function
+						return false;
+					}
 				}
 				
 				if (solution == false)
@@ -1445,7 +1501,7 @@ calculator_equation_solver = function ()
 					return false;
 				}
 				
-				equation = replaceArraySection(equation, i, bracketClosedLocation, solution);
+				equation = replaceArraySection(equation, i, inputEndIndex, solution);
 			}
 			
 			i += 1;
@@ -1512,7 +1568,6 @@ calculator_equation_solver = function ()
 			var solved = false;
 			if (equation[i].value == "Exponential")
 			{
-				//var value = Math.pow(equation[i - 1].value, equation[i + 1].value);
 				var solution = calculator_equation_solver.Operations.exponential(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
@@ -1581,8 +1636,10 @@ calculator_equation_solver = function ()
 	
 	self.solve = function ()
 	{
-		var scalarA = calculator_equation_solver.Items.Scalar(1);
+		var scalarA = calculator_equation_solver.Items.Scalar(0);
 		var scalarB = calculator_equation_solver.Items.Scalar(0);
+		var scalarC = calculator_equation_solver.Items.Scalar(3);
+		var scalarD = calculator_equation_solver.Items.Scalar(9);
 		
 		var vectorA = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(3)],[calculator_equation_solver.Items.Scalar(5)],[calculator_equation_solver.Items.Scalar(1)]]);
 		var vectorB = calculator_equation_solver.Items.Grid([[calculator_equation_solver.Items.Scalar(7)],[calculator_equation_solver.Items.Scalar(1)],[calculator_equation_solver.Items.Scalar(3)]]);
@@ -1595,13 +1652,17 @@ calculator_equation_solver = function ()
 		var dot = calculator_equation_solver.Items.Operator("Dot Product");
 		var cross = calculator_equation_solver.Items.Operator("Cross Product");
 		var determinant = calculator_equation_solver.Items.Operator("Determinant");
-		var minor = calculator_equation_solver.Items.Function("Minor");
-		var normal = calculator_equation_solver.Items.Function("Normal Vector");
+		var minor = calculator_equation_solver.Items.Function("Minor", 3);
+		var normal = calculator_equation_solver.Items.Function("Normal Vector", 0);
+		var sin = calculator_equation_solver.Items.Function("Sin", 1);
+		var log = calculator_equation_solver.Items.Function("Log", 2);
+		var magnitude = calculator_equation_solver.Items.Function("Magnitude", 2);
 		
 		var openOperationBracket = calculator_equation_solver.Items.Bracket("[");
 		var closeOperationBracket = calculator_equation_solver.Items.Bracket("]");
 		
-		var equation = [minor, openOperationBracket, matrixA, scalarA, scalarB, closeOperationBracket];
+		//var equation = [minor, openOperationBracket, matrixA, scalarA, scalarB, closeOperationBracket, add, log, openOperationBracket, scalarD, scalarC, closeOperationBracket];
+		var equation = [normal, openOperationBracket, vectorA, vectorB, closeOperationBracket];
 		console.log(calculator_equation_solver.solveEquation(equation));
 	}
 	

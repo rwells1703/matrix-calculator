@@ -41,14 +41,19 @@ settings = (function (context)
 		theme.setCalculatorLayout(value);
 	};
 	
-	// Creates 3 seperate, labelled rows of buttons for each theme setting
+	// Updates the angle unit aspect of theme
+	context.updateAngleUnit = function (event)
+	{
+		var value = context.getButtonValue(event)
+		theme.setAngleUnit(value);
+	};
+	
+	// Creates seperate, labelled rows of buttons for each theme setting
 	context.createThemeButtons = function (event)
 	{
-		// The color label above the buttons
-		var colorLabel = document.createElement("div");
-		colorLabel.innerHTML = "Color<br><br><br>";
-		mainDiv.appendChild(colorLabel);
-
+		// Create a color setting
+		var themeColorDiv = layout.createSettingDiv("Color");
+		
 		// The first row of color buttons
 		var themeColorButtonsTop = [];
 		themeColorButtonsTop.push(layout.createButton("Ruby Red", context.updateColor, theme.colors["Ruby Red"]["color-main"]));
@@ -63,15 +68,15 @@ settings = (function (context)
 		themeColorButtonsBottom.push(layout.createButton("Emerald Green", context.updateColor, theme.colors["Emerald Green"]["color-main"]));
 		themeColorButtonBottomDiv = layout.createButtonRow(themeColorButtonsBottom);
 
-		// Add the color buttons to the mainDiv
-		mainDiv.appendChild(themeColorButtonTopDiv);
-		mainDiv.appendChild(themeColorButtonBottomDiv);
+		// Add the color buttons to the themeColorDiv
+		themeColorDiv.appendChild(themeColorButtonTopDiv);
+		themeColorDiv.appendChild(themeColorButtonBottomDiv);
+		// Add the themeColorDiv to the mainDiv
+		mainDiv.appendChild(themeColorDiv);
 
-
-		// The shade label above the buttons
-		var shadeLabel = document.createElement("div");
-		shadeLabel.innerHTML = "Shade<br><br><br>";
-		mainDiv.appendChild(shadeLabel);
+		
+		// Create a shade setting
+		var themeShadeDiv = layout.createSettingDiv("Shade");
 
 		// The shade buttons
 		var themeShadeButtons = [];
@@ -79,29 +84,29 @@ settings = (function (context)
 		themeShadeButtons.push(layout.createButton("Dark", context.updateShade, "var(--theme-color-main)"));
 		themeShadeButtonDiv = layout.createButtonRow(themeShadeButtons);
 
-		// Add the shade buttons to the mainDiv
-		mainDiv.appendChild(themeShadeButtonDiv);
+		// Add the shade buttons to the themeShadeDiv
+		themeShadeDiv.appendChild(themeShadeButtonDiv);
+		// Add the themeShadeDiv to the mainDiv
+		mainDiv.appendChild(themeShadeDiv);
 
-
-		// The style label above the buttons
-		var styleLabel = document.createElement("div");
-		styleLabel.innerHTML = "Style<br><br><br>";
-		mainDiv.appendChild(styleLabel);
+		
+		// Create a style setting
+		var themeStyleDiv = layout.createSettingDiv("Style");
 
 		// The style buttons
 		var themeStyleButtons = [];
 		themeStyleButtons.push(layout.createButton("Material", context.updateStyle, "var(--theme-color-main)"));
 		themeStyleButtons.push(layout.createButton("Flat", context.updateStyle, "var(--theme-color-main)"));
-		themeShadeButtonDiv = layout.createButtonRow(themeStyleButtons);
+		themeStyleButtonDiv = layout.createButtonRow(themeStyleButtons);
 
-		// Add the style buttons to the mainDiv
-		mainDiv.appendChild(themeShadeButtonDiv);
+		// Add the style buttons to the themeStyleDiv
+		themeStyleDiv.appendChild(themeStyleButtonDiv);
+		// Add the themeStyleDiv to the mainDiv
+		mainDiv.appendChild(themeStyleDiv);
 		
 		
-		// The calculator layout label above the buttons
-		var calculatorLayoutLabel = document.createElement("div");
-		calculatorLayoutLabel.innerHTML = "Calculator Layout<br><br><br>";
-		mainDiv.appendChild(calculatorLayoutLabel);
+		// Create a calculator layout setting
+		var themeCalculatorLayoutDiv = layout.createSettingDiv("Calculator Layout");
 
 		// The calculator layout buttons
 		var themeCalculatorLayoutButtons = [];
@@ -109,8 +114,25 @@ settings = (function (context)
 		themeCalculatorLayoutButtons.push(layout.createButton("Graph before equation", context.updateCalculatorLayout, "var(--theme-color-main)"));
 		themeCalculatorLayoutButtonDiv = layout.createButtonRow(themeCalculatorLayoutButtons);
 
-		// Add the calculator layout buttons to the mainDiv
-		mainDiv.appendChild(themeCalculatorLayoutButtonDiv);
+		// Add the calculator layout buttons to the themeCalculatorLayoutDiv
+		themeCalculatorLayoutDiv.appendChild(themeCalculatorLayoutButtonDiv);
+		// Add the themeCalculatorLayoutDiv to the mainDiv
+		mainDiv.appendChild(themeCalculatorLayoutDiv);
+		
+		
+		// Create an angle unit setting
+		var settingAngleUnitDiv = layout.createSettingDiv("Angle Unit");
+		
+		// The angle unit buttons
+		var settingAngleUnitButtons = [];
+		settingAngleUnitButtons.push(layout.createButton("Degrees", context.updateAngleUnit, "var(--theme-color-main)"));
+		settingAngleUnitButtons.push(layout.createButton("Radians", context.updateAngleUnit, "var(--theme-color-main)"));
+		settingAngleUnitButtonDiv = layout.createButtonRow(settingAngleUnitButtons);
+		
+		// Add the angle unit buttons to the themeAngleUnitDiv
+		settingAngleUnitDiv.appendChild(settingAngleUnitButtonDiv);
+		// Add the themeAngleUnitDiv to the mainDiv
+		mainDiv.appendChild(settingAngleUnitDiv);
 	};
 	
 	return context;

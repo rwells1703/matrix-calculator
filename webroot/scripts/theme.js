@@ -155,6 +155,17 @@ theme = (function (context)
 		document.body.style.setProperty("--theme-equation-div-float", context.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
 	}
 	
+	// Sets the angle unit setting in local storage
+	context.setAngleUnit = function (angleUnit)
+	{
+		if (angleUnit == null)
+		{
+			angleUnit = "Radians";
+		}
+		
+		localStorage.setItem("settingAngleUnit", angleUnit);
+	}
+	
 	// Hilights the navbar item of the currently opened page in the navbar
 	context.hilightNavbar = function ()
 	{

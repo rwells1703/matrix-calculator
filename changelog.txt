@@ -295,3 +295,13 @@ Coursework 2018-11-16-20-11:
 - (calculator_equation_solver.js) Simplied the way that sections of the equation are replaced in "solveEquation" by using "solved" variable to reduce the amount of repeated code for each individual operator/function.
 - (calculator_equation_solver.js) Moved the evaluation of functions in "solveEquation" to before the normal arithmetic operators.
 - (calculator_equation_solver.js) Added "dotProduct" and "crossProduct" operators to "solveEquation". They are evaluated after functions but before the other normal operations.
+
+Coursework 2018-11-20-23-24:
+- (calculator_equation_solver.js) Removed "Flag" item, in favour of a site wide setting for angle unit, as the flag item was only used to specify between radians and degrees.
+- Added new "Angle Unit" setting to allow user to change between degrees and radians. Many small additions to "settings.js" and "theme.js" were required.
+- (layout.js) Added "createSettingDiv" function to reduce repeated code in "settings.js" by generating a blank setting panel with a label using a function.
+- (calculator_equation_solver.js) Added "getMagnitude" method to Scalar item that works to get its absolute value.
+- (calculator_equation_solver.js) Added missing "magnitude" operation that works for vectors and scalars.
+- (calculator_equation_solver.js) Completely changed the way functions are solved, for both single, multi and unknown numbers of parameters.
+- (calculator_equation_solver.js) Added "parameterCount" property to Function item so that the "solveEquation" function knows how many operands to expect.
+- (calculator_equation_solver.js) Added more validity checks to the matrix.getMinorMatrix to make sure you cannot getMinors of 1xm or nx1 matrices, and also you cannot choose rows or columns outside the matrix bounds as target rows/columns.

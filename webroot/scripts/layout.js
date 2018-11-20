@@ -60,6 +60,19 @@ layout = (function (context)
 		
 		return buttonRow;
 	};
+	// Creates an empty div with a label that will hold the buttons for a setting e.g. color scheme
+	context.createSettingDiv = function (labelText)
+		{
+		// The container div for this section of the setting panel
+		var settingDiv = document.createElement("div");
+		
+		// The label above the buttons
+		var label = document.createElement("div");
+		label.innerHTML = labelText + "<br><br><br>";
+		settingDiv.appendChild(label);
+		
+		return settingDiv;
+	};
 	
 	return context;
 })({});
