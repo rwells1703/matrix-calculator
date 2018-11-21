@@ -941,7 +941,7 @@ calculator_equation_solver = function ()
 			return calculator_equation_solver.Items.Scalar(angle);
 		};
 		
-		self.arcsin = function (scalar)
+		self.arccos = function (scalar)
 		{
 			if (scalar.value < -1 || scalar.value > 1)
 			{
@@ -1566,6 +1566,7 @@ calculator_equation_solver = function ()
 		while (i > 0)
 		{
 			var solved = false;
+
 			if (equation[i].value == "Exponential")
 			{
 				var solution = calculator_equation_solver.Operations.exponential(equation[i - 1], equation[i + 1]);
@@ -1591,30 +1592,38 @@ calculator_equation_solver = function ()
 		var i = 1;
 		while (i < equation.length - 1)
 		{
+			var solved = false;
+
 			if (equation[i].value == "Divide")
 			{
 				var solution = calculator_equation_solver.Operations.divide(equation[i - 1], equation[i + 1]);
-				if (solution == false)
-				{
-					return false;
-				}
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+				
 			}
 			else if (equation[i].value == "Multiply")
 			{
 				var solution = calculator_equation_solver.Operations.multiply(equation[i - 1], equation[i + 1]);
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
 			}
 			else
 			{
 				i += 1;
 			}
+
+			if (solved == true) {
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+			}
 		}
-		
+
 		// ADDITION AND SUBTRACTION
 		var i = 1;
 		while (i < equation.length - 1)
 		{
+			var solved = false;
+
 			if (equation[i].value == "Add")
 			{
 				var solution = calculator_equation_solver.Operations.add(equation[i - 1], equation[i + 1]);
@@ -1628,6 +1637,15 @@ calculator_equation_solver = function ()
 			else
 			{
 				i += 1;
+			}
+			
+			if (solved == true) {
+				if (solution == false)
+				{
+					return false;
+				}
+				
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
 			}
 		}
 
@@ -1657,12 +1675,13 @@ calculator_equation_solver = function ()
 		var sin = calculator_equation_solver.Items.Function("Sin", 1);
 		var log = calculator_equation_solver.Items.Function("Log", 2);
 		var magnitude = calculator_equation_solver.Items.Function("Magnitude", 2);
-		
+		var angle = calculator_equation_solver.Items.Function("Vector Vector Angle", 2);
+
 		var openOperationBracket = calculator_equation_solver.Items.Bracket("[");
 		var closeOperationBracket = calculator_equation_solver.Items.Bracket("]");
 		
 		//var equation = [minor, openOperationBracket, matrixA, scalarA, scalarB, closeOperationBracket, add, log, openOperationBracket, scalarD, scalarC, closeOperationBracket];
-		var equation = [normal, openOperationBracket, vectorA, vectorB, closeOperationBracket];
+		var equation = [angle, openOperationBracket, vectorA, vectorB, closeOperationBracket];
 		console.log(calculator_equation_solver.solveEquation(equation));
 	}
 	

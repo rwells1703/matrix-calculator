@@ -305,3 +305,7 @@ Coursework 2018-11-20-23-24:
 - (calculator_equation_solver.js) Completely changed the way functions are solved, for both single, multi and unknown numbers of parameters.
 - (calculator_equation_solver.js) Added "parameterCount" property to Function item so that the "solveEquation" function knows how many operands to expect.
 - (calculator_equation_solver.js) Added more validity checks to the matrix.getMinorMatrix to make sure you cannot getMinors of 1xm or nx1 matrices, and also you cannot choose rows or columns outside the matrix bounds as target rows/columns.
+
+Coursework 2018-11-21-08-31:
+- (calculator_equation_solver.js) Fixed bug with "arccos" being accidentally named as "arcsin".
+- (calculator_equation_solver.js) Made checking of addition more efficient in "solveEquation" function.
