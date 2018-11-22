@@ -1,8 +1,10 @@
 // Declare namespace
-calculator_equation_builder = (function (context)
+calculator_build = function ()
 {
+	var self = {};
+	
 	// Counts increase/decrease for every item added/removed from the equation
-	context.setItemCounts = function ()
+	self.setItemCounts = function ()
 	{
 		matrixCount = 0;
 		scalarCount = 0;
@@ -11,7 +13,7 @@ calculator_equation_builder = (function (context)
 	};
 	
 	// Creates an empty item that can become a scalar, matrix or operator
-	context.createEmptyItem = function (itemClass, itemCount)
+	self.createEmptyItem = function (itemClass, itemCount)
 	{
 		var itemWrapper = document.createElement("div");
 		itemWrapper.className = itemClass;
@@ -52,7 +54,7 @@ calculator_equation_builder = (function (context)
 		itemMoveUpIcon.style.gridColumnEnd = 3;
 		itemMoveUpIcon.style.gridRowStart = 4;
 		itemMoveUpIcon.style.gridRowEnd = 5;
-		itemMoveUpIcon.onclick = context.moveItemUp;
+		itemMoveUpIcon.onclick = self.moveItemUp;
 		
 		var itemDeleteIcon = document.createElement("img");
 		itemDeleteIcon.src = "images/delete.svg";
@@ -63,7 +65,7 @@ calculator_equation_builder = (function (context)
 		itemDeleteIcon.style.gridColumnEnd = 3;
 		itemDeleteIcon.style.gridRowStart = 6;
 		itemDeleteIcon.style.gridRowEnd = 7;
-		itemDeleteIcon.onclick = context.deleteItem;
+		itemDeleteIcon.onclick = self.deleteItem;
 		
 		var itemMoveDownIcon = document.createElement("img");
 		itemMoveDownIcon.src = "images/move_down.svg";
@@ -74,7 +76,7 @@ calculator_equation_builder = (function (context)
 		itemMoveDownIcon.style.gridColumnEnd = 3;
 		itemMoveDownIcon.style.gridRowStart = 8;
 		itemMoveDownIcon.style.gridRowEnd = 9;
-		itemMoveDownIcon.onclick = context.moveItemDown;
+		itemMoveDownIcon.onclick = self.moveItemDown;
 
 		itemWrapper.appendChild(itemSidebar);
 		itemWrapper.appendChild(itemName);
@@ -82,13 +84,13 @@ calculator_equation_builder = (function (context)
 		itemWrapper.appendChild(itemDeleteIcon);
 		itemWrapper.appendChild(itemMoveDownIcon);
 		
-		context.toggleEquationFinishButtons();
+		self.toggleEquationFinishButtons();
 		
 		return itemWrapper;
 	};
 	
 	// Deletes the selected item when the user clicks the delete icon
-	context.deleteItem = function (event)
+	self.deleteItem = function (event)
 	{
 		// Gets parent element of the delete icon that was clicked
 		var item = event["path"][1];
@@ -113,7 +115,7 @@ calculator_equation_builder = (function (context)
 		// Animates the removal of the item
 		item.style.animationName = "fadeOut";
 		
-		context.toggleEquationFinishButtons();
+		self.toggleEquationFinishButtons();
 		
 		var itemDiv = document.getElementById("itemDiv");
 		
@@ -143,7 +145,7 @@ calculator_equation_builder = (function (context)
 	};
 	
 	// Moves an item upwards in the equation, swapping it with the item above
-	context.moveItemUp = function (event)
+	self.moveItemUp = function (event)
 	{
 		var item = event["path"][0].parentNode;
 		var previousItem = item.previousSibling;
@@ -169,7 +171,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Moves an item downwards in the equation, swapping it with the item below
-	context.moveItemDown = function (event)
+	self.moveItemDown = function (event)
 	{
 		var item = event["path"][0].parentNode;
 		var nextItem = item.nextSibling;
@@ -205,7 +207,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a new text box for inputting values e.g. in a scalar or matrix item
-	context.createInputTextbox = function ()
+	self.createInputTextbox = function ()
 	{
 		var inputTextbox = document.createElement("input");
 		inputTextbox.style.boxSizing = "border-box";
@@ -224,14 +226,14 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a scalar item
-	context.addScalar = function ()
+	self.addScalar = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		scalarCount += 1;
-		var scalarWrapper = context.createEmptyItem("scalar", scalarCount);
+		var scalarWrapper = self.createEmptyItem("scalar", scalarCount);
 		
-		var scalarTextbox = context.createInputTextbox();
+		var scalarTextbox = self.createInputTextbox();
 		scalarTextbox.style.gridColumnStart = 4;
 		scalarTextbox.style.gridColumnEnd = 5;
 		scalarTextbox.style.gridRowStart = 2;
@@ -241,12 +243,12 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a matrix item
-	context.addMatrix = function ()
+	self.addMatrix = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		matrixCount += 1;
-		var matrixWrapper = context.createEmptyItem("matrix", matrixCount);
+		var matrixWrapper = self.createEmptyItem("matrix", matrixCount);
 		
 		var r = 0;
 		while (r < 7)
@@ -254,7 +256,7 @@ calculator_equation_builder = (function (context)
 			var c = 0;
 			while (c < 7)
 			{
-				var matrixElementTextbox = context.createInputTextbox();
+				var matrixElementTextbox = self.createInputTextbox();
 				matrixElementTextbox.style.gridColumnStart = 4+c;
 				matrixElementTextbox.style.gridColumnEnd = 5+c;
 				matrixElementTextbox.style.gridRowStart = 2+r;
@@ -285,7 +287,7 @@ calculator_equation_builder = (function (context)
 		addMatrixRowIcon.style.gridColumnEnd = 5;
 		addMatrixRowIcon.style.gridRowStart = 9;
 		addMatrixRowIcon.style.gridRowEnd = 10;
-		addMatrixRowIcon.onclick = context.addMatrixRow;
+		addMatrixRowIcon.onclick = self.addMatrixRow;
 		
 		var removeMatrixRowIcon = document.createElement("img");
 		removeMatrixRowIcon.src = "images/remove.svg";
@@ -296,7 +298,7 @@ calculator_equation_builder = (function (context)
 		removeMatrixRowIcon.style.gridColumnEnd = 6;
 		removeMatrixRowIcon.style.gridRowStart = 9;
 		removeMatrixRowIcon.style.gridRowEnd = 10;
-		removeMatrixRowIcon.onclick = context.removeMatrixRow;
+		removeMatrixRowIcon.onclick = self.removeMatrixRow;
 		
 		var addMatrixColumnIcon = document.createElement("img");
 		addMatrixColumnIcon.src = "images/add.svg";
@@ -307,7 +309,7 @@ calculator_equation_builder = (function (context)
 		addMatrixColumnIcon.style.gridColumnEnd = 12;
 		addMatrixColumnIcon.style.gridRowStart = 2;
 		addMatrixColumnIcon.style.gridRowEnd = 3;
-		addMatrixColumnIcon.onclick = context.addMatrixColumn;
+		addMatrixColumnIcon.onclick = self.addMatrixColumn;
 		
 		var removeMatrixColumnIcon = document.createElement("img");
 		removeMatrixColumnIcon.src = "images/remove.svg";
@@ -318,7 +320,7 @@ calculator_equation_builder = (function (context)
 		removeMatrixColumnIcon.style.gridColumnEnd = 12;
 		removeMatrixColumnIcon.style.gridRowStart = 3;
 		removeMatrixColumnIcon.style.gridRowEnd = 4;
-		removeMatrixColumnIcon.onclick = context.removeMatrixColumn;
+		removeMatrixColumnIcon.onclick = self.removeMatrixColumn;
 		
 		matrixWrapper.appendChild(addMatrixRowIcon);
 		matrixWrapper.appendChild(removeMatrixRowIcon);
@@ -329,7 +331,7 @@ calculator_equation_builder = (function (context)
 	};
 	
 	// Adds a new row to a matrix item
-	context.addMatrixRow = function ()
+	self.addMatrixRow = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -350,7 +352,7 @@ calculator_equation_builder = (function (context)
 	};
 	
 	// Removes a row from the matrix item
-	context.removeMatrixRow = function ()
+	self.removeMatrixRow = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -371,7 +373,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Adds a new column to a matrix item
-	context.addMatrixColumn = function ()
+	self.addMatrixColumn = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -392,7 +394,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Removes a column from the matrix item
-	context.removeMatrixColumn = function ()
+	self.removeMatrixColumn = function ()
 	{
 		var matrixWrapper = event["path"][1];
 		var rows = parseInt(matrixWrapper.getAttribute("rows"));
@@ -413,7 +415,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
-	context.createItemButton = function (innerHTML, positionsFromLeft)
+	self.createItemButton = function (innerHTML, positionsFromLeft)
 	{
 		var button = document.createElement("div");
 		
@@ -431,7 +433,7 @@ calculator_equation_builder = (function (context)
 		button.style.backgroundColor = "var(--theme-color-page-background)";
 		
 		button.style.cursor = "pointer";
-		button.onclick = context.selectButton;
+		button.onclick = self.selectButton;
 		
 		var buttonsPerRow = 6;
 		button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
@@ -443,18 +445,18 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a function item
-	context.addFunction = function ()
+	self.addFunction = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		functionCount += 1;
-		var functionWrapper = context.createEmptyItem("function", functionCount);
+		var functionWrapper = self.createEmptyItem("function", functionCount);
 		
-		var transposeButton = context.createItemButton("Tra", 0);
-		var determinantButton = context.createItemButton("Det", 1);
-		var sinButton = context.createItemButton("Sin", 2);
-		var cosButton = context.createItemButton("Cos", 3);
-		var tanButton = context.createItemButton("Tan", 4);
+		var transposeButton = self.createItemButton("Tra", 0);
+		var determinantButton = self.createItemButton("Det", 1);
+		var sinButton = self.createItemButton("Sin", 2);
+		var cosButton = self.createItemButton("Cos", 3);
+		var tanButton = self.createItemButton("Tan", 4);
 		
 		functionWrapper.append(transposeButton);
 		functionWrapper.append(determinantButton);
@@ -466,22 +468,22 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Creates a operator item
-	context.addOperator = function ()
+	self.addOperator = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
 		operatorCount += 1;
-		var operatorWrapper = context.createEmptyItem("operator", operatorCount);
+		var operatorWrapper = self.createEmptyItem("operator", operatorCount);
 		
-		var addButton = context.createItemButton("+", 0);
-		var subtractButton = context.createItemButton("-", 1);
-		var multiplyButton = context.createItemButton("*", 2);
-		var divideButton = context.createItemButton("/", 3);
-		var exponentialButton = context.createItemButton("^", 4);
-		var dotProductButton = context.createItemButton("&middot", 5);
-		var crossProductButton = context.createItemButton("x", 6);
-		var openBracketButton = context.createItemButton("(", 7);
-		var closeBracketButton = context.createItemButton(")", 8);
+		var addButton = self.createItemButton("+", 0);
+		var subtractButton = self.createItemButton("-", 1);
+		var multiplyButton = self.createItemButton("*", 2);
+		var divideButton = self.createItemButton("/", 3);
+		var exponentialButton = self.createItemButton("^", 4);
+		var dotProductButton = self.createItemButton("&middot", 5);
+		var crossProductButton = self.createItemButton("x", 6);
+		var openBracketButton = self.createItemButton("(", 7);
+		var closeBracketButton = self.createItemButton(")", 8);
 		
 		operatorWrapper.appendChild(addButton);
 		operatorWrapper.appendChild(subtractButton);
@@ -497,7 +499,7 @@ calculator_equation_builder = (function (context)
 	};
 
 	// Changes the function/operator of an function/operator item based on user mouse click
-	context.selectButton = function (event)
+	self.selectButton = function (event)
 	{
 		var selectedButton = event["path"][0];
 		
@@ -524,7 +526,7 @@ calculator_equation_builder = (function (context)
 	
 	// Shows/hides the "solve" and "export" buttons at the bottom of the equation div
 	// They are hidden if there are no items, otherwise they are visible
-	context.toggleEquationFinishButtons = function ()
+	self.toggleEquationFinishButtons = function ()
 	{
 		var equationFinishButtonDiv = document.getElementById("equationFinishButtonDiv");
 		
@@ -548,5 +550,5 @@ calculator_equation_builder = (function (context)
 		}
 	};
 	
-	return context;
-})({});
+	return self;
+}();

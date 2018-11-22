@@ -1,14 +1,16 @@
 // Declare namespace
-layout = (function (context)
+layout = function ()
 {
+	var self = {};
+	
 	// Converts a string value "px" on the end, to a float value
-	context.pxToFloat = function (string)
+	self.pxToFloat = function (string)
 	{
 		return parseFloat(string.substring(0, string.length-2));
 	};
 
 	// Creates a new button with a label and a click event
-	context.createButton = function (innerHTML, clickFunction, backgroundColor)
+	self.createButton = function (innerHTML, clickFunction, backgroundColor)
 	{
 		var button = document.createElement("div");
 		
@@ -41,7 +43,7 @@ layout = (function (context)
 	};
 
 	// Creates a container filled with a row of buttons
-	context.createButtonRow = function (buttons)
+	self.createButtonRow = function (buttons)
 	{
 		var buttonRow = document.createElement("div");
 		
@@ -61,7 +63,7 @@ layout = (function (context)
 		return buttonRow;
 	};
 	// Creates an empty div with a label that will hold the buttons for a setting e.g. color scheme
-	context.createSettingDiv = function (labelText)
+	self.createSettingDiv = function (labelText)
 		{
 		// The container div for this section of the setting panel
 		var settingDiv = document.createElement("div");
@@ -74,5 +76,5 @@ layout = (function (context)
 		return settingDiv;
 	};
 	
-	return context;
-})({});
+	return self;
+}();

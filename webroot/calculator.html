@@ -129,17 +129,25 @@
 </script>
 
 <!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
-<script type="text/javascript" src="scripts/calculator_equation_builder.js"></script>
+<!--<script type="text/javascript" src="scripts/calculator_builder.js"></script>-->
 
 <!-- Script that handles the parsing and solving of the equations the user has inputted -->
-<script type="text/javascript" src="scripts/calculator_equation_solver.js"></script>
+<!--<script type="text/javascript" src="scripts/calculator_solver.js"></script>-->
+
+<script type="text/javascript" src="scripts/calculator_build.js"></script>
+<script type="text/javascript" src="scripts/calculator_canvas.js"></script>
+<script type="text/javascript" src="scripts/calculator_items.js"></script>
+<script type="text/javascript" src="scripts/calculator_layout.js"></script>
+<script type="text/javascript" src="scripts/calculator_logic.js"></script>
+<script type="text/javascript" src="scripts/calculator_operations.js"></script>
+<script type="text/javascript" src="scripts/calculator_solve.js"></script>
 
 <script type="text/javascript">
 	window.addEventListener("resize", calculator_layout.resizePage, false);
 	
 	calculator_layout.createMainDiv();
 	
-	calculator_equation_builder.setItemCounts();
+	calculator_build.setItemCounts();
 	
 	calculator_canvas.registerMouseEvents();
 	calculator_canvas.setupWebGL();
@@ -147,7 +155,7 @@
 	calculator_layout.resizePage();
 	
 	// Solves equation
-	calculator_equation_solver.solve();
+	calculator_solve.solve();
 	
 	requestAnimationFrame(calculator_canvas.render);
 </script>

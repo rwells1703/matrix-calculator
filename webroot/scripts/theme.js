@@ -1,8 +1,10 @@
 // Declare namespace
-theme = (function (context)
+theme = function ()
 {
+	var self = {};
+	
 	// Color schemes
-	context.colors =
+	self.colors =
 	{
 		"Ruby Red":
 		{
@@ -43,7 +45,7 @@ theme = (function (context)
 	};
 
 	// Dark and Light modes
-	context.shades =
+	self.shades =
 	{
 		"Light":
 		{
@@ -64,7 +66,7 @@ theme = (function (context)
 	};
 
 	// Flat and Material modes
-	context.styles =
+	self.styles =
 	{
 		"Material":
 		{
@@ -82,7 +84,7 @@ theme = (function (context)
 		}
 	};
 	
-	context.calculatorLayouts = 
+	self.calculatorLayouts = 
 	{
 		"Equation before graph":
 		{
@@ -98,7 +100,7 @@ theme = (function (context)
 		
 
 	// Sets the color aspect of theme in local storage and in css variables
-	context.setColor = function (color)
+	self.setColor = function (color)
 	{
 		if (color == null)
 		{
@@ -106,13 +108,13 @@ theme = (function (context)
 		}
 		
 		localStorage.setItem("themeColor", color);
-		document.body.style.setProperty("--theme-color-main", context.colors[color]["color-main"]);
-		document.body.style.setProperty("--theme-color-main-dark", context.colors[color]["color-main-dark"]);
-		document.body.style.setProperty("--theme-color-main-light", context.colors[color]["color-main-light"]);
+		document.body.style.setProperty("--theme-color-main", self.colors[color]["color-main"]);
+		document.body.style.setProperty("--theme-color-main-dark", self.colors[color]["color-main-dark"]);
+		document.body.style.setProperty("--theme-color-main-light", self.colors[color]["color-main-light"]);
 	};
 
 	// Sets the shade aspect of theme in local storage and in css variables
-	context.setShade = function (shade)
+	self.setShade = function (shade)
 	{
 		if (shade == null)
 		{
@@ -120,15 +122,15 @@ theme = (function (context)
 		}
 		
 		localStorage.setItem("themeShade", shade);
-		document.body.style.setProperty("--theme-color-page-background", context.shades[shade]["color-page-background"]);
-		document.body.style.setProperty("--theme-color-page-background-light", context.shades[shade]["color-page-background-light"]);
-		document.body.style.setProperty("--theme-color-text", context.shades[shade]["color-text"]);
-		document.body.style.setProperty("--theme-color-icon", context.shades[shade]["color-icon"]);
-		document.body.style.setProperty("--theme-color-textbox-border", context.shades[shade]["color-textbox-border"]);
+		document.body.style.setProperty("--theme-color-page-background", self.shades[shade]["color-page-background"]);
+		document.body.style.setProperty("--theme-color-page-background-light", self.shades[shade]["color-page-background-light"]);
+		document.body.style.setProperty("--theme-color-text", self.shades[shade]["color-text"]);
+		document.body.style.setProperty("--theme-color-icon", self.shades[shade]["color-icon"]);
+		document.body.style.setProperty("--theme-color-textbox-border", self.shades[shade]["color-textbox-border"]);
 	};
 
 	// Sets the style aspect of theme in local storage and in css variables
-	context.setStyle = function (style)
+	self.setStyle = function (style)
 	{
 		if (style == null)
 		{
@@ -136,14 +138,14 @@ theme = (function (context)
 		}
 		
 		localStorage.setItem("themeStyle", style);
-		document.body.style.setProperty("--theme-box-shadow", context.styles[style]["box-shadow"]);
-		document.body.style.setProperty("--theme-box-shadow-navbar", context.styles[style]["box-shadow-navbar"]);
-		document.body.style.setProperty("--theme-box-shadow-navbar-item", context.styles[style]["box-shadow-navbar-item"]);
-		document.body.style.setProperty("--theme-border-radius", context.styles[style]["border-radius"]);
+		document.body.style.setProperty("--theme-box-shadow", self.styles[style]["box-shadow"]);
+		document.body.style.setProperty("--theme-box-shadow-navbar", self.styles[style]["box-shadow-navbar"]);
+		document.body.style.setProperty("--theme-box-shadow-navbar-item", self.styles[style]["box-shadow-navbar-item"]);
+		document.body.style.setProperty("--theme-border-radius", self.styles[style]["border-radius"]);
 	};
 
 	// Sets the calculator layout aspect of theme in local storage and in css variables
-	context.setCalculatorLayout = function (calculatorLayout)
+	self.setCalculatorLayout = function (calculatorLayout)
 	{
 		if (calculatorLayout == null)
 		{
@@ -151,12 +153,12 @@ theme = (function (context)
 		}
 		
 		localStorage.setItem("themeCalculatorLayout", calculatorLayout);
-		document.body.style.setProperty("--theme-canvas-div-float", context.calculatorLayouts[calculatorLayout]["canvasDivFloat"]);
-		document.body.style.setProperty("--theme-equation-div-float", context.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
+		document.body.style.setProperty("--theme-canvas-div-float", self.calculatorLayouts[calculatorLayout]["canvasDivFloat"]);
+		document.body.style.setProperty("--theme-equation-div-float", self.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
 	}
 	
 	// Sets the angle unit setting in local storage
-	context.setAngleUnit = function (angleUnit)
+	self.setAngleUnit = function (angleUnit)
 	{
 		if (angleUnit == null)
 		{
@@ -167,7 +169,7 @@ theme = (function (context)
 	}
 	
 	// Hilights the navbar item of the currently opened page in the navbar
-	context.hilightNavbar = function ()
+	self.hilightNavbar = function ()
 	{
 		// Gets the relative path of the current page being viewed
 		var url = window.location.pathname.split("/");
@@ -197,5 +199,5 @@ theme = (function (context)
 		}
 	};
 	
-	return context;
-})({});
+	return self;
+}();

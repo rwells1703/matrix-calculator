@@ -309,3 +309,14 @@ Coursework 2018-11-20-23-24:
 Coursework 2018-11-21-08-31:
 - (calculator_equation_solver.js) Fixed bug with "arccos" being accidentally named as "arcsin".
 - (calculator_equation_solver.js) Made checking of addition more efficient in "solveEquation" function.
+
+Coursework 2018-11-22-23-33:
+- Split "calculator_equation_solver.js" into many smaller files as it was becoming too large and confusing.
+- (calculator.html) Added html script tags, referencing all the new split up calculator scripts.
+- Also simplified the names of some js files to make referencing them simpler in the code.
+- Moved from using "context", to "self" as it is easier to understand for people coming from other coding languages. Plus, the self invoking function call is made slightly simpler.
+- (calculator_solve.js) Reimplemented "parseItemValues" function so that the user interace now works with the equation solver again.
+- (calculator_solve.js) Fixed bug where "parseItemValues" parses matrices as arrays on primitve floats (like used to be the standard) instead of arrays of Scalar objects.
+- (calculator_solve.js) Fixed another bug in "parseItemValues" where matrices are created directly using the Matrix class, instead of through the Grid class.
+- (calculator_solve.js) Fixed major bug introduced last version with multiplication/division, where the solveEquation function enters an infinite while loop because the solved variable is has not been set to true.
+- (calculator_solve.js) Also fixed minor issue with addition/subtraction introduced with the bug above where code is duplicated and the second duplicate is unused in the code.

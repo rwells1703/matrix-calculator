@@ -32,17 +32,26 @@
 </script>
 
 <!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
-<script type="text/javascript" src="scripts/calculator_equation_builder.js"></script>
-
+<script type="text/javascript" src="scripts/calculator_build.js"></script>
+<!-- Script that handles drawing to the canvas -->
+<script type="text/javascript" src="scripts/calculator_canvas.js"></script>
+<!-- Script that holds classes for all items that can be used in an equation -->
+<script type="text/javascript" src="scripts/calculator_items.js"></script>
+<!-- Script that handles the initial layout and dynamic resizing of the calculator page -->
+<script type="text/javascript" src="scripts/calculator_layout.js"></script>
+<!-- Script that handles the logical operations required for the calculator to function -->
+<script type="text/javascript" src="scripts/calculator_logic.js"></script>
+<!-- Script that handles mathematical operations used by the calculator, verifies their inputs and then passes them on to the corresponding logical operations -->
+<script type="text/javascript" src="scripts/calculator_operations.js"></script>
 <!-- Script that handles the parsing and solving of the equations the user has inputted -->
-<script type="text/javascript" src="scripts/calculator_equation_solver.js"></script>
+<script type="text/javascript" src="scripts/calculator_solve.js"></script>
 
 <script type="text/javascript">
 	window.addEventListener("resize", calculator_layout.resizePage, false);
 	
 	calculator_layout.createMainDiv();
 	
-	calculator_equation_builder.setItemCounts();
+	calculator_build.setItemCounts();
 	
 	calculator_canvas.registerMouseEvents();
 	calculator_canvas.setupWebGL();
@@ -50,7 +59,7 @@
 	calculator_layout.resizePage();
 	
 	// Solves equation
-	calculator_equation_solver.solve();
+	calculator_solve.solve();
 	
 	requestAnimationFrame(calculator_canvas.render);
 </script>

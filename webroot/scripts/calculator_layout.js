@@ -1,8 +1,10 @@
 // Declare namespace
-calculator_layout = (function (context)
+calculator_layout = function()
 {
+	var self = {};
+	
 	// Creates a main wrapper div for all elements
-	context.createMainDiv = function ()
+	self.createMainDiv = function ()
 	{
 		var mainDiv = document.createElement("div");
 		mainDiv.id = "mainDiv";
@@ -13,19 +15,19 @@ calculator_layout = (function (context)
 		if (calculatorLayout == "Equation before graph")
 		{
 			// Create the equation div before the canvas div
-			context.createEquationDiv();
-			context.createCanvasDiv();
+			self.createEquationDiv();
+			self.createCanvasDiv();
 		}
 		else
 		{
 			// Create the graph div before the equation div
-			context.createCanvasDiv();
-			context.createEquationDiv();
+			self.createCanvasDiv();
+			self.createEquationDiv();
 		}
 	};
 
 	// Create a new div to wrap a html5 canvas with a WebGL context
-	context.createCanvasDiv = function ()
+	self.createCanvasDiv = function ()
 	{
 		var mainDiv = document.getElementById("mainDiv");
 		
@@ -46,7 +48,7 @@ calculator_layout = (function (context)
 	};
 
 	// Create new div to hold the current matrix equation and the buttons used for editing the equation
-	context.createEquationDiv = function ()
+	self.createEquationDiv = function ()
 	{
 		var mainDiv = document.getElementById("mainDiv");
 		
@@ -59,10 +61,10 @@ calculator_layout = (function (context)
 		
 		// Creates all buttons for adding new items to the equation
 		var addItemButtons = [];
-		addItemButtons.push(layout.createButton("Add scalar", calculator_equation_builder.addScalar, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add matrix", calculator_equation_builder.addMatrix, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add function", calculator_equation_builder.addFunction, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add operator", calculator_equation_builder.addOperator, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Add scalar", calculator_build.addScalar, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Add matrix", calculator_build.addMatrix, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Add function", calculator_build.addFunction, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Add operator", calculator_build.addOperator, "var(--theme-color-main)"));
 		
 		// Creates a row of the add item buttons
 		var equationAddItemButtonDiv = layout.createButtonRow(addItemButtons);
@@ -76,7 +78,7 @@ calculator_layout = (function (context)
 		
 		// Create buttons for solving the equation and importing/exporting it to a file
 		var finishItemButtons = [];
-		finishItemButtons.push(layout.createButton("Solve", calculator_equation_solver.parseItemValues, "var(--theme-color-main)"));
+		finishItemButtons.push(layout.createButton("Solve", calculator_solve.parseItemValues, "var(--theme-color-main)"));
 		finishItemButtons.push(layout.createButton("Import", null, "var(--theme-color-main)"));
 		finishItemButtons.push(layout.createButton("Export", null, "var(--theme-color-main)"));	
 		
@@ -90,7 +92,7 @@ calculator_layout = (function (context)
 	
 	// Makes the canvas a square shape that fits perfectly within the viewport
 	// Then fit the equation div into the remaining space, either beside or below the canvas
-	context.resizePage = function ()
+	self.resizePage = function ()
 	{
 		// Gets computed properties. Must use window.getComputedStyle because element.clientHeight rounds to integer values
 		// The +2 is necessary because the "montserrat" font takes a small time to load, but is 2 pixels taller than the default font
@@ -136,5 +138,5 @@ calculator_layout = (function (context)
 		}
 	};
 	
-	return context;
-})({});
+	return self;
+}();
