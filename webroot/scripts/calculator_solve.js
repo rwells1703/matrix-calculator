@@ -3,7 +3,7 @@ calculator_solve = function ()
 {
 	var self = {};
 	
-	var angleUnit = localStorage.getItem("settingAngleUnit");
+	angleUnit = localStorage.getItem("settingAngleUnit");
 	
 	// Takes an array, and replaces a specified section of that array with a new array
 	var replaceArraySection = function (array, start, end, replacement)
@@ -15,9 +15,9 @@ calculator_solve = function ()
 	self.parseItemValues = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
-		// Returns a new array object for storing scalar, matrix, function and operator objects
+		// Returns a new array object for storing scalar, matrix, vector and operation objects
 		// Cannot use a fixed size array because each item uses a different amount of memory space and js does not support them natively
-		var equation = new Array(scalarCount + matrixCount + functionCount + operatorCount);
+		var equation = new Array(scalarCount + gridCount + operationCount + bracketCount);
 
 		var i = 0;
 		while (i < itemDiv.children.length)
@@ -33,8 +33,8 @@ calculator_solve = function ()
 				equation[i] = calculator_items.Scalar(parseFloat(textBox.value));
 			}
 
-			// Parse matrix item
-			else if (item.className == "matrix")
+			// Parse matrix and vector items
+			else if (item.className == "grid") 
 			{
 				// Take the value from the text box
 				var textBoxes = item.getElementsByTagName("input");
@@ -64,83 +64,59 @@ calculator_solve = function ()
 				// Creates a new Grid item from the values
 				equation[i] = calculator_items.Grid(values);
 			}
-
-			// Parse function item
-			else if (item.className == "function")
+			
+			// Parse operation items
+			else if (item.className == "operation")
 			{
-				var functionValue = item.getAttribute("value");
+				var operationValueDict =
+				{
+					"+":"Add",
+					"-":"Subtract",
+					"*":"Multiply",
+					"/":"Divide",
+					"^":"Exponential",
+					"·":"Dot Product",
+					"x":"Cross Product",
+					"p":"Permutations",
+					"c":"Combinations",
+					"!":"Factorial",
+					"Sin":"Sin",
+					"Cos":"Cos",
+					"Tan":"Tan",
+					"Asin":"Arcin",
+					"Acos":"Arccos",
+					"Atan":"Arctan",
+					"Log":"Log",
+					"Ln":"Ln",
+					"T":"Transpose",
+					"Det":"Determinant",
+					"Min":"Minor",
+					"Mins":"Minors",
+					"Cof":"Cofactors",
+					"Adj":"Adjugate",
+					"Inv":"Inverse",
+					"Angle":"Vector Vector Angle",
+					"Mag":"Magnitude",
+					"Norm":"Normal Vector"
+				};
 
-				if (functionValue == "Tra")
+				var operationValue = operationValueDict[item.getAttribute("value")];
+
+				var variadicFunction = false;
+				if (operationValue == "Normal Vector")
 				{
-					equation[i] = calculator_items.Function("Transpose");
+					variadicFunction = true;
 				}
-				else if (functionValue == "Det")
-				{
-					equation[i] = calculator_items.Function("Determinant");
-				}
-				else if (functionValue == "Sin")
-				{
-					equation[i] = calculator_items.Function("Sin");
-				}
-				else if (functionValue == "Cos")
-				{
-					equation[i] = calculator_items.Function("Cos");
-				}
-				else if (functionValue == "Tan")
-				{
-					equation[i] = calculator_items.Function("Tan");
-				}
-				else
-				{
-					return false;
-				}
+
+				equation[i] = calculator_items.Operation(operationValue, variadicFunction);
 			}
 
-			// Parse operator item
-			else if (item.className == "operator")
+			// Parse bracket items
+			else if (item.className == "bracket")
 			{
-				var operatorValue = item.getAttribute("value");
+				var bracketValue = item.getAttribute("value");
 
-				if (operatorValue == "+")
-				{
-					equation[i] = calculator_items.Operator("Add");
-				}
-				else if (operatorValue == "-")
-				{
-					equation[i] = calculator_items.Operator("Subtract");
-				}
-				else if (operatorValue == "*")
-				{
-					equation[i] = calculator_items.Operator("Multiply");
-				}
-				else if (operatorValue == "/")
-				{
-					equation[i] = calculator_items.Operator("Divide");
-				}
-				else if (operatorValue == "^")
-				{
-					equation[i] = calculator_items.Operator("Exponential");
-				}
-				else if (operatorValue == "Â·")
-				{
-					equation[i] = calculator_items.Operator("DotProduct");
-				}
-				else if (operatorValue == "x")
-				{
-					equation[i] = calculator_items.Operator("CrossProduct");
-				}
-				else if (operatorValue == "(")
-				{
-					equation[i] = calculator_items.Operator("OpenBracket");
-				}
-				else if (operatorValue == ")")
-				{
-					equation[i] = calculator_items.Operator("CloseBracket");
-				}
-				else
-				{
-					return false;
-				}
+				equation[i] = calculator_items.Bracket(bracketValue);
 			}
 
 			i += 1;
@@ -192,7 +168,7 @@ calculator_solve = function ()
 					equation = replaceArraySection(equation, openBracketLocation, i, bracketSolution);
 
 					// Go back to the location just before the start of where the brackets where before
-					i = openBracketLocation - 2;
+					i = openBracketLocation - 1;
 					openBracketLocation = -1;
 				}
 			}
@@ -200,55 +176,13 @@ calculator_solve = function ()
 			i += 1;
 		}
 
-		// FUNCTIONS WITH A SINGLE PARAMETER
+		// OPERATIONS THAT ACCEPT ANY NUMBER OF PARAMETERS (VARIADIC FUNCTIONS)
 		var i = 0;
-		while (i < equation.length - 1)
+		while (i < equation.length - 3)
 		{
-			if (equation[i].type == "Function")
+			if (equation[i].type == "Operation")
 			{
-				if (equation[i].parameterCount == 1)
-				{
-					inputEndIndex = i+1;
-					
-					if (equation[i].value == "Ln")
-					{
-						var solution = calculator_operations.ln(equation[i+1]);
-					}
-					else if (equation[i].value == "Sin")
-					{
-						var solution = calculator_operations.sin(equation[i+1]);
-					}
-					else if (equation[i].value == "Cos")
-					{
-						var solution = calculator_operations.cos(equation[i+1]);
-					}
-					else if (equation[i].value == "Tan")
-					{
-						var solution = calculator_operations.tan(equation[i+1]);
-					}
-					else if (equation[i].value == "Arcsin")
-					{
-						var solution = calculator_operations.arcsin(equation[i+1]);
-					}
-					else if (equation[i].value == "Arccos")
-					{
-						var solution = calculator_operations.arccos(equation[i+1]);
-					}
-					else if (equation[i].value == "Arctan")
-					{
-						var solution = calculator_operations.arctan(equation[i+1]);
-					}
-					else if (equation[i].value == "Vector Magnitude")
-					{
-						var solution = calculator_operations.arctan(equation[i+1]);
-					}
-					else
-					{
-						// Unknown single parameter function listed
-						return false;
-					}
-				}
-				else
+				if (equation[i].variadicFunction == true)
 				{
 					// If the item after the operation name is not an open operation bracket, return false
 					if (equation[i+1].value != "[")
@@ -269,7 +203,7 @@ calculator_solve = function ()
 					{
 						if (equation[j].value == "]")
 						{
-							// Save where the close operation bracket is so that solveEquation knows what part of the equation to replaec with the solution
+							// Save where the close operation bracket is so that solveEquation knows what part of the equation to replace with the solution
 							bracketClosed = true;
 							inputEndIndex = j;
 						}
@@ -282,58 +216,209 @@ calculator_solve = function ()
 						j += 1;
 					}
 					
-					// If the function brackets were not closed, return false
+					// If the variadic brackets were not closed, return false
 					if (bracketClosed == false)
 					{
 						return false;
 					}
 					
-					// If the amount of parameters entered does not match the amount the function takes, return false
-					// Unless the amount of paramters required is 0 (which means that it can take any amount of parameters)
-					if (operands.length != equation[i].parameterCount && equation[i].parameterCount != 0)
-					{
-						return false;
-					}
-					
+					var solved = false;
+
 					if (equation[i].value == "Normal Vector")
 					{
 						var solution = calculator_operations.normalVector(operands);
-					}
-					else if (equation[i].value == "Vector Vector Angle")
-					{
-						var solution = calculator_operations.vectorVectorAngle.apply(this, operands);
-					}
-					else if (equation[i].value == "Minor")
-					{
-						var solution = calculator_operations.minor.apply(this, operands);
-					}
-					else if (equation[i].value == "Log")
-					{
-						var solution = calculator_operations.log.apply(this, operands);
-					}
-					else if (equation[i].value == "Permutations")
-					{
-						var solution = calculator_operations.permutations.apply(this, operands);
-					}
-					else if (equation[i].value == "Combinations")
-					{
-						var solution = calculator_operations.combinations.apply(this, operands);
+						solved = true;
 					}
 					else
 					{
-						// Function brackets were used when there is no function
+						// An unknown variadic function has been referenced
 						return false;
 					}
+
+					if (solved == true)
+					{
+						if (solution == false)
+						{
+							return false;
+						}
+
+						equation = replaceArraySection(equation, i, inputEndIndex, solution);
+					}
 				}
-				
+			}
+			
+			i += 1;
+		}
+		
+		// LN, COS, SIN, TAN, ARCCOS, ARCSIN, ARCTAN, DETERMINANT, TRANSPOSE, MINORS, COFACTORS, ADJUGATE, INVERSE, MAGNITUDE
+		var i = 0;
+		while (i < equation.length - 1)
+		{
+			var solved = false;
+			if (equation[i].value == "Ln")
+			{
+				var solution = calculator_operations.ln(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Sin")
+			{
+				var solution = calculator_operations.sin(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Cos")
+			{
+				var solution = calculator_operations.cos(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Tan")
+			{
+				var solution = calculator_operations.tan(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Arcsin")
+			{
+				var solution = calculator_operations.arcsin(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Arccos")
+			{
+				var solution = calculator_operations.arccos(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Arctan")
+			{
+				var solution = calculator_operations.arctan(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Determinant")
+			{
+				var solution = calculator_operations.determinant(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Transpose")
+			{
+				var solution = calculator_operations.transpose(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Minors")
+			{
+				var solution = calculator_operations.minors(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Cofactors")
+			{
+				var solution = calculator_operations.cofactors(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Adjugate")
+			{
+				var solution = calculator_operations.adjugate(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Inverse")
+			{
+				var solution = calculator_operations.inverse(equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Magnitude")
+			{
+				var solution = calculator_operations.magnitude(equation[i + 1]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
 				if (solution == false)
 				{
 					return false;
 				}
-				
-				equation = replaceArraySection(equation, i, inputEndIndex, solution);
+
+				equation = replaceArraySection(equation, i, i + 1, solution);
 			}
-			
+
+			i += 1;
+		}
+
+		// LOG
+		var i = 0;
+		while (i < equation.length - 2)
+		{
+			var solved = false;
+			if (equation[i].value == "Log")
+			{
+				var solution = calculator_operations.log(equation[i + 1], equation[i + 2]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i, i + 2, solution);
+			}
+
+			i += 1;
+		}
+		
+		// FACTORIAL
+		var i = 1;
+		while (i < equation.length)
+		{
+			var solved = false;
+			if (equation[i].value == "Factorial")
+			{
+				var solution = calculator_operations.factorial(equation[i - 1]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i - 1, i, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
+			}
+
+			i += 1;
+		}
+
+		// PERMUTATIONS AND COMBINATIONS
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			var solved = false;
+			if (equation[i].value == "Permutations")
+			{
+				var solution = calculator_operations.permutations(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+			else if (equation[i].value == "Combinations")
+			{
+				var solution = calculator_operations.combinations(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
+			}
+
 			i += 1;
 		}
 		
@@ -347,21 +432,21 @@ calculator_solve = function ()
 				var solution = calculator_operations.crossProduct(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
+
 			if (solved == true)
 			{
 				if (solution == false)
 				{
 					return false;
 				}
-				else
-				{
-					equation = replaceArraySection(equation, i - 1, i + 1, solution);
-				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
 			}
-			else
-			{
-				i += 1;
-			}
+
+			i += 1;
 		}
 
 		// DOT PRODUCT
@@ -374,21 +459,21 @@ calculator_solve = function ()
 				var solution = calculator_operations.dotProduct(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
+
 			if (solved == true)
 			{
 				if (solution == false)
 				{
 					return false;
 				}
-				else
-				{
-					equation = replaceArraySection(equation, i - 1, i + 1, solution);
-				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
 			}
-			else
-			{
-				i += 1;
-			}
+
+			i += 1;
 		}
 
 		// EXPONENTIALS
@@ -409,10 +494,8 @@ calculator_solve = function ()
 				{
 					return false;
 				}
-				else
-				{
-					equation = replaceArraySection(equation, i - 1, i + 1, solution);
-				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
 			}
 			
 			i -= 1;
@@ -435,19 +518,21 @@ calculator_solve = function ()
 				var solution = calculator_operations.multiply(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
-			else
-			{
-				i += 1;
-			}
 
-			if (solved == true) {
+			if (solved == true)
+			{
 				if (solution == false)
 				{
 					return false;
 				}
 
 				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
 			}
+			
+			i += 1;
 		}
 
 		// ADDITION AND SUBTRACTION
@@ -466,19 +551,21 @@ calculator_solve = function ()
 				var solution = calculator_operations.subtract(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
-			else
-			{
-				i += 1;
-			}
 			
-			if (solved == true) {
+			if (solved == true)
+			{
 				if (solution == false)
 				{
 					return false;
 				}
 				
 				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+				
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
 			}
+
+			i += 1;
 		}
 
 		return equation;
@@ -486,37 +573,12 @@ calculator_solve = function ()
 	
 	self.solve = function ()
 	{
-		var scalarA = calculator_items.Scalar(0);
-		var scalarB = calculator_items.Scalar(0);
-		var scalarC = calculator_items.Scalar(3);
-		var scalarD = calculator_items.Scalar(9);
-		
 		var vectorA = calculator_items.Grid([[calculator_items.Scalar(3)],[calculator_items.Scalar(5)],[calculator_items.Scalar(1)]]);
 		var vectorB = calculator_items.Grid([[calculator_items.Scalar(7)],[calculator_items.Scalar(1)],[calculator_items.Scalar(3)]]);
 		var vectorC = calculator_items.Grid([[calculator_items.Scalar(5)],[calculator_items.Scalar(2)],[calculator_items.Scalar(0)]]);
 		
 		var matrixA = calculator_items.Grid([[calculator_items.Scalar(1),calculator_items.Scalar(2)],[calculator_items.Scalar(3),calculator_items.Scalar(4)]]);
-		
-		var add = calculator_items.Operator("Add");
-		var exponential = calculator_items.Operator("Exponential");
-		var dot = calculator_items.Operator("Dot Product");
-		var cross = calculator_items.Operator("Cross Product");
-		var determinant = calculator_items.Operator("Determinant");
-		var minor = calculator_items.Function("Minor", 3);
-		var normal = calculator_items.Function("Normal Vector", 0);
-		var sin = calculator_items.Function("Sin", 1);
-		var log = calculator_items.Function("Log", 2);
-		var magnitude = calculator_items.Function("Magnitude", 2);
-		var angle = calculator_items.Function("Vector Vector Angle", 2);
-
-		var openOperationBracket = calculator_items.Bracket("[");
-		var closeOperationBracket = calculator_items.Bracket("]");
-		
-		//var equation = [minor, openOperationBracket, matrixA, scalarA, scalarB, closeOperationBracket, add, log, openOperationBracket, scalarD, scalarC, closeOperationBracket];
-		//var equation = [angle, openOperationBracket, vectorA, vectorB, closeOperationBracket];
-		
-		//var equation = [scalarC, add, matrixA];
-		//console.log(calculator_solve.solveEquation(equation));
+		var matrixB = calculator_items.Grid([[calculator_items.Scalar(2),calculator_items.Scalar(2),calculator_items.Scalar(3)],[calculator_items.Scalar(4),calculator_items.Scalar(5),calculator_items.Scalar(6)],[calculator_items.Scalar(7),calculator_items.Scalar(8),calculator_items.Scalar(9)]]);
 	}
 	
 	return self;

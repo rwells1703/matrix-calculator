@@ -4,7 +4,7 @@ calculator_items = function ()
 	var self = {};
 	
 	// Bracket class that will be either of the following:
-	// equation bracket ( ) or function bracket [ ]
+	// equation bracket ( ) or variadic bracket [ ]
 	self.Bracket = function (value)
 	{
 		var self = {};
@@ -14,26 +14,15 @@ calculator_items = function ()
 		
 		return self;
 	};
-	
-	// Operator class, holds an operator that takes in a fixed number of inputs and gives an output
-	self.Operator = function (value)
+
+	// Operation class, holds an operation that takes in a number of inputs and gives an output (used for both operators and functions)
+	self.Operation = function (value, variadicFunction)
 	{
-		var self = {};
+		self = {};
 
-		self.type = "Operator";
+		self.type = "Operation";
 		self.value = value;
-
-		return self;
-	};
-
-	// Function class, holds a function that takes in one or more inputs and gives an output
-	self.Function = function (value, parameterCount)
-	{
-		var self = {};
-
-		self.type = "Function";
-		self.value = value;
-		self.parameterCount = parameterCount;
+		self.variadicFunction = variadicFunction;
 
 		return self;
 	};
@@ -58,11 +47,11 @@ calculator_items = function ()
 			// Make a negative number positive
 			if (self.value < 0)
 			{
-				return self.value * -1;
+				return calculator_items.Scalar(self.value * -1);
 			}
 			
 			// Otherwise return the value as it is
-			return self.value;
+			return calculator_items.Scalar(self.value);
 		};
 		
 		return self;
@@ -319,8 +308,8 @@ calculator_items = function ()
 				var column = 0;
 				while (column < self.columns)
 				{
-					// Gets the determinant of the minor matrix in that location, as a primitive float
-					minors.value[row][column] = self.getMinorMatrix(calculator_items.Scalar(row), calculator_items.Scalar(column)).getDeterminant().value;
+					// Gets the determinant of the minor matrix in that location, as a Scalar object
+					minors.value[row][column] = self.getMinorMatrix(calculator_items.Scalar(row), calculator_items.Scalar(column)).getDeterminant();
 
 					column += 1;
 				}
@@ -342,7 +331,7 @@ calculator_items = function ()
 			}
 
 			// Multiplier value that will be either 1 or -1 depending on the location of the element
-			var multiplier = 1;
+			var multiplier = calculator_items.Scalar(1);
 
 			var row = 0;
 			while (row < self.rows)
@@ -351,15 +340,16 @@ calculator_items = function ()
 				while (column < self.columns)
 				{
 					// Changes the sign of that element according to the checker board pattern
-					minors.value[row][column] *= multiplier;
+					minors.value[row][column] = calculator_operations.multiply(minors.value[row][column], multiplier);
 
 					// Changes the multiplier for the element to the left
-					multiplier *= -1;
+					multiplier = calculator_operations.multiply(multiplier, calculator_items.Scalar(-1));
+					//multiplier *= -1;
 					column += 1;
 				}
 
 				// Changes the multiplier so that its starting value alternates every row
-				multiplier = Math.pow(-1, row + 1);
+				multiplier = calculator_items.Scalar(Math.pow(-1, row + 1));
 				row += 1;
 			}
 
@@ -400,7 +390,7 @@ calculator_items = function ()
 			}
 
 			// Inverse is equal to: adjugate * 1/determinant
-			var inverse = calculator_logic.scalarGridOperation(determinant, adjugate, function (a, b) { return a / b });
+			var inverse = calculator_logic.scalarGridOperation(determinant, adjugate, calculator_operations.divide);
 
 			return inverse;
 		};

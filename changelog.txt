@@ -320,3 +320,22 @@ Coursework 2018-11-22-23-33:
 - (calculator_solve.js) Fixed another bug in "parseItemValues" where matrices are created directly using the Matrix class, instead of through the Grid class.
 - (calculator_solve.js) Fixed major bug introduced last version with multiplication/division, where the solveEquation function enters an infinite while loop because the solved variable is has not been set to true.
 - (calculator_solve.js) Also fixed minor issue with addition/subtraction introduced with the bug above where code is duplicated and the second duplicate is unused in the code.
+
+Coursework 2018-11-23-19-38:
+- (calculator_build.js) Added "createIconButton" function that generates icons that are used within items like "move item up", "delete item", "add matrix row" etc. This saves hundereds of lines of repeated code.
+- (calculator_build.js) Renamed "createItemButton" to "createSelectableButton" to better reflect its use.
+- (calculator_solve.js) Changed angleUnit to be a global variable so that all modules can access it in the "calculator" page.
+- (calculator_solve.js) Reverted change made in recent versions. Now "Function" and "Operator" items are again combined into an "Operation" item, with a property specififying if it is varadic.
+- (calculator_solve.js) Removed "parameterCount" property used in function-like operations and replaced it with "varadicFunction". This allows all functions and operators to be treated the same unless one has an unknown number of parameters (known as a varadic function) e.g. "normal vector".
+- (calculator_solve.js) Completely changed "parseItemValues" so that it now parses the items Scalar, Matrix, Vector, Operation and Bracket properly.
+- (calculator_solve.js) Fixed bug in "solveEquation" where current item counter would move to -1 when brackets where used. Set the counter to move back by -1 instead of -2 and it fixed the error.
+- (calculator_solve.js) Also simplified code for checking in solveEquation so that after sections are solved, the current item pointer moves back/forward to the correct location.
+- (calculator_items.js) Fixed bug in "Matrix.getMatrixOfMinors" where it uses primitive floats in operations, and then returns a matrix of primitive floats instead of a matrix of Scalar objects.
+- (calculator_items.js) Fixed bug in "Matrix.inverse" where the built in divide operation was used instead of "calculator_operations.divide" which caused a matrix of "NaN" values to be returned.
+- (calculator_solve.js) "solveEquation" now supports (almost) every operator, including the matrix operators e.g. inverse.
+- (calculator_build.js) Changed references from "matrix" item to "grid" item so that vectors are included as well. Had to change item names and also item counts.
+- (calculator_build.js) Added new "bracket" item for storing equation and varadic items. It uses the same selection boxes as "operation".
+- (calculator_solve.js) Added operation name dictionary to convert item button names to their equivalent operations names.
+- (calculator_solve.js) Fixed bug in "solveEquation" where permutations was spelt wrong causing errors.
+- (calculator_items.js) Fixed bug in "scalar.getMagnitude" where a primitve float was returned instead of a Scalar object.
+- (calculator_items.js) Simplified the code for adding many selectable buttons to items. Instead of each being a seperate statement, the button labels are stored in a list and iterated through by a while loop.

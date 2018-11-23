@@ -300,6 +300,17 @@ calculator_operations = function ()
 		return false;
 	};
 	
+	self.inverse = function (right)
+	{
+		// M
+		if (right.type == "Matrix")
+		{
+			return right.getInverse();
+		}
+		
+		return false;
+	};
+	
 	self.dotProduct = function (left, right)
 	{
 		// VV

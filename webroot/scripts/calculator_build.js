@@ -6,13 +6,57 @@ calculator_build = function ()
 	// Counts increase/decrease for every item added/removed from the equation
 	self.setItemCounts = function ()
 	{
-		matrixCount = 0;
 		scalarCount = 0;
-		functionCount = 0;
-		operatorCount = 0;
+		gridCount = 0;
+		operationCount = 0;
+		bracketCount = 0;
+	};
+
+	// Creates a new text box for inputting values e.g. in a Scalar or Grid item
+	self.createInputTextbox = function (gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
+	{
+		var inputTextbox = document.createElement("input");
+		inputTextbox.style.boxSizing = "border-box";
+		inputTextbox.style.width = "90%";
+		inputTextbox.style.height = "90%";
+		inputTextbox.style.margin = "auto auto";
+		inputTextbox.style.borderWidth = 1;
+		inputTextbox.style.borderStyle = "solid";
+		inputTextbox.style.borderColor = "var(--theme-color-textbox-border)";
+		inputTextbox.style.backgroundColor = "var(--theme-color-page-background)";
+		inputTextbox.style.color = "var(--theme-color-text)";
+		inputTextbox.style.textAlign = "center";
+		inputTextbox.type = "text";
+
+		inputTextbox.style.gridColumnStart = gridColumnStart;
+		inputTextbox.style.gridColumnEnd = gridColumnEnd;
+		inputTextbox.style.gridRowStart = gridRowStart;
+		inputTextbox.style.gridRowEnd = gridRowEnd;
+		
+		return inputTextbox;
+	};
+
+	// Creates an icon button that can be placed within an item e.g. add column in the Grid item
+	self.createIconButton = function (src, onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
+	{
+		var iconButton = document.createElement("img");
+
+		iconButton.src = src;
+		iconButton.onclick = onclick;
+
+		iconButton.style.cursor = "pointer";
+		iconButton.style.height = "100%";
+		iconButton.style.margin = "0 auto";
+
+		iconButton.style.gridColumnStart = gridColumnStart;
+		iconButton.style.gridColumnEnd = gridColumnEnd;
+		iconButton.style.gridRowStart = gridRowStart;
+		iconButton.style.gridRowEnd = gridRowEnd;
+		
+		return iconButton;
 	};
 	
-	// Creates an empty item that can become a scalar, matrix or operator
+	// Creates an empty item that can become a scalar, grid, operation or bracket item
 	self.createEmptyItem = function (itemClass, itemCount)
 	{
 		var itemWrapper = document.createElement("div");
@@ -44,39 +88,10 @@ calculator_build = function ()
 		itemName.style.padding = 0;
 		itemName.style.textAlign = "center";
 		itemName.innerHTML = itemWrapper.className + itemWrapper.id;
-		
-		var itemMoveUpIcon = document.createElement("img");
-		itemMoveUpIcon.src = "images/move_up.svg";
-		itemMoveUpIcon.style.cursor = "pointer";
-		itemMoveUpIcon.style.height = "100%";
-		itemMoveUpIcon.style.margin = "0 auto";
-		itemMoveUpIcon.style.gridColumnStart = 2;
-		itemMoveUpIcon.style.gridColumnEnd = 3;
-		itemMoveUpIcon.style.gridRowStart = 4;
-		itemMoveUpIcon.style.gridRowEnd = 5;
-		itemMoveUpIcon.onclick = self.moveItemUp;
-		
-		var itemDeleteIcon = document.createElement("img");
-		itemDeleteIcon.src = "images/delete.svg";
-		itemDeleteIcon.style.cursor = "pointer";
-		itemDeleteIcon.style.height = "100%";
-		itemDeleteIcon.style.margin = "0 auto";
-		itemDeleteIcon.style.gridColumnStart = 2;
-		itemDeleteIcon.style.gridColumnEnd = 3;
-		itemDeleteIcon.style.gridRowStart = 6;
-		itemDeleteIcon.style.gridRowEnd = 7;
-		itemDeleteIcon.onclick = self.deleteItem;
-		
-		var itemMoveDownIcon = document.createElement("img");
-		itemMoveDownIcon.src = "images/move_down.svg";
-		itemMoveDownIcon.style.cursor = "pointer";
-		itemMoveDownIcon.style.height = "100%";
-		itemMoveDownIcon.style.margin = "0 auto";
-		itemMoveDownIcon.style.gridColumnStart = 2;
-		itemMoveDownIcon.style.gridColumnEnd = 3;
-		itemMoveDownIcon.style.gridRowStart = 8;
-		itemMoveDownIcon.style.gridRowEnd = 9;
-		itemMoveDownIcon.onclick = self.moveItemDown;
+
+		itemMoveUpIcon = self.createIconButton("images/move_up.svg", self.moveItemUp, 2, 3, 4, 5);
+		itemDeleteIcon = self.createIconButton("images/delete.svg", self.deleteItem, 2, 3, 6, 7);
+		itemMoveDownIcon = self.createIconButton("images/move_down.svg", self.moveItemDown, 2, 3, 8, 9);
 
 		itemWrapper.appendChild(itemSidebar);
 		itemWrapper.appendChild(itemName);
@@ -99,17 +114,17 @@ calculator_build = function ()
 		{
 			scalarCount -= 1;
 		}
-		else if (item.className == "matrix")
+		else if (item.className == "grid")
 		{
-			matrixCount -= 1;
+			gridCount -= 1;
 		}
-		else if (item.className == "function")
+		else if (item.className == "operation")
 		{
-			functionCount -= 1;
+			operationCount -= 1;
 		}
 		else
 		{
-			operatorCount -= 1;
+			bracketCount -= 1;
 		}
 		
 		// Animates the removal of the item
@@ -206,25 +221,6 @@ calculator_build = function ()
 		}
 	};
 
-	// Creates a new text box for inputting values e.g. in a scalar or matrix item
-	self.createInputTextbox = function ()
-	{
-		var inputTextbox = document.createElement("input");
-		inputTextbox.style.boxSizing = "border-box";
-		inputTextbox.style.width = "90%";
-		inputTextbox.style.height = "90%";
-		inputTextbox.style.margin = "auto auto";
-		inputTextbox.style.borderWidth = 1;
-		inputTextbox.style.borderStyle = "solid";
-		inputTextbox.style.borderColor = "var(--theme-color-textbox-border)";
-		inputTextbox.style.backgroundColor = "var(--theme-color-page-background)";
-		inputTextbox.style.color = "var(--theme-color-text)";
-		inputTextbox.style.textAlign = "center";
-		inputTextbox.type = "text";
-		
-		return inputTextbox;
-	};
-
 	// Creates a scalar item
 	self.addScalar = function ()
 	{
@@ -233,22 +229,18 @@ calculator_build = function ()
 		scalarCount += 1;
 		var scalarWrapper = self.createEmptyItem("scalar", scalarCount);
 		
-		var scalarTextbox = self.createInputTextbox();
-		scalarTextbox.style.gridColumnStart = 4;
-		scalarTextbox.style.gridColumnEnd = 5;
-		scalarTextbox.style.gridRowStart = 2;
-		scalarTextbox.style.gridRowEnd = 3;
+		var scalarTextbox = self.createInputTextbox(4, 5, 2, 3);
 		scalarWrapper.appendChild(scalarTextbox);
 		itemDiv.appendChild(scalarWrapper);
 	};
 
-	// Creates a matrix item
-	self.addMatrix = function ()
+	// Creates a grid item
+	self.addGrid = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
-		matrixCount += 1;
-		var matrixWrapper = self.createEmptyItem("matrix", matrixCount);
+		gridCount += 1;
+		var gridWrapper = self.createEmptyItem("grid", gridCount);
 		
 		var r = 0;
 		while (r < 7)
@@ -256,17 +248,13 @@ calculator_build = function ()
 			var c = 0;
 			while (c < 7)
 			{
-				var matrixElementTextbox = self.createInputTextbox();
-				matrixElementTextbox.style.gridColumnStart = 4+c;
-				matrixElementTextbox.style.gridColumnEnd = 5+c;
-				matrixElementTextbox.style.gridRowStart = 2+r;
-				matrixElementTextbox.style.gridRowEnd = 3+r;
-				matrixWrapper.appendChild(matrixElementTextbox);
+				var gridElementTextbox = self.createInputTextbox(4+c, 5+c, 2+r, 3+r);
+				gridWrapper.appendChild(gridElementTextbox);
 				
-				// Hide any rows or elements so only a 2x2 matrix shows
+				// Hide any rows or elements so only a 2x2 grid shows
 				if (r > 1 || c > 1)
 				{
-					matrixWrapper.lastChild.style.visibility = "hidden";
+					gridWrapper.lastChild.style.visibility = "hidden";
 				}
 				
 				c += 1;
@@ -275,67 +263,28 @@ calculator_build = function ()
 			r += 1;
 		}
 		
-		matrixWrapper.setAttribute("rows", 2);
-		matrixWrapper.setAttribute("columns", 2);
+		gridWrapper.setAttribute("rows", 2);
+		gridWrapper.setAttribute("columns", 2);
+
+		addGridRowIcon = self.createIconButton("images/add.svg", self.addGridRow, 4, 5, 9, 10);
+		removeGridRowIcon = self.createIconButton("images/remove.svg", self.removeGridRow, 5, 6, 9, 10);
+		addGridColumnIcon = self.createIconButton("images/add.svg", self.addGridColumn, 11, 12, 2, 3);
+		removeGridColumnIcon = self.createIconButton("images/remove.svg", self.removeGridColumn, 11, 12, 3, 4);
+
+		gridWrapper.appendChild(addGridRowIcon);
+		gridWrapper.appendChild(removeGridRowIcon);
+		gridWrapper.appendChild(addGridColumnIcon);
+		gridWrapper.appendChild(removeGridColumnIcon);
 		
-		var addMatrixRowIcon = document.createElement("img");
-		addMatrixRowIcon.src = "images/add.svg";
-		addMatrixRowIcon.style.cursor = "pointer";
-		addMatrixRowIcon.style.height = "100%";
-		addMatrixRowIcon.style.margin = "0 auto";
-		addMatrixRowIcon.style.gridColumnStart = 4;
-		addMatrixRowIcon.style.gridColumnEnd = 5;
-		addMatrixRowIcon.style.gridRowStart = 9;
-		addMatrixRowIcon.style.gridRowEnd = 10;
-		addMatrixRowIcon.onclick = self.addMatrixRow;
-		
-		var removeMatrixRowIcon = document.createElement("img");
-		removeMatrixRowIcon.src = "images/remove.svg";
-		removeMatrixRowIcon.style.cursor = "pointer";
-		removeMatrixRowIcon.style.height = "100%";
-		removeMatrixRowIcon.style.margin = "0 auto";
-		removeMatrixRowIcon.style.gridColumnStart = 5;
-		removeMatrixRowIcon.style.gridColumnEnd = 6;
-		removeMatrixRowIcon.style.gridRowStart = 9;
-		removeMatrixRowIcon.style.gridRowEnd = 10;
-		removeMatrixRowIcon.onclick = self.removeMatrixRow;
-		
-		var addMatrixColumnIcon = document.createElement("img");
-		addMatrixColumnIcon.src = "images/add.svg";
-		addMatrixColumnIcon.style.cursor = "pointer";
-		addMatrixColumnIcon.style.height = "100%";
-		addMatrixColumnIcon.style.margin = "0 auto";
-		addMatrixColumnIcon.style.gridColumnStart = 11;
-		addMatrixColumnIcon.style.gridColumnEnd = 12;
-		addMatrixColumnIcon.style.gridRowStart = 2;
-		addMatrixColumnIcon.style.gridRowEnd = 3;
-		addMatrixColumnIcon.onclick = self.addMatrixColumn;
-		
-		var removeMatrixColumnIcon = document.createElement("img");
-		removeMatrixColumnIcon.src = "images/remove.svg";
-		removeMatrixColumnIcon.style.cursor = "pointer";
-		removeMatrixColumnIcon.style.height = "100%";
-		removeMatrixColumnIcon.style.margin = "0 auto";
-		removeMatrixColumnIcon.style.gridColumnStart = 11;
-		removeMatrixColumnIcon.style.gridColumnEnd = 12;
-		removeMatrixColumnIcon.style.gridRowStart = 3;
-		removeMatrixColumnIcon.style.gridRowEnd = 4;
-		removeMatrixColumnIcon.onclick = self.removeMatrixColumn;
-		
-		matrixWrapper.appendChild(addMatrixRowIcon);
-		matrixWrapper.appendChild(removeMatrixRowIcon);
-		matrixWrapper.appendChild(addMatrixColumnIcon);
-		matrixWrapper.appendChild(removeMatrixColumnIcon);
-		
-		itemDiv.appendChild(matrixWrapper);
+		itemDiv.appendChild(gridWrapper);
 	};
 	
-	// Adds a new row to a matrix item
-	self.addMatrixRow = function ()
+	// Adds a new row to a grid item
+	self.addGridRow = function ()
 	{
-		var matrixWrapper = event["path"][1];
-		var rows = parseInt(matrixWrapper.getAttribute("rows"));
-		var columns = parseInt(matrixWrapper.getAttribute("columns"));
+		var gridWrapper = event["path"][1];
+		var rows = parseInt(gridWrapper.getAttribute("rows"));
+		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
 		if (rows < 6)
 		{
@@ -343,20 +292,20 @@ calculator_build = function ()
 			while (c < columns)
 			{
 				elementNumber = 7*rows + c + 5
-				matrixWrapper.children[elementNumber].style.visibility = "";
+				gridWrapper.children[elementNumber].style.visibility = "";
 				c += 1;
 			}
 			
-			matrixWrapper.setAttribute("rows", rows+1)
+			gridWrapper.setAttribute("rows", rows+1)
 		}
 	};
 	
-	// Removes a row from the matrix item
-	self.removeMatrixRow = function ()
+	// Removes a row from the grid item
+	self.removeGridRow = function ()
 	{
-		var matrixWrapper = event["path"][1];
-		var rows = parseInt(matrixWrapper.getAttribute("rows"));
-		var columns = parseInt(matrixWrapper.getAttribute("columns"));
+		var gridWrapper = event["path"][1];
+		var rows = parseInt(gridWrapper.getAttribute("rows"));
+		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
 		if (rows > 1)
 		{
@@ -364,20 +313,20 @@ calculator_build = function ()
 			while (c < columns)
 			{
 				elementNumber = 7*(rows-1) + c + 5
-				matrixWrapper.children[elementNumber].style.visibility = "hidden";
+				gridWrapper.children[elementNumber].style.visibility = "hidden";
 				c += 1;
 			}
 			
-			matrixWrapper.setAttribute("rows", rows-1)
+			gridWrapper.setAttribute("rows", rows-1)
 		}
 	};
 
-	// Adds a new column to a matrix item
-	self.addMatrixColumn = function ()
+	// Adds a new column to a grid item
+	self.addGridColumn = function ()
 	{
-		var matrixWrapper = event["path"][1];
-		var rows = parseInt(matrixWrapper.getAttribute("rows"));
-		var columns = parseInt(matrixWrapper.getAttribute("columns"));
+		var gridWrapper = event["path"][1];
+		var rows = parseInt(gridWrapper.getAttribute("rows"));
+		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
 		if (columns < 6)
 		{
@@ -385,20 +334,20 @@ calculator_build = function ()
 			while (r < rows)
 			{
 				elementNumber = 7*r + columns + 5
-				matrixWrapper.children[elementNumber].style.visibility = "";
+				gridWrapper.children[elementNumber].style.visibility = "";
 				r += 1;
 			}
 			
-			matrixWrapper.setAttribute("columns", columns+1)
+			gridWrapper.setAttribute("columns", columns+1)
 		}
 	};
 
-	// Removes a column from the matrix item
-	self.removeMatrixColumn = function ()
+	// Removes a column from the grid item
+	self.removeGridColumn = function ()
 	{
-		var matrixWrapper = event["path"][1];
-		var rows = parseInt(matrixWrapper.getAttribute("rows"));
-		var columns = parseInt(matrixWrapper.getAttribute("columns"));
+		var gridWrapper = event["path"][1];
+		var rows = parseInt(gridWrapper.getAttribute("rows"));
+		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
 		if (columns > 1)
 		{
@@ -406,16 +355,16 @@ calculator_build = function ()
 			while (r < rows)
 			{
 				elementNumber = 7*r + (columns-1) + 5
-				matrixWrapper.children[elementNumber].style.visibility = "hidden";
+				gridWrapper.children[elementNumber].style.visibility = "hidden";
 				r += 1;
 			}
 			
-			matrixWrapper.setAttribute("columns", columns-1);
+			gridWrapper.setAttribute("columns", columns-1);
 		}
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
-	self.createItemButton = function (innerHTML, positionsFromLeft)
+	self.createSelectableButton = function (innerHTML, positionsFromLeft)
 	{
 		var button = document.createElement("div");
 		
@@ -444,61 +393,51 @@ calculator_build = function ()
 		return button;
 	};
 
-	// Creates a function item
-	self.addFunction = function ()
+	// Creates a operation item
+	self.addOperation = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
-		functionCount += 1;
-		var functionWrapper = self.createEmptyItem("function", functionCount);
+		operationCount += 1;
+		var operationWrapper = self.createEmptyItem("operation", operationCount);
 		
-		var transposeButton = self.createItemButton("Tra", 0);
-		var determinantButton = self.createItemButton("Det", 1);
-		var sinButton = self.createItemButton("Sin", 2);
-		var cosButton = self.createItemButton("Cos", 3);
-		var tanButton = self.createItemButton("Tan", 4);
+		var buttonList = ["+", "-", "*", "/", "^", "&middot", "x", "p", "c", "!", "Sin", "Cos", "Tan", "Asin", "Acos", "Atan", "Log", "Ln", "T", "Det", "Min", "Mins", "Cof", "Adj", "Inv", "Angle", "Mag", "Norm"];
 		
-		functionWrapper.append(transposeButton);
-		functionWrapper.append(determinantButton);
-		functionWrapper.append(sinButton);
-		functionWrapper.append(cosButton);
-		functionWrapper.append(tanButton);
+		var i = 0;
+		while (i < buttonList.length)
+		{
+			var button = self.createSelectableButton(buttonList[i], i);
+			operationWrapper.appendChild(button);
+			
+			i += 1;
+		}
 		
-		itemDiv.appendChild(functionWrapper);
+		itemDiv.appendChild(operationWrapper);
 	};
 
-	// Creates a operator item
-	self.addOperator = function ()
+	// Creates a bracket item
+	self.addBracket = function ()
 	{
 		var itemDiv = document.getElementById("itemDiv");
 		
-		operatorCount += 1;
-		var operatorWrapper = self.createEmptyItem("operator", operatorCount);
+		bracketCount += 1;
+		var bracketWrapper = self.createEmptyItem("bracket", bracketCount);
 		
-		var addButton = self.createItemButton("+", 0);
-		var subtractButton = self.createItemButton("-", 1);
-		var multiplyButton = self.createItemButton("*", 2);
-		var divideButton = self.createItemButton("/", 3);
-		var exponentialButton = self.createItemButton("^", 4);
-		var dotProductButton = self.createItemButton("&middot", 5);
-		var crossProductButton = self.createItemButton("x", 6);
-		var openBracketButton = self.createItemButton("(", 7);
-		var closeBracketButton = self.createItemButton(")", 8);
+		var buttonList = ["(",")","[","]"];
 		
-		operatorWrapper.appendChild(addButton);
-		operatorWrapper.appendChild(subtractButton);
-		operatorWrapper.appendChild(multiplyButton);
-		operatorWrapper.appendChild(divideButton);
-		operatorWrapper.appendChild(exponentialButton);
-		operatorWrapper.appendChild(dotProductButton);
-		operatorWrapper.appendChild(crossProductButton);
-		operatorWrapper.appendChild(openBracketButton);
-		operatorWrapper.appendChild(closeBracketButton);
+		var i = 0;
+		while (i < buttonList.length)
+		{
+			var button = self.createSelectableButton(buttonList[i], i);
+			bracketWrapper.appendChild(button);
+			
+			i += 1;
+		}
 		
-		itemDiv.appendChild(operatorWrapper);
+		itemDiv.appendChild(bracketWrapper);
 	};
 
-	// Changes the function/operator of an function/operator item based on user mouse click
+	// Changes the function/operator of an Operation item based on user mouse click
 	self.selectButton = function (event)
 	{
 		var selectedButton = event["path"][0];
@@ -520,7 +459,7 @@ calculator_build = function ()
 		selectedButton.style.borderColor = "var(--theme-color-main)";
 		selectedButton.style.backgroundColor = "var(--theme-color-main-light)";
 		
-		// Sets the value attribute of the function/operator item
+		// Sets the value attribute of the Operation item
 		selectedButton.parentNode.setAttribute("value", selectedButton.innerHTML);
 	};
 	
@@ -530,7 +469,7 @@ calculator_build = function ()
 	{
 		var equationFinishButtonDiv = document.getElementById("equationFinishButtonDiv");
 		
-		if (scalarCount == 0 && matrixCount == 0 && operatorCount == 0 && functionCount == 0)
+		if (scalarCount == 0 && gridCount == 0 && operationCount == 0 && bracketCount == 0)
 		{
 			// If there are no items, dont show the finish "solve" and "export" buttons
 			// Resets the animation so it can be played again

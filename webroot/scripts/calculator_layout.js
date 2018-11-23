@@ -61,17 +61,17 @@ calculator_layout = function()
 		
 		// Creates all buttons for adding new items to the equation
 		var addItemButtons = [];
-		addItemButtons.push(layout.createButton("Add scalar", calculator_build.addScalar, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add matrix", calculator_build.addMatrix, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add function", calculator_build.addFunction, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Add operator", calculator_build.addOperator, "var(--theme-color-main)"));
-		
+		addItemButtons.push(layout.createButton("Scalar", calculator_build.addScalar, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Grid", calculator_build.addGrid, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Operation", calculator_build.addOperation, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Bracket", calculator_build.addBracket, "var(--theme-color-main)"));
+
 		// Creates a row of the add item buttons
 		var equationAddItemButtonDiv = layout.createButtonRow(addItemButtons);
 		equationAddItemButtonDiv.id = "equationAddItemButtonDiv";
 		equationDiv.appendChild(equationAddItemButtonDiv);
 		
-		// Creates a container div for all items e.g. scalars, matrices and operators
+		// Creates a container div for all items e.g. scalars, matrices, vectors,  operations and brackets
 		var itemDiv = document.createElement("div");
 		itemDiv.id = "itemDiv";
 		equationDiv.appendChild(itemDiv);
