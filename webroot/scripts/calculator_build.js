@@ -56,42 +56,53 @@ calculator_build = function ()
 		return iconButton;
 	};
 	
+	self.createEmptyBox = function ()
+	{
+		var box = document.createElement("div");
+		
+		box.style.background = "var(--theme-color-page-background-light)";
+		
+		box.style.padding = 0;
+		box.style.height = "30vh";
+		box.style.marginBottom = "4vh";
+		
+		box.style.boxShadow = "var(--theme-box-shadow)";
+		box.style.borderRadius = "var(--theme-border-radius)";
+		
+		box.style.animationName = "fadeIn";
+		box.style.animationDuration = "0.25s";
+		
+		return box;
+	};
+	
 	// Creates an empty item that can become a scalar, grid, operation or bracket item
 	self.createEmptyItem = function (itemClass, itemCount)
 	{
-		var itemWrapper = document.createElement("div");
+		var itemWrapper = self.createEmptyBox();
 		itemWrapper.className = itemClass;
 		itemWrapper.id = itemCount;
 		itemWrapper.style.display = "grid";
-		itemWrapper.style.gridTemplateColumns = "repeat(11, 1fr)";
-		itemWrapper.style.gridTemplateRows = "repeat(9, 1fr)"; 
-		itemWrapper.style.background = "var(--theme-color-page-background-light)";
-		itemWrapper.style.padding = 0;
-		itemWrapper.style.height = "30vh";
-		itemWrapper.style.marginBottom = "4vh";
-		itemWrapper.style.boxShadow = "var(--theme-box-shadow)";
-		itemWrapper.style.borderRadius = "var(--theme-border-radius)";
-		itemWrapper.style.animationName = "fadeIn";
-		itemWrapper.style.animationDuration = "0.25s";
+		itemWrapper.style.gridTemplateColumns = "repeat(10, 1fr)";
+		itemWrapper.style.gridTemplateRows = "repeat(8, 1fr)"; 
 		
 		var itemSidebar = document.createElement("div");
 		itemSidebar.style.gridColumnStart = 1;
 		itemSidebar.style.gridColumnEnd = 3;
 		itemSidebar.style.gridRowStart = 1;
-		itemSidebar.style.gridRowEnd = 10;
+		itemSidebar.style.gridRowEnd = 9;
 		
 		var itemName = document.createElement("div");
 		itemName.style.gridColumnStart = 1;
-		itemName.style.gridColumnEnd = 3;
+		itemName.style.gridColumnEnd = 4;
 		itemName.style.gridRowStart = 1;
 		itemName.style.gridRowEnd = 2;
 		itemName.style.padding = 0;
 		itemName.style.textAlign = "center";
 		itemName.innerHTML = itemWrapper.className + itemWrapper.id;
 
-		itemMoveUpIcon = self.createIconButton("images/move_up.svg", self.moveItemUp, 2, 3, 4, 5);
-		itemDeleteIcon = self.createIconButton("images/delete.svg", self.deleteItem, 2, 3, 6, 7);
-		itemMoveDownIcon = self.createIconButton("images/move_down.svg", self.moveItemDown, 2, 3, 8, 9);
+		itemMoveUpIcon = self.createIconButton("images/move_up.svg", self.moveItemUp, 2, 3, 3, 4);
+		itemDeleteIcon = self.createIconButton("images/delete.svg", self.deleteItem, 2, 3, 5, 6);
+		itemMoveDownIcon = self.createIconButton("images/move_down.svg", self.moveItemDown, 2, 3, 7, 8);
 
 		itemWrapper.appendChild(itemSidebar);
 		itemWrapper.appendChild(itemName);
@@ -234,6 +245,9 @@ calculator_build = function ()
 		itemDiv.appendChild(scalarWrapper);
 	};
 
+	self.gridMaxRows = 6;
+	self.gridMaxColumns = 6;
+	
 	// Creates a grid item
 	self.addGrid = function ()
 	{
@@ -243,10 +257,10 @@ calculator_build = function ()
 		var gridWrapper = self.createEmptyItem("grid", gridCount);
 		
 		var r = 0;
-		while (r < 7)
+		while (r < self.gridMaxRows - 1)
 		{
 			var c = 0;
-			while (c < 7)
+			while (c < self.gridMaxRows - 1)
 			{
 				var gridElementTextbox = self.createInputTextbox(4+c, 5+c, 2+r, 3+r);
 				gridWrapper.appendChild(gridElementTextbox);
@@ -266,10 +280,10 @@ calculator_build = function ()
 		gridWrapper.setAttribute("rows", 2);
 		gridWrapper.setAttribute("columns", 2);
 
-		addGridRowIcon = self.createIconButton("images/add.svg", self.addGridRow, 4, 5, 9, 10);
-		removeGridRowIcon = self.createIconButton("images/remove.svg", self.removeGridRow, 5, 6, 9, 10);
-		addGridColumnIcon = self.createIconButton("images/add.svg", self.addGridColumn, 11, 12, 2, 3);
-		removeGridColumnIcon = self.createIconButton("images/remove.svg", self.removeGridColumn, 11, 12, 3, 4);
+		addGridRowIcon = self.createIconButton("images/add.svg", self.addGridRow, 4, 5, 8, 9);
+		removeGridRowIcon = self.createIconButton("images/remove.svg", self.removeGridRow, 5, 6, 8, 9);
+		addGridColumnIcon = self.createIconButton("images/add.svg", self.addGridColumn, 10, 11, 2, 3);
+		removeGridColumnIcon = self.createIconButton("images/remove.svg", self.removeGridColumn, 10, 11, 3, 4);
 
 		gridWrapper.appendChild(addGridRowIcon);
 		gridWrapper.appendChild(removeGridRowIcon);
@@ -286,12 +300,12 @@ calculator_build = function ()
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
-		if (rows < 6)
+		if (rows < self.gridMaxRows - 1)
 		{
 			var c = 0;
 			while (c < columns)
 			{
-				elementNumber = 7*rows + c + 5
+				elementNumber = (self.gridMaxColumns - 1)*rows + c + 5
 				gridWrapper.children[elementNumber].style.visibility = "";
 				c += 1;
 			}
@@ -312,7 +326,7 @@ calculator_build = function ()
 			var c = 0;
 			while (c < columns)
 			{
-				elementNumber = 7*(rows-1) + c + 5
+				elementNumber = (self.gridMaxRows - 1)*(rows-1) + c + 5
 				gridWrapper.children[elementNumber].style.visibility = "hidden";
 				c += 1;
 			}
@@ -328,12 +342,12 @@ calculator_build = function ()
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
-		if (columns < 6)
+		if (columns < self.gridMaxColumns - 1)
 		{
 			var r = 0;
 			while (r < rows)
 			{
-				elementNumber = 7*r + columns + 5
+				elementNumber = (self.gridMaxColumns - 1)*r + columns + 5
 				gridWrapper.children[elementNumber].style.visibility = "";
 				r += 1;
 			}
@@ -354,7 +368,7 @@ calculator_build = function ()
 			var r = 0;
 			while (r < rows)
 			{
-				elementNumber = 7*r + (columns-1) + 5
+				elementNumber = (self.gridMaxRows - 1)*r + (columns-1) + 5
 				gridWrapper.children[elementNumber].style.visibility = "hidden";
 				r += 1;
 			}
@@ -384,7 +398,7 @@ calculator_build = function ()
 		button.style.cursor = "pointer";
 		button.onclick = self.selectButton;
 		
-		var buttonsPerRow = 6;
+		var buttonsPerRow = 5;
 		button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
 		button.style.gridColumnEnd = 5+(positionsFromLeft % buttonsPerRow);
 		button.style.gridRowStart = 2+Math.floor(positionsFromLeft / buttonsPerRow);

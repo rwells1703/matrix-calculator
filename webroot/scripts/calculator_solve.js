@@ -29,11 +29,18 @@ calculator_solve = function ()
 			{
 				// Take the value from the text box
 				var textBox = item.getElementsByTagName("input")[0];
+				
 				// Convert the string value to an float value and create a new Scalar object using it
-				equation[i] = calculator_items.Scalar(parseFloat(textBox.value));
+				var value = parseFloat(textBox.value);
+				if (typeof(value) != "number" || isNaN(value))
+				{
+					return false;
+				}
+				
+				equation[i] = calculator_items.Scalar(value);
 			}
 
-			// Parse matrix and vector items
+			// Parse grid (matrix or vector) items
 			else if (item.className == "grid") 
 			{
 				// Take the value from the text box
@@ -54,7 +61,16 @@ calculator_solve = function ()
 					while (c < columns)
 					{
 						// Adds a new floating point value to the row
-						values[r].push(calculator_items.Scalar(parseFloat(textBoxes[r * 7 + c].value)));
+						var textBox = textBoxes[r * (calculator_build.gridMaxRows-1) + c];
+
+						var value = parseFloat(textBox.value);
+						if (typeof(value) != "number" || isNaN(value))
+						{
+							return false;
+						}
+						
+						values[r].push(calculator_items.Scalar(value));
+						
 						c += 1;
 					}
 
@@ -83,7 +99,7 @@ calculator_solve = function ()
 					"Sin":"Sin",
 					"Cos":"Cos",
 					"Tan":"Tan",
-					"Asin":"Arcin",
+					"Asin":"Arcsin",
 					"Acos":"Arccos",
 					"Atan":"Arctan",
 					"Log":"Log",
@@ -122,8 +138,17 @@ calculator_solve = function ()
 			i += 1;
 		}
 
-		console.log(calculator_solve.solveEquation(equation));
-		//return equation;
+		return equation;
+	};
+	
+	self.verifyBounds = function (operationPos, lower, upper, equationLength)
+	{
+		if (lower < 0 || upper > equationLength - 1)
+		{
+			return operationPos;
+		}
+		
+		return true;
 	};
 	
 	// Solves the mathematical equation passed in, and returns the answer
@@ -476,6 +501,33 @@ calculator_solve = function ()
 			i += 1;
 		}
 
+		// VECTOR VECTOR ANGLE
+		var i = 1;
+		while (i < equation.length - 1)
+		{
+			var solved = false;
+			if (equation[i].value == "Vector Vector Angle")
+			{
+				var solution = calculator_operations.vectorVectorAngle(equation[i - 1], equation[i + 1]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i - 1, i + 1, solution);
+
+				// Move back one place in the equation to get to position where the evalulated statement used to begin
+				i -= 1;
+			}
+
+			i += 1;
+		}
+		
 		// EXPONENTIALS
 		var i = equation.length - 2;
 		while (i > 0)
@@ -536,18 +588,29 @@ calculator_solve = function ()
 		}
 
 		// ADDITION AND SUBTRACTION
-		var i = 1;
-		while (i < equation.length - 1)
+		//var i = 1;
+		//while (i < equation.length - 1)
+		var i = 0;
+		while (i < equation.length)
 		{
 			var solved = false;
-
+			var boundCheck = self.verifyBounds(i, i-1, i+1, equation.length);
+			
 			if (equation[i].value == "Add")
 			{
+				if (typeof(boundCheck) == "number")
+				{
+					return boundCheck;
+				}
 				var solution = calculator_operations.add(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
 			else if (equation[i].value == "Subtract")
 			{
+				if (typeof(boundCheck) == "number")
+				{
+					return boundCheck;
+				}
 				var solution = calculator_operations.subtract(equation[i - 1], equation[i + 1]);
 				solved = true;
 			}
@@ -569,6 +632,122 @@ calculator_solve = function ()
 		}
 
 		return equation;
+	};
+	
+	// Converts any item into a latex string
+	self.itemToLatex = function (item)
+	{
+		// Scalar item
+		if (item.type == "Scalar")
+		{
+			return self.scalarToLatex(item);
+		}
+		// Grid items
+		else if (item.type == "Matrix" || item.type == "Vector")
+		{
+			return self.gridToLatex(item);
+		}
+		
+		return false;
+	};
+	
+	// Converts a Scalar item into a latex string
+	self.scalarToLatex = function (scalar)
+	{
+		return scalar.value;
+	};
+	
+	// Converts a Grid item into a latex string
+	self.gridToLatex = function (grid)
+	{
+		var tex = "\\begin{bmatrix}";
+		
+		// Loop though each row and column of the grid
+		var r = 0;
+		while (r < grid.rows)
+		{
+			var c = 0;
+			while (c < grid.columns)
+			{
+				// Convert the grid element to LaTeX and add it to final LaTeX string.
+				tex += self.itemToLatex(grid.value[r][c]);
+				
+				// Add an & between elements, except the last element of each column
+				if (c != grid.columns - 1)
+				{
+					tex += "&";
+				}
+				
+				c += 1;
+			}
+			
+			// Move onto a new line
+			tex += "\\\\";
+			
+			r += 1;
+		}
+		
+		tex += "\\end{bmatrix}";
+		
+		return tex;
+	};
+	
+	// Displays the solution to the screen by adding an item underneath the canvas
+	self.displaySolution = function (solution)
+	{
+		// If a previous solution is being displayed, remove it before displaying the new solution
+		var oldSolutionWrapper = document.getElementById("solution");
+		if (oldSolutionWrapper != null)
+		{
+			oldSolutionWrapper.parentNode.removeChild(oldSolutionWrapper);
+		}
+
+		// Create a new empty box to hold the solution
+		var solutionWrapper = calculator_build.createEmptyBox();
+		solutionWrapper.id = "solution";
+		solutionWrapper.style.marginTop = "4vh";
+		solutionWrapper.style.display = "flex";
+		solutionWrapper.style.justifyContent = "center";
+		solutionWrapper.style.alignItems = "center";
+		
+		// Generate the latex for the solution, and add this to the solution wrapper div
+		var tex = "$" + self.itemToLatex(solution) + "$";
+		solutionWrapper.innerHTML = tex;
+		
+		// Append the solution wrapper to the canvas div
+		var canvasDiv = document.getElementById("canvasDiv");
+		canvasDiv.appendChild(solutionWrapper);
+		
+		// Re-render the MathJax on the page to show the solution
+		MathJax.Hub.Typeset(solutionWrapper);
+	};
+	
+	// Performs the required steps to solve the equation inputted by the user, and display it to the page
+	self.solveItems = function ()
+	{
+		// Parses the equation inputted by the user
+		var equation = self.parseItemValues();
+		if (equation == false)
+		{
+			console.log("parse failed");
+			return false;
+		}
+		
+		// Solves the parsed equation
+		var solution = self.solveEquation(equation);
+		if (solution == false)
+		{
+			console.log("solve failed");
+			return false;
+		}
+		if (solution.length > 1)
+		{
+			console.log("solution too long");
+			return false;
+		}
+		
+		// Displays the equation solution
+		self.displaySolution(solution[0]);
 	};
 	
 	self.solve = function ()

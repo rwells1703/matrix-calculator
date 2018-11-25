@@ -78,7 +78,7 @@ calculator_layout = function()
 		
 		// Create buttons for solving the equation and importing/exporting it to a file
 		var finishItemButtons = [];
-		finishItemButtons.push(layout.createButton("Solve", calculator_solve.parseItemValues, "var(--theme-color-main)"));
+		finishItemButtons.push(layout.createButton("Solve", calculator_solve.solveItems, "var(--theme-color-main)"));
 		finishItemButtons.push(layout.createButton("Import", null, "var(--theme-color-main)"));
 		finishItemButtons.push(layout.createButton("Export", null, "var(--theme-color-main)"));	
 		

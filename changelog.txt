@@ -339,3 +339,15 @@ Coursework 2018-11-23-19-38:
 - (calculator_solve.js) Fixed bug in "solveEquation" where permutations was spelt wrong causing errors.
 - (calculator_items.js) Fixed bug in "scalar.getMagnitude" where a primitve float was returned instead of a Scalar object.
 - (calculator_items.js) Simplified the code for adding many selectable buttons to items. Instead of each being a seperate statement, the button labels are stored in a list and iterated through by a while loop.
+
+Coursework 2018-11-25-23-29:
+- (calculator_solve.js) Fixed typo in "parseItemValues" where "Arcsin" was mispelled as "Arcin".
+- (calculator_solve.js) and (calculator_logic.js) Swapped the order of parameters for "Log" from "argument, base" to "base, argument".
+- (calculator_logic.js) Fixed bug in "Vector Vector Angle" where angles were converte to degrees from radians twice resulting in extremely large angles e.g. 5100 degrees
+- (calculator_build.js) Resized items with many selectable items/texboxes so that text does not overflow. Had to make minor changes to dimensions of items, and them maximum grid size is now 5x5
+- (calculator_solve.js) Fixed the Grid and Scalar item parsers so that they now validate inputs, and return false if a blank item is input.
+- (calculator_build.js) Added "createEmptyBox" function for creating a rectangle with a box shadow, which is used when displaying equation items and solutions. Edited "createEmptyItem" function to use this function.
+- (calculator_solve.js) Created "displaySolution" function that displays the solution in a box below the graph using MathJax.
+- (calculator_solve.js) Added "gridToLatex", "scalarToLatex" and a more general "itemToLatex" functions which are used to convert the equation solution into LaTeX, which can be rendered to the page using MathJax.
+- (calculator_solve.js) Created new "solveItems" function that is called when the user presses the "solve" button. It parses, solves then displays the solution.
+- (calculator.html) Added MathJax initialisation script to allow solution to be displayed.

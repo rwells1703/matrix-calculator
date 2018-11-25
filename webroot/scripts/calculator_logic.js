@@ -128,7 +128,7 @@ calculator_logic = function ()
 		return calculator_items.Scalar(angle);
 	};
 	
-	self.log = function (scalar, base)
+	self.log = function (base, scalar)
 	{
 		// Logs are undefined for negative numbers
 		if (scalar.value < 0)
@@ -441,14 +441,8 @@ calculator_logic = function ()
 
 		var cosineAngle = calculator_operations.divide(dotProduct, magnitudeProduct);
 
-		// Return the angle in radians
+		// Return the angle in the correct unit
 		var angle = calculator_operations.arccos(cosineAngle);
-		
-		// Convert angle to degrees if necessaryS
-		if (angleUnit == "Degrees")
-		{
-			angle = calculator_operations.multiply(angle, calculator_items.Scalar(180 / Math.PI));
-		}
 
 		return angle;
 	};

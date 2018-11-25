@@ -2,6 +2,12 @@
 
 {% block content %}
 
+<!-- Initialises MathJax -->
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
 <!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
 <script type="text/javascript" src="scripts/calculator_layout.js"></script>
 

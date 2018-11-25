@@ -212,12 +212,12 @@ calculator_operations = function ()
 		return false;
 	};
 	
-	self.log = function (argument, base)
+	self.log = function (base, argument)
 	{
 		// S
-		if (argument.type == "Scalar" && base.type == "Scalar")
+		if (base.type == "Scalar" && argument.type == "Scalar")
 		{
-			return calculator_logic.log(argument, base);
+			return calculator_logic.log(base, argument);
 		}
 		
 		return false;
