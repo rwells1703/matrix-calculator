@@ -695,6 +695,8 @@ calculator_solve = function ()
 	// Displays the solution to the screen by adding an item underneath the canvas
 	self.displaySolution = function (solution)
 	{
+		console.log("Solution: " + solution);
+
 		// If a previous solution is being displayed, remove it before displaying the new solution
 		var oldSolutionWrapper = document.getElementById("solution");
 		if (oldSolutionWrapper != null)
@@ -710,9 +712,19 @@ calculator_solve = function ()
 		solutionWrapper.style.justifyContent = "center";
 		solutionWrapper.style.alignItems = "center";
 		
-		// Generate the latex for the solution, and add this to the solution wrapper div
-		var tex = "$" + self.itemToLatex(solution) + "$";
-		solutionWrapper.innerHTML = tex;
+		if (solution == false)
+		{
+			// Display a red error message instead of a solution
+			solutionWrapper.style.color = "red";
+			solutionWrapper.innerHTML = "No Solution";
+		}
+		// Otherwise 
+		else
+		{
+			// Generate the latex for the solution, and add this to the solution wrapper div
+			var tex = "$" + self.itemToLatex(solution) + "$";
+			solutionWrapper.innerHTML = tex;
+		}
 		
 		// Append the solution wrapper to the canvas div
 		var canvasDiv = document.getElementById("canvasDiv");
@@ -730,24 +742,31 @@ calculator_solve = function ()
 		if (equation == false)
 		{
 			console.log("parse failed");
-			return false;
-		}
+			finalSolution = false;
+		}	
 		
 		// Solves the parsed equation
 		var solution = self.solveEquation(equation);
-		if (solution == false)
+
+		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
+		if (solution == false || typeof(solution) == "number")
 		{
 			console.log("solve failed");
-			return false;
+			finalSolution = false;
 		}
-		if (solution.length > 1)
+		// If it does not solve to a single item, do not show this as a solution
+		else if (solution.length > 1)
 		{
 			console.log("solution too long");
-			return false;
+			finalSolution = false;
+		}
+		else
+		{
+			finalSolution = solution[0];
 		}
 		
-		// Displays the equation solution
-		self.displaySolution(solution[0]);
+		// Displays the final solution to the equation
+		self.displaySolution(finalSolution);
 	};
 	
 	self.solve = function ()
