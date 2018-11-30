@@ -14,7 +14,7 @@ calculator_items = function ()
 		
 		return self;
 	};
-
+	
 	// Operation class, holds an operation that takes in a number of inputs and gives an output (used for both operators and functions)
 	self.Operation = function (value, variadicFunction)
 	{
@@ -26,7 +26,7 @@ calculator_items = function ()
 
 		return self;
 	};
-
+	
 	// Scalar class, that holds a single numerical value
 	self.Scalar = function (value)
 	{
@@ -58,7 +58,7 @@ calculator_items = function ()
 	};
 	
 	// Grid class, holds a grid of numbers, both matrix and vector inherit from this
-	self.Grid = function (value)
+	self.Grid = function (value, itemReference)
 	{
 		// Verifies that the grid of numbers is correctly structured so that it is an nxm rectangle
 		if (value)
@@ -128,6 +128,9 @@ calculator_items = function ()
 		
 		self.rows = value.length;
 		self.columns = value[0].length;
+		
+		// A JS reference to the item/solution that the grid was created from
+		self.itemReference = itemReference;
 		
 		// Returns the orignal grid but with the rows and columns swapped
 		self.getTranspose = function ()

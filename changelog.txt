@@ -351,3 +351,31 @@ Coursework 2018-11-25-23-29:
 - (calculator_solve.js) Added "gridToLatex", "scalarToLatex" and a more general "itemToLatex" functions which are used to convert the equation solution into LaTeX, which can be rendered to the page using MathJax.
 - (calculator_solve.js) Created new "solveItems" function that is called when the user presses the "solve" button. It parses, solves then displays the solution.
 - (calculator.html) Added MathJax initialisation script to allow solution to be displayed.
+
+Coursework 2018-11-27-08-30:
+- (calculator_solve.js) Added error message to "displaySolution" when solving an incorrect equation.
+- (calculator_solve.js) Changed equation verification in "solveItems" so that it does not return false on an error, and instead displays an error.
+
+Coursework 2018-11-30-23-38:
+- (calculator_build.js) Added "keyup" and "click" events to textboxes, selectable buttons and icon buttons so that after every change made to the equation by the user, the equation is re-evaluated.
+- (calculator_build.js) The new event listeners should eliminate the need for a solve button as the program will attempt to solve the equation after every change made by the user.
+- (calculator_build.js) Replaced some ".onclick" properties with "click" event listeners.
+- (calculator_canvas.js) Seperated "vertices" into "staticVertices" - used for the axes and other non changing values, and "teporaryVertices" used for the points that are drawn and then erased on every refresh.
+- (calculator_canvas.js) Fixed bug with "canvasXToClipspace" and "canvasYToClipspace" so that they now work in all screen orientations and both calculator layout settings.
+- (calculator_solve.js) Fixed bug with the new "canvasYToClipspace" where all y values are inverted. Caused by the fact that WebGL canvases start negative at the top and become more positive as you go down, as opposed to a normal coordinates system where this is the opposite. All x values remain un-changed however.
+- (calculator_canvas.js) Removed unused function "mouseMove".
+- (calculator_items.js) Added "itemReference" parameter when greating a "Grid" item. This is only used when a "Grid" item is created using the GUI, and holds a reference to the HTML div that it was parsed from. This will be used when drawing of points begins, to match the color of the points with the element, and also to allow the visibility sets of points to be toggled on and off from a small switch in each div.
+- (calculator_solve.js) Changed "parseItems" so that the item a "Grid" was created from is referenced in the "Grid" via its "itemReference" property.
+- (calculator_solve.js) Replaced unecessary debug "console.log"s and replaced them with comments.
+- (calculator_solve.js) Slightly altered the order in which functions are declared to reflect the general order they are called in.
+- (calculator_solve.js) Replaced "displaySolution" with "displaySolutionBelowGraph".
+- (calculator_solve.js) Changed "displaySolutionBelowGraph" so that it displays custom errors for each different problem, and returns a reference to the solution HTML div so that it can be referenced as the "itemReference" (if the solution to the equation is a "Grid" item).
+- (calculator_solve.js) Completely redesigned "displayGridsOnGraph", which will display the points of every "Grid" in the equation, and also a solution "Grid" if there is one available.
+- (calculator_solve.js) In "displayGridsOnGraph" Added unique coloring to each set of points using 3 Sine waves representing red, blue and green, and staggering each by pi/2 so that they do not overlap. Each grid in the equation has its own unique seed which can be used to calculate its unique color scheme using trigonometry.
+- (calculator_solve.js) Also in "displayGridsOnGraph" added scaling of the axes to accomadate for the largest x and y values listed in the equation.
+- (calculator_solve.js) Fixed bug where axes where not scaled properly for negative x and y values, resulting in the positive values being off the screen.
+- (calculator_solve.js) Renamed "solveItems" to "evaluateItems" to better reflect what happens when it is called.
+- (calculator_solve.js) Removed deprecated "drawCoordinatesToGraph" function.
+- (calculator_solve.js) Removed "solve" function used for debugging.
+- (calculator.html) Removed reference to "calculator_solve.solve" function that was called on page load.
+- (calculator_solve.js) Due to testing og "itemReference", points are currently not displayed.

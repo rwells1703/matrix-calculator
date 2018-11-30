@@ -3,17 +3,6 @@ calculator_canvas = function ()
 {
 	var self = {};
 	
-	// Registers functions to events listeners for handling all mouse events on the canvas
-	self.registerMouseEvents = function ()
-	{
-		var canvas = document.getElementById("canvas");
-		
-		mouseDown = false;
-		canvas.onmousedown = self.mouseDown;
-		canvas.onmouseup = self.mouseUp;
-		canvas.onmousemove = self.mouseMove;
-	};
-	
 	self.setupWebGL = function ()
 	{
 		// Both fundamental GLSL shaders that WebGl uses to render vertices to the canvas element
@@ -34,34 +23,47 @@ calculator_canvas = function ()
 		self.prepareAttributes();
 		
 		// Add the axes to the list of vertices
-		vertices = self.declareStaticVertices();
+		staticVertices = self.declareStaticVertices();
+		temporaryVertices = [];
 	};
 	
 	// Converts canvas values (pixels) to clipspace values (-1 to 1)
 	self.canvasYToClipspace = function (y)
 	{
-		var navbar = document.getElementById("navbar");
 		var canvas = document.getElementById("canvas");
-		var canvasDiv = document.getElementById("canvasDiv");
+		var canvasRect = canvas.getBoundingClientRect();
 		
-		var navbarHeight = layout.pxToFloat(window.getComputedStyle(navbar).height);
-		var canvasDivPadding = layout.pxToFloat(window.getComputedStyle(canvasDiv).padding);
+		var yOnGraph = y - canvasRect.y;
+		// Divide y by the height of the graph, and then *2 -1 to make the value between 1 and -1.
+		// It must also be multiplied by -1 to account for the fact that the top left corner of the canvas is the point (-1,1) because y coordinates are reversed.
+		var yRelative = -(yOnGraph / canvasRect.height * 2 - 1);
 		
-		return (canvas.height - y + canvasDivPadding + navbarHeight)/canvas.height*2 - 1;
+		return yRelative;
 	};
 	
 	self.canvasXToClipspace = function (x)
 	{
-		var navbar = document.getElementById("navbar");
 		var canvas = document.getElementById("canvas");
-		var canvasDiv = document.getElementById("canvasDiv");
+		var canvasRect = canvas.getBoundingClientRect();
 		
-		var navbarHeight = layout.pxToFloat(window.getComputedStyle(navbar).height);
-		var canvasDivPadding = layout.pxToFloat(window.getComputedStyle(canvasDiv).padding);
+		var xOnGraph = x - canvasRect.x;
+		// Divide x by the width of the graph, and then *2 -1 to make the value between 1 and -1
+		var xRelative = xOnGraph / canvasRect.width * 2 - 1;
 		
-		return (x - canvasDivPadding)/canvas.height*2 - 1;
+		return xRelative;
 	};
-
+	
+	// Registers functions to events listeners for handling all mouse events on the canvas
+	self.registerMouseEvents = function ()
+	{
+		var canvas = document.getElementById("canvas");
+		
+		mouseDown = false;
+		canvas.onmousedown = self.mouseDown;
+		canvas.onmouseup = self.mouseUp;
+		canvas.onmousemove = self.mouseMove;
+	};
+	
 	// Handles mouse events
 	self.mouseDown = function (event)
 	{
@@ -69,21 +71,16 @@ calculator_canvas = function ()
 		mouseDownY = event.clientY;
 		mouseDown = true;
 	};
-
+	
 	self.mouseUp = function (event)
 	{
 		mouseX = self.canvasXToClipspace(event.clientX);
 		mouseY = self.canvasYToClipspace(event.clientY);
 		mouseDown = false;
-		self.createPolygon([mouseX, mouseY], 10, 0.04, [255/255, 0/255, 0/255, 255/255], false);
-	};
 
-	self.mouseMove = function (event)
-	{
-		mouseX = self.canvasXToClipspace(event.clientX);
-		mouseY = self.canvasYToClipspace(event.clientY);
+		self.createPolygon([mouseX, mouseY], 10, 0.03, [255/255, 80/255, 0/255, 255/255], false);
 	};
-
+	
 	// Create a new shader of the specified type
 	self.createShader = function (type, source)
 	{
@@ -102,7 +99,7 @@ calculator_canvas = function ()
 		
 		return shader;
 	};
-
+	
 	// Create a program using a vertex and fragment shader
 	self.createProgram = function (vertexShader, fragmentShader)
 	{
@@ -117,7 +114,7 @@ calculator_canvas = function ()
 		
 		return program;
 	};
-
+	
 	// Prepare the attributes in the program to be interfaced by the rest of the program
 	self.prepareAttributes = function ()
 	{
@@ -131,7 +128,7 @@ calculator_canvas = function ()
 		// Queries the program for the index of the position attribute
 		var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
 		gl.vertexAttribPointer(positionAttributeLocation, positionElements, gl.FLOAT, gl.FALSE, totalElements * Float32Array.BYTES_PER_ELEMENT, 0);
-
+		
 		// Queries the program for the index of the vertex color attribute
 		var colorAttributeLocation = gl.getAttribLocation(program, "a_vert_color");
 		gl.vertexAttribPointer(colorAttributeLocation, colorElements, gl.FLOAT, gl.FALSE, totalElements * Float32Array.BYTES_PER_ELEMENT, positionElements * Float32Array.BYTES_PER_ELEMENT);
@@ -139,7 +136,7 @@ calculator_canvas = function ()
 		gl.enableVertexAttribArray(positionAttributeLocation);
 		gl.enableVertexAttribArray(colorAttributeLocation);
 	};
-
+	
 	// Rotates a 2D point about 0,0 by the specified angle
 	self.rotateVertice = function (vertice, angle)
 	{
@@ -149,7 +146,7 @@ calculator_canvas = function ()
 		
 		return rotatedVertice;
 	};
-
+	
 	// Translates a 2D point by a certain amount horizontally and vertically
 	self.translateVertice = function (vertice, translation)
 	{
@@ -158,7 +155,7 @@ calculator_canvas = function ()
 		
 		return vertice;
 	};
-
+	
 	// Keeps drawing triangles until we run out of vertices
 	self.drawTriangles = function (vertices)
 	{
@@ -169,7 +166,7 @@ calculator_canvas = function ()
 			gl.drawArrays(gl.TRIANGLES, 0, vertices.length/totalElements);
 		}
 	};
-
+	
 	// Generates vertices for any polygon
 	self.createPolygon = function (origin, sides, radius, color, constrainToAxes)
 	{
@@ -187,29 +184,31 @@ calculator_canvas = function ()
 		{
 			// Stores the current triangular fragment of the polygon before it is added to the vertices
 			var currentTriangle = [];
-
+			
 			currentTriangle[0] = [0, 0];
 			currentTriangle[1] = self.rotateVertice([0, radius], centralAngle/2);
 			currentTriangle[2] = self.rotateVertice([0, radius], -centralAngle/2);
-
+			
 			var t = 0;
 			while (t < 3)
 			{
 				currentTriangle[t] = self.rotateVertice(currentTriangle[t], centralAngle*s);
 				currentTriangle[t] = self.translateVertice(currentTriangle[t], [origin[0],origin[1]]);
 				currentTriangle[t] = currentTriangle[t].concat(color);
-				vertices = vertices.concat(currentTriangle[t]);
-				t += 1
+				temporaryVertices = temporaryVertices.concat(currentTriangle[t]);
+				
+				t += 1;
 			}
-			s += 1
+			
+			s += 1;
 		}
 	};
-
+	
 	// Declares all the static vertices that will be drawn
 	self.declareStaticVertices = function ()
 	{
 		var vertices = [];
-
+		
 		// Properties of the axis lines (axisWidth is global because it is used to scale polygons within the axes)
 		var axisThickness = 0.01;
 		axisWidth = 0.9;
@@ -235,7 +234,7 @@ calculator_canvas = function ()
 		
 		return vertices;
 	};
-
+	
 	// Render loop called every frame update
 	self.render = function ()
 	{
@@ -243,12 +242,12 @@ calculator_canvas = function ()
 		
 		// Clears the screen and temporary buffers
 		gl.clearColor(255/255, 255/255, 255/255, 255/255);
-		
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		
-		// Draws the vertices declared in main
-		self.drawTriangles(vertices);
-		
+		// Draws both static and temporary vertices
+		self.drawTriangles(staticVertices);
+		self.drawTriangles(temporaryVertices);
+
 		// Render the next frame
 		requestAnimationFrame(self.render);
 	};

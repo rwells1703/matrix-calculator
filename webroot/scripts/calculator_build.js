@@ -32,6 +32,9 @@ calculator_build = function ()
 		inputTextbox.style.gridColumnEnd = gridColumnEnd;
 		inputTextbox.style.gridRowStart = gridRowStart;
 		inputTextbox.style.gridRowEnd = gridRowEnd;
+
+		// When the text box is edited, re-evaluate the items
+		inputTextbox.addEventListener("keyup", calculator_solve.evaluateItems);
 		
 		return inputTextbox;
 	};
@@ -42,7 +45,10 @@ calculator_build = function ()
 		var iconButton = document.createElement("img");
 
 		iconButton.src = src;
-		iconButton.onclick = onclick;
+
+		iconButton.addEventListener("click", onclick);
+		// When an icon button is pressed, re-evaluate the items
+		iconButton.addEventListener("click", calculator_solve.evaluateItems);
 
 		iconButton.style.cursor = "pointer";
 		iconButton.style.height = "100%";
@@ -284,7 +290,7 @@ calculator_build = function ()
 		removeGridRowIcon = self.createIconButton("images/remove.svg", self.removeGridRow, 5, 6, 8, 9);
 		addGridColumnIcon = self.createIconButton("images/add.svg", self.addGridColumn, 10, 11, 2, 3);
 		removeGridColumnIcon = self.createIconButton("images/remove.svg", self.removeGridColumn, 10, 11, 3, 4);
-
+		
 		gridWrapper.appendChild(addGridRowIcon);
 		gridWrapper.appendChild(removeGridRowIcon);
 		gridWrapper.appendChild(addGridColumnIcon);
@@ -396,7 +402,11 @@ calculator_build = function ()
 		button.style.backgroundColor = "var(--theme-color-page-background)";
 		
 		button.style.cursor = "pointer";
-		button.onclick = self.selectButton;
+		
+		button.addEventListener("click", self.selectButton);
+		// When the selectable button is changed, re-evaluate the items
+		button.addEventListener("click", calculator_solve.evaluateItems);
+		
 		
 		var buttonsPerRow = 5;
 		button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);

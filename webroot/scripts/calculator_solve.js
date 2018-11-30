@@ -42,13 +42,13 @@ calculator_solve = function ()
 
 			// Parse grid (matrix or vector) items
 			else if (item.className == "grid") 
-			{
+			{	
 				// Take the value from the text box
 				var textBoxes = item.getElementsByTagName("input");
-
+				
 				var rows = item.getAttribute("rows");
 				var columns = item.getAttribute("columns");
-
+				
 				var values = [];
 
 				var r = 0;
@@ -78,7 +78,7 @@ calculator_solve = function ()
 				}
 
 				// Creates a new Grid item from the values
-				equation[i] = calculator_items.Grid(values);
+				equation[i] = calculator_items.Grid(values, item);
 			}
 			
 			// Parse operation items
@@ -174,9 +174,9 @@ calculator_solve = function ()
 			}
 			else if (equation[i].value == ")")
 			{
+				// If bracket closed where there was no open bracket
 				if (openBracketLocation == -1)
 				{
-					console.log("ERR: Bracket closed where there was no open bracket");
 					return false;
 				}
 
@@ -184,9 +184,10 @@ calculator_solve = function ()
 				if (unclosedBrackets == 0)
 				{
 					var bracketSolution = calculator_solve.solveEquation(equation.slice(openBracketLocation + 1, i));
+					
+					// If solving brackets was not possible
 					if (bracketSolution == false)
 					{
-						console.log("ERR: Solving brackets was not possible");
 						return false;
 					}
 
@@ -254,9 +255,9 @@ calculator_solve = function ()
 						var solution = calculator_operations.normalVector(operands);
 						solved = true;
 					}
+					// If an unknown variadic function has been referenced
 					else
 					{
-						// An unknown variadic function has been referenced
 						return false;
 					}
 
@@ -634,23 +635,6 @@ calculator_solve = function ()
 		return equation;
 	};
 	
-	// Converts any item into a latex string
-	self.itemToLatex = function (item)
-	{
-		// Scalar item
-		if (item.type == "Scalar")
-		{
-			return self.scalarToLatex(item);
-		}
-		// Grid items
-		else if (item.type == "Matrix" || item.type == "Vector")
-		{
-			return self.gridToLatex(item);
-		}
-		
-		return false;
-	};
-	
 	// Converts a Scalar item into a latex string
 	self.scalarToLatex = function (scalar)
 	{
@@ -692,11 +676,26 @@ calculator_solve = function ()
 		return tex;
 	};
 	
-	// Displays the solution to the screen by adding an item underneath the canvas
-	self.displaySolution = function (solution)
+	// Converts any item into a latex string
+	self.itemToLatex = function (item)
 	{
-		console.log("Solution: " + solution);
-
+		// Scalar item
+		if (item.type == "Scalar")
+		{
+			return self.scalarToLatex(item);
+		}
+		// Grid items
+		else if (item.type == "Matrix" || item.type == "Vector")
+		{
+			return self.gridToLatex(item);
+		}
+		
+		return false;
+	};
+	
+	// Displays the solution to the screen by adding an item underneath the canvas
+	self.displaySolutionBelowGraph = function (solution, errorMessage)
+	{
 		// If a previous solution is being displayed, remove it before displaying the new solution
 		var oldSolutionWrapper = document.getElementById("solution");
 		if (oldSolutionWrapper != null)
@@ -716,7 +715,7 @@ calculator_solve = function ()
 		{
 			// Display a red error message instead of a solution
 			solutionWrapper.style.color = "red";
-			solutionWrapper.innerHTML = "No Solution";
+			solutionWrapper.innerHTML = errorMessage;
 		}
 		// Otherwise 
 		else
@@ -732,52 +731,158 @@ calculator_solve = function ()
 		
 		// Re-render the MathJax on the page to show the solution
 		MathJax.Hub.Typeset(solutionWrapper);
+		
+		return solutionWrapper;
+	};
+	
+	self.displayGridsOnGraph = function (equation, solution, solutionItem)
+	{
+		// Clears the canvas of all previously drawn points
+		temporaryVertices = [];
+		
+		// If a solution has been provided, attempt to display it
+		if (solution != undefined)
+		{
+			// Add the solution to the list of items in the equation, if the solution is a grid
+			if (solution.type == "Matrix" || solution.type == "Vector")
+			{
+				solution.itemReference = solutionItem;
+				equation.push(solution);
+			}
+		}
+		
+		var xMax;
+		var yMax;
+		
+		var grids = [];
+		
+		var i = 0;
+		while (i < equation.length)
+		{
+			if (equation[i].type == "Matrix" || equation[i].type == "Vector")
+			{
+				if (equation[i].rows == 2)
+				{
+					var info = [];
+					var c = 0;
+					while (c < equation[i].columns)
+					{
+						// Plots the point to the canvas
+						var x = equation[i].value[0][c].value;
+						var y = equation[i].value[1][c].value;
+						
+						if (Math.abs(x) > xMax || xMax == undefined)
+						{
+							xMax = Math.abs(x);
+						}
+						
+						if (Math.abs(y) > yMax || yMax == undefined)
+						{
+							yMax = Math.abs(y);
+						}
+
+						// Add this pair of points to the points array
+						info.push([x,y]);
+						
+						// A JS reference to the item/solution that the grid was created from
+						var itemReference = equation[i].itemReference;
+						info.push(itemReference);
+						
+						c += 1;
+					}
+					
+					// Add this set of points to the grid array
+					grids.push(points);
+				}
+			}
+			
+			i += 1;
+		}
+		
+		// Round maximums up to the nearest integer
+		xMax = Math.ceil(xMax);
+		yMax = Math.ceil(yMax);
+		
+		var g = 0;
+		while (g < grids.length)
+		{
+			// Generates a seed based on the amount of grids and the location of the current grid within this list
+			var seed = (g * 2 * Math.PI) / grids.length;
+			
+			// Generates red, green and blue values using sinusoidal waves so that all sets of points are different colors
+			var red = 255 * Math.sin(seed);
+			if (red < 0)
+			{
+				red = 0;
+			}
+			var green = 255 * Math.sin(seed + (Math.PI / 2));
+			if (green < 0)
+			{
+				green = 0;
+			}
+			var blue = 255 * Math.sin(seed + Math.PI);
+			if (blue < 0)
+			{
+				blue = 0;
+			}
+			
+			// Gets the points
+			var points = grids[g];
+			
+			var p = 0;
+			while (p < points.length)
+			{
+				// Takes the x and y values, and converts them so that they are between -1 and 1
+				var xRelative = axisWidth * points[p][0] / (xMax);
+				var yRelative = axisWidth * points[p][1] / (yMax);
+				calculator_canvas.createPolygon([xRelative, yRelative], 10, 0.03, [red/255, green/255, blue/255, 255/255], false);
+				
+				p += 1;
+			}
+			
+			g += 1;
+		}
 	};
 	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
-	self.solveItems = function ()
+	self.evaluateItems = function ()
 	{
+		console.log("equation updated");
+		
 		// Parses the equation inputted by the user
 		var equation = self.parseItemValues();
 		if (equation == false)
 		{
-			console.log("parse failed");
-			finalSolution = false;
-		}	
+			self.displaySolutionBelowGraph(false, "Parse failed");
+			return false;
+		}
 		
 		// Solves the parsed equation
 		var solution = self.solveEquation(equation);
-
+		
 		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
 		if (solution == false || typeof(solution) == "number")
 		{
-			console.log("solve failed");
-			finalSolution = false;
+			self.displaySolutionBelowGraph(false, "Solve failed");
+			self.displayGridsOnGraph(equation);
+			return false;
 		}
 		// If it does not solve to a single item, do not show this as a solution
 		else if (solution.length > 1)
 		{
-			console.log("solution too long");
-			finalSolution = false;
-		}
-		else
-		{
-			finalSolution = solution[0];
+			self.displaySolutionBelowGraph(false, "No single solution");
+			self.displayGridsOnGraph(equation);
+			return false;
 		}
 		
-		// Displays the final solution to the equation
-		self.displaySolution(finalSolution);
+		var finalSolution = solution[0];
+		
+		// Displays the final solution underneath the graph
+		var solutionItem = self.displaySolutionBelowGraph(finalSolution);
+		
+		// Displays grids from the equation, as well as the solution on the graph
+		self.displayGridsOnGraph(equation, finalSolution, solutionItem);
 	};
-	
-	self.solve = function ()
-	{
-		var vectorA = calculator_items.Grid([[calculator_items.Scalar(3)],[calculator_items.Scalar(5)],[calculator_items.Scalar(1)]]);
-		var vectorB = calculator_items.Grid([[calculator_items.Scalar(7)],[calculator_items.Scalar(1)],[calculator_items.Scalar(3)]]);
-		var vectorC = calculator_items.Grid([[calculator_items.Scalar(5)],[calculator_items.Scalar(2)],[calculator_items.Scalar(0)]]);
-		
-		var matrixA = calculator_items.Grid([[calculator_items.Scalar(1),calculator_items.Scalar(2)],[calculator_items.Scalar(3),calculator_items.Scalar(4)]]);
-		var matrixB = calculator_items.Grid([[calculator_items.Scalar(2),calculator_items.Scalar(2),calculator_items.Scalar(3)],[calculator_items.Scalar(4),calculator_items.Scalar(5),calculator_items.Scalar(6)],[calculator_items.Scalar(7),calculator_items.Scalar(8),calculator_items.Scalar(9)]]);
-	}
 	
 	return self;
 }();
