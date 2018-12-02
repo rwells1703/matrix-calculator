@@ -379,3 +379,6 @@ Coursework 2018-11-30-23-38:
 - (calculator_solve.js) Removed "solve" function used for debugging.
 - (calculator.html) Removed reference to "calculator_solve.solve" function that was called on page load.
 - (calculator_solve.js) Due to testing og "itemReference", points are currently not displayed.
+
+Coursework 2018-12-02-16-31:
+- (calculator_build.js) Fixed bug where equation is re-evaluated too early when items are deleted/moved. There is a 200s timeout on deletion/movement of items to allow time for the fade animation. Now re-evaluation occurs after the 200ms delay, inside the timeout function block.

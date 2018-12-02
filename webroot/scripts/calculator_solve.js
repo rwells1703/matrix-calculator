@@ -115,23 +115,29 @@ calculator_solve = function ()
 					"Mag":"Magnitude",
 					"Norm":"Normal Vector"
 				};
-
+				
 				var operationValue = operationValueDict[item.getAttribute("value")];
-
+				
+				// Unknown operation referenced
+				if (operationValue == undefined)
+				{
+					return false;
+				}
+				
 				var variadicFunction = false;
 				if (operationValue == "Normal Vector")
 				{
 					variadicFunction = true;
 				}
-
+				
 				equation[i] = calculator_items.Operation(operationValue, variadicFunction);
 			}
-
+			
 			// Parse bracket items
 			else if (item.className == "bracket")
 			{
 				var bracketValue = item.getAttribute("value");
-
+				
 				equation[i] = calculator_items.Bracket(bracketValue);
 			}
 
@@ -792,7 +798,7 @@ calculator_solve = function ()
 					}
 					
 					// Add this set of points to the grid array
-					grids.push(points);
+					grids.push(info);
 				}
 			}
 			
@@ -847,13 +853,15 @@ calculator_solve = function ()
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
 	{
-		console.log("equation updated");
+		console.log("evaluateItems");
 		
 		// Parses the equation inputted by the user
 		var equation = self.parseItemValues();
+		console.log(equation);
 		if (equation == false)
 		{
 			self.displaySolutionBelowGraph(false, "Parse failed");
+			self.displayGridsOnGraph(equation);
 			return false;
 		}
 		

@@ -11,7 +11,7 @@ calculator_build = function ()
 		operationCount = 0;
 		bracketCount = 0;
 	};
-
+	
 	// Creates a new text box for inputting values e.g. in a Scalar or Grid item
 	self.createInputTextbox = function (gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
 	{
@@ -38,7 +38,7 @@ calculator_build = function ()
 		
 		return inputTextbox;
 	};
-
+	
 	// Creates an icon button that can be placed within an item e.g. add column in the Grid item
 	self.createIconButton = function (src, onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
 	{
@@ -47,8 +47,6 @@ calculator_build = function ()
 		iconButton.src = src;
 
 		iconButton.addEventListener("click", onclick);
-		// When an icon button is pressed, re-evaluate the items
-		iconButton.addEventListener("click", calculator_solve.evaluateItems);
 
 		iconButton.style.cursor = "pointer";
 		iconButton.style.height = "100%";
@@ -124,6 +122,8 @@ calculator_build = function ()
 	// Deletes the selected item when the user clicks the delete icon
 	self.deleteItem = function (event)
 	{
+		console.log("deleted item");
+		
 		// Gets parent element of the delete icon that was clicked
 		var item = event["path"][1];
 		
@@ -173,6 +173,8 @@ calculator_build = function ()
 			}
 			
 			item.parentNode.removeChild(item);
+			
+			calculator_solve.evaluateItems();
 		}, 200);
 	};
 	
@@ -199,6 +201,8 @@ calculator_build = function ()
 				item.children[1].innerHTML = item.className + item.id;
 				previousItem.children[1].innerHTML = previousItem.className + previousItem.id;
 			}
+			
+			calculator_solve.evaluateItems();
 		}
 	};
 
@@ -235,6 +239,8 @@ calculator_build = function ()
 				item.children[1].innerHTML = item.className + item.id;
 				nextItem.children[1].innerHTML = nextItem.className + nextItem.id;
 			}
+			
+			calculator_solve.evaluateItems();
 		}
 	};
 
@@ -248,7 +254,10 @@ calculator_build = function ()
 		
 		var scalarTextbox = self.createInputTextbox(4, 5, 2, 3);
 		scalarWrapper.appendChild(scalarTextbox);
+		
 		itemDiv.appendChild(scalarWrapper);
+		
+		calculator_solve.evaluateItems();
 	};
 
 	self.gridMaxRows = 6;
@@ -297,6 +306,8 @@ calculator_build = function ()
 		gridWrapper.appendChild(removeGridColumnIcon);
 		
 		itemDiv.appendChild(gridWrapper);
+		
+		calculator_solve.evaluateItems();
 	};
 	
 	// Adds a new row to a grid item
@@ -318,6 +329,8 @@ calculator_build = function ()
 			
 			gridWrapper.setAttribute("rows", rows+1)
 		}
+		
+		calculator_solve.evaluateItems();
 	};
 	
 	// Removes a row from the grid item
@@ -339,6 +352,8 @@ calculator_build = function ()
 			
 			gridWrapper.setAttribute("rows", rows-1)
 		}
+		
+		calculator_solve.evaluateItems();
 	};
 
 	// Adds a new column to a grid item
@@ -360,6 +375,8 @@ calculator_build = function ()
 			
 			gridWrapper.setAttribute("columns", columns+1)
 		}
+		
+		calculator_solve.evaluateItems();
 	};
 
 	// Removes a column from the grid item
@@ -381,6 +398,8 @@ calculator_build = function ()
 			
 			gridWrapper.setAttribute("columns", columns-1);
 		}
+		
+		calculator_solve.evaluateItems();
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
@@ -437,6 +456,8 @@ calculator_build = function ()
 		}
 		
 		itemDiv.appendChild(operationWrapper);
+		
+		calculator_solve.evaluateItems();
 	};
 
 	// Creates a bracket item
@@ -459,6 +480,8 @@ calculator_build = function ()
 		}
 		
 		itemDiv.appendChild(bracketWrapper);
+		
+		calculator_solve.evaluateItems();
 	};
 
 	// Changes the function/operator of an Operation item based on user mouse click
