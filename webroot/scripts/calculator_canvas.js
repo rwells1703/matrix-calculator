@@ -32,6 +32,7 @@ calculator_canvas = function ()
 	{
 		var canvas = document.getElementById("canvas");
 		var canvasRect = canvas.getBoundingClientRect();
+		console.log(canvasRect);
 		
 		var yOnGraph = y - canvasRect.y;
 		// Divide y by the height of the graph, and then *2 -1 to make the value between 1 and -1.
@@ -240,14 +241,27 @@ calculator_canvas = function ()
 	{
 		gl.useProgram(program);
 		
-		// Clears the screen and temporary buffers
-		gl.clearColor(255/255, 255/255, 255/255, 255/255);
+		// Proprietary function from stackoverflow for testing. Will be replaced with own function soon.
+		function hexToRgb(hex) {
+			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? {
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : null;
+		}
+		
+		// Gets the color of the graph background from the css variable and converts it from hex to rbg
+		var rgbBackground = hexToRgb(document.body.style.getPropertyValue("--theme-color-page-background-light"));
+		
+		// Clears the screen with the background color and temporary buffers
+		gl.clearColor(rgbBackground.r/255, rgbBackground.g/255, rgbBackground.b/255, 255/255);
 		gl.clear(gl.COLOR_BUFFER_BIT);
 		
 		// Draws both static and temporary vertices
 		self.drawTriangles(staticVertices);
 		self.drawTriangles(temporaryVertices);
-
+		
 		// Render the next frame
 		requestAnimationFrame(self.render);
 	};

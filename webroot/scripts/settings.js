@@ -112,8 +112,8 @@ settings = function ()
 
 		// The calculator layout buttons
 		var themeCalculatorLayoutButtons = [];
-		themeCalculatorLayoutButtons.push(layout.createButton("Equation before graph", self.updateCalculatorLayout, "var(--theme-color-main)"));
-		themeCalculatorLayoutButtons.push(layout.createButton("Graph before equation", self.updateCalculatorLayout, "var(--theme-color-main)"));
+		themeCalculatorLayoutButtons.push(layout.createButton("Equation before solution", self.updateCalculatorLayout, "var(--theme-color-main)"));
+		themeCalculatorLayoutButtons.push(layout.createButton("Solution before equation", self.updateCalculatorLayout, "var(--theme-color-main)"));
 		themeCalculatorLayoutButtonDiv = layout.createButtonRow(themeCalculatorLayoutButtons);
 
 		// Add the calculator layout buttons to the themeCalculatorLayoutDiv

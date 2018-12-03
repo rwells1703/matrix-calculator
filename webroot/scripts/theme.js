@@ -86,14 +86,14 @@ theme = function ()
 	
 	self.calculatorLayouts = 
 	{
-		"Equation before graph":
+		"Equation before solution":
 		{
-			"canvasDivFloat": "right",
+			"solutionDivFloat": "right",
 			"equationDivFloat": "left"
 		},
-		"Graph before equation":
+		"Solution before equation":
 		{
-			"canvasDivFloat": "left",
+			"solutionDivFloat": "left",
 			"equationDivFloat": "right"
 		}
 	};
@@ -149,11 +149,11 @@ theme = function ()
 	{
 		if (calculatorLayout == null)
 		{
-			calculatorLayout = "Equation before graph";
+			calculatorLayout = "Equation before solution";
 		}
 		
 		localStorage.setItem("themeCalculatorLayout", calculatorLayout);
-		document.body.style.setProperty("--theme-canvas-div-float", self.calculatorLayouts[calculatorLayout]["canvasDivFloat"]);
+		document.body.style.setProperty("--theme-solution-div-float", self.calculatorLayouts[calculatorLayout]["solutionDivFloat"]);
 		document.body.style.setProperty("--theme-equation-div-float", self.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
 	}
 	
@@ -199,5 +199,13 @@ theme = function ()
 		}
 	};
 	
+	// Dynamically applies a theme to every page
+	self.setColor(localStorage.getItem("themeColor"));
+	self.setShade(localStorage.getItem("themeShade"));
+	self.setStyle(localStorage.getItem("themeStyle"));
+	self.setCalculatorLayout(localStorage.getItem("themeCalculatorLayout"));
+	self.setAngleUnit(localStorage.getItem("settingAngleUnit"));
+	self.hilightNavbar();
+		
 	return self;
 }();

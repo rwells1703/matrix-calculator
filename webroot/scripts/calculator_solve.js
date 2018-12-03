@@ -732,8 +732,8 @@ calculator_solve = function ()
 		}
 		
 		// Append the solution wrapper to the canvas div
-		var canvasDiv = document.getElementById("canvasDiv");
-		canvasDiv.appendChild(solutionWrapper);
+		//var canvasDiv = document.getElementById("canvasDiv");
+		solutionDiv.appendChild(solutionWrapper);
 		
 		// Re-render the MathJax on the page to show the solution
 		MathJax.Hub.Typeset(solutionWrapper);
@@ -761,12 +761,12 @@ calculator_solve = function ()
 		var yMax;
 		
 		var grids = [];
-		
+
 		var i = 0;
 		while (i < equation.length)
 		{
 			if (equation[i].type == "Matrix" || equation[i].type == "Vector")
-			{
+			{	
 				if (equation[i].rows == 2)
 				{
 					var info = [];
@@ -808,6 +808,78 @@ calculator_solve = function ()
 		// Round maximums up to the nearest integer
 		xMax = Math.ceil(xMax);
 		yMax = Math.ceil(yMax);
+		
+		// Clear old axis labels
+		var i = 0;
+		var noOfChildren = canvasLabels.children.length;
+		while (i < noOfChildren)
+		{
+			canvasLabels.removeChild(canvasLabels.children[0]);
+			i += 1;
+		}
+		
+		// If there are grids being drawn to the graph, add axes labels
+		if (grids.length != 0)
+		{
+			// Draw new axis labels
+			xMinLabel = document.createElement("div");
+			xMinLabel.style.position = "absolute";
+			xMinLabel.style.top = "52%";
+			xMinLabel.style.left = "5%";
+			xMinLabel.innerHTML = -xMax;
+			
+			xMinHalfLabel = document.createElement("div");
+			xMinHalfLabel.style.position = "absolute";
+			xMinHalfLabel.style.top = "52%";
+			xMinHalfLabel.style.left = "25%";
+			xMinHalfLabel.innerHTML = -xMax/2;
+			
+			xMaxLabel = document.createElement("div");
+			xMaxLabel.style.position = "absolute";
+			xMaxLabel.style.top = "52%";
+			xMaxLabel.style.right = "5%";
+			xMaxLabel.innerHTML = xMax;
+			
+			xMaxHalfLabel = document.createElement("div");
+			xMaxHalfLabel.style.position = "absolute";
+			xMaxHalfLabel.style.top = "52%";
+			xMaxHalfLabel.style.right = "25%";
+			xMaxHalfLabel.innerHTML = xMax/2;
+			
+			yMinLabel = document.createElement("div");
+			yMinLabel.style.position = "absolute";
+			yMinLabel.style.bottom = "5%";
+			yMinLabel.style.right = "52%";
+			yMinLabel.innerHTML = -yMax;
+			
+			yMinHalfLabel = document.createElement("div");
+			yMinHalfLabel.style.position = "absolute";
+			yMinHalfLabel.style.bottom = "25%";
+			yMinHalfLabel.style.right = "52%";
+			yMinHalfLabel.innerHTML = -yMax/2;
+			
+			yMaxLabel = document.createElement("div");
+			yMaxLabel.style.position = "absolute";
+			yMaxLabel.style.top = "5%";
+			yMaxLabel.style.right = "52%";
+			yMaxLabel.innerHTML = yMax;
+			
+			yMaxHalfLabel = document.createElement("div");
+			yMaxHalfLabel.style.position = "absolute";
+			yMaxHalfLabel.style.top = "25%";
+			yMaxHalfLabel.style.right = "52%";
+			yMaxHalfLabel.innerHTML = yMax/2;
+			
+			// Add them to the canvas
+			canvasLabels.appendChild(xMinLabel);
+			canvasLabels.appendChild(xMinHalfLabel);
+			canvasLabels.appendChild(xMaxLabel);
+			canvasLabels.appendChild(xMaxHalfLabel);
+			canvasLabels.appendChild(yMinLabel);
+			canvasLabels.appendChild(yMinHalfLabel);
+			canvasLabels.appendChild(yMaxLabel);
+			canvasLabels.appendChild(yMaxHalfLabel);
+		}
 		
 		var g = 0;
 		while (g < grids.length)
@@ -858,7 +930,14 @@ calculator_solve = function ()
 		// Parses the equation inputted by the user
 		var equation = self.parseItemValues();
 		console.log(equation);
-		if (equation == false)
+		
+		if (typeof(equation) == "object" && equation.length == 0)
+		{
+			self.displaySolutionBelowGraph(false, "Empty equation");
+			self.displayGridsOnGraph(equation);
+			return false;
+		}
+		else if (equation == false)
 		{
 			self.displaySolutionBelowGraph(false, "Parse failed");
 			self.displayGridsOnGraph(equation);

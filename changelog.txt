@@ -382,3 +382,16 @@ Coursework 2018-11-30-23-38:
 
 Coursework 2018-12-02-16-31:
 - (calculator_build.js) Fixed bug where equation is re-evaluated too early when items are deleted/moved. There is a 200s timeout on deletion/movement of items to allow time for the fade animation. Now re-evaluation occurs after the 200ms delay, inside the timeout function block.
+
+Coursework 2018-12-03-23-34:
+- (base.html) Moved script that applied global themeing properties from an inline HTML script tag, into the bottom theme.js to make them easier to find.
+- (calculator_layout.js) Changed the way that the graph part of the calculator is structured in HTML. "canvas" is now held within "canvasWrapper", which also holds the "canvasLabels", as they need to be absolutely position on top of each other. 
+- (calculator_layout.js) Renamed the "canvasDiv" to the "solutionDiv" because it also holds the "solutionWrapper" so the previous name was misleading. Made changes throughout the code to accomadate for this.
+- (settings.js) Re-named options for "Calculator Layout" to reference "Solution" instead of just "Graph", as they are grouped in the same section of screen.
+- (calculator_solve.js) Added labels to the axes using the "canvasLabels" div to store them in relative positions. Could not directly use WebGl as text/numbers would have been too difficult to draw an would have looked bad compared to HTML rendered text. HTML text also retains the same font as the website (Montserrat).
+- (calculator_solve.js) Fixed bug in new labels rendering code, where labels stay after graph is updated, had to remove old labels using ".removeChild" function.
+- (calculator_layout.js) Fixed bug with new canvas layout where canvas would not register mouse clicks because "canvasLabels" was covering it. Added "pointer-events:none" CSS property to rectify this.
+- Removed some unecessary "document.getElementById" statements as Chrome's Javascript engine (v8) apparently allows reference to elements with unique id's by default using their id as an identifier, even though they do not appear to be listed in the global scope.
+- (calculator_layout.js) Removed the solve button as solving is now done in real time, based on user input.
+- (calculator_solve.js) Added new case for equation parsing, where if the equation is empty, we get the message "Empty equation" instead of "Parse failed" in the solution div.
+- (calculator_canvas.js) Added code that makes canvas background change with CSS variables that control page theme, however axes and labels do not yet change color.

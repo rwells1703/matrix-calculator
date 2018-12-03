@@ -98,15 +98,5 @@
 		<script type="text/javascript" src="scripts/theme.js"></script>
 		
 		{% block content %}{% endblock%}
-		
-		<script type="text/javascript">
-			// Dynamically applies a theme to every page
-			theme.setColor(localStorage.getItem("themeColor"));
-			theme.setShade(localStorage.getItem("themeShade"));
-			theme.setStyle(localStorage.getItem("themeStyle"));
-			theme.setCalculatorLayout(localStorage.getItem("themeCalculatorLayout"));
-			theme.setAngleUnit(localStorage.getItem("settingAngleUnit"));
-			theme.hilightNavbar();
-		</script>
 	</body>
 </html>
