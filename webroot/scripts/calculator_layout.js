@@ -52,7 +52,6 @@ calculator_layout = function()
 		
 		var canvasLabels = document.createElement("div");
 		canvasLabels.id = "canvasLabels";
-		canvasLabels.style.color = "black";
 		// Allows the user to click underneath the labels div so they can click on the canvas
 		canvasLabels.style.pointerEvents = "none";
 		canvasLabels.style.position = "absolute";
@@ -60,7 +59,7 @@ calculator_layout = function()
 		
 		gl = canvas.getContext("webgl");
 	};
-
+	
 	// Create new div to hold the current matrix equation and the buttons used for editing the equation
 	self.createEquationDiv = function ()
 	{

@@ -58,10 +58,10 @@ theme = function ()
 		"Dark":
 		{
 			"color-page-background": "#232323",
-			"color-page-background-light": "#3f3f3f",
+			"color-page-background-light": "#424242",
 			"color-text": "#ffffff",
 			"color-icon": "#ffffff",
-			"color-textbox-border": "#000000"
+			"color-textbox-border": "#555555"
 		}
 	};
 
@@ -112,7 +112,7 @@ theme = function ()
 		document.body.style.setProperty("--theme-color-main-dark", self.colors[color]["color-main-dark"]);
 		document.body.style.setProperty("--theme-color-main-light", self.colors[color]["color-main-light"]);
 	};
-
+	
 	// Sets the shade aspect of theme in local storage and in css variables
 	self.setShade = function (shade)
 	{
@@ -128,7 +128,7 @@ theme = function ()
 		document.body.style.setProperty("--theme-color-icon", self.shades[shade]["color-icon"]);
 		document.body.style.setProperty("--theme-color-textbox-border", self.shades[shade]["color-textbox-border"]);
 	};
-
+	
 	// Sets the style aspect of theme in local storage and in css variables
 	self.setStyle = function (style)
 	{

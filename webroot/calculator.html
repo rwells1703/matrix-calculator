@@ -149,20 +149,7 @@
 <!-- Script that handles the parsing and solving of the equations the user has inputted -->
 <script type="text/javascript" src="scripts/calculator_solve.js"></script>
 
-<script type="text/javascript">
-	window.addEventListener("resize", calculator_layout.resizePage, false);
-	
-	calculator_layout.createMainDiv();
-	
-	calculator_build.setItemCounts();
-	
-	calculator_canvas.registerMouseEvents();
-	calculator_canvas.setupWebGL();
-	
-	calculator_layout.resizePage();
-	
-	requestAnimationFrame(calculator_canvas.render);
-</script>
+<script type="text/javascript" src="scripts/calculator.js"></script>
 
 
 	</body>

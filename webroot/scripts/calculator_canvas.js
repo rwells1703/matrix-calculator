@@ -3,6 +3,34 @@ calculator_canvas = function ()
 {
 	var self = {};
 	
+	// Converts a hexadecimal value to an rgb object using a RegEx search
+	self.hexToRgb = function (hex)
+	{
+		// Matches 3 sets of number/character pairs
+		var regex = /([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/i;
+		var match = regex.exec(hex);
+		
+		if (match == null)
+		{
+			return null;
+		}
+		
+		var redHex = match[1];
+		var redDecimal = parseInt(redHex, 16);
+		
+		var greenHex = match[2];
+		var greenDecimal = parseInt(greenHex, 16);
+		
+		var blueHex = match[3];
+		var blueDecimal = parseInt(blueHex, 16);
+		
+		return {
+			"r": redDecimal,
+			"g": greenDecimal,
+			"b": blueDecimal
+			};
+	};
+	
 	self.setupWebGL = function ()
 	{
 		// Both fundamental GLSL shaders that WebGl uses to render vertices to the canvas element
@@ -213,7 +241,10 @@ calculator_canvas = function ()
 		// Properties of the axis lines (axisWidth is global because it is used to scale polygons within the axes)
 		var axisThickness = 0.01;
 		axisWidth = 0.9;
-		var axisColor = [0/255, 0/255, 0/255, 255/255];
+		
+		// Gets the color of the graph background from the css variable and converts it from hex to rbg
+		var axisColorObject = self.hexToRgb(document.body.style.getPropertyValue("--theme-color-text"));
+		var axisColor = [axisColorObject.r/255, axisColorObject.g/255, axisColorObject.b/255, 255/255];
 		
 		// X axis made of two triangles
 		vertices = vertices.concat([-axisWidth,  axisThickness]).concat(axisColor);
@@ -241,18 +272,8 @@ calculator_canvas = function ()
 	{
 		gl.useProgram(program);
 		
-		// Proprietary function from stackoverflow for testing. Will be replaced with own function soon.
-		function hexToRgb(hex) {
-			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-			return result ? {
-				r: parseInt(result[1], 16),
-				g: parseInt(result[2], 16),
-				b: parseInt(result[3], 16)
-			} : null;
-		}
-		
 		// Gets the color of the graph background from the css variable and converts it from hex to rbg
-		var rgbBackground = hexToRgb(document.body.style.getPropertyValue("--theme-color-page-background-light"));
+		var rgbBackground = self.hexToRgb(document.body.style.getPropertyValue("--theme-color-page-background-light"));
 		
 		// Clears the screen with the background color and temporary buffers
 		gl.clearColor(rgbBackground.r/255, rgbBackground.g/255, rgbBackground.b/255, 255/255);

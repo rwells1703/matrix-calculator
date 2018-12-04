@@ -395,3 +395,24 @@ Coursework 2018-12-03-23-34:
 - (calculator_layout.js) Removed the solve button as solving is now done in real time, based on user input.
 - (calculator_solve.js) Added new case for equation parsing, where if the equation is empty, we get the message "Empty equation" instead of "Parse failed" in the solution div.
 - (calculator_canvas.js) Added code that makes canvas background change with CSS variables that control page theme, however axes and labels do not yet change color.
+
+Coursework 2018-12-04-23-59:
+- (calculator.html) Moved initial script from a script, tag into "calculator.js" to make it easier to edit, without recompiling templates.
+- (calculator.js) Created. Performs initalisation that used to be done inside "calculator.html".
+- (calculator_build.js) Added "createItemButton" function that creates a generic small clickable button for use in items.
+- (calculator_build.js) Changed "createIconButton" so that it now supports new black and white versions of the icons, instead of just black. It now takes different arguments, depending on the theme.
+- (calculator_build.js) Changed "createEmptyItem" and "addGrid" to support the new color changing icons.
+- (calculator_build.js) Added "createColorIndicator" function that makes a small coloured circle for use in specifying which points belong to which item.
+- (calculator_build.js) Removed some debug "console.log" statements no longer required.
+- (calculator_build.js) Simplified code for click events. Code did not make full use of "path" parameter, where statements such as "event["path"][0].parentNode" can be shortened to the equivalent "event["path"][1]", as click events "bubble" upwards through the DOM, starting with the item that triggered them.
+- (calculator_build.js) Fixed bug with new color changing items, due to the fact that they are now nested inside a wrapper div, causing the click events to not register the correct item being clicked.
+- (calculator_canvas.js) Removed old "hexToRgb" function and replaced it with a new RegEx version that is globally available, instead of being private to the "render" function.
+- (calculator_canvas.js) Graph axes now change color with the page theme, so it matches better with the canvas background color which already changes.
+- (calculator_canvas.js) Fixed aesthetic bug in "canvasLabels" css style which caused it to be black all the time. Left over from when the canvas background was always white, so text would be invisible with dark theme enabled.
+- (calculator_solve.js) Added a "colorIndicator" to the solutionWrapper so that the solution can also be distinguished from other points on the graph.
+- (calculator_solve.js) Fixed bug in "displayGridsOnGraph" with itemRefence being incorrectly parsed for every set of points within a grid, instead of every grid itself. Moved this part of the code outside the while loop brackets to fix this.
+- (calculator_solve.js) Fixed another "itemReference" related bug in "displayGridsOnGraph" where the solution item is mutable, so that its itemReference is not changed when the algorithm scans through every grid and assigns item references.
+- (calculator_solve.js) Added color changing functionality to "colorIndicator" elements so that they now change to match the color of the grids they represent.
+- (calculator_solve.js) Removed more debug "console.log" statements.
+- (calculator_solve.js) Renamed "points" to "info" as the grid's "itemReference" is now also included in this array.
+- (theme.js) Small change to color of the light elements and textbox border in the "dark" shade.

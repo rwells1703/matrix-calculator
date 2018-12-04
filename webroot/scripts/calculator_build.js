@@ -39,27 +39,64 @@ calculator_build = function ()
 		return inputTextbox;
 	};
 	
-	// Creates an icon button that can be placed within an item e.g. add column in the Grid item
-	self.createIconButton = function (src, onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
+	// Creates a clickable button for use in items
+	self.createItemButton = function (onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
 	{
-		var iconButton = document.createElement("img");
-
-		iconButton.src = src;
-
-		iconButton.addEventListener("click", onclick);
-
-		iconButton.style.cursor = "pointer";
-		iconButton.style.height = "100%";
-		iconButton.style.margin = "0 auto";
-
-		iconButton.style.gridColumnStart = gridColumnStart;
-		iconButton.style.gridColumnEnd = gridColumnEnd;
-		iconButton.style.gridRowStart = gridRowStart;
-		iconButton.style.gridRowEnd = gridRowEnd;
+		var itemButton =  document.createElement("div");
 		
-		return iconButton;
+		itemButton.style.cursor = "pointer";
+		
+		itemButton.addEventListener("click", onclick);
+		
+		itemButton.style.gridColumnStart = gridColumnStart;
+		itemButton.style.gridColumnEnd = gridColumnEnd;
+		itemButton.style.gridRowStart = gridRowStart;
+		itemButton.style.gridRowEnd = gridRowEnd;
+		
+		return itemButton;
 	};
 	
+	// Creates an icon button that can be placed within an item e.g. add column in the Grid item
+	self.createIconButton = function (iconName, iconFileExtension, onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
+	{	
+		var icon = document.createElement("img");
+		
+		var iconColor = localStorage.getItem("themeShade");
+		if (iconColor == "Light")
+		{
+			var iconColorPostfix = "_black";
+		}
+		else
+		{
+			var iconColorPostfix = "_white";
+		}
+		
+		icon.src = iconName + iconColorPostfix + iconFileExtension;
+		icon.style.height = "100%";
+		icon.style.margin = "0 auto";
+		icon.style.cursor = "pointer";
+		
+		icon.addEventListener("click", onclick);
+		
+		icon.style.gridColumnStart = gridColumnStart;
+		icon.style.gridColumnEnd = gridColumnEnd;
+		icon.style.gridRowStart = gridRowStart;
+		icon.style.gridRowEnd = gridRowEnd;
+		
+		return icon;
+	};
+	
+	self.createColorIndicator = function ()
+	{
+		var colorIndicator = document.createElement("div");
+		
+		colorIndicator.style.borderRadius = "50%";
+		colorIndicator.classList.add("colorIndicator");
+		
+		return colorIndicator;
+	};
+	
+	// Creates an empty box div with a shadow
 	self.createEmptyBox = function ()
 	{
 		var box = document.createElement("div");
@@ -103,11 +140,11 @@ calculator_build = function ()
 		itemName.style.padding = 0;
 		itemName.style.textAlign = "center";
 		itemName.innerHTML = itemWrapper.className + itemWrapper.id;
-
-		itemMoveUpIcon = self.createIconButton("images/move_up.svg", self.moveItemUp, 2, 3, 3, 4);
-		itemDeleteIcon = self.createIconButton("images/delete.svg", self.deleteItem, 2, 3, 5, 6);
-		itemMoveDownIcon = self.createIconButton("images/move_down.svg", self.moveItemDown, 2, 3, 7, 8);
-
+		
+		itemMoveUpIcon = self.createIconButton("images/move_up", ".svg", self.moveItemUp, 2, 3, 3, 4);
+		itemDeleteIcon = self.createIconButton("images/delete", ".svg", self.deleteItem, 2, 3, 5, 6);
+		itemMoveDownIcon = self.createIconButton("images/move_down", ".svg", self.moveItemDown, 2, 3, 7, 8);
+		
 		itemWrapper.appendChild(itemSidebar);
 		itemWrapper.appendChild(itemName);
 		itemWrapper.appendChild(itemMoveUpIcon);
@@ -121,9 +158,7 @@ calculator_build = function ()
 	
 	// Deletes the selected item when the user clicks the delete icon
 	self.deleteItem = function (event)
-	{
-		console.log("deleted item");
-		
+	{	
 		// Gets parent element of the delete icon that was clicked
 		var item = event["path"][1];
 		
@@ -181,7 +216,7 @@ calculator_build = function ()
 	// Moves an item upwards in the equation, swapping it with the item above
 	self.moveItemUp = function (event)
 	{
-		var item = event["path"][0].parentNode;
+		var item = event["path"][1];
 		var previousItem = item.previousSibling;
 		
 		if (previousItem != null)
@@ -209,7 +244,7 @@ calculator_build = function ()
 	// Moves an item downwards in the equation, swapping it with the item below
 	self.moveItemDown = function (event)
 	{
-		var item = event["path"][0].parentNode;
+		var item = event["path"][1];
 		var nextItem = item.nextSibling;
 		
 		if (nextItem != null)
@@ -294,16 +329,23 @@ calculator_build = function ()
 		
 		gridWrapper.setAttribute("rows", 2);
 		gridWrapper.setAttribute("columns", 2);
-
-		addGridRowIcon = self.createIconButton("images/add.svg", self.addGridRow, 4, 5, 8, 9);
-		removeGridRowIcon = self.createIconButton("images/remove.svg", self.removeGridRow, 5, 6, 8, 9);
-		addGridColumnIcon = self.createIconButton("images/add.svg", self.addGridColumn, 10, 11, 2, 3);
-		removeGridColumnIcon = self.createIconButton("images/remove.svg", self.removeGridColumn, 10, 11, 3, 4);
+		
+		var addGridRowIcon = self.createIconButton("images/add", ".svg", self.addGridRow, 4, 5, 8, 9);
+		var removeGridRowIcon = self.createIconButton("images/remove", ".svg", self.removeGridRow, 5, 6, 8, 9);
+		var addGridColumnIcon = self.createIconButton("images/add", ".svg", self.addGridColumn, 10, 11, 2, 3);
+		var removeGridColumnIcon = self.createIconButton("images/remove", ".svg", self.removeGridColumn, 10, 11, 3, 4);
 		
 		gridWrapper.appendChild(addGridRowIcon);
 		gridWrapper.appendChild(removeGridRowIcon);
 		gridWrapper.appendChild(addGridColumnIcon);
 		gridWrapper.appendChild(removeGridColumnIcon);
+				
+		var colorIndicator = self.createColorIndicator();
+		colorIndicator.style.gridColumnStart = 10;
+		colorIndicator.style.gridColumnEnd = 11;
+		colorIndicator.style.gridRowStart = 8;
+		colorIndicator.style.gridRowEnd = 9;
+		gridWrapper.appendChild(colorIndicator);
 		
 		itemDiv.appendChild(gridWrapper);
 		
@@ -313,7 +355,7 @@ calculator_build = function ()
 	// Adds a new row to a grid item
 	self.addGridRow = function ()
 	{
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event["path"][2];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -336,7 +378,7 @@ calculator_build = function ()
 	// Removes a row from the grid item
 	self.removeGridRow = function ()
 	{
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event["path"][2];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -359,7 +401,7 @@ calculator_build = function ()
 	// Adds a new column to a grid item
 	self.addGridColumn = function ()
 	{
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event["path"][2];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -382,7 +424,7 @@ calculator_build = function ()
 	// Removes a column from the grid item
 	self.removeGridColumn = function ()
 	{
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event["path"][2];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		

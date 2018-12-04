@@ -729,6 +729,11 @@ calculator_solve = function ()
 			// Generate the latex for the solution, and add this to the solution wrapper div
 			var tex = "$" + self.itemToLatex(solution) + "$";
 			solutionWrapper.innerHTML = tex;
+			
+			var colorIndicator = calculator_build.createColorIndicator();
+			colorIndicator.style.backgroundColor = "red";
+			console.log(colorIndicator);
+			solutionWrapper.appendChild(colorIndicator);
 		}
 		
 		// Append the solution wrapper to the canvas div
@@ -746,6 +751,9 @@ calculator_solve = function ()
 		// Clears the canvas of all previously drawn points
 		temporaryVertices = [];
 		
+		// Clones the solution object so that when the referenceItem is changed for the solution, the original items stay immutable.
+		solution = Object.assign({}, solution);
+		
 		// If a solution has been provided, attempt to display it
 		if (solution != undefined)
 		{
@@ -761,12 +769,12 @@ calculator_solve = function ()
 		var yMax;
 		
 		var grids = [];
-
+		
 		var i = 0;
 		while (i < equation.length)
 		{
 			if (equation[i].type == "Matrix" || equation[i].type == "Vector")
-			{	
+			{
 				if (equation[i].rows == 2)
 				{
 					var info = [];
@@ -786,16 +794,16 @@ calculator_solve = function ()
 						{
 							yMax = Math.abs(y);
 						}
-
+						
 						// Add this pair of points to the points array
 						info.push([x,y]);
 						
-						// A JS reference to the item/solution that the grid was created from
-						var itemReference = equation[i].itemReference;
-						info.push(itemReference);
-						
 						c += 1;
 					}
+					
+					// A JS reference to the item/solution that the grid was created from
+					var itemReference = equation[i].itemReference;
+					info.push(itemReference);
 					
 					// Add this set of points to the grid array
 					grids.push(info);
@@ -904,18 +912,21 @@ calculator_solve = function ()
 				blue = 0;
 			}
 			
-			// Gets the points
-			var points = grids[g];
+			// Gets the info
+			var info = grids[g];
+			var colorIndicator = info[2].getElementsByClassName("colorIndicator");
+
+			colorIndicator.style.backgroundColor = "rgba("+red+","+blue+","+green+")";
 			
-			var p = 0;
-			while (p < points.length)
+			var i = 0;
+			while (i < info.length)
 			{
 				// Takes the x and y values, and converts them so that they are between -1 and 1
-				var xRelative = axisWidth * points[p][0] / (xMax);
-				var yRelative = axisWidth * points[p][1] / (yMax);
+				var xRelative = axisWidth * info[i][0] / (xMax);
+				var yRelative = axisWidth * info[i][1] / (yMax);
 				calculator_canvas.createPolygon([xRelative, yRelative], 10, 0.03, [red/255, green/255, blue/255, 255/255], false);
 				
-				p += 1;
+				i += 1;
 			}
 			
 			g += 1;
@@ -925,11 +936,8 @@ calculator_solve = function ()
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
 	{
-		console.log("evaluateItems");
-		
 		// Parses the equation inputted by the user
 		var equation = self.parseItemValues();
-		console.log(equation);
 		
 		if (typeof(equation) == "object" && equation.length == 0)
 		{
