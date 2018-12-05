@@ -55,8 +55,93 @@ calculator_layout = function()
 		// Allows the user to click underneath the labels div so they can click on the canvas
 		canvasLabels.style.pointerEvents = "none";
 		canvasLabels.style.position = "absolute";
+		
+		// Draw the axis labels
+		xMinLabel = document.createElement("div");
+		xMinLabel.id = "xMinLabel";
+		xMinLabel.style.position = "absolute";
+		xMinLabel.style.top = "52%";
+		xMinLabel.style.left = "5%";
+		
+		xMinHalfLabel = document.createElement("div");
+		xMinHalfLabel.id = "xMinHalfLabel";
+		xMinHalfLabel.style.position = "absolute";
+		xMinHalfLabel.style.top = "52%";
+		xMinHalfLabel.style.left = "25%";
+		
+		xMaxLabel = document.createElement("div");
+		xMaxLabel.id = "xMaxLabel";
+		xMaxLabel.style.position = "absolute";
+		xMaxLabel.style.top = "52%";
+		xMaxLabel.style.right = "5%";
+		
+		xMaxHalfLabel = document.createElement("div");
+		xMaxHalfLabel.id = "xMaxHalfLabel";
+		xMaxHalfLabel.style.position = "absolute";
+		xMaxHalfLabel.style.top = "52%";
+		xMaxHalfLabel.style.right = "25%";
+		
+		yMinLabel = document.createElement("div");
+		yMinLabel.id = "yMinLabel";
+		yMinLabel.style.position = "absolute";
+		yMinLabel.style.bottom = "5%";
+		yMinLabel.style.right = "52%";
+		
+		yMinHalfLabel = document.createElement("div");
+		yMinHalfLabel.id = "yMinHalfLabel";
+		yMinHalfLabel.style.position = "absolute";
+		yMinHalfLabel.style.bottom = "25%";
+		yMinHalfLabel.style.right = "52%";
+		
+		yMaxLabel = document.createElement("div");
+		yMaxLabel.id = "yMaxLabel";
+		yMaxLabel.style.position = "absolute";
+		yMaxLabel.style.top = "5%";
+		yMaxLabel.style.right = "52%";
+		
+		yMaxHalfLabel = document.createElement("div");
+		yMaxHalfLabel.id = "yMaxHalfLabel";
+		yMaxHalfLabel.style.position = "absolute";
+		yMaxHalfLabel.style.top = "25%";
+		yMaxHalfLabel.style.right = "52%";
+		
+		// Add them to the canvas
+		canvasLabels.appendChild(xMinLabel);
+		canvasLabels.appendChild(xMinHalfLabel);
+		canvasLabels.appendChild(xMaxLabel);
+		canvasLabels.appendChild(xMaxHalfLabel);
+		canvasLabels.appendChild(yMinLabel);
+		canvasLabels.appendChild(yMinHalfLabel);
+		canvasLabels.appendChild(yMaxLabel);
+		canvasLabels.appendChild(yMaxHalfLabel);
+		
 		canvasWrapper.appendChild(canvasLabels);
 		
+		var solutionWrapper = calculator_build.createEmptyBox();
+		solutionWrapper.id = "solutionWrapper";
+		solutionWrapper.setAttribute("pointsVisible", "true");
+		solutionWrapper.style.position = "relative";
+		solutionWrapper.style.marginTop = "4vh";
+		solutionWrapper.style.display = "flex";
+		solutionWrapper.style.justifyContent = "center";
+		solutionWrapper.style.alignItems = "center";
+		
+		var solutionWrapperText = document.createElement("div");
+		solutionWrapperText.id = "solutionWrapperText";
+		solutionWrapperText.innerHTML = "Enter an equation to solve it";
+		solutionWrapper.appendChild(solutionWrapperText);
+		
+		var colorIndicator = calculator_build.createColorIndicator();
+		colorIndicator.style.position = "absolute";
+		colorIndicator.style.width = "9%";
+		colorIndicator.style.height = "12%";
+		colorIndicator.style.right = "0px";
+		colorIndicator.style.bottom = "0px";
+		solutionWrapper.appendChild(colorIndicator);
+		
+		solutionDiv.appendChild(solutionWrapper);
+		
+		console.log(colorIndicator);
 		gl = canvas.getContext("webgl");
 	};
 	

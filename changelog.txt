@@ -416,3 +416,14 @@ Coursework 2018-12-04-23-59:
 - (calculator_solve.js) Removed more debug "console.log" statements.
 - (calculator_solve.js) Renamed "points" to "info" as the grid's "itemReference" is now also included in this array.
 - (theme.js) Small change to color of the light elements and textbox border in the "dark" shade.
+
+Coursework 2018-12-05-22-34:
+- (calculator_display.js) Created. Used for displaying images on the graph, most functions here moved from "calculator_solve.js".
+- (calculator_solve.js) Removed all functions related to displaying the equation/solution to "calculator_display.js".
+- (calculator_build.js) Changed "colorIndicator" elements from an oval to a rectangle. Also added a click event to toggle the points visibility.
+- (calculator_build.js) Added "pointsVisible" attribute to grid item elements, and the "solutionWrapper", so that it can be toggled by "colorIndicators".
+- (calculator_build.js) Fixed bug with "addRow" and "addColumn" click events where the click event path is not correctly referenced, causing it to not work.
+- (calculator_layout.js) Added more to the solutionDiv by default. Now includes the gridLabels, and the "solutionWrapper" itself.
+- (calculator_display.js) Removed dynamic generation of "solutionWrapper" to reduce latency and make code simpler.
+- (calculator_display.js) Also remove dynamic generation of "gridLabels" instead, changing the existing labels and setting them to blank when they are not needed.
+- (calculator_layout.js) "solutionWrapper" is now visible at the start, containing a welcome message, instead of appearing after the user begins to add an equation.

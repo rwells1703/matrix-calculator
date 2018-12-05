@@ -86,13 +86,30 @@ calculator_build = function ()
 		return icon;
 	};
 	
+	// Creates a small color indicator item for use 
 	self.createColorIndicator = function ()
 	{
 		var colorIndicator = document.createElement("div");
-		
-		colorIndicator.style.borderRadius = "50%";
 		colorIndicator.classList.add("colorIndicator");
-		
+		colorIndicator.addEventListener("click", function(e) {
+			var colorIndicator = e.path[0];
+			var item = e.path[1];
+			
+			var pointsVisible = item.getAttribute("pointsVisible");
+			if (pointsVisible == "true")
+			{
+				colorIndicator.style.opacity = "0.3";
+				item.setAttribute("pointsVisible", "false");
+				
+			}
+			else
+			{
+				colorIndicator.style.opacity = "1";
+				item.setAttribute("pointsVisible", "true");
+			}
+			
+			calculator_solve.evaluateItems();
+		});
 		return colorIndicator;
 	};
 	
@@ -305,7 +322,8 @@ calculator_build = function ()
 		
 		gridCount += 1;
 		var gridWrapper = self.createEmptyItem("grid", gridCount);
-		
+		gridWrapper.setAttribute("pointsVisible", "true");
+				
 		var r = 0;
 		while (r < self.gridMaxRows - 1)
 		{
@@ -355,7 +373,7 @@ calculator_build = function ()
 	// Adds a new row to a grid item
 	self.addGridRow = function ()
 	{
-		var gridWrapper = event["path"][2];
+		var gridWrapper = event["path"][1];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -378,7 +396,7 @@ calculator_build = function ()
 	// Removes a row from the grid item
 	self.removeGridRow = function ()
 	{
-		var gridWrapper = event["path"][2];
+		var gridWrapper = event["path"][1];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -401,7 +419,7 @@ calculator_build = function ()
 	// Adds a new column to a grid item
 	self.addGridColumn = function ()
 	{
-		var gridWrapper = event["path"][2];
+		var gridWrapper = event["path"][1];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -424,7 +442,7 @@ calculator_build = function ()
 	// Removes a column from the grid item
 	self.removeGridColumn = function ()
 	{
-		var gridWrapper = event["path"][2];
+		var gridWrapper = event["path"][1];
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
 		var columns = parseInt(gridWrapper.getAttribute("columns"));
 		
@@ -525,7 +543,7 @@ calculator_build = function ()
 		
 		calculator_solve.evaluateItems();
 	};
-
+	
 	// Changes the function/operator of an Operation item based on user mouse click
 	self.selectButton = function (event)
 	{

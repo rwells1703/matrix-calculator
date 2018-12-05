@@ -641,298 +641,6 @@ calculator_solve = function ()
 		return equation;
 	};
 	
-	// Converts a Scalar item into a latex string
-	self.scalarToLatex = function (scalar)
-	{
-		return scalar.value;
-	};
-	
-	// Converts a Grid item into a latex string
-	self.gridToLatex = function (grid)
-	{
-		var tex = "\\begin{bmatrix}";
-		
-		// Loop though each row and column of the grid
-		var r = 0;
-		while (r < grid.rows)
-		{
-			var c = 0;
-			while (c < grid.columns)
-			{
-				// Convert the grid element to LaTeX and add it to final LaTeX string.
-				tex += self.itemToLatex(grid.value[r][c]);
-				
-				// Add an & between elements, except the last element of each column
-				if (c != grid.columns - 1)
-				{
-					tex += "&";
-				}
-				
-				c += 1;
-			}
-			
-			// Move onto a new line
-			tex += "\\\\";
-			
-			r += 1;
-		}
-		
-		tex += "\\end{bmatrix}";
-		
-		return tex;
-	};
-	
-	// Converts any item into a latex string
-	self.itemToLatex = function (item)
-	{
-		// Scalar item
-		if (item.type == "Scalar")
-		{
-			return self.scalarToLatex(item);
-		}
-		// Grid items
-		else if (item.type == "Matrix" || item.type == "Vector")
-		{
-			return self.gridToLatex(item);
-		}
-		
-		return false;
-	};
-	
-	// Displays the solution to the screen by adding an item underneath the canvas
-	self.displaySolutionBelowGraph = function (solution, errorMessage)
-	{
-		// If a previous solution is being displayed, remove it before displaying the new solution
-		var oldSolutionWrapper = document.getElementById("solution");
-		if (oldSolutionWrapper != null)
-		{
-			oldSolutionWrapper.parentNode.removeChild(oldSolutionWrapper);
-		}
-
-		// Create a new empty box to hold the solution
-		var solutionWrapper = calculator_build.createEmptyBox();
-		solutionWrapper.id = "solution";
-		solutionWrapper.style.marginTop = "4vh";
-		solutionWrapper.style.display = "flex";
-		solutionWrapper.style.justifyContent = "center";
-		solutionWrapper.style.alignItems = "center";
-		
-		if (solution == false)
-		{
-			// Display a red error message instead of a solution
-			solutionWrapper.style.color = "red";
-			solutionWrapper.innerHTML = errorMessage;
-		}
-		// Otherwise 
-		else
-		{
-			// Generate the latex for the solution, and add this to the solution wrapper div
-			var tex = "$" + self.itemToLatex(solution) + "$";
-			solutionWrapper.innerHTML = tex;
-			
-			var colorIndicator = calculator_build.createColorIndicator();
-			colorIndicator.style.backgroundColor = "red";
-			console.log(colorIndicator);
-			solutionWrapper.appendChild(colorIndicator);
-		}
-		
-		// Append the solution wrapper to the canvas div
-		//var canvasDiv = document.getElementById("canvasDiv");
-		solutionDiv.appendChild(solutionWrapper);
-		
-		// Re-render the MathJax on the page to show the solution
-		MathJax.Hub.Typeset(solutionWrapper);
-		
-		return solutionWrapper;
-	};
-	
-	self.displayGridsOnGraph = function (equation, solution, solutionItem)
-	{
-		// Clears the canvas of all previously drawn points
-		temporaryVertices = [];
-		
-		// Clones the solution object so that when the referenceItem is changed for the solution, the original items stay immutable.
-		solution = Object.assign({}, solution);
-		
-		// If a solution has been provided, attempt to display it
-		if (solution != undefined)
-		{
-			// Add the solution to the list of items in the equation, if the solution is a grid
-			if (solution.type == "Matrix" || solution.type == "Vector")
-			{
-				solution.itemReference = solutionItem;
-				equation.push(solution);
-			}
-		}
-		
-		var xMax;
-		var yMax;
-		
-		var grids = [];
-		
-		var i = 0;
-		while (i < equation.length)
-		{
-			if (equation[i].type == "Matrix" || equation[i].type == "Vector")
-			{
-				if (equation[i].rows == 2)
-				{
-					var info = [];
-					var c = 0;
-					while (c < equation[i].columns)
-					{
-						// Plots the point to the canvas
-						var x = equation[i].value[0][c].value;
-						var y = equation[i].value[1][c].value;
-						
-						if (Math.abs(x) > xMax || xMax == undefined)
-						{
-							xMax = Math.abs(x);
-						}
-						
-						if (Math.abs(y) > yMax || yMax == undefined)
-						{
-							yMax = Math.abs(y);
-						}
-						
-						// Add this pair of points to the points array
-						info.push([x,y]);
-						
-						c += 1;
-					}
-					
-					// A JS reference to the item/solution that the grid was created from
-					var itemReference = equation[i].itemReference;
-					info.push(itemReference);
-					
-					// Add this set of points to the grid array
-					grids.push(info);
-				}
-			}
-			
-			i += 1;
-		}
-		
-		// Round maximums up to the nearest integer
-		xMax = Math.ceil(xMax);
-		yMax = Math.ceil(yMax);
-		
-		// Clear old axis labels
-		var i = 0;
-		var noOfChildren = canvasLabels.children.length;
-		while (i < noOfChildren)
-		{
-			canvasLabels.removeChild(canvasLabels.children[0]);
-			i += 1;
-		}
-		
-		// If there are grids being drawn to the graph, add axes labels
-		if (grids.length != 0)
-		{
-			// Draw new axis labels
-			xMinLabel = document.createElement("div");
-			xMinLabel.style.position = "absolute";
-			xMinLabel.style.top = "52%";
-			xMinLabel.style.left = "5%";
-			xMinLabel.innerHTML = -xMax;
-			
-			xMinHalfLabel = document.createElement("div");
-			xMinHalfLabel.style.position = "absolute";
-			xMinHalfLabel.style.top = "52%";
-			xMinHalfLabel.style.left = "25%";
-			xMinHalfLabel.innerHTML = -xMax/2;
-			
-			xMaxLabel = document.createElement("div");
-			xMaxLabel.style.position = "absolute";
-			xMaxLabel.style.top = "52%";
-			xMaxLabel.style.right = "5%";
-			xMaxLabel.innerHTML = xMax;
-			
-			xMaxHalfLabel = document.createElement("div");
-			xMaxHalfLabel.style.position = "absolute";
-			xMaxHalfLabel.style.top = "52%";
-			xMaxHalfLabel.style.right = "25%";
-			xMaxHalfLabel.innerHTML = xMax/2;
-			
-			yMinLabel = document.createElement("div");
-			yMinLabel.style.position = "absolute";
-			yMinLabel.style.bottom = "5%";
-			yMinLabel.style.right = "52%";
-			yMinLabel.innerHTML = -yMax;
-			
-			yMinHalfLabel = document.createElement("div");
-			yMinHalfLabel.style.position = "absolute";
-			yMinHalfLabel.style.bottom = "25%";
-			yMinHalfLabel.style.right = "52%";
-			yMinHalfLabel.innerHTML = -yMax/2;
-			
-			yMaxLabel = document.createElement("div");
-			yMaxLabel.style.position = "absolute";
-			yMaxLabel.style.top = "5%";
-			yMaxLabel.style.right = "52%";
-			yMaxLabel.innerHTML = yMax;
-			
-			yMaxHalfLabel = document.createElement("div");
-			yMaxHalfLabel.style.position = "absolute";
-			yMaxHalfLabel.style.top = "25%";
-			yMaxHalfLabel.style.right = "52%";
-			yMaxHalfLabel.innerHTML = yMax/2;
-			
-			// Add them to the canvas
-			canvasLabels.appendChild(xMinLabel);
-			canvasLabels.appendChild(xMinHalfLabel);
-			canvasLabels.appendChild(xMaxLabel);
-			canvasLabels.appendChild(xMaxHalfLabel);
-			canvasLabels.appendChild(yMinLabel);
-			canvasLabels.appendChild(yMinHalfLabel);
-			canvasLabels.appendChild(yMaxLabel);
-			canvasLabels.appendChild(yMaxHalfLabel);
-		}
-		
-		var g = 0;
-		while (g < grids.length)
-		{
-			// Generates a seed based on the amount of grids and the location of the current grid within this list
-			var seed = (g * 2 * Math.PI) / grids.length;
-			
-			// Generates red, green and blue values using sinusoidal waves so that all sets of points are different colors
-			var red = 255 * Math.sin(seed);
-			if (red < 0)
-			{
-				red = 0;
-			}
-			var green = 255 * Math.sin(seed + (Math.PI / 2));
-			if (green < 0)
-			{
-				green = 0;
-			}
-			var blue = 255 * Math.sin(seed + Math.PI);
-			if (blue < 0)
-			{
-				blue = 0;
-			}
-			
-			// Gets the info
-			var info = grids[g];
-			var colorIndicator = info[2].getElementsByClassName("colorIndicator");
-
-			colorIndicator.style.backgroundColor = "rgba("+red+","+blue+","+green+")";
-			
-			var i = 0;
-			while (i < info.length)
-			{
-				// Takes the x and y values, and converts them so that they are between -1 and 1
-				var xRelative = axisWidth * info[i][0] / (xMax);
-				var yRelative = axisWidth * info[i][1] / (yMax);
-				calculator_canvas.createPolygon([xRelative, yRelative], 10, 0.03, [red/255, green/255, blue/255, 255/255], false);
-				
-				i += 1;
-			}
-			
-			g += 1;
-		}
-	};
-	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
 	{
@@ -941,14 +649,14 @@ calculator_solve = function ()
 		
 		if (typeof(equation) == "object" && equation.length == 0)
 		{
-			self.displaySolutionBelowGraph(false, "Empty equation");
-			self.displayGridsOnGraph(equation);
+			calculator_display.displaySolutionBelowGraph(false, "Empty equation");
+			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
 		else if (equation == false)
 		{
-			self.displaySolutionBelowGraph(false, "Parse failed");
-			self.displayGridsOnGraph(equation);
+			calculator_display.displaySolutionBelowGraph(false, "Parse failed");
+			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
 		
@@ -958,25 +666,25 @@ calculator_solve = function ()
 		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
 		if (solution == false || typeof(solution) == "number")
 		{
-			self.displaySolutionBelowGraph(false, "Solve failed");
-			self.displayGridsOnGraph(equation);
+			calculator_display.displaySolutionBelowGraph(false, "Solve failed");
+			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
 		// If it does not solve to a single item, do not show this as a solution
 		else if (solution.length > 1)
 		{
-			self.displaySolutionBelowGraph(false, "No single solution");
-			self.displayGridsOnGraph(equation);
+			calculator_display.displaySolutionBelowGraph(false, "No single solution");
+			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
 		
 		var finalSolution = solution[0];
 		
 		// Displays the final solution underneath the graph
-		var solutionItem = self.displaySolutionBelowGraph(finalSolution);
+		calculator_display.displaySolutionBelowGraph(finalSolution);
 		
 		// Displays grids from the equation, as well as the solution on the graph
-		self.displayGridsOnGraph(equation, finalSolution, solutionItem);
+		calculator_display.displayGridsOnGraph(equation, finalSolution);
 	};
 	
 	return self;
