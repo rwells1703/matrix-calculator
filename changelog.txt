@@ -427,3 +427,9 @@ Coursework 2018-12-05-22-34:
 - (calculator_display.js) Removed dynamic generation of "solutionWrapper" to reduce latency and make code simpler.
 - (calculator_display.js) Also remove dynamic generation of "gridLabels" instead, changing the existing labels and setting them to blank when they are not needed.
 - (calculator_layout.js) "solutionWrapper" is now visible at the start, containing a welcome message, instead of appearing after the user begins to add an equation.
+
+Coursework 2018-12-06-20-58:
+- Removed unused "favicon.ico" and "scalar.jpg" test images.
+- (base.html) Added reference to "favicon.ico" so that it also works from a local file, instead of just from a web server.
+- (calculator_layout.js) Fixed bug where the layout does not change on mobile between "Equation before solution" and "Solution before equation".
+- (calculator_build.js) Added rounded or straight corners to "colorIndicator" divs so that they fit with the shape of the item they are in, and the theme used.

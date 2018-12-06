@@ -12,7 +12,7 @@ calculator_layout = function()
 		document.body.appendChild(mainDiv);
 		
 		var calculatorLayout = localStorage.getItem("themeCalculatorLayout");
-		if (calculatorLayout == "Equation before graph")
+		if (calculatorLayout == "Equation before solution")
 		{
 			// Create the equation div before the canvas div
 			self.createEquationDiv();
@@ -25,7 +25,7 @@ calculator_layout = function()
 			self.createEquationDiv();
 		}
 	};
-
+	
 	// Create a new div to wrap a html5 canvas with a WebGL context
 	self.createSolutionDiv = function ()
 	{

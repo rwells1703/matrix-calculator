@@ -90,7 +90,13 @@ calculator_build = function ()
 	self.createColorIndicator = function ()
 	{
 		var colorIndicator = document.createElement("div");
+		
 		colorIndicator.classList.add("colorIndicator");
+		
+		// Curved borders to fit with the shape of the item
+		colorIndicator.style.borderTopLeftRadius = "var(--theme-border-radius)";
+		colorIndicator.style.borderBottomRightRadius = "var(--theme-border-radius)";
+		
 		colorIndicator.addEventListener("click", function(e) {
 			var colorIndicator = e.path[0];
 			var item = e.path[1];
