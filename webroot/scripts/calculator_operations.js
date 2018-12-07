@@ -283,7 +283,7 @@ calculator_operations = function ()
 		// M
 		if (right.type == "Matrix")
 		{
-			return right.getCofactors();
+			return right.getMatrixOfCofactors();
 		}
 		
 		return false;

@@ -141,7 +141,6 @@ calculator_layout = function()
 		
 		solutionDiv.appendChild(solutionWrapper);
 		
-		console.log(colorIndicator);
 		gl = canvas.getContext("webgl");
 	};
 	

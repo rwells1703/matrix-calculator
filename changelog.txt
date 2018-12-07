@@ -433,3 +433,11 @@ Coursework 2018-12-06-20-58:
 - (base.html) Added reference to "favicon.ico" so that it also works from a local file, instead of just from a web server.
 - (calculator_layout.js) Fixed bug where the layout does not change on mobile between "Equation before solution" and "Solution before equation".
 - (calculator_build.js) Added rounded or straight corners to "colorIndicator" divs so that they fit with the shape of the item they are in, and the theme used.
+
+Coursework 2018-12-07-23-34:
+- (calculator_solve.js) Fixed bug with "Minor" operation, where the button does nothing as the function was not implemented in the "solveEquation" function.
+- (calculator_build.js) Edited "createSelectableButton" function so that it supports positioning buttons anywhere, instead of auto placing them one after the other. This allows similar buttons to be grouped into their own rows for easier use.
+- (calculator_build.js) Changed layour of "operation" and "bracket" items so that they group similar buttons into rows.
+- (calculator_build.js) Changed labels on some "operation" item selectable buttons: "*" to "X", "" to "Dot", "x" to "Cross", "p" to "P", "c" to "C", "T" to "Tra", "Angle" to "Angl". This makes some of their labels fit better, and make them easier to read.
+- (calculator_build.js) Made overflow hidden on "operation" item selectable buttons to stop labels overflowing off the edge of buttons on small screens.
+- (calculator_layout.js) Removed debug "console.log" related to "colorIndicator" elements.

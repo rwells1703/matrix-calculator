@@ -88,13 +88,13 @@ calculator_solve = function ()
 				{
 					"+":"Add",
 					"-":"Subtract",
-					"*":"Multiply",
+					"X":"Multiply",
 					"/":"Divide",
 					"^":"Exponential",
-					"·":"Dot Product",
-					"x":"Cross Product",
-					"p":"Permutations",
-					"c":"Combinations",
+					"Dot":"Dot Product",
+					"Cross":"Cross Product",
+					"P":"Permutations",
+					"C":"Combinations",
 					"!":"Factorial",
 					"Sin":"Sin",
 					"Cos":"Cos",
@@ -104,14 +104,14 @@ calculator_solve = function ()
 					"Atan":"Arctan",
 					"Log":"Log",
 					"Ln":"Ln",
-					"T":"Transpose",
+					"Tra":"Transpose",
 					"Det":"Determinant",
 					"Min":"Minor",
 					"Mins":"Minors",
 					"Cof":"Cofactors",
 					"Adj":"Adjugate",
 					"Inv":"Inverse",
-					"Angle":"Vector Vector Angle",
+					"Angl":"Vector Vector Angle",
 					"Mag":"Magnitude",
 					"Norm":"Normal Vector"
 				};
@@ -390,6 +390,30 @@ calculator_solve = function ()
 				}
 
 				equation = replaceArraySection(equation, i, i + 2, solution);
+			}
+
+			i += 1;
+		}
+
+		// MINOR
+		var i = 0;
+		while (i < equation.length - 3)
+		{
+			var solved = false;
+			if (equation[i].value == "Minor")
+			{
+				var solution = calculator_operations.minor(equation[i + 1], equation[i + 2], equation[i + 3]);
+				solved = true;
+			}
+
+			if (solved == true)
+			{
+				if (solution == false)
+				{
+					return false;
+				}
+
+				equation = replaceArraySection(equation, i, i + 3, solution);
 			}
 
 			i += 1;

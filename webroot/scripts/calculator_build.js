@@ -469,7 +469,7 @@ calculator_build = function ()
 	};
 
 	// Creates a selectable button in an item, for selecting one value out of many
-	self.createSelectableButton = function (innerHTML, positionsFromLeft)
+	self.createSelectableButton = function (innerHTML, verticalPosition, horizontalPosition)
 	{
 		var button = document.createElement("div");
 		
@@ -480,6 +480,8 @@ calculator_build = function ()
 		button.style.margin = "auto auto";
 		button.style.boxSizing = "border-box";
 		button.style.textAlign = "center";
+		button.style.fontSize = "90%";
+		button.style.overflow = "hidden";
 		
 		button.style.borderWidth = 1;
 		button.style.borderStyle = "solid";
@@ -492,12 +494,10 @@ calculator_build = function ()
 		// When the selectable button is changed, re-evaluate the items
 		button.addEventListener("click", calculator_solve.evaluateItems);
 		
-		
-		var buttonsPerRow = 5;
-		button.style.gridColumnStart = 4+(positionsFromLeft % buttonsPerRow);
-		button.style.gridColumnEnd = 5+(positionsFromLeft % buttonsPerRow);
-		button.style.gridRowStart = 2+Math.floor(positionsFromLeft / buttonsPerRow);
-		button.style.gridRowEnd = 3+Math.floor(positionsFromLeft / buttonsPerRow);
+		button.style.gridColumnStart = 4+horizontalPosition;
+		button.style.gridColumnEnd = 5+horizontalPosition;
+		button.style.gridRowStart = 2+verticalPosition;
+		button.style.gridRowEnd = 3+verticalPosition;
 		
 		return button;
 	};
@@ -510,15 +510,21 @@ calculator_build = function ()
 		operationCount += 1;
 		var operationWrapper = self.createEmptyItem("operation", operationCount);
 		
-		var buttonList = ["+", "-", "*", "/", "^", "&middot", "x", "p", "c", "!", "Sin", "Cos", "Tan", "Asin", "Acos", "Atan", "Log", "Ln", "T", "Det", "Min", "Mins", "Cof", "Adj", "Inv", "Angle", "Mag", "Norm"];
+		var buttonList = [["+","-","X","/","^","!"],["Sin","Cos","Tan","Asin","Acos","Atan"],["Log","Ln","P","C","Mag"],["Det","Tra","Mins","Cof","Adj","Inv"], ["Min","Norm","Angl","Dot","Cross"]];
 		
-		var i = 0;
-		while (i < buttonList.length)
+		var v = 0;
+		while (v < buttonList.length)
 		{
-			var button = self.createSelectableButton(buttonList[i], i);
-			operationWrapper.appendChild(button);
+			var h = 0;
+			while (h < buttonList[v].length)
+			{
+				var button = self.createSelectableButton(buttonList[v][h], v, h);
+				operationWrapper.appendChild(button);
+				
+				h += 1;
+			}
 			
-			i += 1;
+			v += 1;
 		}
 		
 		itemDiv.appendChild(operationWrapper);
@@ -534,15 +540,21 @@ calculator_build = function ()
 		bracketCount += 1;
 		var bracketWrapper = self.createEmptyItem("bracket", bracketCount);
 		
-		var buttonList = ["(",")","[","]"];
+		var buttonList = [["(",")"],["[","]"]];
 		
-		var i = 0;
-		while (i < buttonList.length)
+		var v = 0;
+		while (v < buttonList.length)
 		{
-			var button = self.createSelectableButton(buttonList[i], i);
-			bracketWrapper.appendChild(button);
+			var h = 0;
+			while (h < buttonList[v].length)
+			{
+				var button = self.createSelectableButton(buttonList[v][h], v, h);
+				bracketWrapper.appendChild(button);
+				
+				h += 1;
+			}
 			
-			i += 1;
+			v += 1;
 		}
 		
 		itemDiv.appendChild(bracketWrapper);
