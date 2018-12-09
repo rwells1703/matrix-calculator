@@ -665,6 +665,226 @@ calculator_solve = function ()
 		return equation;
 	};
 	
+	// Copies all values from an object so it can be passed by-value instead of by-reference
+	self.deepClone = function (object)
+	{
+		return JSON.parse(JSON.stringify(object));
+	}
+
+	self.createOperation = function (name, operationFunction)
+	{
+		var operation = {};
+		
+		operation.name = name;
+		operation.operationFunction = operationFunction;
+		
+		return operation;
+	};
+	
+	self.createOperationGroup = function (direction, numberOfOperandsBefore, numberOfOperandsAfter, operations)
+	{
+		var operationGroup = {};
+		
+		operationGroup.direction = direction;
+		
+		operationGroup.numberOfOperandsBefore = numberOfOperandsBefore;
+		operationGroup.numberOfOperandsAfter = numberOfOperandsAfter;
+		
+		operationGroup.operations = operations;
+		
+		return operationGroup;
+	};
+	
+	self.solveEquationNew = function (equation)
+	{
+		var equation = self.deepClone(equation);
+		
+		var operationGroups = [];
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
+				1,
+				1,
+				[
+					self.createOperation("Divide", calculator_operations.divide),
+					self.createOperation("Multiply", calculator_operations.multiply)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
+				1,
+				1,
+				[
+					self.createOperation("Add", calculator_operations.add),
+					self.createOperation("Subtract", calculator_operations.subtract)
+				]
+			)
+		);
+		
+		/*
+		var operationGroupOne = {};
+		operationGroupOne.direction = "left to right";
+		
+		var operationAdd = {};
+		operationAdd.name = "Division";
+		
+		operationAdd.numberOfOperandsBefore = 1;
+		operationAdd.numberOfOperandsAfter = 1;
+		operationAdd.operationFunction = calculator_operations.add;
+		operationGroups[0].push(operationAdd);
+		
+		var operationSubtract = {};
+		operationSubtract.name = "Multiplication";
+		operationSubtract.direction = "left to right";
+		operationSubtract.numberOfOperandsBefore = 1;
+		operationSubtract.numberOfOperandsAfter = 1;
+		operationSubtract.operationFunction = calculator_operations.subtract;
+		operations.push(operationSubtract);
+		
+		var operationGroups.push([]);
+		
+		var operationAdd = {};
+		operationAdd.name = "Add";
+		operationAdd.direction = "left to right";
+		operationAdd.numberOfOperandsBefore = 1;
+		operationAdd.numberOfOperandsAfter = 1;
+		operationAdd.operationFunction = calculator_operations.add;
+		operationGroups[0].push(operationAdd);
+		
+		var operationSubtract = {};
+		operationSubtract.name = "Subtract";
+		operationSubtract.direction = "left to right";
+		operationSubtract.numberOfOperandsBefore = 1;
+		operationSubtract.numberOfOperandsAfter = 1;
+		operationSubtract.operationFunction = calculator_operations.subtract;
+		operations.push(operationSubtract);
+		*/
+		
+		var g = 0;
+		while (g < operationGroups.length)
+		{
+			var operationGroup = operationGroups[g];
+			
+			if (operationGroup.direction == "left to right")
+			{
+				var position = operationGroup.numberOfOperandsBefore;
+				
+				while (position < equation.length - operationGroup.numberOfOperandsAfter)
+				{
+					var equationSolved = self.solveOperationGroup(equation, position, operationGroup);
+					
+					// false, a solution could not be found
+					if (equationSolved == false)
+					{
+						return false;
+					}
+					// array, a solution was found
+					else if (Array.isArray(equationSolved))
+					{
+						equation = equationSolved;
+					}
+					// Null, none of the operations matched
+					else
+					{
+						position += 1;
+					}
+				}
+			}
+			else
+			{
+				var position = equation.length - operation.numberOfOperandsAfter;
+				
+				while (position > operation.numberOfOperandsBefore)
+				{
+					position -= 1;
+					
+					var operationSolution = self.solveOperation(equation, position, operation);
+					
+					if (operationSolution == false)
+					{
+						return false;
+					}
+					else if (Array.isArray(operationSolution))
+					{
+						equation = operationSolution;
+					}
+				}
+			}
+			
+			g += 1;
+		}
+		
+		return equation;
+	};
+	
+	self.solveOperationGroup = function (equation, position, operationGroup)
+	{
+		var equation = self.deepClone(equation);
+		
+		var o = 0;
+		while (o < operationGroup.operations.length)
+		{
+			var operation = operationGroup.operations[o];
+			
+			if (equation[position].value == operation.name)
+			{
+				var operandsStartPosition = position - operationGroup.numberOfOperandsBefore;
+				var operandsEndPosition = position + operationGroup.numberOfOperandsAfter;
+				
+				var operandsBefore = equation.slice(operandsStartPosition, position);
+				var operandsAfter = equation.slice(position+1, operandsEndPosition+1);
+				
+				var operands = [];
+				operands = operands.concat(operandsBefore);
+				operands = operands.concat(operandsAfter);
+				
+				var solution = operation.operationFunction(operands);
+				if (solution == false)
+				{
+					return false;
+				}
+				else
+				{
+					// TAKING LARGE CHUNK OUT OF EQUATION FOR SOME REASON WHEN DIVIDING 3 BY 4
+					//equation.splice(operandsStartPosition, operandsEndPosition+1);
+					// FIXED, SPLICE USES (start position, number of elements) not (start position, end position)
+					equation.splice(operandsStartPosition, operands.length+1)
+					equation.splice(position-1, 0, solution);
+					
+					return equation;
+				}
+			}
+			
+			o += 1;
+		}
+		
+		return null;
+	};
+
+	//debug the solve function
+	var equation = 
+	[
+		calculator_items.Scalar(1),	
+		calculator_items.Operation("Multiply"),
+		calculator_items.Scalar(2),
+		calculator_items.Operation("Add"),
+		calculator_items.Scalar(3),
+		calculator_items.Operation("Divide"),
+		calculator_items.Scalar(4),
+		calculator_items.Operation("Subtract"),
+		calculator_items.Scalar(5)
+	];
+	
+	console.log("equation:");
+	console.log(equation);
+	var solution = self.solveEquationNew(equation);
+	console.log("solution:");
+	console.log(solution);
+	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
 	{
@@ -686,7 +906,7 @@ calculator_solve = function ()
 		
 		// Solves the parsed equation
 		var solution = self.solveEquation(equation);
-		
+		self.solve(equation);
 		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
 		if (solution == false || typeof(solution) == "number")
 		{

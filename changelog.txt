@@ -437,7 +437,13 @@ Coursework 2018-12-06-20-58:
 Coursework 2018-12-07-23-34:
 - (calculator_solve.js) Fixed bug with "Minor" operation, where the button does nothing as the function was not implemented in the "solveEquation" function.
 - (calculator_build.js) Edited "createSelectableButton" function so that it supports positioning buttons anywhere, instead of auto placing them one after the other. This allows similar buttons to be grouped into their own rows for easier use.
-- (calculator_build.js) Changed layour of "operation" and "bracket" items so that they group similar buttons into rows.
+- (calculator_build.js) Changed layout of "operation" and "bracket" items so that they group similar buttons into rows.
 - (calculator_build.js) Changed labels on some "operation" item selectable buttons: "*" to "X", "" to "Dot", "x" to "Cross", "p" to "P", "c" to "C", "T" to "Tra", "Angle" to "Angl". This makes some of their labels fit better, and make them easier to read.
 - (calculator_build.js) Made overflow hidden on "operation" item selectable buttons to stop labels overflowing off the edge of buttons on small screens.
 - (calculator_layout.js) Removed debug "console.log" related to "colorIndicator" elements.
+
+Coursework 2018-12-09-23-51:
+- (calculator_solve.js) Began to implement new "solveEquation" function to replace old one, based on pseudocode in the design section. Does basic scalar BODMAS only currently.
+- (calculator_solve.js) Added "deepClone" function that creates a new object from an existing object, with a completely new memory location. It also recursively deep copies all its child objects, hence the name deep clone.
+- (calculator_solve.js) Added "createOperation" and "createOperationGroup" used in the new "solveEquation" to specify the order and direction of all operations should be performed, and reference the functions containing the logic behind each operation.
+- (calculator_solve.js) Changed all operations so that they take in an array of operands as a parameter, instead of individual operands. Will need to change logic accordingly before calculator works again.
