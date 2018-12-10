@@ -447,3 +447,10 @@ Coursework 2018-12-09-23-51:
 - (calculator_solve.js) Added "deepClone" function that creates a new object from an existing object, with a completely new memory location. It also recursively deep copies all its child objects, hence the name deep clone.
 - (calculator_solve.js) Added "createOperation" and "createOperationGroup" used in the new "solveEquation" to specify the order and direction of all operations should be performed, and reference the functions containing the logic behind each operation.
 - (calculator_solve.js) Changed all operations so that they take in an array of operands as a parameter, instead of individual operands. Will need to change logic accordingly before calculator works again.
+
+Coursework 2018-12-10-23-04:
+- (calculator_operations.js) Changed all operations so that they use the new array of operands parameter, instead of individual operand parameters.
+- (calculator_items.js) Also changed methods inside items to use array of operands parameter here as well.
+- (calculator_solve.js) Added recursive bracket support to new "solveEquation" function.
+- (calculator_solve.js) Also added variadic function support to new "solveEquation" function.
+- (calculator_solve.js) Started using "replaceArraySection" in new "solveEquation" to reduce repeated code.

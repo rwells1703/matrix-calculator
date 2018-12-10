@@ -207,8 +207,8 @@ calculator_items = function ()
 				if (positive)
 				{
 					// Add the minor determinant to the major determinant if we are on a positive row
-					var determinantAddition = calculator_operations.multiply(self.value[row][0], minor.getDeterminant());
-					determinant = calculator_operations.add(determinant, determinantAddition);
+					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
+					determinant = calculator_operations.add([determinant, determinantAddition]);
 					
 					// Switch from positive to negative
 					positive = false;
@@ -216,8 +216,8 @@ calculator_items = function ()
 				else
 				{
 					// Otherwise subtract it
-					var determinantAddition = calculator_operations.multiply(self.value[row][0], minor.getDeterminant());
-					determinant = calculator_operations.subtract(determinant, determinantAddition);
+					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
+					determinant = calculator_operations.subtract([determinant, determinantAddition]);
 					
 					// Switch from negative to positive
 					positive = true;
@@ -343,10 +343,10 @@ calculator_items = function ()
 				while (column < self.columns)
 				{
 					// Changes the sign of that element according to the checker board pattern
-					minors.value[row][column] = calculator_operations.multiply(minors.value[row][column], multiplier);
+					minors.value[row][column] = calculator_operations.multiply([minors.value[row][column], multiplier]);
 
 					// Changes the multiplier for the element to the left
-					multiplier = calculator_operations.multiply(multiplier, calculator_items.Scalar(-1));
+					multiplier = calculator_operations.multiply([multiplier, calculator_items.Scalar(-1)]);
 					//multiplier *= -1;
 					column += 1;
 				}
@@ -419,13 +419,13 @@ calculator_items = function ()
 			while (r < self.rows)
 			{
 				// Add together the square of every element in the vector
-				var squareValue = calculator_operations.exponential(self.value[r][0], calculator_items.Scalar(2));
-				total = calculator_operations.add(total, squareValue);
+				var squareValue = calculator_operations.exponential([self.value[r][0], calculator_items.Scalar(2)]);
+				total = calculator_operations.add([total, squareValue]);
 				r += 1;
 			}
 
 			// Return the square root of the total (pythagoras theorum)
-			return calculator_operations.exponential(total, calculator_items.Scalar(0.5));
+			return calculator_operations.exponential([total, calculator_items.Scalar(0.5)]);
 		};
 
 		// Returns a vector object, with the magnitude 1 in the same direction as this vector

@@ -5,7 +5,7 @@ calculator_logic = function ()
 	
 	self.scalarScalarOperation = function (left, right, operation)
 	{
-		var value = operation(left.value, right.value);
+		var value = operation([left.value, right.value]);
 		
 		return calculator_items.Scalar(value);
 	};
@@ -25,7 +25,7 @@ calculator_logic = function ()
 		}
 		
 		// General case, continue recursion for n - 1
-		var value = calculator_operations.multiply(scalar, calculator_logic.factorial(calculator_items.Scalar(scalar.value - 1)));
+		var value = calculator_operations.multiply([scalar, calculator_logic.factorial(calculator_items.Scalar(scalar.value - 1))]);
 		
 		return value;
 	};
@@ -35,7 +35,7 @@ calculator_logic = function ()
 		var numerator = calculator_logic.factorial(n);
 		var denominator = calculator_logic.factorial(calculator_items.Scalar(n.value - r.value));
 		
-		return calculator_operations.divide(numerator, denominator);
+		return calculator_operations.divide([numerator, denominator]);
 	};
 	
 	self.combinations = function (n, r)
@@ -43,7 +43,7 @@ calculator_logic = function ()
 		var permutations = calculator_logic.permutations(n, r);
 		var divisor = calculator_logic.factorial(r);
 		
-		return calculator_operations.divide(permutations, divisor);
+		return calculator_operations.divide([permutations, divisor]);
 	};
 	
 	self.sin = function (scalar)
@@ -172,7 +172,7 @@ calculator_logic = function ()
 			while (c < grid.columns)
 			{
 				// Perform the operation on the specified input grid element and save it to the output grid
-				output.value[r][c] = operation(grid.value[r][c], scalar);
+				output.value[r][c] = operation([grid.value[r][c], scalar]);
 				
 				c += 1;
 			}
@@ -212,8 +212,8 @@ calculator_logic = function ()
 				while (shift < left.columns)
 				{
 					// Perform the multiplication and place the product in the correct place in the product grid
-					var additionValue = calculator_operations.multiply(left.value[left_row][shift],right.value[shift][right_column]);
-					product.value[left_row][right_column] = calculator_operations.add(product.value[left_row][right_column], additionValue);
+					var additionValue = calculator_operations.multiply([left.value[left_row][shift], right.value[shift][right_column]]);
+					product.value[left_row][right_column] = calculator_operations.add([product.value[left_row][right_column], additionValue]);
 					shift += 1;
 				}
 
@@ -245,7 +245,7 @@ calculator_logic = function ()
 			while (c < left.columns)
 			{
 				// Perform the operation on the specified input grid elements and save it to the output grid
-				output.value[r][c] = operation(left.value[r][c], right.value[r][c]);
+				output.value[r][c] = operation([left.value[r][c], right.value[r][c]]);
 
 				c += 1;
 			}
@@ -349,13 +349,12 @@ calculator_logic = function ()
 		while (r < left.rows)
 		{
 			// Multiply the vectors together in the same dimension, and add this value to the total
-			var product = calculator_operations.multiply(left.value[r][0], right.value[r][0]);
-			total = calculator_operations.add(total, product);
+			var product = calculator_operations.multiply([left.value[r][0], right.value[r][0]]);
+			total = calculator_operations.add([total, product]);
 			r += 1;
 		}
 
 		return total;
-		//return calculator_items.Scalar(total);
 	};
 	
 	// Takes n-1 vectors of n dimensions and calculates a vector orthogonal to all the input vectors
@@ -432,17 +431,17 @@ calculator_logic = function ()
 	self.vectorVectorAngle = function (left, right)
 	{
 		var dotProduct = calculator_logic.dotProduct(left,right);
-		var magnitudeProduct = calculator_operations.multiply(left.getMagnitude(), right.getMagnitude());
+		var magnitudeProduct = calculator_operations.multiply([left.getMagnitude(), right.getMagnitude()]);
 		
 		if (magnitudeProduct.value == 0)
 		{
 			return false;
 		}
 
-		var cosineAngle = calculator_operations.divide(dotProduct, magnitudeProduct);
+		var cosineAngle = calculator_operations.divide([dotProduct, magnitudeProduct]);
 
 		// Return the angle in the correct unit
-		var angle = calculator_operations.arccos(cosineAngle);
+		var angle = calculator_operations.arccos([cosineAngle]);
 
 		return angle;
 	};

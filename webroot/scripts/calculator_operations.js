@@ -8,22 +8,22 @@ calculator_operations = function ()
 		// SS
 		if (operands[0].type == "Scalar" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (a, b) { return a + b });
+			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (operands) { return operands[0] + operands[1] });
 		}
 		// SM SV 
 		else if (operands[0].type == "Scalar" && operands[1].type == "Matrix" || operands[0].type == "Scalar" && operands[1].type == "Vector")
 		{
-			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (a, b) { return calculator_operations.add(a,b) });
+			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (operands) { return calculator_operations.add(operands) });
 		}
 		// MS VS
 		else if (operands[0].type == "Matrix" && operands[1].type == "Scalar" || operands[0].type == "Vector" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (a, b) { return calculator_operations.add(a,b) });
+			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (operands) { return calculator_operations.add(operands) });
 		}
 		// MM VV
 		else if (operands[0].type == "Matrix" && operands[1].type == "Matrix" || operands[0].type == "Vector" && operands[1].type == "Vector")
 		{
-			return calculator_logic.gridGridElementWiseOperation(operands[0], operands[1], function (a, b) { return calculator_operations.add(a,b) });
+			return calculator_logic.gridGridElementWiseOperation(operands[0], operands[1], function (operands) { return calculator_operations.add(operands) });
 		}
 		
 		return false;
@@ -34,22 +34,22 @@ calculator_operations = function ()
 		// SS
 		if (operands[0].type == "Scalar" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (a, b) { return a - b });
+			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (operands) { return operands[0] - operands[1] });
 		}
 		// SM SV 
 		else if (operands[0].type == "Scalar" && operands[1].type == "Matrix" || operands[0].type == "Scalar" && operands[1].type == "Vector")
 		{
-			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (a, b) { return calculator_operations.subtract(a,b) });
+			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (operands) { return calculator_operations.subtract(operands) });
 		}
 		// MS VS
 		else if (operands[0].type == "Matrix" && operands[1].type == "Scalar" || operands[0].type == "Vector" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (a, b) { return calculator_operations.subtract(a,b) });
+			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (operands) { return calculator_operations.subtract(operands) });
 		}
 		// MM VV
 		else if (operands[0].type == "Matrix" && operands[1].type == "Matrix" || operands[0].type == "Vector" && operands[1].type == "Vector")
 		{
-			return calculator_logic.gridGridElementWiseOperation(operands[0], operands[1], function (a, b) { return calculator_operations.subtract(a,b) });
+			return calculator_logic.gridGridElementWiseOperation(operands[0], operands[1], function (operands) { return calculator_operations.subtract(operands) });
 		}
 		
 		return false;
@@ -60,17 +60,17 @@ calculator_operations = function ()
 		// SS
 		if (operands[0].type == "Scalar" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (a, b) { return a * b });
+			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (operands) { return operands[0] * operands[1] });
 		}
 		// SM SV 
 		else if (operands[0].type == "Scalar" && operands[1].type == "Matrix" || operands[0].type == "Scalar" && operands[1].type == "Vector")
 		{
-			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (a, b) { return calculator_operations.multiply(a,b) });
+			return calculator_logic.scalarGridOperation(operands[0], operands[1], function (operands) { return calculator_operations.multiply(operands) });
 		}
 		// MS VS
 		else if (operands[0].type == "Matrix" && operands[1].type == "Scalar" || operands[0].type == "Vector" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (a, b) { return calculator_operations.multiply(a,b) });
+			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (operands) { return calculator_operations.multiply(operands) });
 		}
 		// MM MV
 		else if (operands[0].type == "Matrix" && operands[1].type == "Matrix" || operands[0].type == "Matrix" && operands[1].type == "Vector")
@@ -86,12 +86,12 @@ calculator_operations = function ()
 		// SS
 		if (operands[0].type == "Scalar" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (a, b) { return a / b });
+			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (operands) { return operands[0] / operands[1] });
 		}
 		// MS VS
 		else if (operands[0].type == "Matrix" && operands[1].type == "Scalar" || operands[0].type == "Vector" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (a, b) { return calculator_operations.divide(a,b) });
+			return calculator_logic.scalarGridOperation(operands[1], operands[0], function (operands) { return calculator_operations.divide(operands) });
 		}
 		
 		return false;
@@ -102,7 +102,7 @@ calculator_operations = function ()
 		// SS
 		if (operands[0].type == "Scalar" && operands[1].type == "Scalar")
 		{
-			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (a, b) { return a ** b });
+			return calculator_logic.scalarScalarOperation(operands[0], operands[1], function (operands) { return operands[0] ** operands[1] });
 		}
 		// MS
 		if (operands[0].type == "Matrix" && operands[1].type == "Scalar")

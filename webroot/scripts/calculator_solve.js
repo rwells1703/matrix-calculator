@@ -696,9 +696,132 @@ calculator_solve = function ()
 	};
 	
 	self.solveEquationNew = function (equation)
-	{
+	{	
 		var equation = self.deepClone(equation);
 		
+		// BRACKETS
+		// Counter and location of brackets
+		var unclosedBrackets = 0;
+		var openBracketLocation = -1;
+
+		// Continues recursion inside brackets if necessary
+		var position = 0;
+		while (position < equation.length)
+		{
+			if (equation[position].value == "(")
+			{
+				if (unclosedBrackets == 0)
+				{
+					openBracketLocation = position;
+				}
+
+				unclosedBrackets += 1;
+			}
+			else if (equation[position].value == ")")
+			{
+				// If bracket closed where there was no open bracket
+				if (openBracketLocation == -1)
+				{
+					return false;
+				}
+
+				unclosedBrackets -= 1;
+				if (unclosedBrackets == 0)
+				{
+					var bracketSolution = self.solveEquationNew(equation.slice(openBracketLocation + 1, position));
+					
+					// If solving brackets was not possible
+					if (bracketSolution == false)
+					{
+						return false;
+					}
+
+					equation = replaceArraySection(equation, openBracketLocation, position, bracketSolution);
+
+					// Go back to the location just before the start of where the brackets where before
+					position = openBracketLocation - 1;
+					openBracketLocation = -1;
+				}
+			}
+
+			position += 1;
+		}
+		
+		// OPERATIONS THAT ACCEPT ANY NUMBER OF PARAMETERS (VARIADIC FUNCTIONS)
+		var i = 0;
+		while (i < equation.length - 3)
+		{
+			if (equation[i].type == "Operation")
+			{
+				if (equation[i].variadicFunction == true)
+				{
+					// If the item after the operation name is not an open operation bracket, return false
+					if (equation[i+1].value != "[")
+					{
+						return false;
+					}
+					
+					// Empty array to hold all the operands of the operation
+					var operands = [];
+					
+					// Used to keep track of where the operands of this operation end
+					var bracketClosed = false;
+					var inputEndIndex = 0;
+					
+					// Start on the item after the open operation bracket
+					var j = i + 2;
+					while (j < equation.length && bracketClosed == false)
+					{
+						if (equation[j].value == "]")
+						{
+							// Save where the close operation bracket is so that solveEquation knows what part of the equation to replace with the solution
+							bracketClosed = true;
+							inputEndIndex = j;
+						}
+						else
+						{
+							// Otherwise add the operand to the list of operands
+							operands.push(equation[j]);
+						}
+						
+						j += 1;
+					}
+					
+					// If the variadic brackets were not closed, return false
+					if (bracketClosed == false)
+					{
+						return false;
+					}
+					
+					var solved = false;
+
+					if (equation[i].value == "Normal Vector")
+					{
+						var solution = calculator_operations.normalVector(operands);
+						solved = true;
+					}
+					// If an unknown variadic function has been referenced
+					else
+					{
+						return false;
+					}
+
+					if (solved == true)
+					{
+						if (solution == false)
+						{
+							return false;
+						}
+
+						equation = replaceArraySection(equation, i, inputEndIndex, solution);
+					}
+				}
+			}
+			
+			i += 1;
+		}
+		
+		// OPERATIONS WITH FIXED NUMBER OF PARAMETERS
 		var operationGroups = [];
 		
 		operationGroups.push(
@@ -724,45 +847,6 @@ calculator_solve = function ()
 				]
 			)
 		);
-		
-		/*
-		var operationGroupOne = {};
-		operationGroupOne.direction = "left to right";
-		
-		var operationAdd = {};
-		operationAdd.name = "Division";
-		
-		operationAdd.numberOfOperandsBefore = 1;
-		operationAdd.numberOfOperandsAfter = 1;
-		operationAdd.operationFunction = calculator_operations.add;
-		operationGroups[0].push(operationAdd);
-		
-		var operationSubtract = {};
-		operationSubtract.name = "Multiplication";
-		operationSubtract.direction = "left to right";
-		operationSubtract.numberOfOperandsBefore = 1;
-		operationSubtract.numberOfOperandsAfter = 1;
-		operationSubtract.operationFunction = calculator_operations.subtract;
-		operations.push(operationSubtract);
-		
-		var operationGroups.push([]);
-		
-		var operationAdd = {};
-		operationAdd.name = "Add";
-		operationAdd.direction = "left to right";
-		operationAdd.numberOfOperandsBefore = 1;
-		operationAdd.numberOfOperandsAfter = 1;
-		operationAdd.operationFunction = calculator_operations.add;
-		operationGroups[0].push(operationAdd);
-		
-		var operationSubtract = {};
-		operationSubtract.name = "Subtract";
-		operationSubtract.direction = "left to right";
-		operationSubtract.numberOfOperandsBefore = 1;
-		operationSubtract.numberOfOperandsAfter = 1;
-		operationSubtract.operationFunction = calculator_operations.subtract;
-		operations.push(operationSubtract);
-		*/
 		
 		var g = 0;
 		while (g < operationGroups.length)
@@ -849,11 +933,7 @@ calculator_solve = function ()
 				}
 				else
 				{
-					// TAKING LARGE CHUNK OUT OF EQUATION FOR SOME REASON WHEN DIVIDING 3 BY 4
-					//equation.splice(operandsStartPosition, operandsEndPosition+1);
-					// FIXED, SPLICE USES (start position, number of elements) not (start position, end position)
-					equation.splice(operandsStartPosition, operands.length+1)
-					equation.splice(position-1, 0, solution);
+					equation = replaceArraySection(equation, operandsStartPosition, operandsEndPosition, solution);
 					
 					return equation;
 				}
@@ -866,22 +946,41 @@ calculator_solve = function ()
 	};
 
 	//debug the solve function
-	var equation = 
+	var pequation = 
 	[
 		calculator_items.Scalar(1),	
 		calculator_items.Operation("Multiply"),
+		calculator_items.Bracket("("),
 		calculator_items.Scalar(2),
 		calculator_items.Operation("Add"),
 		calculator_items.Scalar(3),
+		calculator_items.Bracket(")"),
 		calculator_items.Operation("Divide"),
 		calculator_items.Scalar(4),
 		calculator_items.Operation("Subtract"),
 		calculator_items.Scalar(5)
 	];
 	
+	var oequation = 
+	[
+		calculator_items.Scalar(2),
+		calculator_items.Operation("Add"),
+		calculator_items.Scalar(5)
+	];
+	
+	var equation = 
+	[
+		calculator_items.Operation("Normal Vector", true),
+		calculator_items.Bracket("["),
+		calculator_items.Grid([[calculator_items.Scalar(1)],[calculator_items.Scalar(0)],[calculator_items.Scalar(0)]]),
+		calculator_items.Grid([[calculator_items.Scalar(0)],[calculator_items.Scalar(1)],[calculator_items.Scalar(0)]]),
+		calculator_items.Bracket("]")
+	];
+	
+	var solution = self.solveEquationNew(equation);
+	
 	console.log("equation:");
 	console.log(equation);
-	var solution = self.solveEquationNew(equation);
 	console.log("solution:");
 	console.log(solution);
 	
