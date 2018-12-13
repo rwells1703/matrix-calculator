@@ -146,531 +146,30 @@ calculator_solve = function ()
 
 		return equation;
 	};
-	
-	self.verifyBounds = function (operationPos, lower, upper, equationLength)
-	{
-		if (lower < 0 || upper > equationLength - 1)
-		{
-			return operationPos;
-		}
-		
-		return true;
-	};
-	
-	// Solves the mathematical equation passed in, and returns the answer
-	self.solveEquation = function (equation)
-	{
-		// BRACKETS
-		// Counter and location of brackets
-		var unclosedBrackets = 0;
-		var openBracketLocation = -1;
 
-		// Continues recursion inside brackets if necessary
-		var i = 0;
-		while (i < equation.length)
-		{
-			if (equation[i].value == "(")
-			{
-				if (unclosedBrackets == 0)
-				{
-					openBracketLocation = i;
-				}
-
-				unclosedBrackets += 1;
-			}
-			else if (equation[i].value == ")")
-			{
-				// If bracket closed where there was no open bracket
-				if (openBracketLocation == -1)
-				{
-					return false;
-				}
-
-				unclosedBrackets -= 1;
-				if (unclosedBrackets == 0)
-				{
-					var bracketSolution = calculator_solve.solveEquation(equation.slice(openBracketLocation + 1, i));
-					
-					// If solving brackets was not possible
-					if (bracketSolution == false)
-					{
-						return false;
-					}
-
-					equation = replaceArraySection(equation, openBracketLocation, i, bracketSolution);
-
-					// Go back to the location just before the start of where the brackets where before
-					i = openBracketLocation - 1;
-					openBracketLocation = -1;
-				}
-			}
-
-			i += 1;
-		}
-
-		// OPERATIONS THAT ACCEPT ANY NUMBER OF PARAMETERS (VARIADIC FUNCTIONS)
-		var i = 0;
-		while (i < equation.length - 3)
-		{
-			if (equation[i].type == "Operation")
-			{
-				if (equation[i].variadicFunction == true)
-				{
-					// If the item after the operation name is not an open operation bracket, return false
-					if (equation[i+1].value != "[")
-					{
-						return false;
-					}
-					
-					// Empty array to hold all the operands of the operation
-					var operands = [];
-					
-					// Used to keep track of where the operands of this operation end
-					var bracketClosed = false;
-					var inputEndIndex = 0;
-					
-					// Start on the item after the open operation bracket
-					var j = i + 2;
-					while (j < equation.length && bracketClosed == false)
-					{
-						if (equation[j].value == "]")
-						{
-							// Save where the close operation bracket is so that solveEquation knows what part of the equation to replace with the solution
-							bracketClosed = true;
-							inputEndIndex = j;
-						}
-						else
-						{
-							// Otherwise add the operand to the list of operands
-							operands.push(equation[j]);
-						}
-						
-						j += 1;
-					}
-					
-					// If the variadic brackets were not closed, return false
-					if (bracketClosed == false)
-					{
-						return false;
-					}
-					
-					var solved = false;
-
-					if (equation[i].value == "Normal Vector")
-					{
-						var solution = calculator_operations.normalVector(operands);
-						solved = true;
-					}
-					// If an unknown variadic function has been referenced
-					else
-					{
-						return false;
-					}
-
-					if (solved == true)
-					{
-						if (solution == false)
-						{
-							return false;
-						}
-
-						equation = replaceArraySection(equation, i, inputEndIndex, solution);
-					}
-				}
-			}
-			
-			i += 1;
-		}
-		
-		// LN, COS, SIN, TAN, ARCCOS, ARCSIN, ARCTAN, DETERMINANT, TRANSPOSE, MINORS, COFACTORS, ADJUGATE, INVERSE, MAGNITUDE
-		var i = 0;
-		while (i < equation.length - 1)
-		{
-			var solved = false;
-			if (equation[i].value == "Ln")
-			{
-				var solution = calculator_operations.ln(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Sin")
-			{
-				var solution = calculator_operations.sin(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Cos")
-			{
-				var solution = calculator_operations.cos(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Tan")
-			{
-				var solution = calculator_operations.tan(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Arcsin")
-			{
-				var solution = calculator_operations.arcsin(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Arccos")
-			{
-				var solution = calculator_operations.arccos(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Arctan")
-			{
-				var solution = calculator_operations.arctan(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Determinant")
-			{
-				var solution = calculator_operations.determinant(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Transpose")
-			{
-				var solution = calculator_operations.transpose(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Minors")
-			{
-				var solution = calculator_operations.minors(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Cofactors")
-			{
-				var solution = calculator_operations.cofactors(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Adjugate")
-			{
-				var solution = calculator_operations.adjugate(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Inverse")
-			{
-				var solution = calculator_operations.inverse(equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Magnitude")
-			{
-				var solution = calculator_operations.magnitude(equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i, i + 1, solution);
-			}
-
-			i += 1;
-		}
-
-		// LOG
-		var i = 0;
-		while (i < equation.length - 2)
-		{
-			var solved = false;
-			if (equation[i].value == "Log")
-			{
-				var solution = calculator_operations.log(equation[i + 1], equation[i + 2]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i, i + 2, solution);
-			}
-
-			i += 1;
-		}
-
-		// MINOR
-		var i = 0;
-		while (i < equation.length - 3)
-		{
-			var solved = false;
-			if (equation[i].value == "Minor")
-			{
-				var solution = calculator_operations.minor(equation[i + 1], equation[i + 2], equation[i + 3]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i, i + 3, solution);
-			}
-
-			i += 1;
-		}
-		
-		// FACTORIAL
-		var i = 1;
-		while (i < equation.length)
-		{
-			var solved = false;
-			if (equation[i].value == "Factorial")
-			{
-				var solution = calculator_operations.factorial(equation[i - 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-
-		// PERMUTATIONS AND COMBINATIONS
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			var solved = false;
-			if (equation[i].value == "Permutations")
-			{
-				var solution = calculator_operations.permutations(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Combinations")
-			{
-				var solution = calculator_operations.combinations(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-		
-		// CROSS PRODUCT
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			var solved = false;
-			if (equation[i].value == "Cross Product")
-			{
-				var solution = calculator_operations.crossProduct(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-
-		// DOT PRODUCT
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			var solved = false;
-			if (equation[i].value == "Dot Product")
-			{
-				var solution = calculator_operations.dotProduct(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-
-		// VECTOR VECTOR ANGLE
-		var i = 1;
-		while (i < equation.length - 1)
-		{
-			var solved = false;
-			if (equation[i].value == "Vector Vector Angle")
-			{
-				var solution = calculator_operations.vectorVectorAngle(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-		
-		// EXPONENTIALS
-		var i = equation.length - 2;
-		while (i > 0)
-		{
-			var solved = false;
-
-			if (equation[i].value == "Exponential")
-			{
-				var solution = calculator_operations.exponential(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-			
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-			}
-			
-			i -= 1;
-		}
-
-		// DIVISION AND MULTIPLICATION
-		var i = 1;
-		while (i < equation.length - 1)
-		{	
-			var solved = false;
-
-			if (equation[i].value == "Divide")
-			{
-				var solution = calculator_operations.divide(equation[i - 1], equation[i + 1]);
-				solved = true;
-				
-			}
-			else if (equation[i].value == "Multiply")
-			{
-				var solution = calculator_operations.multiply(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-			
-			i += 1;
-		}
-
-		// ADDITION AND SUBTRACTION
-		//var i = 1;
-		//while (i < equation.length - 1)
-		var i = 0;
-		while (i < equation.length)
-		{
-			var solved = false;
-			var boundCheck = self.verifyBounds(i, i-1, i+1, equation.length);
-			
-			if (equation[i].value == "Add")
-			{
-				if (typeof(boundCheck) == "number")
-				{
-					return boundCheck;
-				}
-				var solution = calculator_operations.add(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-			else if (equation[i].value == "Subtract")
-			{
-				if (typeof(boundCheck) == "number")
-				{
-					return boundCheck;
-				}
-				var solution = calculator_operations.subtract(equation[i - 1], equation[i + 1]);
-				solved = true;
-			}
-			
-			if (solved == true)
-			{
-				if (solution == false)
-				{
-					return false;
-				}
-				
-				equation = replaceArraySection(equation, i - 1, i + 1, solution);
-				
-				// Move back one place in the equation to get to position where the evalulated statement used to begin
-				i -= 1;
-			}
-
-			i += 1;
-		}
-
-		return equation;
-	};
-	
 	// Copies all values from an object so it can be passed by-value instead of by-reference
 	self.deepClone = function (object)
 	{
-		return JSON.parse(JSON.stringify(object));
-	}
+		return Object.create(object);
+		//return JSON.parse(JSON.stringify(object));
+	};
+	
+	// Makes a new array, deep cloning all the objects in the original array
+	self.deepCloneArray = function (array)
+	{
+		var newArray = [];
+		
+		var i = 0;
+		while (i < array.length)
+		{
+			newArray.push(self.deepClone(array[i]));
+			i += 1;
+		}
+		
+		return newArray;
+	};
 
+	// Creates a single operation, used when evaluating an equation
 	self.createOperation = function (name, operationFunction)
 	{
 		var operation = {};
@@ -681,6 +180,7 @@ calculator_solve = function ()
 		return operation;
 	};
 	
+	// Creates a group of operations with the same general structure, that are evaluated in the same pass through
 	self.createOperationGroup = function (direction, numberOfOperandsBefore, numberOfOperandsAfter, operations)
 	{
 		var operationGroup = {};
@@ -695,9 +195,10 @@ calculator_solve = function ()
 		return operationGroup;
 	};
 	
-	self.solveEquationNew = function (equation)
-	{	
-		var equation = self.deepClone(equation);
+	// Solves the list of operations/operands passed in and returns the answer
+	self.solveEquation = function (equation)
+	{
+		var equation = self.deepCloneArray(equation);
 		
 		// BRACKETS
 		// Counter and location of brackets
@@ -827,6 +328,89 @@ calculator_solve = function ()
 		operationGroups.push(
 			self.createOperationGroup(
 				"left to right",
+				0,
+				1,
+				[
+					self.createOperation("Sin", calculator_operations.sin),
+					self.createOperation("Cos", calculator_operations.cos),
+					self.createOperation("Tan", calculator_operations.tan),
+					self.createOperation("Arcsin", calculator_operations.arcsin),
+					self.createOperation("Arccos", calculator_operations.arccos),
+					self.createOperation("Arctan", calculator_operations.arctan),
+					self.createOperation("Ln", calculator_operations.ln),
+					self.createOperation("Transpose", calculator_operations.transpose),
+					self.createOperation("Determinant", calculator_operations.determinant),
+					self.createOperation("Minors", calculator_operations.minors),
+					self.createOperation("Cofactors", calculator_operations.cofactors),
+					self.createOperation("Adjugate", calculator_operations.adjugate),
+					self.createOperation("Inverse", calculator_operations.inverse),
+					self.createOperation("Magnitude", calculator_operations.magnitude)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
+				0,
+				2,
+				[
+					self.createOperation("Log", calculator_operations.log)
+				]
+			)
+		);
+			
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
+				0,
+				3,
+				[
+					self.createOperation("Minor", calculator_operations.minor)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"right to left",
+				1,
+				0,
+				[
+					self.createOperation("Factorial", calculator_operations.factorial)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
+				1,
+				1,
+				[
+					self.createOperation("Permutations", calculator_operations.permutations),
+					self.createOperation("Combinations", calculator_operations.combinations),
+					self.createOperation("Dot Product", calculator_operations.dotProduct),
+					self.createOperation("Cross Product", calculator_operations.crossProduct),
+					self.createOperation("Vector Vector Angle", calculator_operations.vectorVectorAngle)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"right to left",
+				1,
+				1,
+				[
+					self.createOperation("Exponential", calculator_operations.exponential)
+				]
+			)
+		);
+		
+		operationGroups.push(
+			self.createOperationGroup(
+				"left to right",
 				1,
 				1,
 				[
@@ -848,10 +432,10 @@ calculator_solve = function ()
 			)
 		);
 		
-		var g = 0;
-		while (g < operationGroups.length)
+		var group = 0;
+		while (group < operationGroups.length)
 		{
-			var operationGroup = operationGroups[g];
+			var operationGroup = operationGroups[group];
 			
 			if (operationGroup.direction == "left to right")
 			{
@@ -880,13 +464,13 @@ calculator_solve = function ()
 			}
 			else
 			{
-				var position = equation.length - operation.numberOfOperandsAfter;
+				var position = equation.length - operationGroup.numberOfOperandsAfter;
 				
-				while (position > operation.numberOfOperandsBefore)
+				while (position > operationGroup.numberOfOperandsBefore)
 				{
 					position -= 1;
 					
-					var operationSolution = self.solveOperation(equation, position, operation);
+					var operationSolution = self.solveOperationGroup(equation, position, operationGroup);
 					
 					if (operationSolution == false)
 					{
@@ -899,7 +483,7 @@ calculator_solve = function ()
 				}
 			}
 			
-			g += 1;
+			group += 1;
 		}
 		
 		return equation;
@@ -907,7 +491,7 @@ calculator_solve = function ()
 	
 	self.solveOperationGroup = function (equation, position, operationGroup)
 	{
-		var equation = self.deepClone(equation);
+		var equation = self.deepCloneArray(equation);
 		
 		var o = 0;
 		while (o < operationGroup.operations.length)
@@ -944,45 +528,6 @@ calculator_solve = function ()
 		
 		return null;
 	};
-
-	//debug the solve function
-	var pequation = 
-	[
-		calculator_items.Scalar(1),	
-		calculator_items.Operation("Multiply"),
-		calculator_items.Bracket("("),
-		calculator_items.Scalar(2),
-		calculator_items.Operation("Add"),
-		calculator_items.Scalar(3),
-		calculator_items.Bracket(")"),
-		calculator_items.Operation("Divide"),
-		calculator_items.Scalar(4),
-		calculator_items.Operation("Subtract"),
-		calculator_items.Scalar(5)
-	];
-	
-	var oequation = 
-	[
-		calculator_items.Scalar(2),
-		calculator_items.Operation("Add"),
-		calculator_items.Scalar(5)
-	];
-	
-	var equation = 
-	[
-		calculator_items.Operation("Normal Vector", true),
-		calculator_items.Bracket("["),
-		calculator_items.Grid([[calculator_items.Scalar(1)],[calculator_items.Scalar(0)],[calculator_items.Scalar(0)]]),
-		calculator_items.Grid([[calculator_items.Scalar(0)],[calculator_items.Scalar(1)],[calculator_items.Scalar(0)]]),
-		calculator_items.Bracket("]")
-	];
-	
-	var solution = self.solveEquationNew(equation);
-	
-	console.log("equation:");
-	console.log(equation);
-	console.log("solution:");
-	console.log(solution);
 	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
@@ -1005,7 +550,7 @@ calculator_solve = function ()
 		
 		// Solves the parsed equation
 		var solution = self.solveEquation(equation);
-		self.solve(equation);
+		
 		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
 		if (solution == false || typeof(solution) == "number")
 		{

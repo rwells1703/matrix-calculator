@@ -454,3 +454,11 @@ Coursework 2018-12-10-23-04:
 - (calculator_solve.js) Added recursive bracket support to new "solveEquation" function.
 - (calculator_solve.js) Also added variadic function support to new "solveEquation" function.
 - (calculator_solve.js) Started using "replaceArraySection" in new "solveEquation" to reduce repeated code.
+
+Coursework 2018-12-13-21-18:
+- (calculator_solve.js) Added the rest of the operators to the "solveEquationNew" function.
+- (calculator_solve.js) Fixed bug with "solveEquationNew" where deepClone would not deep copy every element of the equation array properly (e.g. Scalar items would not have the "getMagnitude" function. Added "deepCloneArray" function that executes "deepClone" on every item in the array which fixes the bug.
+- (calculator_solve.js) Removed debug code for testing "solveEquationNew".
+- (calculator_solve.js) Removed old "solveEquation" function, and renamed "solveEquationNew" to "solveEquation" so that all other scripts reference the new function.
+- (calculator_solve.js) Small changes to some counter variable identifiers, to make it easier to understand what they count.
+- (calculator_solve.js) Added more comments to some functions that have no comments.
