@@ -229,7 +229,7 @@ calculator_solve = function ()
 				unclosedBrackets -= 1;
 				if (unclosedBrackets == 0)
 				{
-					var bracketSolution = self.solveEquationNew(equation.slice(openBracketLocation + 1, position));
+					var bracketSolution = self.solveEquation(equation.slice(openBracketLocation + 1, position));
 					
 					// If solving brackets was not possible
 					if (bracketSolution == false)

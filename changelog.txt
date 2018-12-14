@@ -462,3 +462,6 @@ Coursework 2018-12-13-21-18:
 - (calculator_solve.js) Removed old "solveEquation" function, and renamed "solveEquationNew" to "solveEquation" so that all other scripts reference the new function.
 - (calculator_solve.js) Small changes to some counter variable identifiers, to make it easier to understand what they count.
 - (calculator_solve.js) Added more comments to some functions that have no comments.
+
+Coursework 2018-12-14-15-24:
+- (calculator_solve.js) Fixed bug in "solveEquation" where the now deprecated "solveEquationNew" is referenced in the brackets solver.
