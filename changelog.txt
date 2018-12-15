@@ -465,3 +465,7 @@ Coursework 2018-12-13-21-18:
 
 Coursework 2018-12-14-15-24:
 - (calculator_solve.js) Fixed bug in "solveEquation" where the now deprecated "solveEquationNew" is referenced in the brackets solver.
+
+Coursework 2018-12-15-23-15:
+- (calculator_solve.js) Fixed bug with "deepClone" function where it would return blank objects.
+- (calculator_solve.js) Seperated the large function "solveEquation" into 3 smaller functions: "solveBrackets", "solveVariadicFunctions" and "solveOperationGroups". "solveEquation" calls each of these functions in turn and returns the solved equation.

@@ -150,8 +150,7 @@ calculator_solve = function ()
 	// Copies all values from an object so it can be passed by-value instead of by-reference
 	self.deepClone = function (object)
 	{
-		return Object.create(object);
-		//return JSON.parse(JSON.stringify(object));
+		return JSON.parse(JSON.stringify(object));
 	};
 	
 	// Makes a new array, deep cloning all the objects in the original array
@@ -195,12 +194,11 @@ calculator_solve = function ()
 		return operationGroup;
 	};
 	
-	// Solves the list of operations/operands passed in and returns the answer
-	self.solveEquation = function (equation)
+	// Solves the inner contents of all brackets
+	self.solveBrackets = function (equation)
 	{
 		var equation = self.deepCloneArray(equation);
 		
-		// BRACKETS
 		// Counter and location of brackets
 		var unclosedBrackets = 0;
 		var openBracketLocation = -1;
@@ -248,7 +246,14 @@ calculator_solve = function ()
 			position += 1;
 		}
 		
-		// OPERATIONS THAT ACCEPT ANY NUMBER OF PARAMETERS (VARIADIC FUNCTIONS)
+		return equation;
+	};
+	
+	// Solves all operations with an unknown amount of parameters at runtime (variadic functions)
+	self.solveVariadicFunctions = function (equation)
+	{
+		var equation = self.deepCloneArray(equation);
+		
 		var i = 0;
 		while (i < equation.length - 3)
 		{
@@ -322,7 +327,14 @@ calculator_solve = function ()
 			i += 1;
 		}
 		
-		// OPERATIONS WITH FIXED NUMBER OF PARAMETERS
+		return equation;
+	};
+	
+	// Solves all operations with a fixed number of parameters
+	self.solveOperationGroups = function (equation)
+	{
+		var equation = self.deepCloneArray(equation);
+		
 		var operationGroups = [];
 		
 		operationGroups.push(
@@ -489,6 +501,7 @@ calculator_solve = function ()
 		return equation;
 	};
 	
+	// Solves an individual group of fixed parameter operations
 	self.solveOperationGroup = function (equation, position, operationGroup)
 	{
 		var equation = self.deepCloneArray(equation);
@@ -527,6 +540,16 @@ calculator_solve = function ()
 		}
 		
 		return null;
+	};
+	
+	// Solves the list of operations/operands passed in and returns the answer
+	self.solveEquation = function (equation)
+	{
+		equation = self.solveBrackets(equation);
+		equation = self.solveVariadicFunctions(equation);
+		equation = self.solveOperationGroups(equation);
+
+		return equation;
 	};
 	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
