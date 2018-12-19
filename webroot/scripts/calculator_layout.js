@@ -175,8 +175,77 @@ calculator_layout = function()
 		
 		// Create buttons for importing/exporting the equation to a file
 		var finishItemButtons = [];
-		finishItemButtons.push(layout.createButton("Import", null, "var(--theme-color-main)"));
-		finishItemButtons.push(layout.createButton("Export", null, "var(--theme-color-main)"));	
+			
+		// Deletes every item in the equation
+		var clearButtonClick = function () {
+			// Reset all the item counts
+			calculator_build.resetItemCounts();
+			
+			// Hide the clear/export buttons below the equation
+			calculator_build.toggleEquationFinishButtons();
+			
+			setTimeout(function ()
+			{
+				// Clear the item div of all items
+				itemDiv.innerHTML = "";
+				
+				// Re-evaluate the equation to clear the solution wrapper and graph
+				calculator_solve.evaluateItems();
+			},200);
+		};
+		
+		var clearButton = layout.createButton("Clear", clearButtonClick, "var(--theme-color-main)");
+		
+		// Exports the equation and solution to a latex file
+		// This can be viewed in the users latex rendered of choice
+		var exportButtonClick = function () {
+			// Append starting latex boilerplate
+			var latex = "\\documentclass{article}\n"
+			latex += "\\usepackage{amsmath}\n"
+			latex += "\\begin{document}\n"
+			
+			// Only export the equation if it is not blank
+			if (equation.length > 0)
+			{
+				// Convert each item to latex and add it to the string
+				var i = 0;
+				while (i < equation.length)
+				{
+					var item = equation[i];
+					// If i = equation.length, then this item is the solution so append an equals sign
+					if (i == equation.length - 1)
+					{
+						latex += "=\n";
+					}
+					
+					// Add the item to the string after it has been converted to latex
+					latex += calculator_display.itemToLatex(item);
+					latex += "\n";
+					
+					i += 1;
+				};
+
+				// Finalise the latex string
+				latex += "\\end{document}"
+	
+				// Provide a link for the file to the users browser that will auto-download
+				var blob = new Blob([latex], { type: 'text/plain' });
+				
+				// Create the download link element
+				var fileAnchor = document.createElement("a");
+				fileAnchor.download = "equation.latex";
+				fileAnchor.href = (window.URL).createObjectURL(blob);
+				fileAnchor.dataset.downloadurl = ['text/plain', fileAnchor.download, fileAnchor.href].join(':');
+				
+				// Begin the download
+				fileAnchor.click();
+			}
+		};
+		
+		var exportButton = layout.createButton("Export", exportButtonClick, "var(--theme-color-main)");
+
+		finishItemButtons.push(clearButton);
+		finishItemButtons.push(exportButton);
 		
 		// Create the finishButtonDiv
 		var equationFinishButtonDiv = layout.createButtonRow(finishItemButtons);

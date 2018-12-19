@@ -556,7 +556,7 @@ calculator_solve = function ()
 	self.evaluateItems = function ()
 	{
 		// Parses the equation inputted by the user
-		var equation = self.parseItemValues();
+		equation = self.parseItemValues();
 		
 		if (typeof(equation) == "object" && equation.length == 0)
 		{

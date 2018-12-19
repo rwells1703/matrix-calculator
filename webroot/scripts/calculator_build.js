@@ -4,7 +4,7 @@ calculator_build = function ()
 	var self = {};
 	
 	// Counts increase/decrease for every item added/removed from the equation
-	self.setItemCounts = function ()
+	self.resetItemCounts = function ()
 	{
 		scalarCount = 0;
 		gridCount = 0;

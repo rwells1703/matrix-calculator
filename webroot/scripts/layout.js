@@ -11,7 +11,7 @@ layout = function ()
 
 	// Creates a new button with a label and a click event
 	self.createButton = function (innerHTML, clickFunction, backgroundColor)
-	{
+	{		
 		var button = document.createElement("div");
 		
 		button.style.display = "table";

@@ -3,12 +3,6 @@ calculator_display = function ()
 {
 	var self = {};
 	
-	// Converts a Scalar item into a latex string
-	self.scalarToLatex = function (scalar)
-	{
-		return scalar.value;
-	};
-	
 	// Converts a Grid item into a latex string
 	self.gridToLatex = function (grid)
 	{
@@ -47,10 +41,10 @@ calculator_display = function ()
 	// Converts any item into a latex string
 	self.itemToLatex = function (item)
 	{
-		// Scalar item
-		if (item.type == "Scalar")
+		// Scalar, bracket and operation item
+		if (item.type == "Scalar" || item.type == "Bracket" || item.type == "Operation")
 		{
-			return self.scalarToLatex(item);
+			return item.value;
 		}
 		// Grid items
 		else if (item.type == "Matrix" || item.type == "Vector")

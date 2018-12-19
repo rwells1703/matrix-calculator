@@ -472,3 +472,12 @@ Coursework 2018-12-15-23-15:
 
 Coursework 2018-12-17-23-13:
 - (about.html) Small technical change to definition of inverse.
+
+Coursework 2018-12-19-21-54:
+- (calculator_build.js) Renamed "setItemCounts" function to "resetItemCounts" to better reflect its use.
+- (calculator_layout.js) Replaced "import" button with a "clear" button in "finishItemButtons".
+- (calculator_layout.js) Added functionality to "export" button so that it converts the equation and its solution to latex and then exports it to a file called "equation.latex".
+- (calculator_layout.js) Added functionality to "clear" button so that it removed all items from the itemDiv, hides the finishItemButtons, resets all item counts, then re-evaluates the equation to clear the grid and solution divs.
+- (calculator_display.js) Removed "scalarToLatex" function as it can be done with a single line of code.
+- (calculator_display.js) Changed "itemToLatex" so that it also supports operations and brackets.
+- (calculator_solve.js) Made the "equation" variable globally available after evaluation, so that it can be exported afterwards without the export function having to re-evaluate. This increases efficiency.

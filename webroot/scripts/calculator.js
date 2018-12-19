@@ -2,7 +2,7 @@ window.addEventListener("resize", calculator_layout.resizePage, false);
 
 calculator_layout.createMainDiv();
 
-calculator_build.setItemCounts();
+calculator_build.resetItemCounts();
 
 calculator_canvas.registerMouseEvents();
 calculator_canvas.setupWebGL();
