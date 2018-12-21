@@ -199,10 +199,8 @@ calculator_layout = function()
 		// Exports the equation and solution to a latex file
 		// This can be viewed in the users latex rendered of choice
 		var exportButtonClick = function () {
-			// Append starting latex boilerplate
-			var latex = "\\documentclass{article}\n"
-			latex += "\\usepackage{amsmath}\n"
-			latex += "\\begin{document}\n"
+			var latex = "";
+			latex += "\\[";
 			
 			// Only export the equation if it is not blank
 			if (equation.length > 0)
@@ -220,20 +218,32 @@ calculator_layout = function()
 					
 					// Add the item to the string after it has been converted to latex
 					latex += calculator_display.itemToLatex(item);
-					latex += "\n";
+					latex += " ";
 					
 					i += 1;
 				};
-
-				// Finalise the latex string
-				latex += "\\end{document}"
-	
+				
+				latex += "\\]";
+				
+				// Construct a HTML page to display the equation using MathJax
+				var page = "";
+				page += "<html>\n<head>\n";
+				
+				// Add MathJax scripts
+				page += "<script type='text/x-mathjax-config'>MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>\n";
+				page += "<script type='text/javascript' async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'></script>\n";
+				page += "</head>\n<body>\n<span>\n";
+				
+				// Add LaTeX typesetting
+				page += latex;
+				page += "\n<\span>\n</body>\n</html>";
+				
 				// Provide a link for the file to the users browser that will auto-download
-				var blob = new Blob([latex], { type: 'text/plain' });
+				var blob = new Blob([page], { type: 'text/plain' });
 				
 				// Create the download link element
 				var fileAnchor = document.createElement("a");
-				fileAnchor.download = "equation.latex";
+				fileAnchor.download = "equation.html";
 				fileAnchor.href = (window.URL).createObjectURL(blob);
 				fileAnchor.dataset.downloadurl = ['text/plain', fileAnchor.download, fileAnchor.href].join(':');
 				

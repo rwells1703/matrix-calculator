@@ -481,3 +481,8 @@ Coursework 2018-12-19-21-54:
 - (calculator_display.js) Removed "scalarToLatex" function as it can be done with a single line of code.
 - (calculator_display.js) Changed "itemToLatex" so that it also supports operations and brackets.
 - (calculator_solve.js) Made the "equation" variable globally available after evaluation, so that it can be exported afterwards without the export function having to re-evaluate. This increases efficiency.
+
+Coursework 2018-12-21-23-05:
+- (index.html) Added welcome and explanation of each of the pages.
+- (base.html) Swapped the position of "Calculator" and "About" in the navbar.
+- (theme.js) Updated navbar current page hilighting to reflect the above change.

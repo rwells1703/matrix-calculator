@@ -181,11 +181,11 @@ theme = function ()
 		{
 			navbarItems[0].className = "navbar-item active";
 		}
-		else if (page == "about.html")
+		else if (page == "calculator.html")
 		{
 			navbarItems[1].className = "navbar-item active";
 		}
-		else if (page == "calculator.html")
+		else if (page == "about.html")
 		{
 			navbarItems[2].className = "navbar-item active";
 		}
