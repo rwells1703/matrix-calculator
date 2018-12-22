@@ -150,7 +150,7 @@ calculator_solve = function ()
 	// Copies all values from an object so it can be passed by-value instead of by-reference
 	self.deepClone = function (object)
 	{
-		return JSON.parse(JSON.stringify(object));
+		return Object.assign({}, object);
 	};
 	
 	// Makes a new array, deep cloning all the objects in the original array
@@ -556,7 +556,7 @@ calculator_solve = function ()
 	self.evaluateItems = function ()
 	{
 		// Parses the equation inputted by the user
-		equation = self.parseItemValues();
+		var equation = self.parseItemValues();
 		
 		if (typeof(equation) == "object" && equation.length == 0)
 		{

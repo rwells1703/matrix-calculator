@@ -490,3 +490,10 @@ Coursework 2018-12-21-23-05:
 Coursework 2018-12-22-12-48:
 - (calculator_layout.js) Changed canvas gl context so the drawing buffer is preserved.
 - (calculator_layout.js) Added a graph to exported equations by converting the canvas to a .PNG file and embedding it in an "img" tag.
+
+Coursework 2018-12-22-20-22:
+- (calculator_layout.js) Changed export button click function so that it evaluates the equation at the time the button is clicked.
+- (calculator_layout.js) Added spaces to the exported HTML equation file to make it easier to read.
+- (calculator_layout.js) Added error reporting to the exported HTML equation.
+- (calculator_solve.js) Changed "equation" back to a local variable being parsed around by value.
+- (calculator_solve.js) Fixed bug with "deepClone" function that meant functions were not copied, only properties. JSON parse then stringify is not capable of copying functions, so used Object.assign instead.

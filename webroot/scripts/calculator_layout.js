@@ -198,69 +198,100 @@ calculator_layout = function()
 		
 		// Exports the equation and solution to a latex file
 		// This can be viewed in the users latex rendered of choice
-		var exportButtonClick = function () {
+		var exportButtonClick = function ()
+		{
 			var latex = "";
 			latex += "\\[";
 			
-			// Only export the equation if it is not blank
-			if (equation.length > 0)
+			// Parses the equation inputted by the user
+			var equation = calculator_solve.parseItemValues();
+			
+			if (typeof(equation) == "object" && equation.length == 0)
 			{
-				// Convert each item to latex and add it to the string
-				var i = 0;
-				while (i < equation.length)
+				latex += "Empty \\space Equation \\]";
+			}
+			else if (equation == false)
+			{
+				latex += "Parse \\space Failed \\]";
+			}
+			else
+			{
+				// Only export the equation if it is not blank
+				if (equation.length > 0)
 				{
-					var item = equation[i];
-					// If i = equation.length, then this item is the solution so append an equals sign
-					if (i == equation.length - 1)
+					// Convert each item to latex and add it to the string
+					var i = 0;
+					while (i < equation.length)
 					{
-						latex += "=\n";
-					}
+						var item = equation[i];
+						
+						// Add the item to the string after it has been converted to latex
+						latex += calculator_display.itemToLatex(item);
+						latex += " \\space ";
+						
+						i += 1;
+					};
 					
-					// Add the item to the string after it has been converted to latex
-					latex += calculator_display.itemToLatex(item);
-					latex += " ";
-					
-					i += 1;
-				};
+
+				}
+				
+				latex += "=\n";
+				
+				// Solves the parsed equation
+				var solution = calculator_solve.solveEquation(equation);
+				
+				if (solution == false || typeof(solution) == "number")
+				{
+					latex += "Solve \\space Failed";
+				}
+				else if (solution.length > 1)
+				{
+					latex += "No \\space Single \\space Solution";
+				}
+				else
+				{
+					var finalSolution = solution[0];
+					latex += calculator_display.itemToLatex(finalSolution);
+				}
 				
 				latex += "\\]";
-				
-				var canvasImageURL = canvas.toDataURL();
-				
-				// Construct a HTML page to display the equation using MathJax
-				var page = "";
-				page += "<html>\n<head>\n";
-				
-				// Add MathJax scripts
-				page += "<script type='text/x-mathjax-config'>MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>\n";
-				page += "<script type='text/javascript' async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'></script>\n";
-				page += "</head>\n<body>\n<span>\n";
-				
-				// Add LaTeX typesetting
-				page += latex;
-				page += "<br>";
-				
-				// Add canvas image
-				page += "<img style='display: block; margin: 0 auto;' src='" + canvasImageURL + "'></image>";
-				
-				page += "\n<\span>\n</body>\n</html>";
-				
-				// Provide a link for the file to the users browser that will auto-download
-				var blob = new Blob([page], { type: 'text/plain' });
-				
-				// Create the download link element
-				var fileAnchor = document.createElement("a");
-				fileAnchor.download = "equation.html";
-				fileAnchor.href = (window.URL).createObjectURL(blob);
-				fileAnchor.dataset.downloadurl = ['text/plain', fileAnchor.download, fileAnchor.href].join(':');
-				
-				// Begin the download
-				fileAnchor.click();
 			}
+			
+			var canvasImageURL = canvas.toDataURL();
+			
+			// Construct a HTML page to display the equation using MathJax
+			var page = "";
+			page += "<html>\n<head>\n";
+			
+			// Add MathJax scripts
+			page += "<script type='text/x-mathjax-config'>MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>\n";
+			page += "<script type='text/javascript' async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'></script>\n";
+			page += "</head>\n<body>\n<span>\n";
+			
+			// Add LaTeX typesetting
+			page += latex;
+			page += "<br>";
+			
+			// Add canvas image
+			page += "<img style='display: block; margin: 0 auto;' src='" + canvasImageURL + "'></image>";
+			
+			page += "\n<\span>\n</body>\n</html>";
+			
+			// Provide a link for the file to the users browser that will auto-download
+			var blob = new Blob([page], { type: 'text/plain' });
+			
+			// Create the download link element
+			var fileAnchor = document.createElement("a");
+			fileAnchor.download = "equation.html";
+			fileAnchor.href = (window.URL).createObjectURL(blob);
+			fileAnchor.dataset.downloadurl = ['text/plain', fileAnchor.download, fileAnchor.href].join(':');
+			
+			// Begin the download
+			fileAnchor.click();
 		};
 		
 		var exportButton = layout.createButton("Export", exportButtonClick, "var(--theme-color-main)");
-
+		
 		finishItemButtons.push(clearButton);
 		finishItemButtons.push(exportButton);
 		
