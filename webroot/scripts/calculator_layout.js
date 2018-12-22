@@ -141,7 +141,7 @@ calculator_layout = function()
 		
 		solutionDiv.appendChild(solutionWrapper);
 		
-		gl = canvas.getContext("webgl");
+		gl = canvas.getContext("webgl",{preserveDrawingBuffer:true});
 	};
 	
 	// Create new div to hold the current matrix equation and the buttons used for editing the equation
@@ -225,6 +225,8 @@ calculator_layout = function()
 				
 				latex += "\\]";
 				
+				var canvasImageURL = canvas.toDataURL();
+				
 				// Construct a HTML page to display the equation using MathJax
 				var page = "";
 				page += "<html>\n<head>\n";
@@ -236,6 +238,11 @@ calculator_layout = function()
 				
 				// Add LaTeX typesetting
 				page += latex;
+				page += "<br>";
+				
+				// Add canvas image
+				page += "<img style='display: block; margin: 0 auto;' src='" + canvasImageURL + "'></image>";
+				
 				page += "\n<\span>\n</body>\n</html>";
 				
 				// Provide a link for the file to the users browser that will auto-download

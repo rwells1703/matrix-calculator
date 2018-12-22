@@ -486,3 +486,7 @@ Coursework 2018-12-21-23-05:
 - (index.html) Added welcome and explanation of each of the pages.
 - (base.html) Swapped the position of "Calculator" and "About" in the navbar.
 - (theme.js) Updated navbar current page hilighting to reflect the above change.
+
+Coursework 2018-12-22-12-48:
+- (calculator_layout.js) Changed canvas gl context so the drawing buffer is preserved.
+- (calculator_layout.js) Added a graph to exported equations by converting the canvas to a .PNG file and embedding it in an "img" tag.
