@@ -497,3 +497,6 @@ Coursework 2018-12-22-20-22:
 - (calculator_layout.js) Added error reporting to the exported HTML equation.
 - (calculator_solve.js) Changed "equation" back to a local variable being parsed around by value.
 - (calculator_solve.js) Fixed bug with "deepClone" function that meant functions were not copied, only properties. JSON parse then stringify is not capable of copying functions, so used Object.assign instead.
+
+Coursework 2018-12-29-17-05:
+- (index.html) Changed the layout of the text so that it is easier to read.
