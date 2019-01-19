@@ -3,6 +3,7 @@ calculator_solve = function ()
 {
 	var self = {};
 	
+	// Gets the unit that should be used for angles (degrees or radians)
 	angleUnit = localStorage.getItem("settingAngleUnit");
 	
 	// Takes an array, and replaces a specified section of that array with a new array
@@ -32,6 +33,8 @@ calculator_solve = function ()
 				
 				// Convert the string value to an float value and create a new Scalar object using it
 				var value = parseFloat(textBox.value);
+				
+				// Reject non numeric values
 				if (typeof(value) != "number" || isNaN(value))
 				{
 					return false;
@@ -64,6 +67,8 @@ calculator_solve = function ()
 						var textBox = textBoxes[r * (calculator_build.gridMaxRows-1) + c];
 
 						var value = parseFloat(textBox.value);
+						
+						// Reject non numeric values
 						if (typeof(value) != "number" || isNaN(value))
 						{
 							return false;
@@ -84,6 +89,7 @@ calculator_solve = function ()
 			// Parse operation items
 			else if (item.className == "operation")
 			{
+				// Maps operation abbreviations to their full names
 				var operationValueDict =
 				{
 					"+":"Add",
@@ -116,6 +122,7 @@ calculator_solve = function ()
 					"Norm":"Normal Vector"
 				};
 				
+				// Get the full operation name from its abbreviation
 				var operationValue = operationValueDict[item.getAttribute("value")];
 				
 				// Unknown operation referenced
@@ -125,6 +132,8 @@ calculator_solve = function ()
 				}
 				
 				var variadicFunction = false;
+				
+				// Normal vector is the only variadic function
 				if (operationValue == "Normal Vector")
 				{
 					variadicFunction = true;
@@ -137,6 +146,12 @@ calculator_solve = function ()
 			else if (item.className == "bracket")
 			{
 				var bracketValue = item.getAttribute("value");
+				
+				// Bracket type has not been chosen
+				if (bracketValue == null)
+				{
+					return false;
+				}
 				
 				equation[i] = calculator_items.Bracket(bracketValue);
 			}
@@ -198,7 +213,7 @@ calculator_solve = function ()
 	self.solveBrackets = function (equation)
 	{
 		var equation = self.deepCloneArray(equation);
-		
+
 		// Counter and location of brackets
 		var unclosedBrackets = 0;
 		var openBracketLocation = -1;
@@ -206,7 +221,7 @@ calculator_solve = function ()
 		// Continues recursion inside brackets if necessary
 		var position = 0;
 		while (position < equation.length)
-		{
+		{			
 			if (equation[position].value == "(")
 			{
 				if (unclosedBrackets == 0)
@@ -223,10 +238,9 @@ calculator_solve = function ()
 				{
 					return false;
 				}
-
-				unclosedBrackets -= 1;
-				if (unclosedBrackets == 0)
+				else if (unclosedBrackets == 1)
 				{
+					unclosedBrackets -= 1;
 					var bracketSolution = self.solveEquation(equation.slice(openBracketLocation + 1, position));
 					
 					// If solving brackets was not possible
@@ -246,6 +260,12 @@ calculator_solve = function ()
 			position += 1;
 		}
 		
+		// If there are still unclosed brackets left
+		if (unclosedBrackets != 0)
+		{
+			return false;
+		}
+				
 		return equation;
 	};
 	
@@ -254,6 +274,11 @@ calculator_solve = function ()
 	{
 		var equation = self.deepCloneArray(equation);
 		
+		var variadicFunctionOperations = [];
+		variadicFunctionOperations.push(
+			self.createOperation("Normal Vector", calculator_operations.normalVector)
+		);
+
 		var i = 0;
 		while (i < equation.length - 3)
 		{
@@ -298,29 +323,29 @@ calculator_solve = function ()
 					{
 						return false;
 					}
-					
-					var solved = false;
 
-					if (equation[i].value == "Normal Vector")
+					var solution = false;
+
+					var o = 0;
+					while (o < variadicFunctionOperations.length)
 					{
-						var solution = calculator_operations.normalVector(operands);
-						solved = true;
+						var operation = variadicFunctionOperations[o];
+						
+						if (equation[i].value == operation.name)
+						{
+							var solution = operation.operationFunction(operands);
+						}
+
+						o += 1;
 					}
-					// If an unknown variadic function has been referenced
-					else
+
+					// The function could not be solved or an unkown variadic function has been referenced
+					if (solution == false)
 					{
 						return false;
 					}
 
-					if (solved == true)
-					{
-						if (solution == false)
-						{
-							return false;
-						}
-
-						equation = replaceArraySection(equation, i, inputEndIndex, solution);
-					}
+					equation = replaceArraySection(equation, i, inputEndIndex, solution);
 				}
 			}
 			
@@ -548,22 +573,24 @@ calculator_solve = function ()
 		equation = self.solveBrackets(equation);
 		equation = self.solveVariadicFunctions(equation);
 		equation = self.solveOperationGroups(equation);
-
+		
 		return equation;
 	};
 	
 	// Performs the required steps to solve the equation inputted by the user, and display it to the page
 	self.evaluateItems = function ()
 	{
-		// Parses the equation inputted by the user
+		// Attempts to parse the equation inputted by the user
 		var equation = self.parseItemValues();
 		
+		// Equation is empty
 		if (typeof(equation) == "object" && equation.length == 0)
 		{
 			calculator_display.displaySolutionBelowGraph(false, "Empty equation");
 			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
+		// Equation could not be parsed due to errors in formatting e.g. missing number
 		else if (equation == false)
 		{
 			calculator_display.displaySolutionBelowGraph(false, "Parse failed");
@@ -571,24 +598,19 @@ calculator_solve = function ()
 			return false;
 		}
 		
-		// Solves the parsed equation
+		// Attempts to solve the parsed equation
 		var solution = self.solveEquation(equation);
 		
-		// Check if the solution is false, or if it is a reference to the position of an operation the causing error
-		if (solution == false || typeof(solution) == "number")
+		// Check if the solution is false, or if it does not solve to a single item
+		// If so, show an error and do not continue
+		if (solution == false || solution.length > 1)
 		{
 			calculator_display.displaySolutionBelowGraph(false, "Solve failed");
 			calculator_display.displayGridsOnGraph(equation);
 			return false;
 		}
-		// If it does not solve to a single item, do not show this as a solution
-		else if (solution.length > 1)
-		{
-			calculator_display.displaySolutionBelowGraph(false, "No single solution");
-			calculator_display.displayGridsOnGraph(equation);
-			return false;
-		}
 		
+		// Get the final solution from the array as a single object
 		var finalSolution = solution[0];
 		
 		// Displays the final solution underneath the graph

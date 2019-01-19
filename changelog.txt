@@ -500,3 +500,12 @@ Coursework 2018-12-22-20-22:
 
 Coursework 2018-12-29-17-05:
 - (index.html) Changed the layout of the text so that it is easier to read.
+
+Coursework 2019-01-19-22-32:
+- (calculator_solve.js) Change to the method in which variadic functions are evaluated. It now relies on the 'createOperation' function, so is easier to extend when adding new variadic functions.
+- (calculator_solve.js) Removed unecessary error checking in 'evaluateItems' for position of an errors as a number as an output from 'solveEquation'.
+- (calculator_solve.js) Removed the 'No single solution' error in 'evaluateItems', 'Solve failed' now occurs for all solving errors.
+- (calculator_solve.js) Fixed bug with 'solveBrackets' where unclosed brackets were did not result in an error.
+- (calculator_solve.js) Fixed bug in 'parseItems' where bracket type did not need to be selected, for parse to finish successfully.
+- (calculator_solve.js) Added more comments.
+- Began to implement automated testing of equation solving functions.
