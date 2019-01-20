@@ -509,3 +509,6 @@ Coursework 2019-01-19-22-32:
 - (calculator_solve.js) Fixed bug in 'parseItems' where bracket type did not need to be selected, for parse to finish successfully.
 - (calculator_solve.js) Added more comments.
 - Began to implement automated testing of equation solving functions.
+
+Coursework 2019-01-20-23-51:
+- Added try catch to prevent test suite from crashing on errors.

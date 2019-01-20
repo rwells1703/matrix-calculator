@@ -8,7 +8,7 @@ var testEquations = [
 	[[i.Scalar(6),i.Operation('Multiply'),i.Scalar(2)], 'normal multiply'],
 	[[i.Scalar(6),i.Operation('Divide'),i.Scalar(2)], 'normal divide'],
 
-	[[i.Scalar(3),i.Operation('Add'),i.Scalar(11)], 'negative subtract'],
+	[[i.Scalar(-3),i.Operation('Subtract'),i.Scalar(-11)], 'negative subtract'],
 	[[i.Scalar(-4),i.Operation('Multiply'),i.Scalar(9)], 'negative multiply'],
 
 	[[i.Scalar(0.3),i.Operation('Add'),i.Scalar(0.4)], 'add two decimals'],
@@ -76,7 +76,7 @@ var testEquations = [
 	[[i.Operation('Ln'), i.Scalar(0)], 'ln 0'],
 	[[i.Operation('Ln'), i.Scalar(-3)], 'ln negative'],
 
-	[[i.Scalar(5),i.Operation('Add'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar add matrix'],
+	[[i.Scalar(2),i.Operation('Add'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar add matrix'],
 	[[i.Scalar(2),i.Operation('Subtract'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar subtract matrix'],
 	[[i.Scalar(2),i.Operation('Multiply'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar multiply matrix'],
 
@@ -106,10 +106,10 @@ var testEquations = [
 
 	[[i.Operation('Determinant'), i.Grid([[i.Scalar(4)]])], '1x1 matrix determinant'],
 	[[i.Operation('Transpose'), i.Grid([[i.Scalar(4)]])], '1x1 matrix transpose'],
-	//[[i.Operation('Minors'), i.Grid([[i.Scalar(4)]])], '1x1 matrix minors'],
-	//[[i.Operation('Cofactors'), i.Grid([[i.Scalar(4)]])], '1x1 matrix cofactors'],
-	//[[i.Operation('Adjugate'), i.Grid([[i.Scalar(4)]])], '1x1 matrix adjugate'],
-	//[[i.Operation('Inverse'), i.Grid([[i.Scalar(4)]])], '1x1 matrix inverse'],
+	[[i.Operation('Minors'), i.Grid([[i.Scalar(4)]])], '1x1 matrix minors'],
+	[[i.Operation('Cofactors'), i.Grid([[i.Scalar(4)]])], '1x1 matrix cofactors'],
+	[[i.Operation('Adjugate'), i.Grid([[i.Scalar(4)]])], '1x1 matrix adjugate'],
+	[[i.Operation('Inverse'), i.Grid([[i.Scalar(4)]])], '1x1 matrix inverse'],
 
 	[[i.Operation('Minor'), i.Grid([[i.Scalar(1),i.Scalar(9),i.Scalar(4)],[i.Scalar(6),i.Scalar(3),i.Scalar(5)],[i.Scalar(0),i.Scalar(7),i.Scalar(2)]]), i.Scalar(1), i.Scalar(1)], 'normal minor matrix'],
 	[[i.Operation('Minor'), i.Grid([[i.Scalar(1),i.Scalar(9),i.Scalar(4)],[i.Scalar(6),i.Scalar(3),i.Scalar(5)],[i.Scalar(0),i.Scalar(7),i.Scalar(2)]]), i.Scalar(-2), i.Scalar(-4)], 'below bounds minor matrix'],
@@ -127,16 +127,25 @@ var testEquations = [
 	[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Bracket("]")], 'normal vector from 2d vector'],
 	[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)]]), i.Bracket("]")], 'normal vector from 2d and 2d vector'],
 	[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)],[i.Scalar(2)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(9)]]), i.Bracket("]")], 'normal vector from 3d and 3d vectors'],
-	[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(9)]]), i.Bracket("]")], 'normal vector from 2d and 3d vectors']
+	[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(4)]]), i.Bracket("]")], 'normal vector from 2d and 3d vectors']
 ];
 
 // Performs the tests
 var n = 0;
 while (n < testEquations.length) {
+	// Get the input equation
 	var equation = testEquations[n][0];
 
-	var solution = calculator_solve.solveEquation(equation);
+	try {
+		// Attempt to solve the equation
+		var solution = calculator_solve.solveEquation(equation);
+	}
+	// If an error is thrown, log this in the console
+	catch(err) {
+		var solution = "Error thrown: " + err
+	}
 
+	// Log the output of the test to the console
 	console.log("Test " + (n+1) + " - " +  testEquations[n][1]);
 
 	console.log("Equation:");
@@ -147,5 +156,6 @@ while (n < testEquations.length) {
 
 	console.log("");
 	
+	// Move on to the next test
 	n += 1;
 }
