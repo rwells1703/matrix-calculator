@@ -512,3 +512,6 @@ Coursework 2019-01-19-22-32:
 
 Coursework 2019-01-20-23-51:
 - Added try catch to prevent test suite from crashing on errors.
+
+Coursework 2019-01-23-15-19:
+- Added a few more mathematical tests.

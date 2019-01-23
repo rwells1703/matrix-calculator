@@ -62,6 +62,7 @@ var testEquations = [
 
 	[[i.Scalar(5),i.Operation('Factorial')], 'normal factorial'],
 	[[i.Scalar(0),i.Operation('Factorial')], '0 factorial'],
+	[[i.Scalar(2.6),i.Operation('Factorial')], 'decimal factorial'],
 	[[i.Scalar(-3),i.Operation('Factorial')], 'negative factorial'],
 
 	[[i.Operation('Log'), i.Scalar(10), i.Scalar(23)], 'log base 10 normal'],
@@ -85,17 +86,18 @@ var testEquations = [
 	[[i.Scalar(2),i.Operation('Exponential'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar exponential matrix'],
 	[[i.Scalar(2),i.Operation('Combinations'),i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'scalar combinations matrix'],
 
-	[[i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]]), i.Operation('Exponential'), i.Scalar(2)], 'matrix exponential scalar'],
+	[[i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]]), i.Operation('Exponential'), i.Scalar(2)], 'square matrix exponential scalar'],
+	[[i.Grid([[i.Scalar(1),i.Scalar(9),i.Scalar(2)],[i.Scalar(6),i.Scalar(5),i.Scalar(4)]]), i.Operation('Exponential'), i.Scalar(2)], 'non-square matrix exponential scalar'],
 	[[i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]]), i.Operation('Exponential'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix exponential matrix'],
 
 	[[i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]]), i.Operation('Factorial')], 'matrix factorial'],
 
-	[[i.Operation('Determinant'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix determinant'],
-	[[i.Operation('Transpose'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix transpose'],
-	[[i.Operation('Minors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix minors'],
-	[[i.Operation('Cofactors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix cofactors'],
-	[[i.Operation('Adjugate'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix adjugate'],
-	[[i.Operation('Inverse'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'matrix inverse'],
+	[[i.Operation('Determinant'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix determinant'],
+	[[i.Operation('Transpose'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix transpose'],
+	[[i.Operation('Minors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix minors'],
+	[[i.Operation('Cofactors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix cofactors'],
+	[[i.Operation('Adjugate'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix adjugate'],
+	[[i.Operation('Inverse'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], 'square matrix inverse'],
 
 	[[i.Operation('Determinant'), i.Grid([[i.Scalar(1),i.Scalar(9)]])], 'non-square matrix determinant'],
 	[[i.Operation('Transpose'), i.Grid([[i.Scalar(1),i.Scalar(9)]])], 'non-square matrix transpose'],
@@ -155,7 +157,7 @@ while (n < testEquations.length) {
 	console.log(solution);
 
 	console.log("");
-	
+
 	// Move on to the next test
 	n += 1;
 }
