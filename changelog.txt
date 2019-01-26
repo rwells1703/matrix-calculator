@@ -515,3 +515,11 @@ Coursework 2019-01-20-23-51:
 
 Coursework 2019-01-23-15-19:
 - Added a few more mathematical tests.
+
+Coursework 2019-01-26-22-36:
+- (calculator_solve.js) Fixed bug where 'deepCloneArray' returns an empty array when passed false.
+- (calculator_solve.js) Added special cases for commonly used values in trigonometric functions e.g. sin pi, to prevent them from being slightly innacurate.
+- (calculator_solve.js) Made permutations function undefined for r < 0.
+- (calculator_solve.js) Prevented log (and ln) function from accepting base or number less than 1.
+- (calculator_solve.js) Prevented scalars from being added or subtred from matrices/vectors.
+- (calculator_solve.js) Restricted 'getMinorMatrix' method of 'Matrix' class undefined for Matrices with sizes less than 2x2.

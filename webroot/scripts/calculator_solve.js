@@ -12,6 +12,31 @@ calculator_solve = function ()
 		return array.slice(0, start).concat(replacement).concat(array.slice(end + 1, array.length));
 	};
 	
+	// Verifies that a string value is in the form of a numeric value
+	var verifyNumericValue = function (value)
+	{
+		// RegEx to find any numeric value, positive or negative, integer or decimal
+		var checkNumericValue = new RegExp('[+-]?(\\d)+([.](\\d)+)?');
+		
+		// Try and find any matches within the value
+		var match = checkNumericValue.exec(value);
+
+		// If there is no match, return false
+		if (match == null)
+		{
+			return false;
+		}
+		
+		// If the first match found is not the same as the textbox value, return false
+		if (match[0] != value)
+		{
+			return false;
+		}
+
+		// The value is numeric
+		return true;
+	};
+
 	// Returns an array containing objects for each item in the equation
 	self.parseItemValues = function ()
 	{
@@ -31,16 +56,18 @@ calculator_solve = function ()
 				// Take the value from the text box
 				var textBox = item.getElementsByTagName("input")[0];
 				
-				// Convert the string value to an float value and create a new Scalar object using it
-				var value = parseFloat(textBox.value);
-				
-				// Reject non numeric values
-				if (typeof(value) != "number" || isNaN(value))
+				if (verifyNumericValue(textBox.value))
+				{
+					// Convert the string value to an float value and create a new Scalar object using it
+					var value = parseFloat(textBox.value);
+					
+					// Create a Scalar item from the textbox value
+					equation[i] = calculator_items.Scalar(value);
+				}
+				else
 				{
 					return false;
 				}
-				
-				equation[i] = calculator_items.Scalar(value);
 			}
 
 			// Parse grid (matrix or vector) items
@@ -66,14 +93,17 @@ calculator_solve = function ()
 						// Adds a new floating point value to the row
 						var textBox = textBoxes[r * (calculator_build.gridMaxRows-1) + c];
 
-						var value = parseFloat(textBox.value);
-						
-						// Reject non numeric values
-						if (typeof(value) != "number" || isNaN(value))
+						if (verifyNumericValue(textBox.value))
+						{
+							// Convert the string value to an float value and create a new Scalar object using it
+							var value = parseFloat(textBox.value);
+						}
+						else
 						{
 							return false;
 						}
 						
+						// Create a Scalar item from the textbox value
 						values[r].push(calculator_items.Scalar(value));
 						
 						c += 1;
@@ -171,6 +201,11 @@ calculator_solve = function ()
 	// Makes a new array, deep cloning all the objects in the original array
 	self.deepCloneArray = function (array)
 	{
+		if (array == false)
+		{
+			return false;
+		}
+		
 		var newArray = [];
 		
 		var i = 0;
@@ -240,7 +275,6 @@ calculator_solve = function ()
 				}
 				else if (unclosedBrackets == 1)
 				{
-					unclosedBrackets -= 1;
 					var bracketSolution = self.solveEquation(equation.slice(openBracketLocation + 1, position));
 					
 					// If solving brackets was not possible
@@ -255,6 +289,8 @@ calculator_solve = function ()
 					position = openBracketLocation - 1;
 					openBracketLocation = -1;
 				}
+
+				unclosedBrackets -= 1;
 			}
 
 			position += 1;

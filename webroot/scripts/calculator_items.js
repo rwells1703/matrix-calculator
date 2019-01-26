@@ -302,6 +302,12 @@ calculator_items = function ()
 			{
 				return false;
 			}
+			
+			// If the amount of rows or columns of the matrix is 1 or less, the matrix of minors is undefined
+			if (self.rows <= 1 || self.columns <= 1)
+			{
+				return false;
+			}
 
 			var minors = calculator_logic.generateZeroGrid(self.rows, self.columns);
 

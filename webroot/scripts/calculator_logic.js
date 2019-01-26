@@ -13,7 +13,7 @@ calculator_logic = function ()
 	self.factorial = function (scalar)
 	{
 		// Factorial is undefined for n < 0
-		if (scalar.value < 0)
+		if (scalar.value < 0 || scalar == false)
 		{
 			return false;
 		}
@@ -32,6 +32,12 @@ calculator_logic = function ()
 	
 	self.permutations = function (n, r)
 	{
+		// Checks for r<0, no need to check for n < 0 as this is covered in the factorial
+		if (r.value < 0)
+		{
+			return false;
+		}
+
 		var numerator = calculator_logic.factorial(n);
 		var denominator = calculator_logic.factorial(calculator_items.Scalar(n.value - r.value));
 		
@@ -52,10 +58,21 @@ calculator_logic = function ()
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			inputValue *= Math.PI/180;
 		}
-		
-		return calculator_items.Scalar(Math.sin(inputValue));
+
+		// Special case: Sin pi, 2pi, 3pi... evaluate to 0
+		if (inputValue % Math.PI == 0)
+		{
+			var outputValue = 0;
+		}
+		else
+		{
+			var outputValue = Math.sin(inputValue);
+		}
+
+		return calculator_items.Scalar(outputValue);
 	};
 	
 	self.cos = function (scalar)
@@ -64,10 +81,21 @@ calculator_logic = function ()
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			inputValue *= Math.PI/180;
 		}
 		
-		return calculator_items.Scalar(Math.cos(inputValue));
+		// Special case: Cos pi/2, 3pi/2, 5pi/2... evaluate to 0
+		if (inputValue % (Math.PI/2) == 0 && inputValue % Math.PI != 0)
+		{
+			var outputValue = 0;
+		}
+		else
+		{
+			var outputValue = Math.cos(inputValue);
+		}
+
+		return calculator_items.Scalar(outputValue);
 	};
 	
 	self.tan = function (scalar)
@@ -76,10 +104,26 @@ calculator_logic = function ()
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			inputValue *= Math.PI/180;
 		}
+
+		// Special case: Tan pi, 2pi, 3pi... evaluate to 0
+		if (inputValue % Math.PI == 0)
+		{
+			var outputValue = 0;
+		}
+		// Special case: Tan pi/2, 3pi/2, 5pi/2... evaluate to false
+		else if (inputValue % (Math.PI/2) == 0)
+		{
+			var outputValue = false;
+		}
+		else
+		{
+			var outputValue = Math.tan(inputValue);
+		}
 		
-		return calculator_items.Scalar(Math.tan(inputValue));
+		return calculator_items.Scalar(outputValue);
 	};
 	
 	self.arcsin = function (scalar)
@@ -130,8 +174,8 @@ calculator_logic = function ()
 	
 	self.log = function (base, scalar)
 	{
-		// Logs are undefined for negative numbers
-		if (scalar.value < 0)
+		// Logs are undefined for negative numbers and zero (for both base and scalar)
+		if (scalar.value <= 0 || base.value <= 0)
 		{
 			return false;
 		}
@@ -150,8 +194,8 @@ calculator_logic = function ()
 	
 	self.ln = function (scalar)
 	{
-		// Logs are undefined for negative numbers
-		if (scalar.value < 0)
+		// Logs are undefined for negative numbers and zero
+		if (scalar.value <= 0)
 		{
 			return false;
 		}
