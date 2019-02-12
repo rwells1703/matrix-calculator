@@ -187,7 +187,7 @@ calculator_items = function ()
 				return false;
 			}
 
-			var determinant = calculator_items.Scalar(0);
+			//var determinant = calculator_items.Scalar(0);
 
 			// Recursive base case, we have reached the smallest matrix possible, a 1 x 1
 			if (self.rows == 1 && self.columns == 1)
@@ -202,13 +202,24 @@ calculator_items = function ()
 			var row = 0;
 			while (row < self.rows)
 			{
+				// Move along the first column, taking minor matrices
 				var minor = self.getMinorMatrix(calculator_items.Scalar(row), calculator_items.Scalar(0));
 
 				if (positive)
 				{
 					// Add the minor determinant to the major determinant if we are on a positive row
 					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
-					determinant = calculator_operations.add([determinant, determinantAddition]);
+
+					if (typeof determinant == 'undefined')
+					{
+						// If no determinant exists, create a new one from the first value
+						var determinant = determinantAddition;
+					}
+					else
+					{
+						// Otherwise, add the new value to the existing determinant
+						determinant = calculator_operations.add([determinant, determinantAddition]);
+					}
 					
 					// Switch from positive to negative
 					positive = false;
@@ -217,7 +228,17 @@ calculator_items = function ()
 				{
 					// Otherwise subtract it
 					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
-					determinant = calculator_operations.subtract([determinant, determinantAddition]);
+
+					if (typeof determinant == 'undefined')
+					{
+						// If no determinant exists, create a new one from the first value
+						var determinant = determinantAddition;
+					}
+					else
+					{
+						// Otherwise, add the new value to the existing determinant
+						determinant = calculator_operations.subtract([determinant, determinantAddition]);
+					}
 					
 					// Switch from negative to positive
 					positive = true;

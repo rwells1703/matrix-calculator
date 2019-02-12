@@ -127,7 +127,7 @@
 		[[i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Operation('Cross Product'), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(4)]])], '2 by 3 dimension cross product'],
 		[[i.Grid([[i.Scalar(4)],[i.Scalar(7)],[i.Scalar(2)]]), i.Operation('Cross Product'), i.Grid([[i.Scalar(4)],[i.Scalar(7)],[i.Scalar(2)]])], 'same vectors cross product'],
 
-		[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Bracket("]")], 'normal vector from 2d vector'],
+		[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Bracket("]")], 'normal vector from 2d vector', 'debug'],
 		[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)]]), i.Bracket("]")], 'normal vector from 2d and 2d vector'],
 		[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)],[i.Scalar(2)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(9)]]), i.Bracket("]")], 'normal vector from 3d and 3d vectors'],
 		[[i.Operation('Normal Vector', true), i.Bracket("["), i.Grid([[i.Scalar(4)],[i.Scalar(7)]]), i.Grid([[i.Scalar(1)],[i.Scalar(2)],[i.Scalar(4)]]), i.Bracket("]")], 'normal vector from 2d and 3d vectors']
