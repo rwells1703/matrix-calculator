@@ -106,8 +106,9 @@ calculator_canvas = function ()
 		mouseX = self.canvasXToClipspace(event.clientX);
 		mouseY = self.canvasYToClipspace(event.clientY);
 		mouseDown = false;
-
-		self.createPolygon([mouseX, mouseY], 10, 0.03, [255/255, 80/255, 0/255, 255/255], false);
+		// Gets the main theme colour and converts it from hex to rbg
+		var pinColorObject = self.hexToRgb(document.body.style.getPropertyValue("--theme-color-main"));
+		self.createPolygon([mouseX, mouseY], 10, 0.03, [pinColorObject.r/255, pinColorObject.g/255, pinColorObject.b/255, 255/255], false);
 	};
 	
 	// Create a new shader of the specified type

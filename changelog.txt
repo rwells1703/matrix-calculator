@@ -526,3 +526,7 @@ Coursework 2019-01-26-22-36:
 
 Coursework 2019-02-12-08-28:
 - (calculator_items.js) Fixed bug where determinant throws error when trying to add a vector to a zero scalar (when calculating normal).
+
+Coursework 2019-02-14-18-09:
+- (unit_tests.js) Created script to automatically test the mathematical functions of the calculator.
+- (calculator.html) Unit tests are now excecuted on startup.
