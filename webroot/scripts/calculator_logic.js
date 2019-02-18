@@ -3,13 +3,17 @@ calculator_logic = function ()
 {
 	var self = {};
 	
+	// Operation between two scalar items
 	self.scalarScalarOperation = function (left, right, operation)
 	{
+		// Call the passed in operation function, passing in left and right as arguments
 		var value = operation([left.value, right.value]);
 		
+		// Return a scalar containing its output value
 		return calculator_items.Scalar(value);
 	};
 	
+	// Factorial operation
 	self.factorial = function (scalar)
 	{
 		// Factorial is undefined for n < 0
@@ -30,6 +34,7 @@ calculator_logic = function ()
 		return value;
 	};
 	
+	// Permutations operation
 	self.permutations = function (n, r)
 	{
 		// Checks for r<0, no need to check for n < 0 as this is covered in the factorial
@@ -38,20 +43,28 @@ calculator_logic = function ()
 			return false;
 		}
 
+		// Get the factorial of n
 		var numerator = calculator_logic.factorial(n);
+		// Get the factorial of (n-r)
 		var denominator = calculator_logic.factorial(calculator_items.Scalar(n.value - r.value));
 		
+		// Use the nPr = (n!)/(n-r)! formula to calculate permutations
 		return calculator_operations.divide([numerator, denominator]);
 	};
 	
+	// Combinations operation
 	self.combinations = function (n, r)
 	{
+		// Gets the permutations for this n and r
 		var permutations = calculator_logic.permutations(n, r);
+		// Get the factorial of r
 		var divisor = calculator_logic.factorial(r);
 		
+		// Use nCr = nPr / r! formula to calculate combinations
 		return calculator_operations.divide([permutations, divisor]);
 	};
 	
+	// Sine trigonometry function
 	self.sin = function (scalar)
 	{
 		var inputValue = scalar.value;
@@ -75,6 +88,7 @@ calculator_logic = function ()
 		return calculator_items.Scalar(outputValue);
 	};
 	
+	// Cosine trigonometry function
 	self.cos = function (scalar)
 	{
 		var inputValue = scalar.value;
@@ -98,6 +112,7 @@ calculator_logic = function ()
 		return calculator_items.Scalar(outputValue);
 	};
 	
+	// Tangent trigonometry function
 	self.tan = function (scalar)
 	{
 		var inputValue = scalar.value;
@@ -126,6 +141,7 @@ calculator_logic = function ()
 		return calculator_items.Scalar(outputValue);
 	};
 	
+	// Arcsine trigonometry function
 	self.arcsin = function (scalar)
 	{
 		if (scalar.value < -1 || scalar.value > 1)
@@ -137,12 +153,14 @@ calculator_logic = function ()
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			angle *= 180/Math.PI;
 		}
 		
 		return calculator_items.Scalar(angle);
 	};
 	
+	// Arccosine trigonometry function
 	self.arccos = function (scalar)
 	{
 		if (scalar.value < -1 || scalar.value > 1)
@@ -154,24 +172,28 @@ calculator_logic = function ()
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			angle *= 180/Math.PI;
 		}
 		
 		return calculator_items.Scalar(angle);
 	};
 	
+	// Arctangent trigonometry function
 	self.arctan = function (scalar)
 	{
 		var angle = Math.atan(scalar.value);
 		
 		if (angleUnit == "Degrees")
 		{
+			// Converts input value to degrees
 			angle *= 180/Math.PI;
 		}
 		
 		return calculator_items.Scalar(angle);
 	};
 	
+	// Log base a on n function
 	self.log = function (base, scalar)
 	{
 		// Logs are undefined for negative numbers and zero (for both base and scalar)
@@ -180,18 +202,20 @@ calculator_logic = function ()
 			return false;
 		}
 		
+		// If no base is specified, assume base 10 as default
 		if (base == undefined)
 		{
 			var base = calculator_items.Scalar(10);
 		}
 		
+		// Calculate the numerator and denominator of the fraction that will be evaluated
 		var numerator = Math.log(scalar.value);
 		var denominator = Math.log(base.value);
 		
 		// "log base b of a" is equal to "log a / log b"
 		return calculator_items.Scalar(numerator / denominator);
 	};
-	
+	// Natural log (base e) function
 	self.ln = function (scalar)
 	{
 		// Logs are undefined for negative numbers and zero
@@ -255,9 +279,11 @@ calculator_logic = function ()
 				var shift = 0;
 				while (shift < left.columns)
 				{
-					// Perform the multiplication and place the product in the correct place in the product grid
+					// Perform the multiplication between elements
 					var additionValue = calculator_operations.multiply([left.value[left_row][shift], right.value[shift][right_column]]);
+					// Store the the product in the correct place in the product grid
 					product.value[left_row][right_column] = calculator_operations.add([product.value[left_row][right_column], additionValue]);
+					
 					shift += 1;
 				}
 
@@ -367,10 +393,15 @@ calculator_logic = function ()
 		// Create zero grid to the same order as the matrix
 		var output = matrix;
 		
+		// Multiply the matrix by itself
+		// Continues for the amount of times specified by the scalar
 		var n = scalar.value - 1;
 		while (n > 0)
 		{
+			// Perform the multiplication of the matrix onto its orignal value
 			output = calculator_logic.gridGridProduct(output, matrix);
+
+			// Decrement the exponent counter by 1
 			n -= 1;
 		}
 		
@@ -386,6 +417,7 @@ calculator_logic = function ()
 			return false;
 		}
 
+		// A scalar item to hold to total sum of products between each vector component
 		var total = calculator_items.Scalar(0);
 
 		// Loop through each row (dimension) of the vectors
@@ -395,6 +427,7 @@ calculator_logic = function ()
 			// Multiply the vectors together in the same dimension, and add this value to the total
 			var product = calculator_operations.multiply([left.value[r][0], right.value[r][0]]);
 			total = calculator_operations.add([total, product]);
+
 			r += 1;
 		}
 
@@ -407,25 +440,30 @@ calculator_logic = function ()
 		// Check that all the vectors have the same dimensions
 		var len;
 
+		// Loop through each vector in turn
 		var i = 0;
 		while (i < vectors.length)
 		{
+			// If the vector has a value
 			if (vectors[i].value)
 			{
+				// If the vector contains an array of values (to hold each component)
 				if (Array.isArray(vectors[i].value))
 				{
+					// Verify that the vector is the same length as the rest
 					if (vectors[i].value.length != len && len != undefined)
 					{
 						return false;
 					}
 					else
 					{
-						// Set the column length to be the length of the current column
+						// Set the vector column length to be the length of the current vector column
 						len = vectors[i].value.length;
 					}
 				}
 			}
 
+			// Check the next vector
 			i += 1;
 		}
 
@@ -474,14 +512,19 @@ calculator_logic = function ()
 	// Gets the angle between two vectors using the dot product identity
 	self.vectorVectorAngle = function (left, right)
 	{
+		// Get the dot product between the two vectors
 		var dotProduct = calculator_logic.dotProduct(left,right);
+		// Multiply the magnitudes of both vectors together
 		var magnitudeProduct = calculator_operations.multiply([left.getMagnitude(), right.getMagnitude()]);
 		
+		// If either of the magnitude values is 0 there is no angle between the vectors
+		// This means one or both of the vectors contains all zeros, and is essentially a single point at the origin
 		if (magnitudeProduct.value == 0)
 		{
 			return false;
 		}
 
+		// Get the cosine of the angle between the vectors by dividing dot product by the product of the magnitudes
 		var cosineAngle = calculator_operations.divide([dotProduct, magnitudeProduct]);
 
 		// Return the angle in the correct unit

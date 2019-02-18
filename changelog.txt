@@ -530,3 +530,8 @@ Coursework 2019-02-12-08-28:
 Coursework 2019-02-14-18-09:
 - (unit_tests.js) Created script to automatically test the mathematical functions of the calculator.
 - (calculator.html) Unit tests are now excecuted on startup.
+
+Coursework 2019-02-18-21-01:
+- (calculator_build.js) Combined moveItemUp and moveItemDown functions into a single moveItem function to save on code. The moveItemUp/Down functions now call this function with the argument "up" or "down" respectively.
+- Added comments to EVERY part of the code.
+- Removed help section (help.html) as it is not needed. Fixes multi-line navbar issue on mobile devices.

@@ -97,19 +97,23 @@ calculator_display = function ()
 				equation.push(solution);
 			}
 		}
-			
+		
+		// Declare two variables to hold the maximum x and y value of all points being drawn
 		var xMax;
 		var yMax;
 		
+		// An array of grids to be drawn to the canvas
 		var grids = [];
 		
+		// Loop through every item in the equation
 		var i = 0;
 		while (i < equation.length)
 		{
 			if (equation[i].type == "Matrix" || equation[i].type == "Vector")
 			{
 				if (equation[i].rows == 2)
-				{	
+				{
+					// Holds a refence to the grid item, along with the sets of 2d vertices to be drawn
 					var grid = [];
 					
 					// A JS reference to the item/solution that the grid was created from
@@ -126,19 +130,26 @@ calculator_display = function ()
 							var x = equation[i].value[0][c].value;
 							var y = equation[i].value[1][c].value;
 							
+							// If the magnitude of the current x value is larger than the maximum x value
 							if (Math.abs(x) > xMax || xMax == undefined)
 							{
+								// Replace the maximum x value with the current one
+								// Need Math.abs to make it positive
 								xMax = Math.abs(x);
 							}
 							
+							// If the magnitude of the current y value is larger than the maximum y value
 							if (Math.abs(y) > yMax || yMax == undefined)
 							{
+								// Replace the maximum y value with the current one
+								// Need Math.abs to make it positive
 								yMax = Math.abs(y);
 							}
 							
 							// Add this pair of points to the points array
 							grid.push([x,y]);
 							
+							// Move onto the next column (next vertice)
 							c += 1;
 						}	
 					}
@@ -148,10 +159,12 @@ calculator_display = function ()
 				}
 			}
 			
+			// Continue to the next equation item
 			i += 1;
 		}
 		
 		// Round maximums up to the nearest integer
+		// This makes the graph labels smaller and easier to read
 		xMax = Math.ceil(xMax);
 		yMax = Math.ceil(yMax);
 		
@@ -182,10 +195,14 @@ calculator_display = function ()
 			// If the equation was not parsed correctly, we must clear all the old colorIndicator colors
 			var allColorIndicators = document.getElementsByClassName("colorIndicator");
 			
+			// Loop through every color indicator
 			var i = 0;
 			while (i < allColorIndicators.length)
 			{
+				// Clear its background color
 				allColorIndicators[i].style.backgroundColor = "";
+
+				// Move onto the next color indicator
 				i += 1;
 			}
 		}
@@ -203,23 +220,32 @@ calculator_display = function ()
 			yMaxHalfLabel.innerHTML = "";
 		};
 		
+		// Loop through the list of grids and their points (generated above)
 		var g = 0;
 		while (g < grids.length)
 		{
 			// Generates a seed based on the amount of grids and the location of the current grid within this list
 			var seed = (g * 2 * Math.PI) / grids.length;
 			
-			// Generates red, green and blue values using sinusoidal waves so that all sets of points are different colors
+			// Generates red, green and blue values using sinusoidal waves
+			// This is so that all sets of points are different colors
+			// These colors correspond to positions on the sine wave
+
+			// Red color offset by 0 radians
 			var red = 255 * Math.sin(seed);
 			if (red < 0)
 			{
 				red = 0;
 			}
+
+			// Green color offset by pi/2 radians
 			var green = 255 * Math.sin(seed + (Math.PI / 2));
 			if (green < 0)
 			{
 				green = 0;
 			}
+
+			// Blue color offset by pi radians
 			var blue = 255 * Math.sin(seed + Math.PI);
 			if (blue < 0)
 			{
@@ -229,20 +255,28 @@ calculator_display = function ()
 			// Gets the grid info
 			var grid = grids[g];
 			
+			// Get a DOM refernce to the color indicator of the current grid
 			var colorIndicator = grid[0].getElementsByClassName("colorIndicator")[0];
+
+			// Set the CSS background of the color indicator to the new unique color
 			colorIndicator.style.backgroundColor = "rgba("+red+","+green+","+blue+")";
 			
+			// Loop through each vertice in the current grid
 			var i = 1;
 			while (i < grid.length)
 			{
 				// Takes the x and y values, and converts them so that they are between -1 and 1
 				var xRelative = axisWidth * grid[i][0] / (xMax);
 				var yRelative = axisWidth * grid[i][1] / (yMax);
+
+				// Create a circular point on the canvas with the correct position and color
 				calculator_canvas.createPolygon([xRelative, yRelative], 10, 0.03, [red/255, green/255, blue/255, 255/255], false);
 				
+				// Move onto the next vertice
 				i += 1;
 			}
 			
+			// Continue to the next grid that needs to be drawn
 			g += 1;
 		}
 	};

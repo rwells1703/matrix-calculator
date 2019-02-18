@@ -102,12 +102,14 @@ theme = function ()
 	// Sets the color aspect of theme in local storage and in css variables
 	self.setColor = function (color)
 	{
+		// If no color is defined, set the default
 		if (color == null)
 		{
 			color = "Slate Grey";
 		}
 		
 		localStorage.setItem("themeColor", color);
+
 		document.body.style.setProperty("--theme-color-main", self.colors[color]["color-main"]);
 		document.body.style.setProperty("--theme-color-main-dark", self.colors[color]["color-main-dark"]);
 		document.body.style.setProperty("--theme-color-main-light", self.colors[color]["color-main-light"]);
@@ -116,12 +118,14 @@ theme = function ()
 	// Sets the shade aspect of theme in local storage and in css variables
 	self.setShade = function (shade)
 	{
+		// If no shade is defined, set the default
 		if (shade == null)
 		{
 			shade = "Light";
 		}
 		
 		localStorage.setItem("themeShade", shade);
+
 		document.body.style.setProperty("--theme-color-page-background", self.shades[shade]["color-page-background"]);
 		document.body.style.setProperty("--theme-color-page-background-light", self.shades[shade]["color-page-background-light"]);
 		document.body.style.setProperty("--theme-color-text", self.shades[shade]["color-text"]);
@@ -132,12 +136,14 @@ theme = function ()
 	// Sets the style aspect of theme in local storage and in css variables
 	self.setStyle = function (style)
 	{
+		// If no style is defined, set the default
 		if (style == null)
 		{
 			style = "Material";
 		}
 		
 		localStorage.setItem("themeStyle", style);
+
 		document.body.style.setProperty("--theme-box-shadow", self.styles[style]["box-shadow"]);
 		document.body.style.setProperty("--theme-box-shadow-navbar", self.styles[style]["box-shadow-navbar"]);
 		document.body.style.setProperty("--theme-box-shadow-navbar-item", self.styles[style]["box-shadow-navbar-item"]);
@@ -147,12 +153,14 @@ theme = function ()
 	// Sets the calculator layout aspect of theme in local storage and in css variables
 	self.setCalculatorLayout = function (calculatorLayout)
 	{
+		// If no calculatorLayout is defined, set the default
 		if (calculatorLayout == null)
 		{
 			calculatorLayout = "Equation before solution";
 		}
 		
 		localStorage.setItem("themeCalculatorLayout", calculatorLayout);
+
 		document.body.style.setProperty("--theme-solution-div-float", self.calculatorLayouts[calculatorLayout]["solutionDivFloat"]);
 		document.body.style.setProperty("--theme-equation-div-float", self.calculatorLayouts[calculatorLayout]["equationDivFloat"]);
 	}
@@ -160,6 +168,7 @@ theme = function ()
 	// Sets the angle unit setting in local storage
 	self.setAngleUnit = function (angleUnit)
 	{
+		// If no angleUnit is defined, set the default
 		if (angleUnit == null)
 		{
 			angleUnit = "Radians";
@@ -189,13 +198,9 @@ theme = function ()
 		{
 			navbarItems[2].className = "navbar-item active";
 		}
-		else if (page == "help.html")
-		{
-			navbarItems[3].className = "navbar-item active";
-		}
 		else if (page == "settings.html")
 		{
-			navbarItems[4].className = "navbar-item active";
+			navbarItems[3].className = "navbar-item active";
 		}
 	};
 	
@@ -205,6 +210,8 @@ theme = function ()
 	self.setStyle(localStorage.getItem("themeStyle"));
 	self.setCalculatorLayout(localStorage.getItem("themeCalculatorLayout"));
 	self.setAngleUnit(localStorage.getItem("settingAngleUnit"));
+
+	// Hilights the currently opened page in the navigation bar with a darker color
 	self.hilightNavbar();
 		
 	return self;

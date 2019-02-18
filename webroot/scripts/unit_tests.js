@@ -142,6 +142,13 @@ unit_tests = function ()
 
 	// Makes sure the mathematical functions of the calculator give the correct outputs
 	self.test = function () {
+		// Save the time the testing began
+		var testBeginTime = Date.now();
+
+		// Counts for the amount of tests that pass/fail
+		var failedCount = 0;
+		var passedCount = 0;
+
 		// Performs each test one by one
 		var testNumber = 0;
 		while (testNumber < testEquations.length) {
@@ -163,7 +170,6 @@ unit_tests = function ()
 				var solution = "Error thrown: " + err
 			}
 
-			
 			// Log the name and input equation of the test to the console
 			console.log("%c Test " + (testNumber+1) + " - " +  testEquations[testNumber][0], "font-weight: bold");
 			console.log("Equation input:");
@@ -182,11 +188,13 @@ unit_tests = function ()
 			{
 				// If they are identical, the test passed
 				console.log("%c PASSED", "color: green");
+				passedCount += 1;
 			}
 			else
 			{
 				// If they are not identical, the test failed
 				console.log("%c FAILED", "color: red");
+				failedCount += 1;
 			}
 
 			// Add a blank line to seperate the tests
@@ -195,6 +203,16 @@ unit_tests = function ()
 			// Move on to the next test
 			testNumber += 1;
 		}
+
+		// Get the time at the end of the test
+		var testEndTime = Date.now();
+
+		// Log the time taken to complete the tests
+		console.log("%c ALL TESTS COMPLETED IN: " + (testEndTime - testBeginTime) + " milliseconds", "color: purple");
+
+		// Log the total results counts
+		console.log("%c PASSED: " + passedCount, "color: purple");
+		console.log("%c FAILED: " + failedCount, "color: purple");
 	}
 
 	return self;

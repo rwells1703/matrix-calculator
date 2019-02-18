@@ -10,6 +10,8 @@ calculator_items = function ()
 		var self = {};
 		
 		self.type = "Bracket";
+
+		// Property holds the type of bracket this item represents
 		self.value = value;
 		
 		return self;
@@ -21,7 +23,11 @@ calculator_items = function ()
 		self = {};
 
 		self.type = "Operation";
+
+		// Property holds the type of operation this item represents
 		self.value = value;
+
+		// Property specifies whether the function is variadic
 		self.variadicFunction = variadicFunction;
 
 		return self;
@@ -40,13 +46,17 @@ calculator_items = function ()
 		var self = {};
 		
 		self.type = "Scalar";
+
+		// Holds the value of this scalar as a number
 		self.value = value;
 		
+		// Gets the magnitude/absolute value of the scalar (must be a positive number)
 		self.getMagnitude = function ()
 		{
 			// Make a negative number positive
 			if (self.value < 0)
 			{
+				// Multiply its value by -1 and return a new scalar
 				return calculator_items.Scalar(self.value * -1);
 			}
 			
@@ -124,8 +134,10 @@ calculator_items = function ()
 			var self = calculator_items.Matrix(value);
 		}
 		
+		// Property holding an array of all the grid's elements
 		self.value = value;
 		
+		// Properties specifying the amount of rows and columns in the grid
 		self.rows = value.length;
 		self.columns = value[0].length;
 		
@@ -135,6 +147,7 @@ calculator_items = function ()
 		// Returns the orignal grid but with the rows and columns swapped
 		self.getTranspose = function ()
 		{
+			// Generate a grid of zeros with opposite dimensions to this grid (rows => columns and columns => rows)
 			var transpose = calculator_logic.generateZeroGrid(self.columns, self.rows);
 
 			var row = 0;
@@ -330,6 +343,7 @@ calculator_items = function ()
 				return false;
 			}
 
+			// Generate an identically sized matrix containing all zeros to hold the values of the matrix of minors
 			var minors = calculator_logic.generateZeroGrid(self.rows, self.columns);
 
 			var row = 0;
@@ -353,8 +367,10 @@ calculator_items = function ()
 		// Returns the matrix of cofactors but where the sign (+ or -) or each element follows a checkerboard pattern
 		self.getMatrixOfCofactors = function ()
 		{
+			// Get the matrix of minors for this matrix
 			var minors = self.getMatrixOfMinors();
 
+			// If the matrix of minors for a matrix is undefined, there is no matrix of cofactors
 			if (minors == false)
 			{
 				return false;
@@ -374,7 +390,6 @@ calculator_items = function ()
 
 					// Changes the multiplier for the element to the left
 					multiplier = calculator_operations.multiply([multiplier, calculator_items.Scalar(-1)]);
-					//multiplier *= -1;
 					column += 1;
 				}
 
@@ -389,13 +404,16 @@ calculator_items = function ()
 		// Returns a matrix equal to the transpose of the matrix of cofactors, used in finding inverse matrices
 		self.getAdjugate = function ()
 		{
+			// Get the cofactor matrix of this matrix
 			var cofactors = self.getMatrixOfCofactors();
 
+			// The adjugate of a matrix is undefined if there is no cofactor matrix
 			if (cofactors == false)
 			{
 				return false;
 			}
 
+			// Get the transpose of the matrix of cofactors
 			var adjugate = cofactors.getTranspose();
 
 			return adjugate;
@@ -405,15 +423,19 @@ calculator_items = function ()
 		// For the inverse, the following must hold true: original * inverse = identity
 		self.getInverse = function ()
 		{
+			// Get the adjugate matrix of this matrix
 			var adjugate = self.getAdjugate();
 
+			// If no adjugate can be found, the matrix has no inverse
 			if (adjugate == false)
 			{
 				return false;
 			}
 
+			// Get the determinant of this matrix
 			var determinant = self.getDeterminant();
 
+			// Inverse is undefined for zero determinant matrices (because of division by zero error)
 			if (determinant.value == 0)
 			{
 				return false;
@@ -439,33 +461,42 @@ calculator_items = function ()
 		// Returns the magnitude (length) of the vector, denoted |v| where v is a vector
 		self.getMagnitude = function ()
 		{
-			var total = calculator_items.Scalar(0);
+			// Creates a new scalar to hold the sum of this vectors components
+			var sum = calculator_items.Scalar(0);
 
-			// Loop throughy every element in the vector
+			// Loop throughy every component/element in the vector
 			var r = 0;
 			while (r < self.rows)
 			{
-				// Add together the square of every element in the vector
+				// Add together the square of every component in the vector
 				var squareValue = calculator_operations.exponential([self.value[r][0], calculator_items.Scalar(2)]);
-				total = calculator_operations.add([total, squareValue]);
+				sum = calculator_operations.add([sum, squareValue]);
+
+				// Continue to the next component
 				r += 1;
 			}
 
-			// Return the square root of the total (pythagoras theorum)
-			return calculator_operations.exponential([total, calculator_items.Scalar(0.5)]);
+			// Return the square root of the sum of components (pythagoras theorum)
+			return calculator_operations.exponential([sum, calculator_items.Scalar(0.5)]);
 		};
 
 		// Returns a vector object, with the magnitude 1 in the same direction as this vector
 		self.normalize = function ()
 		{
+			// Generate a new array to hold the normalised vector components
 			var unitValue = new Array(self.rows);
+
+			// Get the magnitude of this vector, to divide by
 			var magnitude = self.getMagnitude();
 
-			// Loop throughy every element in the vector
+			// Loop throughy every component in the vector
 			var r = 0;
 			while (r < self.rows)
 			{
+				// Divide this vector component by the magnitude to normalise it
 				unitValue[r] = [self.value[r] / magnitude.value];
+
+				// Continue to the next component
 				r += 1;
 			}
 
