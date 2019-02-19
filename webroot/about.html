@@ -110,26 +110,157 @@
 <div id="mainDiv">
 	<h2 id="contents">Contents</h2>
 	<br>
-	<a class="link" href="#1_introduction">1. Introduction</a>
+	<a class="link" href="#1_1_adding_items_to_an_equation">1.1 Adding items to an equation</a>
 	<br>
-	<a class="link" href="#2_addition_and_subtraction">2. Addition and Subtraction</a>
+	<a class="link" href="#1_2_moving_and_deleting_items_in_an_equation">1.2 Moving and deleting items in an equation</a>
 	<br>
-	<a class="link" href="#3_transpose">3. Transpose</a>
+	<a class="link" href="#1_3_interpreting_the_solution">1.3 Interpreting The Solution</a>
 	<br>
-	<a class="link" href="#4_multiplication">4. Multiplication</a>
+	<a class="link" href="#1_4_exporting_the_equation">1.4 Exporting The Equation</a>
 	<br>
-	<a class="link" href="#5_matrix-scalar_product">5. Matrix-Scalar Product</a>
+	<a class="link" href="#1_5_using_the_graph">1.5 Using The Graph</a>
 	<br>
-	<a class="link" href="#6_dot-product">6. Dot-Product</a>
+	<a class="link" href="#1_6_changing_the_settings">1.6 Changing The Settings</a>
 	<br>
-	<a class="link" href="#7_matrix-matrix_product">7. Matrix-Matrix Product</a>
+	<a class="link" href="#2_1_introduction_to_matrices">2.1 Introduction to Matrices</a>
 	<br>
-	<a class="link" href="#8_determinant">8. Determinant</a>
+	<a class="link" href="#2_2_addition_and_subtraction">2.2 Addition and Subtraction</a>
 	<br>
-	<a class="link" href="#9_inverse">9. Inverse</a>
+	<a class="link" href="#2_3_transpose">2.3 Transpose</a>
+	<br>
+	<a class="link" href="#2_4_multiplication">2.4 Multiplication</a>
+	<br>
+	<a class="link" href="#2_5_matrix-scalar_product">2.5 Matrix-Scalar Product</a>
+	<br>
+	<a class="link" href="#2_6_dot-product">2.6 Dot-Product</a>
+	<br>
+	<a class="link" href="#2_7_matrix-matrix_product">2.7 Matrix-Matrix Product</a>
+	<br>
+	<a class="link" href="#2_8_determinant">2.8 Determinant</a>
+	<br>
+	<a class="link" href="#2_9_inverse">2.9 Inverse</a>
 
 	<br><br>
-	<h2 id="1_introduction">1. Introduction</h2>
+	<h2 id="1_1_adding_items_to_an_equation">1.1 Adding items to an equation</h2>
+	To create an equation, you can use the row of bottoms near the top of the calculator page.
+	<br>
+
+	Each of these buttons adds a different type of mathematical item to the equation:
+	<br><br>
+
+	- Scalar - A single number (can be integer or decimal).
+	<br>
+	- Grid - A grid of scalars (if 1 column, it represents a vector, otherwise it represents a matrix).
+	<br>
+	- Operation - A mathematical operation that takes a set of operands and produces an output e.g. add, multiply, sine, factorial etc.
+	<br>
+	- Bracket - A symbol that encloses a set of items, chaning the way they are evaluated.
+	<br><br>
+
+	An equation should be formed, where from top to bottom of the screen represents left to right in conventional mathematical notation e.g:
+	<br><br>
+	Scalar (2)
+	<br>
+	Operation (+)
+	<br>
+	Scalar (5)
+	<br><br>
+	Is interpreted as:
+	<br>
+	2 + 5
+	<br><br>
+
+	<br><br>
+	<h2 id="1_2_moving_and_deleting_items_in_an_equation">1.2 Moving And Deleting Items In An Equation</h2>
+	<br>
+
+	Move item:
+	<br>
+	Once you have added an item to an equation and now wish to change its position, you can do so using the up/down arrows on the left side of each item.
+	<br><br>
+
+	Delete item:
+	<br>
+	Alternatively, if you wish to remove an item entirely, you can use the cross button between the two movement arrows.
+	<br><br>
+
+	Delete all items:
+	<br>
+	To remove all the items from equation, press the 'clear' button at the bottom of the equation.
+	<br><br>
+
+	<br><br>
+	<h2 id="1_3_interpreting_the_solution">1.3 Interpreting The Solution</h2>
+	<br>
+
+	As soon as you begin adding items to the equation, the calculator will attempt to evaluate the equation you have input.
+	<br>
+	The solution will be displayed in a small box underneath the graph.
+	<br>
+	If the equation (or solution to it) does not involve any 2 x n matrices, the graph will be blank.
+	<br><br>
+
+	When evaluating an equation, there are 3 possible outcomes:
+	<br><br>
+	- Parse failed - The calculator could not understand the input you gave it. Check all text boxes are filled, and all items (e.g. operations and brackets) have a type selected.
+	<br>
+	- Solve failed - The equation was understood, but no solution could be found. Check for errors with the maths e.g. division by 0, or unclosed brackets.
+	<br>
+	- [Solution given] - The calculator was able to evaluate the input equation to give a solution. It should be displayed in correct mathematical notation (using LaTeX).
+	<br><br>
+
+	If the solution is a 2 x n matrix/vector, it will be displayed on the graph with a unique color (black by default).
+	<br><br>
+	
+	<br><br>
+	<h2 id="1_4_exporting_the_equation">1.4 Exporting The Equation</h2>
+	<br>
+
+	To save an equation and its solution + graph to a file, for viewing at a later date, we can use the export button below the main equation.
+	<br><br>
+	It will be generate a .html file that can be viewed in all web browsers, with a LaTeX representation of the equation.
+	<br>
+	Below it is the graph and all its points displayed as an image.
+	<br>
+	The exported file is not interactive, it can only be used for viewing, and not further calculation.
+	<br><br>
+
+	<br><br>
+	<h2 id="1_5_using_the_graph">1.5 Using The Graph</h2>
+	<br>
+	
+	The graph is used to display all matrices/vectors that are 2 dimensional. It will always scale to fit the largest matrix/vector it is displaying.
+	<br>
+	Any time a 2 dimensional matrix/vector appears, either in the equation or solution, it will be displayed onto the graph.
+	<br><br>
+	Each matrix/vector is assigned a unique color, which is indicated in the bottom right corner of the item box.
+	<br>
+	This is the color used when its points are displayed on the graph.
+	<br><br>
+	You can also hide/show a matrix by clicking once on the colour indicator. If it becomes faded, the points are hidden, however if it becomes bold colored points are visible.
+	<br><br>
+
+	<br><br>
+	<h2 id="1_6_changing_the_settings">1.6 Changing The Settings</h2>
+	<br>
+
+	The calculator can be customised to fit the users prefernces from within the settings page.
+	<br><br>
+	Here is an overview of the settings which can be edited:
+	<br><br>
+	- Color - The color used for many elements within the page e.g. the navbar, buttons, links.
+	<br>
+	- Shade - Use either a dark or light theme for elements on the page.
+	<br>
+	- Style - Choose between having shadows and rounded corners (material) or flat rectangles (flat).
+	<br>
+	- Calculator Layout - Decide the arrangement of the panels in the calculator page. You can either have the equation or the graph displayed on the left. (At the top if using a mobile device).
+	<br>
+	- Angle Unit - Choose between radians or degrees (used for trigonometric functions and angle between vectors).
+	<br><br>
+
+	<br><br>
+	<h2 id="2_1_introduction_to_matrices">2.1 Introduction To Matrices</h2>
 	<br>
 
 	A matrix is just a grid of numbers, like the following example of a 3x3 matrix:
@@ -179,7 +310,7 @@
 	<br><br>
 
 	<br><br>
-	<h2 id="2_addition_and_subtraction">2. Addition and Subtraction</h2>
+	<h2 id="2_2_addition_and_subtraction">2.2 Addition and Subtraction</h2>
 	<br>
 
 	Matrices are treated differently to normal mathematical expressions, they are added, subtracted and multiplied in their own specific way.
@@ -228,7 +359,7 @@
 	<br><br>
 
 	<br><br>
-	<h2 id="3_transpose">3. Transpose</h2>
+	<h2 id="2_3_transpose">2.3 Transpose</h2>
 	<br>
 
 	"Taking the transpose" means swapping all the rows for columns and columns for rows and is denoted by a capital T in superscript.
@@ -285,7 +416,7 @@
 	<br>
 
 	<br><br>
-	<h2 id="4_multiplication">4. Multiplication</h2>
+	<h2 id="2_4_multiplication">2.4 Multiplication</h2>
 	<br>
 
 	When it comes to multiplication, matrices are much more complicated than regular scalars.
@@ -294,7 +425,7 @@
 	<br>
 
 	<br><br>
-	<h2 id="5_matrix-scalar_product">5. Matrix-Scalar Product</h2>
+	<h2 id="5_matrix-scalar_product">2.5 Matrix-Scalar Product</h2>
 	<br>
 
 	Multiplying a matrix by a scalar is very simple, for example:
@@ -315,7 +446,7 @@
 	<br><br>
 
 	<br><br>
-	<h2 id="6_dot-product">6. Dot-Product</h2>
+	<h2 id="2_6_dot-product">2.6 Dot-Product</h2>
 	<br>
 
 	If you are multiplying with two column vectors, there is a method called "taking the dot product" in which you multiply together elements in corresponding rows and add this to the total.
@@ -376,7 +507,7 @@
 	<br><br>
 
 	<br><br>
-	<h2 id="7_matrix-matrix_product">7. Matrix-Matrix Product</h2>
+	<h2 id="2_7_matrix-matrix_product">2.7 Matrix-Matrix Product</h2>
 	<br>
 
 	Alternatively, when multiplying together two matrices, we use "matrix multiplication".
@@ -417,7 +548,7 @@
 	<br><br><br>
 
 	<br><br>
-	<h2 id="8_determinant">8. Determinant</h2>
+	<h2 id="2_8_determinant">2.8 Determinant</h2>
 	<br>
 
 	Another property of a matrix is the determinant, which is also single scalar quantity.
@@ -458,7 +589,7 @@
 	A general rule of thumb is to choose the row/column with the most zeroes as you can skip these elements entirely.
 
 	<br><br>
-	<h2 id="9_inverse">9. Inverse</h2>
+	<h2 id="2_9_inverse">2.9 Inverse</h2>
 	<br>
 
 	Finally, the last property of a matrix, we will cover is the inverse.

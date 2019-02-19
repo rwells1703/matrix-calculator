@@ -5,7 +5,7 @@ import os
 # This allows the web pages to be accessed over http
 os.chdir("webroot")
 
-# Run the server on localhost, port 80 (standard http port)
+# Run the server on localhost, port 8080 (standard http port)
 server_address = ("0.0.0.0", 8080)
 
 # Creates the server object on the address
