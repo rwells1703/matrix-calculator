@@ -538,3 +538,7 @@ Coursework 2019-02-18-21-01:
 
 Coursework 2019-02-19-12-00:
 - (about.html) Added all 'help' to the 'about' section.
+
+Coursework 2019-02-19-14-49:
+- Created 'help_images' folder containing images used in the 'about' page.
+- (about.html) Added images to the 'about' section.
