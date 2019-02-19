@@ -517,7 +517,8 @@ calculator_build = function ()
 			var c = 0;
 			while (c < columns)
 			{
-				elementNumber = (self.gridMaxColumns - 1)*rows + c + 5
+				// The +4 is to accomadate for the name tag and move/delete buttons
+				var elementNumber = (self.gridMaxColumns - 1)*rows + c + 4
 				gridWrapper.children[elementNumber].style.visibility = "";
 
 				c += 1;
@@ -547,7 +548,8 @@ calculator_build = function ()
 			var c = 0;
 			while (c < columns)
 			{
-				elementNumber = (self.gridMaxRows - 1)*(rows-1) + c + 5
+				// The +4 is to accomadate for the name tag and move/delete buttons
+				var elementNumber = (self.gridMaxRows - 1)*(rows-1) + c + 4
 				gridWrapper.children[elementNumber].style.visibility = "hidden";
 
 				c += 1;
@@ -578,7 +580,8 @@ calculator_build = function ()
 			var r = 0;
 			while (r < rows)
 			{
-				elementNumber = (self.gridMaxColumns - 1)*r + columns + 5
+				// The +4 is to accomadate for the name tag and move/delete buttons
+				var elementNumber = (self.gridMaxColumns - 1)*r + columns + 4
 				gridWrapper.children[elementNumber].style.visibility = "";
 
 				r += 1;
@@ -609,7 +612,8 @@ calculator_build = function ()
 			var r = 0;
 			while (r < rows)
 			{
-				elementNumber = (self.gridMaxRows - 1)*r + (columns-1) + 5
+				// The +4 is to accomadate for the name tag and move/delete buttons
+				var elementNumber = (self.gridMaxRows - 1)*r + (columns-1) + 4
 				gridWrapper.children[elementNumber].style.visibility = "hidden";
 
 				r += 1;
