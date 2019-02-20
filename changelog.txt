@@ -544,7 +544,9 @@ Coursework 2019-02-19-14-49:
 - (about.html) Added images to the 'about' section.
 
 Coursework 2019-02-19-18-06:
-- Copied the matrix parts of the 'about' section to the writeup documents.
 - (about.html) Fixed some typos.
 - (about.html) Added a better structured contents section.
 - (calculator_build.js) Fixed bug where grid rows/columns are not added in the correct position. Caused by removing the item sidebar in a recent change, which offset the amount of children the item wrapper had in the DOM by -1.
+
+Coursework 2019-02-20-20-08:
+- (index.html) Improved homepage.
