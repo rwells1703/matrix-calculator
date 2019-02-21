@@ -550,3 +550,6 @@ Coursework 2019-02-19-18-06:
 
 Coursework 2019-02-20-20-08:
 - (index.html) Improved homepage.
+
+Coursework 2019-02-21-16-40:
+- (calculator.html) Removed duplicate links to scripts. And changed script description comments.

@@ -79,6 +79,7 @@ calculator_display = function ()
 		return solutionWrapper;
 	};
 	
+	// Displays all the 2 dimensional points from equation and solution as colored dots on the graph
 	self.displayGridsOnGraph = function (equation, solution)
 	{
 		// Clears the canvas of all previously drawn points

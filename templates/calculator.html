@@ -8,12 +8,6 @@
 </script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
 
-<!-- Script that handles the way that the page is displayed e.g. orientation and sizes -->
-<script type="text/javascript" src="scripts/calculator_layout.js"></script>
-
-<!-- Script that handles drawing to the canvas using WebGL -->
-<script type="text/javascript" src="scripts/calculator_canvas.js"></script>
-
 <!-- The GLSL vertex shader script for use in WebGL -->
 <script id="vertexShader" type="text/glsl">
 	precision mediump float;
@@ -37,33 +31,34 @@
 	}
 </script>
 
-<!-- Script that handles the building of matrix equations using matrix, scalar and operator items -->
+<!-- Handles the building of matrix equations using items. Creates the UI elements for each element and handles the way they are edited, organised and removed from the equation. -->
 <script type="text/javascript" src="scripts/calculator_build.js"></script>
 
-<!-- Script that handles drawing to the canvas -->
+<!-- Handles drawing to the canvas (graph) via WebGL API. -->
 <script type="text/javascript" src="scripts/calculator_canvas.js"></script>
 
-<!-- Script that holds classes for all items that can be used in an equation -->
+<!-- Contains class definitions for all the mathematical items that can be used within equations.  -->
 <script type="text/javascript" src="scripts/calculator_items.js"></script>
 
-<!-- Script that handles the initial layout and dynamic resizing of the calculator page -->
+<!-- Generates the initial layout and dynamic resizing of the calculator page. -->
 <script type="text/javascript" src="scripts/calculator_layout.js"></script>
 
-<!-- Script that handles the logical operations required for the calculator to function -->
+<!-- Defines the logic of mathematical operations required for the calculator to perform calculations. -->
 <script type="text/javascript" src="scripts/calculator_logic.js"></script>
 
-<!-- Script that handles mathematical operations used by the calculator, verifies their inputs and then passes them on to the corresponding logical operations -->
+<!-- Provides a layer of abstraction over the logic behind mathematical operations used, verifies their inputs and passes them on to the corresponding logical operations. -->
 <script type="text/javascript" src="scripts/calculator_operations.js"></script>
 
-<!-- Script that handles the parsing and solving of the equations the user has inputted -->
+<!-- Handles the parsing and solving of equations the user has input. -->
 <script type="text/javascript" src="scripts/calculator_solve.js"></script>
 
-<!-- Script that handles the display of the equation and its solution to the page -->
+<!-- Handles the display of the equation and its solution to the page. -->
 <script type="text/javascript" src="scripts/calculator_display.js"></script>
 
-<!-- Script that handles the testing of the functions that solve equations -->
+<!-- Performs the unit testing of the functions that solve equations every time the page is loaded.  Results are sent to browser console. -->
 <script type="text/javascript" src="scripts/unit_tests.js"></script>
 
+<!-- Prepares the calculator page for use. It generates the user interface, initialises the graph, registers mouse events and runs unit tests. -->
 <script type="text/javascript" src="scripts/calculator.js"></script>
 
 {% endblock %}
