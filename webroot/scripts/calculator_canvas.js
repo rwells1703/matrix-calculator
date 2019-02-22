@@ -257,7 +257,6 @@ calculator_canvas = function ()
 		
 		// Calculate the angle to rotate by for each new triangle
 		var centralAngle = 2*Math.PI/sides;
-		
 
 		var s = 0;
 		while (s < sides)

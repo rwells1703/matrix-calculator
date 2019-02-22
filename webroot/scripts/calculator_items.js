@@ -191,7 +191,7 @@ calculator_items = function ()
 			return false;
 		};
 
-		// Returns the determinant of the matrix
+		// Returns the determinant of the matrix using Laplace decomposition
 		self.getDeterminant = function ()
 		{
 			// Must be a square matrix otherwise the determinant is undefined
@@ -199,8 +199,6 @@ calculator_items = function ()
 			{
 				return false;
 			}
-
-			//var determinant = calculator_items.Scalar(0);
 
 			// Recursive base case, we have reached the smallest matrix possible, a 1 x 1
 			if (self.rows == 1 && self.columns == 1)
@@ -218,45 +216,39 @@ calculator_items = function ()
 				// Move along the first column, taking minor matrices
 				var minor = self.getMinorMatrix(calculator_items.Scalar(row), calculator_items.Scalar(0));
 
-				if (positive)
-				{
-					// Add the minor determinant to the major determinant if we are on a positive row
-					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
+				// The change in the value of the determinant total. Will be added on even rows, and subtracted on odd rows.
+				var determinantChange = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
 
-					if (typeof determinant == 'undefined')
-					{
-						// If no determinant exists, create a new one from the first value
-						var determinant = determinantAddition;
-					}
-					else
-					{
-						// Otherwise, add the new value to the existing determinant
-						determinant = calculator_operations.add([determinant, determinantAddition]);
-					}
-					
-					// Switch from positive to negative
+				// The first row, where determinant is undefined
+				if (typeof determinant == 'undefined')
+				{
+					// If no determinant exists, create a new one from the first value calculated
+					var determinant = determinantChange;
+
+					// Must be on the first row (positive) so now change to a negative row
 					positive = false;
 				}
 				else
 				{
-					// Otherwise subtract it
-					var determinantAddition = calculator_operations.multiply([self.value[row][0], minor.getDeterminant()]);
-
-					if (typeof determinant == 'undefined')
+					if (positive)
 					{
-						// If no determinant exists, create a new one from the first value
-						var determinant = determinantAddition;
+						// Add the minor determinant to the major determinant if we are on a positive row
+						determinant = calculator_operations.add([determinant, determinantChange]);
+
+						// Switch from positive to negative row
+						positive = false;
 					}
 					else
 					{
-						// Otherwise, add the new value to the existing determinant
-						determinant = calculator_operations.subtract([determinant, determinantAddition]);
+						// Otherwise, subtract the new value to the existing determinant if we are on a negative row
+						determinant = calculator_operations.subtract([determinant, determinantChange]);
+
+						// Switch from negative to positive row
+						positive = true;
 					}
-					
-					// Switch from negative to positive
-					positive = true;
 				}
 
+				// Continue to the next row in the matrix
 				row += 1;
 			}
 			

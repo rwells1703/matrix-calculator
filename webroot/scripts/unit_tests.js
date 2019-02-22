@@ -100,7 +100,7 @@ unit_tests = function ()
 
 		['matrix factorial', [i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]]), i.Operation('Factorial')], false],
 
-		['square matrix determinant', [i.Operation('Determinant'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], ],
+		['square matrix determinant', [i.Operation('Determinant'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], [i.Scalar(-49)]],
 		['square matrix transpose', [i.Operation('Transpose'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], [i.Grid([[i.Scalar(1),i.Scalar(6)],[i.Scalar(9),i.Scalar(5)]])]],
 		['square matrix minors', [i.Operation('Minors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], [i.Grid([[i.Scalar(5),i.Scalar(6)],[i.Scalar(9),i.Scalar(1)]])]],
 		['square matrix cofactors', [i.Operation('Cofactors'), i.Grid([[i.Scalar(1),i.Scalar(9)],[i.Scalar(6),i.Scalar(5)]])], [i.Grid([[i.Scalar(5),i.Scalar(-6)],[i.Scalar(-9),i.Scalar(1)]])]],

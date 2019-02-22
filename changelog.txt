@@ -553,3 +553,9 @@ Coursework 2019-02-20-20-08:
 
 Coursework 2019-02-21-16-40:
 - (calculator.html) Removed duplicate links to scripts. And changed script description comments.
+
+Coursework 2019-02-22-23-06:
+- (calculator_items.js) Improved efficiency of 'Matrix.get_determinant' function and removed duplicated lines of code for adding and subtracting from the determinant total.
+- Added more comments.
+- More writeup on technical solution.
+- Source code word doc needs to be changed.
