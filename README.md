@@ -1,7 +1,7 @@
 # Matrix Calculator
 
 <br />
-<https://rwells1703.github.io/Matrix-Calculator/webroot/>
+https://rwells1703.github.io/Matrix-Calculator/webroot
 <br />
 <br />
 
