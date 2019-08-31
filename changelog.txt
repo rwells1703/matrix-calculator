@@ -1,362 +1,182 @@
-﻿Coursework 2018-07-17-10-33:
-- (index.html) Created.
-- (index.html) Font changed to 'Montserrat' from 'Google fonts'
-- (index.html) 'WebGL' canvas added, added in 'HTML5'.
-- (index.html) Functions added for 'WebGL' boilerplate setup code ('createCanvas', 'createShader', 'createProgram', 'prepareAttributes', 'render').
-- (index.html) In 'createCanvas' function, added algorithm to check screen orientation and size canvas accordingly.
-- (index.html) 'WebGL' vertex and fragment shaders created, with color attribute.
-- (index.html) 'WebGL' canvas has set of axes drawn in background.
-- (index.html) Added 'drawTriangles' function to add triangle vertices to the GPU array buffer, and draw them.
-- (index.html) Added 'createPolygon' function to add vertices for a new polygon to the vertices array, by creating many small triangles, each rotated by a small amount.
-- (index.html) 'WebGL' canvas supports clicking to add polygon ('mouseDown', 'mouseUp', 'mouseMove' functions handle clicks).
-- (index.html) Added 'canvasYToClipsace' and 'canvasXToClipspace' functions, for converting between clipspace and viewport coordinates for mouse events.
-- (index.html) Added 'rotateVertice' function for rotation a vertice using standard formula with Cosine and Sine.
-- (index.html) Added 'translateVertice' function for moving a vertice horizontally and vertically.
-- (index.html) Added functions for rotating/translating vertices on the 'WebGL' canvas.
-- (index.html) Added functions for drawing polygons and triangles on the 'WebGL' canvas.
+Matrix-Calculator 2019-02-22-23-06:
+- (calculator_items.js) Improved efficiency of 'Matrix.get_determinant' function and removed duplicated lines of code for adding and subtracting from the determinant total.
+- Added more comments.
 
-Coursework 2018-07-26-23-40:
-- Changed project from local files to web server.
-- 'Python' web server 'Flask' used to serve web pages.
-- Use the 'Jinja2' template system supported by 'Flask'.
-- Created default 'Flask' directory structure.
-- (templates folder) Created to hold HTML files.
-- (routes.py) Added template editing to hilight navbar item of the current page.
-- (base.html) Created as a template for all other pages.
-- (base.html) Added CSS styles used on each page, CSS variables used to theme page.
-- (base.html) Moved navbar used for each page to this file.
-- (base.html) Fixed bug on mobile where text was scaled up to large sizes on only some pages. Fixed by setting the CSS property "text-size-adjust" to "none" in the HTML body of every page.
-- (index.html) Changed to a simple greeting page.
-- (about_matrices.html) Created.
-- (about_matrices.html) Added explanation of the basic principles of matrix mathematics.
-- (about_matrices.html) 'MathJax' used which is a JavaScript library used to display mathematical notation.
-- (matrix_tools.html) Created.
-- (matrix_tools.html) Will solve matrix equations, but currently an empty placeholder.
-- (help.html) Created.
-- (help.html) Will contain tutorials of how to use the app, but currently a placeholder.
-- (matrix_visualiser.html) Created.
-- (matrix_visualiser.html) 'WebGL' canvas moved here from 'index.html'
-- (about_matrices.html) Added spacing to the equations to prevent them from overflowing left and causing the page to be too wide. Caused whitespace next to navbar.
+Matrix-Calculator 2019-02-21-16-40:
+- (calculator.html) Removed duplicate links to scripts. And changed script description comments.
 
-Coursework 2018-07-28-22-52:
-- (about_matrices.html) Added more sections.
-- (about_matrices.html) Added a contents list to quickly jump between sections.
-- (about_matrices.html) Link at the bottom to jump back up to the top.
-- (about_matrices.html) Page is now hidden while the 'MathJax' loads, and then un-hidden. This prevents the page from jumping around and resizing while equations resize. Caused errors with whitespace appearing next to the navbar.
+Matrix-Calculator 2019-02-20-20-08:
+- (index.html) Improved homepage.
 
-Coursework 2018-07-31-22-05:
-- (matrix_tools.html) Added buttons for creating 'Scalar' items.
-- (matrix_tools.html) Added 'pxToFloat' function for converting between the string 'px' values in CSS to a float value in Javascript.
+Matrix-Calculator 2019-02-19-18-06:
+- (about.html) Fixed some typos.
+- (about.html) Added a better structured contents section.
+- (calculator_build.js) Fixed bug where grid rows/columns are not added in the correct position. Caused by removing the item sidebar in a recent change, which offset the amount of children the item wrapper had in the DOM by -1.
 
-Coursework 2018-08-03-22-05:
-- (matrix_tools.html) Created the layout of a scalar item using CSS grids. Each item has its own number.
-- (static folder) Created icons for use im the buttons on the scalar item e.g. move up, move down, delete (used in 'matrix_tools.html').
-- (matrix_tools.html) Added 'addScalar' function to add a new scalar item.
-- (matrix_tools.html) Added 'deleteItem' function to remove the selected item.
-- (matrix_tools.html) Move up and move down buttons added but dont work yet.
-- (matrix_tools.html) Copied 'pxToFloat' function here as well.
+Matrix-Calculator 2019-02-19-14-49:
+- Created 'help_images' folder containing images used in the 'about' page.
+- (about.html) Added images to the 'about' section.
 
-Coursework 2018-08-06-23-19:
-- (matrix_tools.html) Added 'addTopRowButton' function to create new button, to prevent code from being repeated multiple times.
-- (matrix_tools.html) Added 'recalculateTopRowButtonsSizes' function to resize the top row buttons depending on the width and height of the page.
-- (matrix_tools.html) Added 'createEmptyItem' function which returns the basic shell of an item e.g. scalar, matrix or operator. 
-- (matrix_tools.html) Added 'addMatrix' function to add a new matrix item, that is 2x2.
-- (matrix_tools.html) Added functions for adding/removing rows/columns of the matrix.
-- (matrix_tools.html) Added functions for moving items up and down and removing them.
-- (matrix_tools.html) Made the item numbering system dynamically update as you move and delete items.
+Matrix-Calculator 2019-02-19-12-00:
+- (about.html) Added all 'help' to the 'about' section.
 
-Coursework 2018-08-08-23-40:
-- (base.html) Moved 'pxToFloat' function here so it can be shared by all pages.
-- (base.html) Added theme system that uses JavaScript to swap the values of CSS variables. Current themes: 'Salmon Pink', 'Emerald Green'.
-- (matrix_combo.html) Attempted to join 'matrix_tools.html' and 'matrix_visualiser.html' pages side by side in a single page. Not currently functional.
+Matrix-Calculator 2019-02-18-21-01:
+- (calculator_build.js) Combined moveItemUp and moveItemDown functions into a single moveItem function to save on code. The moveItemUp/Down functions now call this function with the argument "up" or "down" respectively.
+- Added comments to EVERY part of the code.
+- Removed help section (help.html) as it is not needed. Fixes multi-line navbar issue on mobile devices.
 
-Coursework 2018-08-10-19-32:
-- (matrix_combo.html) Completely changed the way the page is rendered...
-- (matrix_combo.html) Added 'main' function to be run on page load.
-- (matrix_combo.html) Added 'createCanvasDiv' and 'createEquationDiv' functions that set up page layout.
-- (matrix_combo.html) Added 'pageResize' function that runs all other reisizing functions within the page.
-- (matrix_combo.html) Linked 'pageResize' to the window resize event handler, so that the page resizes every time the window is resized.
-- (matrix_combo.html) Removed border around canvas for aesthetic reasons.
+Matrix-Calculator 2019-02-14-18-09:
+- (unit_tests.js) Created script to automatically test the mathematical functions of the calculator.
+- (calculator.html) Unit tests are now excecuted on startup.
 
-Coursework 2018-08-10-23-33:
-- Removed 'matrix_tools.html' and 'matrix_visualiser.html' in favour of 'matrix_calculator.html'.
-- (matrix_calculator.py) Seperated out the JavaScript into seperate files in the 'matrix_calculator' folder.
-- (__init__.py) Changed the 'Flask' folder structure from using 'static' and 'template' folders, to a single 'webroot' folder.
-- (canvas_webgl.js) Created.
-- (equation_builder.js) Created.
-- (page_layout.js) Created.
+Matrix-Calculator 2019-02-12-08-28:
+- (calculator_items.js) Fixed bug where determinant throws error when trying to add a vector to a zero scalar (when calculating normal).
 
-Coursework 2018-08-11-18-33:
-- (routes.py) Changed the outgoing HTTP response headers so that resource are not cached by browsers during development.
-- (about_matrices.html) Removed the loading screen, using CSS overflow as 'hidden' instead.
+Matrix-Calculator 2019-01-26-22-36:
+- (calculator_solve.js) Fixed bug where 'deepCloneArray' returns an empty array when passed false.
+- (calculator_solve.js) Added special cases for commonly used values in trigonometric functions e.g. sin pi, to prevent them from being slightly innacurate.
+- (calculator_solve.js) Made permutations function undefined for r < 0.
+- (calculator_solve.js) Prevented log (and ln) function from accepting base or number less than 1.
+- (calculator_solve.js) Prevented scalars from being added or subtred from matrices/vectors.
+- (calculator_solve.js) Restricted 'getMinorMatrix' method of 'Matrix' class undefined for Matrices with sizes less than 2x2.
 
-Coursework 2018-08-13-21-44:
-- (base.html) Changed the way themes are loaded via CSS variables.
-- (base.html) Slightly changed the default 'Salmon Pink' color scheme.
-- (base.html) Added fade animation on page transition using CSS animation keyframes.
-- (base.html) Added rounded corners to currently selected/hovered navbar item.
-- (base.html) Added shadow to the bottom of the navbar.
-- (matrix_calculator.html) Added rounded corners and shadows to the buttons and canvas.
-- (equation_builder.js) Added 'selectOperator' function, it is currently an empty placeholder.
-- (equation_builder.js) Added 'addOperator' function that adds an operator item, however it is not currently working as it relies on the unfinished 'selectOperator' function.
-- (images folder) Changed item move up, move down and delete icons from PNG to SVG because they are vector graphics, so they scale without pixelation.
+Matrix-Calculator 2019-01-23-15-19:
+- Added a few more mathematical tests.
 
-Coursework 2018-08-15-00-43:
-- (base.html) Again, reworked the way themes are loaded via CSS variables.
-- (base.html) 3 new themes added, and 'Emerald Green' theme removed. Current themes: 'Salmon Pink', 'Electric Blue', 'Mustard Yellow', 'Slate Grey'.
-- (base.html) Changed default theme to 'Slate Grey'.
-- (equation_builder.js) Added fade in/fade out CSS animations, when items are added or deleted.
-- (equation_builder.js) Changed 'selectOperator' function so that it the user can now select the operator they need, from a small grid in the item.
-- (page_layout.js) Fixed bug where top row buttons do not resize properly with window size. Due button height being scaled down. Fixed by setting button height CSS to 100% in 'addTopRowButton' function.
-- (page_layout.js) Fixed bug where top row button text is incorrectly positioned vertically, caused by the previous fix. Fixed by changing the 'addTopRowButton' function so that text has CSS properties with display as 'table-cell' with vertical align as 'middle'.
+Matrix-Calculator 2019-01-20-23-51:
+- Added try catch to prevent test suite from crashing on errors.
 
-Coursework 2018-08-15-21-54:
-- (base.html) Changed default theme to 'Electric Blue'.
-- (equation_builder.js) Changed 'createEquationDiv' function to add 'solve' and 'export' buttons that appear at the bottom of the equation.	
-- (equation_builder.js) Added 'toggleEquationFinishButtons' function to hide/show the 'solve' and 'export'. Export button currently has no function.
-- (equation_solver.js) Added JavaScript classes for 'Scalar', 'Matrix' and 'Operator' items ready for solving.
-- (equation_solver.js) Added 'parseItemValues' function that loops through all equation item and parses the items into the predefined classes.
-- (equation_solver.js) Added 'validateEquation' function that attempts to make sure an equation is solvable. Currently un-finished.
-- (page_layout.js) Changed 'resizePage' function so that the canvas is centered horizontally all the time. For aesthetic reasons only.
+Matrix-Calculator 2019-01-19-22-32:
+- (calculator_solve.js) Change to the method in which variadic functions are evaluated. It now relies on the 'createOperation' function, so is easier to extend when adding new variadic functions.
+- (calculator_solve.js) Removed unecessary error checking in 'evaluateItems' for position of an errors as a number as an output from 'solveEquation'.
+- (calculator_solve.js) Removed the 'No single solution' error in 'evaluateItems', 'Solve failed' now occurs for all solving errors.
+- (calculator_solve.js) Fixed bug with 'solveBrackets' where unclosed brackets were did not result in an error.
+- (calculator_solve.js) Fixed bug in 'parseItems' where bracket type did not need to be selected, for parse to finish successfully.
+- (calculator_solve.js) Added more comments.
+- Began to implement automated testing of equation solving functions.
 
-Coursework 2018-09-03-22-35:
-- (equation_builder.js) Added 'addFunction' function that adds a new function.
-- (equation_builder.js) Added 'createItemButton' function to populate operator and function items with selectable buttons.
-- (equation_builder.js) Replaced 'selectOperator' function with a more general 'selectButton' function that is used for both operator and function items.
-- (page_layout.js) Changed 'createButton' function to make the font size of the buttons smaller to prevent it from overflowing on smaller screens.
-- (equation_solver.js) Changed 'parseItemValues' function so that it parses operator items (and the newly added function items) slightly differently than before.
-- (equation_solver.js) Changed 'validateEquation' function so that it validates equations by checking the items either side of every item in the equation. Still un-finished. 
+Matrix-Calculator 2018-12-29-17-05:
+- (index.html) Changed the layout of the text so that it is easier to read.
 
-Coursework 2018-09-21-15-22:
-- (packages folder) Created a folder to hold all 3rd party packages instead of using a 'venv'. This works for the school computer system, where i cannot use command prompt to start the venv.
-- (startserver.py) Added 'packages/' to the 'Python' system path so that the 3rd party 'Python' packages inside can be used.
-- (runfromcmd.py) Created. Runs the web server in a command prompt window, even though the school policy does not allow direct access to command prompt.
+Matrix-Calculator 2018-12-22-20-22:
+- (calculator_layout.js) Changed export button click function so that it evaluates the equation at the time the button is clicked.
+- (calculator_layout.js) Added spaces to the exported HTML equation file to make it easier to read.
+- (calculator_layout.js) Added error reporting to the exported HTML equation.
+- (calculator_solve.js) Changed "equation" back to a local variable being parsed around by value.
+- (calculator_solve.js) Fixed bug with "deepClone" function that meant functions were not copied, only properties. JSON parse then stringify is not capable of copying functions, so used Object.assign instead.
 
-Coursework 2018-09-22-22-40:
-- Completely redesigned the app structure, so that it can be developed/executed on any computer, without need for a web server or command prompt access.
-- HTML files now stored in the '/templates' folder.
-- 3rd party 'Python' packages e.g. 'Jijna2' and 'markupsafe' in the '/packages' folder.
-- Images, scripts and compiled HTML templates in the '/webroot' folder.
-- All JavaScript and HTML changed to accomadate for changes in the file paths of other scripts and images. Now local names are required e.g. '/index' => '/index.html'.
-- (matrix_calculator.html) File moved from its own seperate directory, back to the same directory as other HTML templates.
-- (favicon.ico) Created. Small 32x32 image of an identity matrix made in paint.net. Used as an icon in the tabs/favourites bar of most browsers.
-- (render_templates.py) Created.
-- (render_templates.py) Added 'scan_directory' function to recursively scan through directories/subdirectories and return the paths of all the files it finds.
-- (render_templates.py) Added 'render_template' function to get a template file from the template environment and return the rendered version.
-- (render_templates.py) Added 'template_loader' function to read template files data as requested by the template environment.
-- (render_templates.py) Runs every time enter key is pressed, so templates can be quickly re-rendered during development.
+Matrix-Calculator 2018-12-22-12-48:
+- (calculator_layout.js) Changed canvas gl context so the drawing buffer is preserved.
+- (calculator_layout.js) Added a graph to exported equations by converting the canvas to a .PNG file and embedding it in an "img" tag.
 
-Coursework 2018-09-23-23-01:
-- (render_templates.py) Fixed bug in main loop where the same old files are being rendered, instead of the new updated files being rendered. It required a new template environment to be created on each loop.
+Matrix-Calculator 2018-12-21-23-05:
+- (index.html) Added welcome and explanation of each of the pages.
+- (base.html) Swapped the position of "Calculator" and "About" in the navbar.
+- (theme.js) Updated navbar current page hilighting to reflect the above change.
 
-Coursework 2018-09-25-22-36:
-- (render_templates.py) Fixes bug where jinja2 does not get imported from packages folder on school computers. Added "packages" to the system path to fix this.
-- (page_layout.js) Fixed bug causing a scrollbar to appear on the left in landscape view. Was caused by rounding errors in window.innerWidth/window.innerHeight so replaced them with document.body.clientWidth/document.body.clientHeight.
-- (matrix_calculator.html) The above bug may also may have been due to the page not fully loading when dimensions are calculated so added a 1ms time wait before the page is initially resized.
-- (page_layout.js) Fixed bug causing buttons to appear below the graph, even in landscape view. Had to take 17 pixels from the equation div width to account for the standard chrome scrollbar width (17px).
-- (page_layout.js) Fixing the above bugs also fixed the problem with zooming in on mobile causing whitespace next to the navbar. Not sure how the fix worked.
-- (page_theme.js) Created. Will handle themeing of each page. Replaces the script in "base.html".
-- (base.html) Added link to new font "Raleway".
-- (page_theme.js) Made the fonts switchable, similar to the color theme system.
-- (page_theme.js) Re-added hilighting for the current page in the navbar. Was previously removed when moving from "Flask" web server to local files + "Python WSGI" server, but is now back.
-- (base.html) Added/edited some of the comments.
-- (settings.html) Created. Will contain settings for changing theme/font and possibly more. Incomplete for now.
-- (base.html) Added navbar item for "settings" page.
-- (page_theme.js) Added navbar hilighting for "settings" navbar item.
-- (web_server.py) Changed default port number from 80 to 8080. Did this so I can use "Chrome" dev tools remote device port forwarding to view the page on my phone over USB. This feature does not support the use of port 80.
+Matrix-Calculator 2018-12-19-21-54:
+- (calculator_build.js) Renamed "setItemCounts" function to "resetItemCounts" to better reflect its use.
+- (calculator_layout.js) Replaced "import" button with a "clear" button in "finishItemButtons".
+- (calculator_layout.js) Added functionality to "export" button so that it converts the equation and its solution to latex and then exports it to a file called "equation.latex".
+- (calculator_layout.js) Added functionality to "clear" button so that it removed all items from the itemDiv, hides the finishItemButtons, resets all item counts, then re-evaluates the equation to clear the grid and solution divs.
+- (calculator_display.js) Removed "scalarToLatex" function as it can be done with a single line of code.
+- (calculator_display.js) Changed "itemToLatex" so that it also supports operations and brackets.
+- (calculator_solve.js) Made the "equation" variable globally available after evaluation, so that it can be exported afterwards without the export function having to re-evaluate. This increases efficiency.
 
-Coursework 2018-10-02-09-21:
-- Changed the names of many of the scripts in the "/scripts" folder and also changed their names. There are no folders in the "/scripts" folder any more, they are all in the same directory level.
-- Added namespacing to every javascript script, to prevent global namespace from becoming polluted. Uses a plain js object for each file, and dot notation e.g. module.submodule.function()
-- (base.html) Removed javascript at the bottom of the page that loads the selected theme into the css variables.
-- (theme.js) Changed the way that themes are applied. Themes are seperated into "Color", "Shade" and "Style". Removed the font option due to it being unecessary and causing performance issues.
-- (theme.js) Created. This applies the theme to each page of the website and is run by "base.html".
-- (theme.js) Changed the name of the themes to reflect the names of gemstones e.g. "Ruby Red", "Sapphire Blue" etc.
-- (theme.js) Added new theme "Amethyst Purple".
-- (theme.js) Made themes work across every page by using HTML5 local storage to store the current theme.
-- (theme.js) Fixed bug where clicking on the edge of one of the theme select buttons would cause an error. Was caused by the padding padding on the buttons being treated differently to main body, leading to different click events. Created function "settings.getButtonValue" to handle button click events and produce the same value for both body and padding.
-- (layout.js) Moved all relevent functions for creating the layout of a page here e.g. "layout.pxToFloat".
-- (matrix_calculator_canvas.js) Added more comments throughout code.
+Matrix-Calculator 2018-12-17-23-13:
+- (about.html) Small technical change to definition of inverse.
 
-Coursework 2018-10-04-20-21:
-- Changed the way namespacing is declared. Now using the "module pattern" which mimics object orientated design using self invoking functions, closures and javascript objects. This allows for easier way to change the names of modules. It also allows us to simulate private and public variables/functions by only having the self invoking function return the public ones, leaving the private ones available only within the closure.
-- Changed the name "about_matrices.html" to "about.html".
-- Changed the name of "matrix_calculator.html" to "calculator.html".
-- Changed all files and namespaces starting with "matrix_calculator" to "calculator" to reflect the change in filename. This drastically simplifies the namespace to make code much more readable because function/variable names are shorter.
-- (calculator_equation_solver.js) Implemented half complete "solveEquation" function that will solve normal equations involving scalars e.g. "4x5^(12+3)-4/2". Currently there is little error checking, matrices are not supported and functions are not supported.
-- (calculator.html) Added debug line to run "solveEquation" on page load for quick development.
-- (about.html) Fixed typo in contents section. Changed "Dot-roduct" to "Dot-Product".
-- (calculator_equation_builder.js) Fixed problem with text encoding in HTML where the middle dot operator is displayed as ·. Fixed it by replacing js string with "&middot" which is parsed by the browser.
-- (theme.js) Changed navbar hilighting to reflect changes in the names of "about_matrices" and "matrix_calculator" navbar items.
+Matrix-Calculator 2018-12-15-23-15:
+- (calculator_solve.js) Fixed bug with "deepClone" function where it would return blank objects.
+- (calculator_solve.js) Seperated the large function "solveEquation" into 3 smaller functions: "solveBrackets", "solveVariadicFunctions" and "solveOperationGroups". "solveEquation" calls each of these functions in turn and returns the solved equation.
 
-Coursework 2018-10-16-21-36:
-- (calculator_equation_solver.js) Changed from using new ES6 "Class" keyword to using generator functions to create objects with closures. These are more compatible with older browsers as ES6 is a relatively new standard, and this also allows for private functions/variables.
-- (calculator_equation_solver.js) Fixed a major bug with the "solveEquation" function that causes it to jump ahead when there are multiple add/subtract or multiply/divide operators in a row.
-- (calculator_equation_builder.js) Changed the selectable buttons in the "operator" item so that all possible operators are available.
-- (calculator_equation_solver.js) Added "Vector" item that inherits from "Matrix".
-- (calculator_equation_solver.js) Added "dotProduct" function to "Vector" item.
+Matrix-Calculator 2018-12-14-15-24:
+- (calculator_solve.js) Fixed bug in "solveEquation" where the now deprecated "solveEquationNew" is referenced in the brackets solver.
 
-Coursework 2018-10-17-08-30:
-- (calculator_equation_solver.js) Fixed the way that dot product works. Before it produced a vector output, but it now produces the correct scalar output. This was an error in my mathematical knowledge.
+Matrix-Calculator 2018-12-13-21-18:
+- (calculator_solve.js) Added the rest of the operators to the "solveEquationNew" function.
+- (calculator_solve.js) Fixed bug with "solveEquationNew" where deepClone would not deep copy every element of the equation array properly (e.g. Scalar items would not have the "getMagnitude" function. Added "deepCloneArray" function that executes "deepClone" on every item in the array which fixes the bug.
+- (calculator_solve.js) Removed debug code for testing "solveEquationNew".
+- (calculator_solve.js) Removed old "solveEquation" function, and renamed "solveEquationNew" to "solveEquation" so that all other scripts reference the new function.
+- (calculator_solve.js) Small changes to some counter variable identifiers, to make it easier to understand what they count.
+- (calculator_solve.js) Added more comments to some functions that have no comments.
 
-Coursework 2018-10-19-15-20:
-- (calculator_equation_solver.js) Began to implement cross product for vectors but decided that it makes more sense to implement more of the "Matrix" class first because cross product can be calculated using matrices.
-- (calculator_equation_solver.js) Created "specialOperations" function as a wrapper object for all operations that dont belong to a paticular item.
-- (calculator_equation_solver.js) Added "generateZeroMatrix" function to "specialOperations"
-- (calculator_equation_solver.js) Added "generateIdentityMatrix" function to "specialOperations"
-- (calculator_equation_solver.js) Added "dotProduct" function to "specialOperations"
-- (calculator_equation_solver.js) Added "matrixMatrixProduct" function to "specialOperations"
-- (calculator_equation_solver.js) Added "scalarMatrixProduct" function to "specialOperations"
+Matrix-Calculator 2018-12-10-23-04:
+- (calculator_operations.js) Changed all operations so that they use the new array of operands parameter, instead of individual operand parameters.
+- (calculator_items.js) Also changed methods inside items to use array of operands parameter here as well.
+- (calculator_solve.js) Added recursive bracket support to new "solveEquation" function.
+- (calculator_solve.js) Also added variadic function support to new "solveEquation" function.
+- (calculator_solve.js) Started using "replaceArraySection" in new "solveEquation" to reduce repeated code.
 
-Coursework 2018-10-21-22-09:
-- Small change to the way the module pattern is implemented in all javascript files, to make it easier to read.
-- Made all curly brackets go underneath the corresponding statement for easier readability, instead of on the same line.
-- (calculator_equation_solver.js) Fixed "specialOperations.scalarMatrixProduct" so that it does not edit the Matrix object passed in by reference.
-- (calculator_equation_solver.js) Also changed "specialOperations.scalarMatrixProduct" so that it takes a Scalar objects as one of the argument, instead of a primitive integer.
-- (calculator_equation_solver.js) Fixed issue where "specialOperations.scalarMatrixProduct" and "specialOperations.matrixMatrixProduct" do not check the types of their input items properly. They use && (and) instead of || (or) meaning that both inputs would have to be the incorrect type for an error to occur, instead of just one input.
-- (calculator_equation_solver.js) Added many more comments throughout.
+Matrix-Calculator 2018-12-09-23-51:
+- (calculator_solve.js) Began to implement new "solveEquation" function to replace old one, based on pseudocode in the design section. Does basic scalar BODMAS only currently.
+- (calculator_solve.js) Added "deepClone" function that creates a new object from an existing object, with a completely new memory location. It also recursively deep copies all its child objects, hence the name deep clone.
+- (calculator_solve.js) Added "createOperation" and "createOperationGroup" used in the new "solveEquation" to specify the order and direction of all operations should be performed, and reference the functions containing the logic behind each operation.
+- (calculator_solve.js) Changed all operations so that they take in an array of operands as a parameter, instead of individual operands. Will need to change logic accordingly before calculator works again.
 
-Coursework 2018-10-23-23-17:
-- (calculator_equation_solver.js) Changed "Matrix" so that the square property is now replaced by the "getSquare" function.
-- (calculator_equation_solver.js) Fixed "Matrix.getDeterminant" so that it now returns a "Scalar" object instead of a primitive float.
-- (calculator_equation_solver.js) Added "getMatrixOfCofactors" function to "Matrix" that returns a new "Matrix" object (used for finding inverse of a matrix).
-- (calculator_equation_solver.js) Added "getTranspose" function to "Matrix" that returns a new "Matrix" object with the same values as the original, but has rows and columns swapped.
-- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object containing the adjugate (used for finding inverse of a matrix).
-- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object that, when multiplied by the original matrix object will produce the identity matrix.
-- (calculator_equation_solver.js) Added a new "Vector" class that inherits the "Matrix" class for 1xn or mx1 order matrices.
-- (calculator_equation_solver.js) Added "getMagnitude" function to "Vector" that returns the magnitude (length) of the vector as a "Scalar" object using pythagoras theorum.
-- (calculator_equation_solver.js) Added "getUnitVector" function to "Vector" that returns a vector with magnitude 1, but in the same direction as the original vector.
-- (calculator_equation_solver.js) Added "vectorAngle" function to "specialOperations", that takes two "Vector" objects as arguments and returns the angle between them in radians, using the dot product identity formula.
+Matrix-Calculator 2018-12-07-23-34:
+- (calculator_solve.js) Fixed bug with "Minor" operation, where the button does nothing as the function was not implemented in the "solveEquation" function.
+- (calculator_build.js) Edited "createSelectableButton" function so that it supports positioning buttons anywhere, instead of auto placing them one after the other. This allows similar buttons to be grouped into their own rows for easier use.
+- (calculator_build.js) Changed layout of "operation" and "bracket" items so that they group similar buttons into rows.
+- (calculator_build.js) Changed labels on some "operation" item selectable buttons: "*" to "X", "" to "Dot", "x" to "Cross", "p" to "P", "c" to "C", "T" to "Tra", "Angle" to "Angl". This makes some of their labels fit better, and make them easier to read.
+- (calculator_build.js) Made overflow hidden on "operation" item selectable buttons to stop labels overflowing off the edge of buttons on small screens.
+- (calculator_layout.js) Removed debug "console.log" related to "colorIndicator" elements.
 
-Coursework 2018-10-31-08-30:
-- (calculator_equation_solver.js) Changed "specialOperations.vectorAngle" so that it returns a "Scalar" object instead of a primitive float.
-- (calculator_equation_solver.js) Added comments to all the new functions of "Matrix" introduced in the previous version.
-- (calculator_equation_solver.js) Added matrix-matrix, matrix-vector and matrix-scalar multiplication to the "solveEquation" function.
-- (calculator_equation_solver.js) Changed all special operator functions so that they do not check inputs. The inputs are checked where the functions are called instead.
+Matrix-Calculator 2018-12-06-20-58:
+- Removed unused "favicon.ico" and "scalar.jpg" test images.
+- (base.html) Added reference to "favicon.ico" so that it also works from a local file, instead of just from a web server.
+- (calculator_layout.js) Fixed bug where the layout does not change on mobile between "Equation before solution" and "Solution before equation".
+- (calculator_build.js) Added rounded or straight corners to "colorIndicator" divs so that they fit with the shape of the item they are in, and the theme used.
 
-Coursework 2018-10-31-18-50:
-- Fixed errors with the styling in the code caused by opening in Visual Studio. Fixes included: moving brackets onto new lines, changing 4 spaces into tabs, adding a space between function names and their arguments.
-- Added a new setting so that users can choose whether to display the graph before or after  the equation on the calculator page (toggles between above or below on mobile).
+Matrix-Calculator 2018-12-05-22-34:
+- (calculator_display.js) Created. Used for displaying images on the graph, most functions here moved from "calculator_solve.js".
+- (calculator_solve.js) Removed all functions related to displaying the equation/solution to "calculator_display.js".
+- (calculator_build.js) Changed "colorIndicator" elements from an oval to a rectangle. Also added a click event to toggle the points visibility.
+- (calculator_build.js) Added "pointsVisible" attribute to grid item elements, and the "solutionWrapper", so that it can be toggled by "colorIndicators".
+- (calculator_build.js) Fixed bug with "addRow" and "addColumn" click events where the click event path is not correctly referenced, causing it to not work.
+- (calculator_layout.js) Added more to the solutionDiv by default. Now includes the gridLabels, and the "solutionWrapper" itself.
+- (calculator_display.js) Removed dynamic generation of "solutionWrapper" to reduce latency and make code simpler.
+- (calculator_display.js) Also remove dynamic generation of "gridLabels" instead, changing the existing labels and setting them to blank when they are not needed.
+- (calculator_layout.js) "solutionWrapper" is now visible at the start, containing a welcome message, instead of appearing after the user begins to add an equation.
 
-Coursework 2018-11-02-15-19:
-- (calculator_equation_solver.js) Changed the Matrix object, so that it extends with the vector properties only when it has 1 column. This replaces the method of inheritance used before.
-- (calculator_equation_solver.js) Added an abstract function "specialOperations.scalarMatrixElementWiseOperation" that performs a specified operation to each element of a matrix e.g. multiplying it by a scalar. This will prevent code from being duplicated, for example seperate functions for addition, subtraction, multiplication and division.
-- (calculator_equation_solver.js) Fixed bug where the solution of a Vector multiplied by a Scalar (and vice versa) would return false. The solveEquation function was only checking for "Matrix" items and not "Vector" items also.
+Matrix-Calculator 2018-12-04-23-59:
+- (calculator.html) Moved initial script from a script, tag into "calculator.js" to make it easier to edit, without recompiling templates.
+- (calculator.js) Created. Performs initalisation that used to be done inside "calculator.html".
+- (calculator_build.js) Added "createItemButton" function that creates a generic small clickable button for use in items.
+- (calculator_build.js) Changed "createIconButton" so that it now supports new black and white versions of the icons, instead of just black. It now takes different arguments, depending on the theme.
+- (calculator_build.js) Changed "createEmptyItem" and "addGrid" to support the new color changing icons.
+- (calculator_build.js) Added "createColorIndicator" function that makes a small coloured circle for use in specifying which points belong to which item.
+- (calculator_build.js) Removed some debug "console.log" statements no longer required.
+- (calculator_build.js) Simplified code for click events. Code did not make full use of "path" parameter, where statements such as "event["path"][0].parentNode" can be shortened to the equivalent "event["path"][1]", as click events "bubble" upwards through the DOM, starting with the item that triggered them.
+- (calculator_build.js) Fixed bug with new color changing items, due to the fact that they are now nested inside a wrapper div, causing the click events to not register the correct item being clicked.
+- (calculator_canvas.js) Removed old "hexToRgb" function and replaced it with a new RegEx version that is globally available, instead of being private to the "render" function.
+- (calculator_canvas.js) Graph axes now change color with the page theme, so it matches better with the canvas background color which already changes.
+- (calculator_canvas.js) Fixed aesthetic bug in "canvasLabels" css style which caused it to be black all the time. Left over from when the canvas background was always white, so text would be invisible with dark theme enabled.
+- (calculator_solve.js) Added a "colorIndicator" to the solutionWrapper so that the solution can also be distinguished from other points on the graph.
+- (calculator_solve.js) Fixed bug in "displayGridsOnGraph" with itemRefence being incorrectly parsed for every set of points within a grid, instead of every grid itself. Moved this part of the code outside the while loop brackets to fix this.
+- (calculator_solve.js) Fixed another "itemReference" related bug in "displayGridsOnGraph" where the solution item is mutable, so that its itemReference is not changed when the algorithm scans through every grid and assigns item references.
+- (calculator_solve.js) Added color changing functionality to "colorIndicator" elements so that they now change to match the color of the grids they represent.
+- (calculator_solve.js) Removed more debug "console.log" statements.
+- (calculator_solve.js) Renamed "points" to "info" as the grid's "itemReference" is now also included in this array.
+- (theme.js) Small change to color of the light elements and textbox border in the "dark" shade.
 
-Coursework 2018-11-09-21-39:
-- (about.html) Small change to fix the inverse matrix example. Changed "M.M^-1=1" to "M.M^-1=I" and fixed other places where 1 should have been I instead.
+Matrix-Calculator 2018-12-03-23-34:
+- (base.html) Moved script that applied global themeing properties from an inline HTML script tag, into the bottom theme.js to make them easier to find.
+- (calculator_layout.js) Changed the way that the graph part of the calculator is structured in HTML. "canvas" is now held within "canvasWrapper", which also holds the "canvasLabels", as they need to be absolutely position on top of each other. 
+- (calculator_layout.js) Renamed the "canvasDiv" to the "solutionDiv" because it also holds the "solutionWrapper" so the previous name was misleading. Made changes throughout the code to accomadate for this.
+- (settings.js) Re-named options for "Calculator Layout" to reference "Solution" instead of just "Graph", as they are grouped in the same section of screen.
+- (calculator_solve.js) Added labels to the axes using the "canvasLabels" div to store them in relative positions. Could not directly use WebGl as text/numbers would have been too difficult to draw an would have looked bad compared to HTML rendered text. HTML text also retains the same font as the website (Montserrat).
+- (calculator_solve.js) Fixed bug in new labels rendering code, where labels stay after graph is updated, had to remove old labels using ".removeChild" function.
+- (calculator_layout.js) Fixed bug with new canvas layout where canvas would not register mouse clicks because "canvasLabels" was covering it. Added "pointer-events:none" CSS property to rectify this.
+- Removed some unecessary "document.getElementById" statements as Chrome's Javascript engine (v8) apparently allows reference to elements with unique id's by default using their id as an identifier, even though they do not appear to be listed in the global scope.
+- (calculator_layout.js) Removed the solve button as solving is now done in real time, based on user input.
+- (calculator_solve.js) Added new case for equation parsing, where if the equation is empty, we get the message "Empty equation" instead of "Parse failed" in the solution div.
+- (calculator_canvas.js) Added code that makes canvas background change with CSS variables that control page theme, however axes and labels do not yet change color.
 
-Coursework 2018-11-11-21-08:
-- (calculator_equation_solver.js) Huge changes to make future changes much easier. Not yet complete so app doesn't work.
-- (calculator_equation_solver.js) Moved over to all operators and functions being "Operations" and the underlying logic stored in their corresponding "Actions".
-- (calculator_equation_solver.js) "Matrices" and "Vectors" now inherit from base class "Grid".
-- (calculator_equation_solver.js) Lots of common operations abstracted into functions e.g. "gridGridElementWiseOperation".
-- (calculator_equation_solver.js) Many new operations added including trigonometric functions, logs, permutations and combinations.
+Matrix-Calculator 2018-12-02-16-31:
+- (calculator_build.js) Fixed bug where equation is re-evaluated too early when items are deleted/moved. There is a 200s timeout on deletion/movement of items to allow time for the fade animation. Now re-evaluation occurs after the 200ms delay, inside the timeout function block.
 
-Coursework 2018-11-13-12-55:
-- (calculator_equation_solver.js) Fixed major bug with "Grid" inheritance. The variable "self" was being initialised in the global scope, instead of locally within the "Grid" closure, meaning methods on self e.g. "getTranspose" failed to give correct output. Added "var" keyword to start of "self" brought it into local scope.
-- (calculator_equation_solver.js) Added more verification to "Grid" to make sure its value is a uniform m x n array.
-- (calculator_equation_solver.js) Moved "getTranpose" to "Grid" so it will be available to both "Matrix" and "Vector".
-- (calculator_equation_solver.js) Removed incorrect restriction on "matrix.getMinorMatrix" that returned false if matrix was not square. Added check to make sure it has greater than 1 rows and columns instead.
-- (calculator_equation_solver.js) "matrix.getMatrixOfMinors" now only works for square matrices.
-- (calculator_equation_solver.js) Added more checks to "matrix.getMatrixOfCofactors", "matrix.getAdjugate" and "matrix.getInverse" so that they return false if there are any errors in the calculation.
-- (calculator_equation_solver.js) Added new "dotProduct" and "vectorVectorAngle" actions for use in their corresponding operations.
-- (calculator_equation_solver.js) Fixed bug in action "vectorVectorAngle" where error would be returned if angle (degrees or radians) unit was not specified. Angle now defaults to radians unless otherwise specified in parameters.
-- (calculator_equation_solver.js) Nearl finished adding operations: "tranpose", "determinant", "minor", "minors", "cofactors", "adjugate", "dotProduct", "vectorVectorAngle". Only "crossProduct" is left due to problem with different amount of inputs depending on dimensions.
-- (calculator_equation_solver.js) Small changes to variable names passed into "function" operations e.g. sin, log. Changed from "operand" to either "left" or "right" depending on where the operand appears in the equation in relation to the functions name.
-- (calculator_equation_solver.js) More major changes to structure. Not yet finished.
-
-Coursework 2018-11-14-10-50:
-- (calculator_equation_solver.js) Fixed another major bug in "Vector" due to "self" being initialised in global scope.
-- (calculator_equation_solver.js) Changed "matrix.getDeterminant" so that it now supports values other than primitive floats inside the matrix. Works for vectors inside matrices which is used to calculate cross product via laplace decomposition.
-
-Coursework 2018-11-15-20-18:
-- (calculator_equation_solver.js) Renamed private "verifyGridValue" function in "Grid" to "verifyGridSize" to better reflect its use.
-- (calculator_equation_solver.js) Changed from using primitve floats in "Grid" objects, to using "Scalar" objects within the value elements of "Grid" objects. This required many changes in other functions, especially operations, so that instead of using normal js + - / *, I used my own "Operations" to verify each operation and better work with "Scalar" objects.
-- (calculator_equation_solver.js) Re-added support for "solveEquation" so that it will solve an equation in the form of an array of items and operations.
-- (calculator_equation_solver.js) Added two new items "Bracket" and "Operation" which will replace the old items/strings previously used in equations e.g. "(", ")", "Functions" and "Operators".
-- (calculator_equation_solver.js) Added "crossProduct" operation that takes operands as an array and verifies the amount of them and their dimensions.
-- (calculator_equation_solver.js) Implemented "dotProduct" and "crossProduct" to "solveEquation" so that it will solve them in with a normal equation.
-- (calculator_equation_solver.js) Also began to implement other function like operations to "solveEquation" as they will use the same loop as "crossProduct" however this is not yet complete. It will rely on function brackets [] which will specify where the operands begin and end.
-- (calculator_equation_solver.js) Renamed all references of "exponent" to "exponential" to be more technically correct.
-- (calculator_equation_solver.js) Added "generateBasisVectors" action which will create a set of basis vectors to a specific amount of dimensions e.g. for 3 dimensions it will return i, j and k which look like (1,0,0) (0,1,0) (0,0,1).
-
-Coursework 2018-11-16-20-11:
-- (calculator_equation_solver.js) Changed name of "Vector.getUnitVector" to "Vector.normalize" to make it more techincally correct and to simplify the name.
-- (calculator_equation_solver.js) Changed back from using single "Operation" item to using seperate "Operator" and "Function" items, as they will be treated differently by "solveEquation".
-- (calculator_equation_solver.js) Renamed "operationBrackets" to "functionBrackets" to in line with the new item names. Only functions will use these brackets.
-- (calculator_equation_solver.js) Added new "Flag" item for use in specifying the output of certain functions e.g. use "radians" or "degrees" for Trigonometric functions.
-- (calculator_equation_solver.js) Renamed "crossProduct" to "normalVector" to be more technically specific. "crossProduct" is now an operator that calls "normalVector" but only for 3d vectors.
-- (calculator_equation_solver.js) Added support for chaning the unit used in trigonometric functions via the new "Flag" item, as well as the base used for "log"
-- (calculator_equation_solver.js) Changed "minor" so that it now takes in "Scalar" items for row and column, instead of primitive floats.
-- (calculator_equation_solver.js) Added more checks to "Grid" and "Scalar" items so that if any of the values passed in are false, no object will be created and instead false will be returned. This stops the need for more checks on every function that creates these items.
-- (calculator_equation_solver.js) Worked on adding functions to the "solveEquation" function and allowed any number of arguments to the function.
-- (calculator_equation_solver.js) Added check to make sure that the closed function bracket is always present when a function is called.
-- (calculator_equation_solver.js) Simplied the way that sections of the equation are replaced in "solveEquation" by using "solved" variable to reduce the amount of repeated code for each individual operator/function.
-- (calculator_equation_solver.js) Moved the evaluation of functions in "solveEquation" to before the normal arithmetic operators.
-- (calculator_equation_solver.js) Added "dotProduct" and "crossProduct" operators to "solveEquation". They are evaluated after functions but before the other normal operations.
-
-Coursework 2018-11-20-23-24:
-- (calculator_equation_solver.js) Removed "Flag" item, in favour of a site wide setting for angle unit, as the flag item was only used to specify between radians and degrees.
-- Added new "Angle Unit" setting to allow user to change between degrees and radians. Many small additions to "settings.js" and "theme.js" were required.
-- (layout.js) Added "createSettingDiv" function to reduce repeated code in "settings.js" by generating a blank setting panel with a label using a function.
-- (calculator_equation_solver.js) Added "getMagnitude" method to Scalar item that works to get its absolute value.
-- (calculator_equation_solver.js) Added missing "magnitude" operation that works for vectors and scalars.
-- (calculator_equation_solver.js) Completely changed the way functions are solved, for both single, multi and unknown numbers of parameters.
-- (calculator_equation_solver.js) Added "parameterCount" property to Function item so that the "solveEquation" function knows how many operands to expect.
-- (calculator_equation_solver.js) Added more validity checks to the matrix.getMinorMatrix to make sure you cannot getMinors of 1xm or nx1 matrices, and also you cannot choose rows or columns outside the matrix bounds as target rows/columns.
-
-Coursework 2018-11-21-08-31:
-- (calculator_equation_solver.js) Fixed bug with "arccos" being accidentally named as "arcsin".
-- (calculator_equation_solver.js) Made checking of addition more efficient in "solveEquation" function.
-
-Coursework 2018-11-22-23-33:
-- Split "calculator_equation_solver.js" into many smaller files as it was becoming too large and confusing.
-- (calculator.html) Added html script tags, referencing all the new split up calculator scripts.
-- Also simplified the names of some js files to make referencing them simpler in the code.
-- Moved from using "context", to "self" as it is easier to understand for people coming from other coding languages. Plus, the self invoking function call is made slightly simpler.
-- (calculator_solve.js) Reimplemented "parseItemValues" function so that the user interace now works with the equation solver again.
-- (calculator_solve.js) Fixed bug where "parseItemValues" parses matrices as arrays on primitve floats (like used to be the standard) instead of arrays of Scalar objects.
-- (calculator_solve.js) Fixed another bug in "parseItemValues" where matrices are created directly using the Matrix class, instead of through the Grid class.
-- (calculator_solve.js) Fixed major bug introduced last version with multiplication/division, where the solveEquation function enters an infinite while loop because the solved variable is has not been set to true.
-- (calculator_solve.js) Also fixed minor issue with addition/subtraction introduced with the bug above where code is duplicated and the second duplicate is unused in the code.
-
-Coursework 2018-11-23-19-38:
-- (calculator_build.js) Added "createIconButton" function that generates icons that are used within items like "move item up", "delete item", "add matrix row" etc. This saves hundereds of lines of repeated code.
-- (calculator_build.js) Renamed "createItemButton" to "createSelectableButton" to better reflect its use.
-- (calculator_solve.js) Changed angleUnit to be a global variable so that all modules can access it in the "calculator" page.
-- (calculator_solve.js) Reverted change made in recent versions. Now "Function" and "Operator" items are again combined into an "Operation" item, with a property specififying if it is varadic.
-- (calculator_solve.js) Removed "parameterCount" property used in function-like operations and replaced it with "varadicFunction". This allows all functions and operators to be treated the same unless one has an unknown number of parameters (known as a varadic function) e.g. "normal vector".
-- (calculator_solve.js) Completely changed "parseItemValues" so that it now parses the items Scalar, Matrix, Vector, Operation and Bracket properly.
-- (calculator_solve.js) Fixed bug in "solveEquation" where current item counter would move to -1 when brackets where used. Set the counter to move back by -1 instead of -2 and it fixed the error.
-- (calculator_solve.js) Also simplified code for checking in solveEquation so that after sections are solved, the current item pointer moves back/forward to the correct location.
-- (calculator_items.js) Fixed bug in "Matrix.getMatrixOfMinors" where it uses primitive floats in operations, and then returns a matrix of primitive floats instead of a matrix of Scalar objects.
-- (calculator_items.js) Fixed bug in "Matrix.inverse" where the built in divide operation was used instead of "calculator_operations.divide" which caused a matrix of "NaN" values to be returned.
-- (calculator_solve.js) "solveEquation" now supports (almost) every operator, including the matrix operators e.g. inverse.
-- (calculator_build.js) Changed references from "matrix" item to "grid" item so that vectors are included as well. Had to change item names and also item counts.
-- (calculator_build.js) Added new "bracket" item for storing equation and varadic items. It uses the same selection boxes as "operation".
-- (calculator_solve.js) Added operation name dictionary to convert item button names to their equivalent operations names.
-- (calculator_solve.js) Fixed bug in "solveEquation" where permutations was spelt wrong causing errors.
-- (calculator_items.js) Fixed bug in "scalar.getMagnitude" where a primitve float was returned instead of a Scalar object.
-- (calculator_items.js) Simplified the code for adding many selectable buttons to items. Instead of each being a seperate statement, the button labels are stored in a list and iterated through by a while loop.
-
-Coursework 2018-11-25-23-29:
-- (calculator_solve.js) Fixed typo in "parseItemValues" where "Arcsin" was mispelled as "Arcin".
-- (calculator_solve.js) and (calculator_logic.js) Swapped the order of parameters for "Log" from "argument, base" to "base, argument".
-- (calculator_logic.js) Fixed bug in "Vector Vector Angle" where angles were converte to degrees from radians twice resulting in extremely large angles e.g. 5100 degrees
-- (calculator_build.js) Resized items with many selectable items/texboxes so that text does not overflow. Had to make minor changes to dimensions of items, and them maximum grid size is now 5x5
-- (calculator_solve.js) Fixed the Grid and Scalar item parsers so that they now validate inputs, and return false if a blank item is input.
-- (calculator_build.js) Added "createEmptyBox" function for creating a rectangle with a box shadow, which is used when displaying equation items and solutions. Edited "createEmptyItem" function to use this function.
-- (calculator_solve.js) Created "displaySolution" function that displays the solution in a box below the graph using MathJax.
-- (calculator_solve.js) Added "gridToLatex", "scalarToLatex" and a more general "itemToLatex" functions which are used to convert the equation solution into LaTeX, which can be rendered to the page using MathJax.
-- (calculator_solve.js) Created new "solveItems" function that is called when the user presses the "solve" button. It parses, solves then displays the solution.
-- (calculator.html) Added MathJax initialisation script to allow solution to be displayed.
-
-Coursework 2018-11-27-08-30:
-- (calculator_solve.js) Added error message to "displaySolution" when solving an incorrect equation.
-- (calculator_solve.js) Changed equation verification in "solveItems" so that it does not return false on an error, and instead displays an error.
-
-Coursework 2018-11-30-23-38:
+Matrix-Calculator 2018-11-30-23-38:
 - (calculator_build.js) Added "keyup" and "click" events to textboxes, selectable buttons and icon buttons so that after every change made to the equation by the user, the equation is re-evaluated.
 - (calculator_build.js) The new event listeners should eliminate the need for a solve button as the program will attempt to solve the equation after every change made by the user.
 - (calculator_build.js) Replaced some ".onclick" properties with "click" event listeners.
@@ -380,182 +200,360 @@ Coursework 2018-11-30-23-38:
 - (calculator.html) Removed reference to "calculator_solve.solve" function that was called on page load.
 - (calculator_solve.js) Due to testing og "itemReference", points are currently not displayed.
 
-Coursework 2018-12-02-16-31:
-- (calculator_build.js) Fixed bug where equation is re-evaluated too early when items are deleted/moved. There is a 200s timeout on deletion/movement of items to allow time for the fade animation. Now re-evaluation occurs after the 200ms delay, inside the timeout function block.
+Matrix-Calculator 2018-11-27-08-30:
+- (calculator_solve.js) Added error message to "displaySolution" when solving an incorrect equation.
+- (calculator_solve.js) Changed equation verification in "solveItems" so that it does not return false on an error, and instead displays an error.
 
-Coursework 2018-12-03-23-34:
-- (base.html) Moved script that applied global themeing properties from an inline HTML script tag, into the bottom theme.js to make them easier to find.
-- (calculator_layout.js) Changed the way that the graph part of the calculator is structured in HTML. "canvas" is now held within "canvasWrapper", which also holds the "canvasLabels", as they need to be absolutely position on top of each other. 
-- (calculator_layout.js) Renamed the "canvasDiv" to the "solutionDiv" because it also holds the "solutionWrapper" so the previous name was misleading. Made changes throughout the code to accomadate for this.
-- (settings.js) Re-named options for "Calculator Layout" to reference "Solution" instead of just "Graph", as they are grouped in the same section of screen.
-- (calculator_solve.js) Added labels to the axes using the "canvasLabels" div to store them in relative positions. Could not directly use WebGl as text/numbers would have been too difficult to draw an would have looked bad compared to HTML rendered text. HTML text also retains the same font as the website (Montserrat).
-- (calculator_solve.js) Fixed bug in new labels rendering code, where labels stay after graph is updated, had to remove old labels using ".removeChild" function.
-- (calculator_layout.js) Fixed bug with new canvas layout where canvas would not register mouse clicks because "canvasLabels" was covering it. Added "pointer-events:none" CSS property to rectify this.
-- Removed some unecessary "document.getElementById" statements as Chrome's Javascript engine (v8) apparently allows reference to elements with unique id's by default using their id as an identifier, even though they do not appear to be listed in the global scope.
-- (calculator_layout.js) Removed the solve button as solving is now done in real time, based on user input.
-- (calculator_solve.js) Added new case for equation parsing, where if the equation is empty, we get the message "Empty equation" instead of "Parse failed" in the solution div.
-- (calculator_canvas.js) Added code that makes canvas background change with CSS variables that control page theme, however axes and labels do not yet change color.
+Matrix-Calculator 2018-11-25-23-29:
+- (calculator_solve.js) Fixed typo in "parseItemValues" where "Arcsin" was mispelled as "Arcin".
+- (calculator_solve.js) and (calculator_logic.js) Swapped the order of parameters for "Log" from "argument, base" to "base, argument".
+- (calculator_logic.js) Fixed bug in "Vector Vector Angle" where angles were converte to degrees from radians twice resulting in extremely large angles e.g. 5100 degrees
+- (calculator_build.js) Resized items with many selectable items/texboxes so that text does not overflow. Had to make minor changes to dimensions of items, and them maximum grid size is now 5x5
+- (calculator_solve.js) Fixed the Grid and Scalar item parsers so that they now validate inputs, and return false if a blank item is input.
+- (calculator_build.js) Added "createEmptyBox" function for creating a rectangle with a box shadow, which is used when displaying equation items and solutions. Edited "createEmptyItem" function to use this function.
+- (calculator_solve.js) Created "displaySolution" function that displays the solution in a box below the graph using MathJax.
+- (calculator_solve.js) Added "gridToLatex", "scalarToLatex" and a more general "itemToLatex" functions which are used to convert the equation solution into LaTeX, which can be rendered to the page using MathJax.
+- (calculator_solve.js) Created new "solveItems" function that is called when the user presses the "solve" button. It parses, solves then displays the solution.
+- (calculator.html) Added MathJax initialisation script to allow solution to be displayed.
 
-Coursework 2018-12-04-23-59:
-- (calculator.html) Moved initial script from a script, tag into "calculator.js" to make it easier to edit, without recompiling templates.
-- (calculator.js) Created. Performs initalisation that used to be done inside "calculator.html".
-- (calculator_build.js) Added "createItemButton" function that creates a generic small clickable button for use in items.
-- (calculator_build.js) Changed "createIconButton" so that it now supports new black and white versions of the icons, instead of just black. It now takes different arguments, depending on the theme.
-- (calculator_build.js) Changed "createEmptyItem" and "addGrid" to support the new color changing icons.
-- (calculator_build.js) Added "createColorIndicator" function that makes a small coloured circle for use in specifying which points belong to which item.
-- (calculator_build.js) Removed some debug "console.log" statements no longer required.
-- (calculator_build.js) Simplified code for click events. Code did not make full use of "path" parameter, where statements such as "event["path"][0].parentNode" can be shortened to the equivalent "event["path"][1]", as click events "bubble" upwards through the DOM, starting with the item that triggered them.
-- (calculator_build.js) Fixed bug with new color changing items, due to the fact that they are now nested inside a wrapper div, causing the click events to not register the correct item being clicked.
-- (calculator_canvas.js) Removed old "hexToRgb" function and replaced it with a new RegEx version that is globally available, instead of being private to the "render" function.
-- (calculator_canvas.js) Graph axes now change color with the page theme, so it matches better with the canvas background color which already changes.
-- (calculator_canvas.js) Fixed aesthetic bug in "canvasLabels" css style which caused it to be black all the time. Left over from when the canvas background was always white, so text would be invisible with dark theme enabled.
-- (calculator_solve.js) Added a "colorIndicator" to the solutionWrapper so that the solution can also be distinguished from other points on the graph.
-- (calculator_solve.js) Fixed bug in "displayGridsOnGraph" with itemRefence being incorrectly parsed for every set of points within a grid, instead of every grid itself. Moved this part of the code outside the while loop brackets to fix this.
-- (calculator_solve.js) Fixed another "itemReference" related bug in "displayGridsOnGraph" where the solution item is mutable, so that its itemReference is not changed when the algorithm scans through every grid and assigns item references.
-- (calculator_solve.js) Added color changing functionality to "colorIndicator" elements so that they now change to match the color of the grids they represent.
-- (calculator_solve.js) Removed more debug "console.log" statements.
-- (calculator_solve.js) Renamed "points" to "info" as the grid's "itemReference" is now also included in this array.
-- (theme.js) Small change to color of the light elements and textbox border in the "dark" shade.
+Matrix-Calculator 2018-11-23-19-38:
+- (calculator_build.js) Added "createIconButton" function that generates icons that are used within items like "move item up", "delete item", "add matrix row" etc. This saves hundereds of lines of repeated code.
+- (calculator_build.js) Renamed "createItemButton" to "createSelectableButton" to better reflect its use.
+- (calculator_solve.js) Changed angleUnit to be a global variable so that all modules can access it in the "calculator" page.
+- (calculator_solve.js) Reverted change made in recent versions. Now "Function" and "Operator" items are again combined into an "Operation" item, with a property specififying if it is varadic.
+- (calculator_solve.js) Removed "parameterCount" property used in function-like operations and replaced it with "varadicFunction". This allows all functions and operators to be treated the same unless one has an unknown number of parameters (known as a varadic function) e.g. "normal vector".
+- (calculator_solve.js) Completely changed "parseItemValues" so that it now parses the items Scalar, Matrix, Vector, Operation and Bracket properly.
+- (calculator_solve.js) Fixed bug in "solveEquation" where current item counter would move to -1 when brackets where used. Set the counter to move back by -1 instead of -2 and it fixed the error.
+- (calculator_solve.js) Also simplified code for checking in solveEquation so that after sections are solved, the current item pointer moves back/forward to the correct location.
+- (calculator_items.js) Fixed bug in "Matrix.getMatrixOfMinors" where it uses primitive floats in operations, and then returns a matrix of primitive floats instead of a matrix of Scalar objects.
+- (calculator_items.js) Fixed bug in "Matrix.inverse" where the built in divide operation was used instead of "calculator_operations.divide" which caused a matrix of "NaN" values to be returned.
+- (calculator_solve.js) "solveEquation" now supports (almost) every operator, including the matrix operators e.g. inverse.
+- (calculator_build.js) Changed references from "matrix" item to "grid" item so that vectors are included as well. Had to change item names and also item counts.
+- (calculator_build.js) Added new "bracket" item for storing equation and varadic items. It uses the same selection boxes as "operation".
+- (calculator_solve.js) Added operation name dictionary to convert item button names to their equivalent operations names.
+- (calculator_solve.js) Fixed bug in "solveEquation" where permutations was spelt wrong causing errors.
+- (calculator_items.js) Fixed bug in "scalar.getMagnitude" where a primitve float was returned instead of a Scalar object.
+- (calculator_items.js) Simplified the code for adding many selectable buttons to items. Instead of each being a seperate statement, the button labels are stored in a list and iterated through by a while loop.
 
-Coursework 2018-12-05-22-34:
-- (calculator_display.js) Created. Used for displaying images on the graph, most functions here moved from "calculator_solve.js".
-- (calculator_solve.js) Removed all functions related to displaying the equation/solution to "calculator_display.js".
-- (calculator_build.js) Changed "colorIndicator" elements from an oval to a rectangle. Also added a click event to toggle the points visibility.
-- (calculator_build.js) Added "pointsVisible" attribute to grid item elements, and the "solutionWrapper", so that it can be toggled by "colorIndicators".
-- (calculator_build.js) Fixed bug with "addRow" and "addColumn" click events where the click event path is not correctly referenced, causing it to not work.
-- (calculator_layout.js) Added more to the solutionDiv by default. Now includes the gridLabels, and the "solutionWrapper" itself.
-- (calculator_display.js) Removed dynamic generation of "solutionWrapper" to reduce latency and make code simpler.
-- (calculator_display.js) Also remove dynamic generation of "gridLabels" instead, changing the existing labels and setting them to blank when they are not needed.
-- (calculator_layout.js) "solutionWrapper" is now visible at the start, containing a welcome message, instead of appearing after the user begins to add an equation.
+Matrix-Calculator 2018-11-22-23-33:
+- Split "calculator_equation_solver.js" into many smaller files as it was becoming too large and confusing.
+- (calculator.html) Added html script tags, referencing all the new split up calculator scripts.
+- Also simplified the names of some js files to make referencing them simpler in the code.
+- Moved from using "context", to "self" as it is easier to understand for people coming from other coding languages. Plus, the self invoking function call is made slightly simpler.
+- (calculator_solve.js) Reimplemented "parseItemValues" function so that the user interace now works with the equation solver again.
+- (calculator_solve.js) Fixed bug where "parseItemValues" parses matrices as arrays on primitve floats (like used to be the standard) instead of arrays of Scalar objects.
+- (calculator_solve.js) Fixed another bug in "parseItemValues" where matrices are created directly using the Matrix class, instead of through the Grid class.
+- (calculator_solve.js) Fixed major bug introduced last version with multiplication/division, where the solveEquation function enters an infinite while loop because the solved variable is has not been set to true.
+- (calculator_solve.js) Also fixed minor issue with addition/subtraction introduced with the bug above where code is duplicated and the second duplicate is unused in the code.
 
-Coursework 2018-12-06-20-58:
-- Removed unused "favicon.ico" and "scalar.jpg" test images.
-- (base.html) Added reference to "favicon.ico" so that it also works from a local file, instead of just from a web server.
-- (calculator_layout.js) Fixed bug where the layout does not change on mobile between "Equation before solution" and "Solution before equation".
-- (calculator_build.js) Added rounded or straight corners to "colorIndicator" divs so that they fit with the shape of the item they are in, and the theme used.
+Matrix-Calculator 2018-11-21-08-31:
+- (calculator_equation_solver.js) Fixed bug with "arccos" being accidentally named as "arcsin".
+- (calculator_equation_solver.js) Made checking of addition more efficient in "solveEquation" function.
 
-Coursework 2018-12-07-23-34:
-- (calculator_solve.js) Fixed bug with "Minor" operation, where the button does nothing as the function was not implemented in the "solveEquation" function.
-- (calculator_build.js) Edited "createSelectableButton" function so that it supports positioning buttons anywhere, instead of auto placing them one after the other. This allows similar buttons to be grouped into their own rows for easier use.
-- (calculator_build.js) Changed layout of "operation" and "bracket" items so that they group similar buttons into rows.
-- (calculator_build.js) Changed labels on some "operation" item selectable buttons: "*" to "X", "" to "Dot", "x" to "Cross", "p" to "P", "c" to "C", "T" to "Tra", "Angle" to "Angl". This makes some of their labels fit better, and make them easier to read.
-- (calculator_build.js) Made overflow hidden on "operation" item selectable buttons to stop labels overflowing off the edge of buttons on small screens.
-- (calculator_layout.js) Removed debug "console.log" related to "colorIndicator" elements.
+Matrix-Calculator 2018-11-20-23-24:
+- (calculator_equation_solver.js) Removed "Flag" item, in favour of a site wide setting for angle unit, as the flag item was only used to specify between radians and degrees.
+- Added new "Angle Unit" setting to allow user to change between degrees and radians. Many small additions to "settings.js" and "theme.js" were required.
+- (layout.js) Added "createSettingDiv" function to reduce repeated code in "settings.js" by generating a blank setting panel with a label using a function.
+- (calculator_equation_solver.js) Added "getMagnitude" method to Scalar item that works to get its absolute value.
+- (calculator_equation_solver.js) Added missing "magnitude" operation that works for vectors and scalars.
+- (calculator_equation_solver.js) Completely changed the way functions are solved, for both single, multi and unknown numbers of parameters.
+- (calculator_equation_solver.js) Added "parameterCount" property to Function item so that the "solveEquation" function knows how many operands to expect.
+- (calculator_equation_solver.js) Added more validity checks to the matrix.getMinorMatrix to make sure you cannot getMinors of 1xm or nx1 matrices, and also you cannot choose rows or columns outside the matrix bounds as target rows/columns.
 
-Coursework 2018-12-09-23-51:
-- (calculator_solve.js) Began to implement new "solveEquation" function to replace old one, based on pseudocode in the design section. Does basic scalar BODMAS only currently.
-- (calculator_solve.js) Added "deepClone" function that creates a new object from an existing object, with a completely new memory location. It also recursively deep copies all its child objects, hence the name deep clone.
-- (calculator_solve.js) Added "createOperation" and "createOperationGroup" used in the new "solveEquation" to specify the order and direction of all operations should be performed, and reference the functions containing the logic behind each operation.
-- (calculator_solve.js) Changed all operations so that they take in an array of operands as a parameter, instead of individual operands. Will need to change logic accordingly before calculator works again.
+Matrix-Calculator 2018-11-16-20-11:
+- (calculator_equation_solver.js) Changed name of "Vector.getUnitVector" to "Vector.normalize" to make it more techincally correct and to simplify the name.
+- (calculator_equation_solver.js) Changed back from using single "Operation" item to using seperate "Operator" and "Function" items, as they will be treated differently by "solveEquation".
+- (calculator_equation_solver.js) Renamed "operationBrackets" to "functionBrackets" to in line with the new item names. Only functions will use these brackets.
+- (calculator_equation_solver.js) Added new "Flag" item for use in specifying the output of certain functions e.g. use "radians" or "degrees" for Trigonometric functions.
+- (calculator_equation_solver.js) Renamed "crossProduct" to "normalVector" to be more technically specific. "crossProduct" is now an operator that calls "normalVector" but only for 3d vectors.
+- (calculator_equation_solver.js) Added support for chaning the unit used in trigonometric functions via the new "Flag" item, as well as the base used for "log"
+- (calculator_equation_solver.js) Changed "minor" so that it now takes in "Scalar" items for row and column, instead of primitive floats.
+- (calculator_equation_solver.js) Added more checks to "Grid" and "Scalar" items so that if any of the values passed in are false, no object will be created and instead false will be returned. This stops the need for more checks on every function that creates these items.
+- (calculator_equation_solver.js) Worked on adding functions to the "solveEquation" function and allowed any number of arguments to the function.
+- (calculator_equation_solver.js) Added check to make sure that the closed function bracket is always present when a function is called.
+- (calculator_equation_solver.js) Simplied the way that sections of the equation are replaced in "solveEquation" by using "solved" variable to reduce the amount of repeated code for each individual operator/function.
+- (calculator_equation_solver.js) Moved the evaluation of functions in "solveEquation" to before the normal arithmetic operators.
+- (calculator_equation_solver.js) Added "dotProduct" and "crossProduct" operators to "solveEquation". They are evaluated after functions but before the other normal operations.
 
-Coursework 2018-12-10-23-04:
-- (calculator_operations.js) Changed all operations so that they use the new array of operands parameter, instead of individual operand parameters.
-- (calculator_items.js) Also changed methods inside items to use array of operands parameter here as well.
-- (calculator_solve.js) Added recursive bracket support to new "solveEquation" function.
-- (calculator_solve.js) Also added variadic function support to new "solveEquation" function.
-- (calculator_solve.js) Started using "replaceArraySection" in new "solveEquation" to reduce repeated code.
+Matrix-Calculator 2018-11-15-20-18:
+- (calculator_equation_solver.js) Renamed private "verifyGridValue" function in "Grid" to "verifyGridSize" to better reflect its use.
+- (calculator_equation_solver.js) Changed from using primitve floats in "Grid" objects, to using "Scalar" objects within the value elements of "Grid" objects. This required many changes in other functions, especially operations, so that instead of using normal js + - / *, I used my own "Operations" to verify each operation and better work with "Scalar" objects.
+- (calculator_equation_solver.js) Re-added support for "solveEquation" so that it will solve an equation in the form of an array of items and operations.
+- (calculator_equation_solver.js) Added two new items "Bracket" and "Operation" which will replace the old items/strings previously used in equations e.g. "(", ")", "Functions" and "Operators".
+- (calculator_equation_solver.js) Added "crossProduct" operation that takes operands as an array and verifies the amount of them and their dimensions.
+- (calculator_equation_solver.js) Implemented "dotProduct" and "crossProduct" to "solveEquation" so that it will solve them in with a normal equation.
+- (calculator_equation_solver.js) Also began to implement other function like operations to "solveEquation" as they will use the same loop as "crossProduct" however this is not yet complete. It will rely on function brackets [] which will specify where the operands begin and end.
+- (calculator_equation_solver.js) Renamed all references of "exponent" to "exponential" to be more technically correct.
+- (calculator_equation_solver.js) Added "generateBasisVectors" action which will create a set of basis vectors to a specific amount of dimensions e.g. for 3 dimensions it will return i, j and k which look like (1,0,0) (0,1,0) (0,0,1).
 
-Coursework 2018-12-13-21-18:
-- (calculator_solve.js) Added the rest of the operators to the "solveEquationNew" function.
-- (calculator_solve.js) Fixed bug with "solveEquationNew" where deepClone would not deep copy every element of the equation array properly (e.g. Scalar items would not have the "getMagnitude" function. Added "deepCloneArray" function that executes "deepClone" on every item in the array which fixes the bug.
-- (calculator_solve.js) Removed debug code for testing "solveEquationNew".
-- (calculator_solve.js) Removed old "solveEquation" function, and renamed "solveEquationNew" to "solveEquation" so that all other scripts reference the new function.
-- (calculator_solve.js) Small changes to some counter variable identifiers, to make it easier to understand what they count.
-- (calculator_solve.js) Added more comments to some functions that have no comments.
+Matrix-Calculator 2018-11-14-10-50:
+- (calculator_equation_solver.js) Fixed another major bug in "Vector" due to "self" being initialised in global scope.
+- (calculator_equation_solver.js) Changed "matrix.getDeterminant" so that it now supports values other than primitive floats inside the matrix. Works for vectors inside matrices which is used to calculate cross product via laplace decomposition.
 
-Coursework 2018-12-14-15-24:
-- (calculator_solve.js) Fixed bug in "solveEquation" where the now deprecated "solveEquationNew" is referenced in the brackets solver.
+Matrix-Calculator 2018-11-13-12-55:
+- (calculator_equation_solver.js) Fixed major bug with "Grid" inheritance. The variable "self" was being initialised in the global scope, instead of locally within the "Grid" closure, meaning methods on self e.g. "getTranspose" failed to give correct output. Added "var" keyword to start of "self" brought it into local scope.
+- (calculator_equation_solver.js) Added more verification to "Grid" to make sure its value is a uniform m x n array.
+- (calculator_equation_solver.js) Moved "getTranpose" to "Grid" so it will be available to both "Matrix" and "Vector".
+- (calculator_equation_solver.js) Removed incorrect restriction on "matrix.getMinorMatrix" that returned false if matrix was not square. Added check to make sure it has greater than 1 rows and columns instead.
+- (calculator_equation_solver.js) "matrix.getMatrixOfMinors" now only works for square matrices.
+- (calculator_equation_solver.js) Added more checks to "matrix.getMatrixOfCofactors", "matrix.getAdjugate" and "matrix.getInverse" so that they return false if there are any errors in the calculation.
+- (calculator_equation_solver.js) Added new "dotProduct" and "vectorVectorAngle" actions for use in their corresponding operations.
+- (calculator_equation_solver.js) Fixed bug in action "vectorVectorAngle" where error would be returned if angle (degrees or radians) unit was not specified. Angle now defaults to radians unless otherwise specified in parameters.
+- (calculator_equation_solver.js) Nearl finished adding operations: "tranpose", "determinant", "minor", "minors", "cofactors", "adjugate", "dotProduct", "vectorVectorAngle". Only "crossProduct" is left due to problem with different amount of inputs depending on dimensions.
+- (calculator_equation_solver.js) Small changes to variable names passed into "function" operations e.g. sin, log. Changed from "operand" to either "left" or "right" depending on where the operand appears in the equation in relation to the functions name.
+- (calculator_equation_solver.js) More major changes to structure. Not yet finished.
 
-Coursework 2018-12-15-23-15:
-- (calculator_solve.js) Fixed bug with "deepClone" function where it would return blank objects.
-- (calculator_solve.js) Seperated the large function "solveEquation" into 3 smaller functions: "solveBrackets", "solveVariadicFunctions" and "solveOperationGroups". "solveEquation" calls each of these functions in turn and returns the solved equation.
+Matrix-Calculator 2018-11-11-21-08:
+- (calculator_equation_solver.js) Huge changes to make future changes much easier. Not yet complete so app doesn't work.
+- (calculator_equation_solver.js) Moved over to all operators and functions being "Operations" and the underlying logic stored in their corresponding "Actions".
+- (calculator_equation_solver.js) "Matrices" and "Vectors" now inherit from base class "Grid".
+- (calculator_equation_solver.js) Lots of common operations abstracted into functions e.g. "gridGridElementWiseOperation".
+- (calculator_equation_solver.js) Many new operations added including trigonometric functions, logs, permutations and combinations.
 
-Coursework 2018-12-17-23-13:
-- (about.html) Small technical change to definition of inverse.
+Matrix-Calculator 2018-11-09-21-39:
+- (about.html) Small change to fix the inverse matrix example. Changed "M.M^-1=1" to "M.M^-1=I" and fixed other places where 1 should have been I instead.
 
-Coursework 2018-12-19-21-54:
-- (calculator_build.js) Renamed "setItemCounts" function to "resetItemCounts" to better reflect its use.
-- (calculator_layout.js) Replaced "import" button with a "clear" button in "finishItemButtons".
-- (calculator_layout.js) Added functionality to "export" button so that it converts the equation and its solution to latex and then exports it to a file called "equation.latex".
-- (calculator_layout.js) Added functionality to "clear" button so that it removed all items from the itemDiv, hides the finishItemButtons, resets all item counts, then re-evaluates the equation to clear the grid and solution divs.
-- (calculator_display.js) Removed "scalarToLatex" function as it can be done with a single line of code.
-- (calculator_display.js) Changed "itemToLatex" so that it also supports operations and brackets.
-- (calculator_solve.js) Made the "equation" variable globally available after evaluation, so that it can be exported afterwards without the export function having to re-evaluate. This increases efficiency.
+Matrix-Calculator 2018-11-02-15-19:
+- (calculator_equation_solver.js) Changed the Matrix object, so that it extends with the vector properties only when it has 1 column. This replaces the method of inheritance used before.
+- (calculator_equation_solver.js) Added an abstract function "specialOperations.scalarMatrixElementWiseOperation" that performs a specified operation to each element of a matrix e.g. multiplying it by a scalar. This will prevent code from being duplicated, for example seperate functions for addition, subtraction, multiplication and division.
+- (calculator_equation_solver.js) Fixed bug where the solution of a Vector multiplied by a Scalar (and vice versa) would return false. The solveEquation function was only checking for "Matrix" items and not "Vector" items also.
 
-Coursework 2018-12-21-23-05:
-- (index.html) Added welcome and explanation of each of the pages.
-- (base.html) Swapped the position of "Calculator" and "About" in the navbar.
-- (theme.js) Updated navbar current page hilighting to reflect the above change.
+Matrix-Calculator 2018-10-31-18-50:
+- Fixed errors with the styling in the code caused by opening in Visual Studio. Fixes included: moving brackets onto new lines, changing 4 spaces into tabs, adding a space between function names and their arguments.
+- Added a new setting so that users can choose whether to display the graph before or after  the equation on the calculator page (toggles between above or below on mobile).
 
-Coursework 2018-12-22-12-48:
-- (calculator_layout.js) Changed canvas gl context so the drawing buffer is preserved.
-- (calculator_layout.js) Added a graph to exported equations by converting the canvas to a .PNG file and embedding it in an "img" tag.
+Matrix-Calculator 2018-10-31-08-30:
+- (calculator_equation_solver.js) Changed "specialOperations.vectorAngle" so that it returns a "Scalar" object instead of a primitive float.
+- (calculator_equation_solver.js) Added comments to all the new functions of "Matrix" introduced in the previous version.
+- (calculator_equation_solver.js) Added matrix-matrix, matrix-vector and matrix-scalar multiplication to the "solveEquation" function.
+- (calculator_equation_solver.js) Changed all special operator functions so that they do not check inputs. The inputs are checked where the functions are called instead.
 
-Coursework 2018-12-22-20-22:
-- (calculator_layout.js) Changed export button click function so that it evaluates the equation at the time the button is clicked.
-- (calculator_layout.js) Added spaces to the exported HTML equation file to make it easier to read.
-- (calculator_layout.js) Added error reporting to the exported HTML equation.
-- (calculator_solve.js) Changed "equation" back to a local variable being parsed around by value.
-- (calculator_solve.js) Fixed bug with "deepClone" function that meant functions were not copied, only properties. JSON parse then stringify is not capable of copying functions, so used Object.assign instead.
+Matrix-Calculator 2018-10-23-23-17:
+- (calculator_equation_solver.js) Changed "Matrix" so that the square property is now replaced by the "getSquare" function.
+- (calculator_equation_solver.js) Fixed "Matrix.getDeterminant" so that it now returns a "Scalar" object instead of a primitive float.
+- (calculator_equation_solver.js) Added "getMatrixOfCofactors" function to "Matrix" that returns a new "Matrix" object (used for finding inverse of a matrix).
+- (calculator_equation_solver.js) Added "getTranspose" function to "Matrix" that returns a new "Matrix" object with the same values as the original, but has rows and columns swapped.
+- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object containing the adjugate (used for finding inverse of a matrix).
+- (calculator_equation_solver.js) Added "getAdjugate" function to "Matrix" that returns a new "Matrix" object that, when multiplied by the original matrix object will produce the identity matrix.
+- (calculator_equation_solver.js) Added a new "Vector" class that inherits the "Matrix" class for 1xn or mx1 order matrices.
+- (calculator_equation_solver.js) Added "getMagnitude" function to "Vector" that returns the magnitude (length) of the vector as a "Scalar" object using pythagoras theorum.
+- (calculator_equation_solver.js) Added "getUnitVector" function to "Vector" that returns a vector with magnitude 1, but in the same direction as the original vector.
+- (calculator_equation_solver.js) Added "vectorAngle" function to "specialOperations", that takes two "Vector" objects as arguments and returns the angle between them in radians, using the dot product identity formula.
 
-Coursework 2018-12-29-17-05:
-- (index.html) Changed the layout of the text so that it is easier to read.
+Matrix-Calculator 2018-10-21-22-09:
+- Small change to the way the module pattern is implemented in all javascript files, to make it easier to read.
+- Made all curly brackets go underneath the corresponding statement for easier readability, instead of on the same line.
+- (calculator_equation_solver.js) Fixed "specialOperations.scalarMatrixProduct" so that it does not edit the Matrix object passed in by reference.
+- (calculator_equation_solver.js) Also changed "specialOperations.scalarMatrixProduct" so that it takes a Scalar objects as one of the argument, instead of a primitive integer.
+- (calculator_equation_solver.js) Fixed issue where "specialOperations.scalarMatrixProduct" and "specialOperations.matrixMatrixProduct" do not check the types of their input items properly. They use && (and) instead of || (or) meaning that both inputs would have to be the incorrect type for an error to occur, instead of just one input.
+- (calculator_equation_solver.js) Added many more comments throughout.
 
-Coursework 2019-01-19-22-32:
-- (calculator_solve.js) Change to the method in which variadic functions are evaluated. It now relies on the 'createOperation' function, so is easier to extend when adding new variadic functions.
-- (calculator_solve.js) Removed unecessary error checking in 'evaluateItems' for position of an errors as a number as an output from 'solveEquation'.
-- (calculator_solve.js) Removed the 'No single solution' error in 'evaluateItems', 'Solve failed' now occurs for all solving errors.
-- (calculator_solve.js) Fixed bug with 'solveBrackets' where unclosed brackets were did not result in an error.
-- (calculator_solve.js) Fixed bug in 'parseItems' where bracket type did not need to be selected, for parse to finish successfully.
-- (calculator_solve.js) Added more comments.
-- Began to implement automated testing of equation solving functions.
+Matrix-Calculator 2018-10-19-15-20:
+- (calculator_equation_solver.js) Began to implement cross product for vectors but decided that it makes more sense to implement more of the "Matrix" class first because cross product can be calculated using matrices.
+- (calculator_equation_solver.js) Created "specialOperations" function as a wrapper object for all operations that dont belong to a paticular item.
+- (calculator_equation_solver.js) Added "generateZeroMatrix" function to "specialOperations"
+- (calculator_equation_solver.js) Added "generateIdentityMatrix" function to "specialOperations"
+- (calculator_equation_solver.js) Added "dotProduct" function to "specialOperations"
+- (calculator_equation_solver.js) Added "matrixMatrixProduct" function to "specialOperations"
+- (calculator_equation_solver.js) Added "scalarMatrixProduct" function to "specialOperations"
 
-Coursework 2019-01-20-23-51:
-- Added try catch to prevent test suite from crashing on errors.
+Matrix-Calculator 2018-10-17-08-30:
+- (calculator_equation_solver.js) Fixed the way that dot product works. Before it produced a vector output, but it now produces the correct scalar output. This was an error in my mathematical knowledge.
 
-Coursework 2019-01-23-15-19:
-- Added a few more mathematical tests.
+Matrix-Calculator 2018-10-16-21-36:
+- (calculator_equation_solver.js) Changed from using new ES6 "Class" keyword to using generator functions to create objects with closures. These are more compatible with older browsers as ES6 is a relatively new standard, and this also allows for private functions/variables.
+- (calculator_equation_solver.js) Fixed a major bug with the "solveEquation" function that causes it to jump ahead when there are multiple add/subtract or multiply/divide operators in a row.
+- (calculator_equation_builder.js) Changed the selectable buttons in the "operator" item so that all possible operators are available.
+- (calculator_equation_solver.js) Added "Vector" item that inherits from "Matrix".
+- (calculator_equation_solver.js) Added "dotProduct" function to "Vector" item.
 
-Coursework 2019-01-26-22-36:
-- (calculator_solve.js) Fixed bug where 'deepCloneArray' returns an empty array when passed false.
-- (calculator_solve.js) Added special cases for commonly used values in trigonometric functions e.g. sin pi, to prevent them from being slightly innacurate.
-- (calculator_solve.js) Made permutations function undefined for r < 0.
-- (calculator_solve.js) Prevented log (and ln) function from accepting base or number less than 1.
-- (calculator_solve.js) Prevented scalars from being added or subtred from matrices/vectors.
-- (calculator_solve.js) Restricted 'getMinorMatrix' method of 'Matrix' class undefined for Matrices with sizes less than 2x2.
+Matrix-Calculator 2018-10-04-20-21:
+- Changed the way namespacing is declared. Now using the "module pattern" which mimics object orientated design using self invoking functions, closures and javascript objects. This allows for easier way to change the names of modules. It also allows us to simulate private and public variables/functions by only having the self invoking function return the public ones, leaving the private ones available only within the closure.
+- Changed the name "about_matrices.html" to "about.html".
+- Changed the name of "matrix_calculator.html" to "calculator.html".
+- Changed all files and namespaces starting with "matrix_calculator" to "calculator" to reflect the change in filename. This drastically simplifies the namespace to make code much more readable because function/variable names are shorter.
+- (calculator_equation_solver.js) Implemented half complete "solveEquation" function that will solve normal equations involving scalars e.g. "4x5^(12+3)-4/2". Currently there is little error checking, matrices are not supported and functions are not supported.
+- (calculator.html) Added debug line to run "solveEquation" on page load for quick development.
+- (about.html) Fixed typo in contents section. Changed "Dot-roduct" to "Dot-Product".
+- (calculator_equation_builder.js) Fixed problem with text encoding in HTML where the middle dot operator is displayed as ·. Fixed it by replacing js string with "&middot" which is parsed by the browser.
+- (theme.js) Changed navbar hilighting to reflect changes in the names of "about_matrices" and "matrix_calculator" navbar items.
 
-Coursework 2019-02-12-08-28:
-- (calculator_items.js) Fixed bug where determinant throws error when trying to add a vector to a zero scalar (when calculating normal).
+Matrix-Calculator 2018-10-02-09-21:
+- Changed the names of many of the scripts in the "/scripts" folder and also changed their names. There are no folders in the "/scripts" folder any more, they are all in the same directory level.
+- Added namespacing to every javascript script, to prevent global namespace from becoming polluted. Uses a plain js object for each file, and dot notation e.g. module.submodule.function()
+- (base.html) Removed javascript at the bottom of the page that loads the selected theme into the css variables.
+- (theme.js) Changed the way that themes are applied. Themes are seperated into "Color", "Shade" and "Style". Removed the font option due to it being unecessary and causing performance issues.
+- (theme.js) Created. This applies the theme to each page of the website and is run by "base.html".
+- (theme.js) Changed the name of the themes to reflect the names of gemstones e.g. "Ruby Red", "Sapphire Blue" etc.
+- (theme.js) Added new theme "Amethyst Purple".
+- (theme.js) Made themes work across every page by using HTML5 local storage to store the current theme.
+- (theme.js) Fixed bug where clicking on the edge of one of the theme select buttons would cause an error. Was caused by the padding padding on the buttons being treated differently to main body, leading to different click events. Created function "settings.getButtonValue" to handle button click events and produce the same value for both body and padding.
+- (layout.js) Moved all relevent functions for creating the layout of a page here e.g. "layout.pxToFloat".
+- (matrix_calculator_canvas.js) Added more comments throughout code.
 
-Coursework 2019-02-14-18-09:
-- (unit_tests.js) Created script to automatically test the mathematical functions of the calculator.
-- (calculator.html) Unit tests are now excecuted on startup.
+Matrix-Calculator 2018-09-25-22-36:
+- (render_templates.py) Fixes bug where jinja2 does not get imported from packages folder on school computers. Added "packages" to the system path to fix this.
+- (page_layout.js) Fixed bug causing a scrollbar to appear on the left in landscape view. Was caused by rounding errors in window.innerWidth/window.innerHeight so replaced them with document.body.clientWidth/document.body.clientHeight.
+- (matrix_calculator.html) The above bug may also may have been due to the page not fully loading when dimensions are calculated so added a 1ms time wait before the page is initially resized.
+- (page_layout.js) Fixed bug causing buttons to appear below the graph, even in landscape view. Had to take 17 pixels from the equation div width to account for the standard chrome scrollbar width (17px).
+- (page_layout.js) Fixing the above bugs also fixed the problem with zooming in on mobile causing whitespace next to the navbar. Not sure how the fix worked.
+- (page_theme.js) Created. Will handle themeing of each page. Replaces the script in "base.html".
+- (base.html) Added link to new font "Raleway".
+- (page_theme.js) Made the fonts switchable, similar to the color theme system.
+- (page_theme.js) Re-added hilighting for the current page in the navbar. Was previously removed when moving from "Flask" web server to local files + "Python WSGI" server, but is now back.
+- (base.html) Added/edited some of the comments.
+- (settings.html) Created. Will contain settings for changing theme/font and possibly more. Incomplete for now.
+- (base.html) Added navbar item for "settings" page.
+- (page_theme.js) Added navbar hilighting for "settings" navbar item.
+- (web_server.py) Changed default port number from 80 to 8080. Did this so I can use "Chrome" dev tools remote device port forwarding to view the page on my phone over USB. This feature does not support the use of port 80.
 
-Coursework 2019-02-18-21-01:
-- (calculator_build.js) Combined moveItemUp and moveItemDown functions into a single moveItem function to save on code. The moveItemUp/Down functions now call this function with the argument "up" or "down" respectively.
-- Added comments to EVERY part of the code.
-- Removed help section (help.html) as it is not needed. Fixes multi-line navbar issue on mobile devices.
+Matrix-Calculator 2018-09-23-23-01:
+- (render_templates.py) Fixed bug in main loop where the same old files are being rendered, instead of the new updated files being rendered. It required a new template environment to be created on each loop.
 
-Coursework 2019-02-19-12-00:
-- (about.html) Added all 'help' to the 'about' section.
+Matrix-Calculator 2018-09-22-22-40:
+- Completely redesigned the app structure, so that it can be developed/executed on any computer, without need for a web server or command prompt access.
+- HTML files now stored in the '/templates' folder.
+- 3rd party 'Python' packages e.g. 'Jijna2' and 'markupsafe' in the '/packages' folder.
+- Images, scripts and compiled HTML templates in the '/webroot' folder.
+- All JavaScript and HTML changed to accomadate for changes in the file paths of other scripts and images. Now local names are required e.g. '/index' => '/index.html'.
+- (matrix_calculator.html) File moved from its own seperate directory, back to the same directory as other HTML templates.
+- (favicon.ico) Created. Small 32x32 image of an identity matrix made in paint.net. Used as an icon in the tabs/favourites bar of most browsers.
+- (render_templates.py) Created.
+- (render_templates.py) Added 'scan_directory' function to recursively scan through directories/subdirectories and return the paths of all the files it finds.
+- (render_templates.py) Added 'render_template' function to get a template file from the template environment and return the rendered version.
+- (render_templates.py) Added 'template_loader' function to read template files data as requested by the template environment.
+- (render_templates.py) Runs every time enter key is pressed, so templates can be quickly re-rendered during development.
 
-Coursework 2019-02-19-14-49:
-- Created 'help_images' folder containing images used in the 'about' page.
-- (about.html) Added images to the 'about' section.
+Matrix-Calculator 2018-09-21-15-22:
+- (packages folder) Created a folder to hold all 3rd party packages instead of using a 'venv'. This works for the school computer system, where i cannot use command prompt to start the venv.
+- (startserver.py) Added 'packages/' to the 'Python' system path so that the 3rd party 'Python' packages inside can be used.
+- (runfromcmd.py) Created. Runs the web server in a command prompt window, even though the school policy does not allow direct access to command prompt.
 
-Coursework 2019-02-19-18-06:
-- (about.html) Fixed some typos.
-- (about.html) Added a better structured contents section.
-- (calculator_build.js) Fixed bug where grid rows/columns are not added in the correct position. Caused by removing the item sidebar in a recent change, which offset the amount of children the item wrapper had in the DOM by -1.
+Matrix-Calculator 2018-09-03-22-35:
+- (equation_builder.js) Added 'addFunction' function that adds a new function.
+- (equation_builder.js) Added 'createItemButton' function to populate operator and function items with selectable buttons.
+- (equation_builder.js) Replaced 'selectOperator' function with a more general 'selectButton' function that is used for both operator and function items.
+- (page_layout.js) Changed 'createButton' function to make the font size of the buttons smaller to prevent it from overflowing on smaller screens.
+- (equation_solver.js) Changed 'parseItemValues' function so that it parses operator items (and the newly added function items) slightly differently than before.
+- (equation_solver.js) Changed 'validateEquation' function so that it validates equations by checking the items either side of every item in the equation. Still un-finished. 
 
-Coursework 2019-02-20-20-08:
-- (index.html) Improved homepage.
+Matrix-Calculator 2018-08-15-21-54:
+- (base.html) Changed default theme to 'Electric Blue'.
+- (equation_builder.js) Changed 'createEquationDiv' function to add 'solve' and 'export' buttons that appear at the bottom of the equation.	
+- (equation_builder.js) Added 'toggleEquationFinishButtons' function to hide/show the 'solve' and 'export'. Export button currently has no function.
+- (equation_solver.js) Added JavaScript classes for 'Scalar', 'Matrix' and 'Operator' items ready for solving.
+- (equation_solver.js) Added 'parseItemValues' function that loops through all equation item and parses the items into the predefined classes.
+- (equation_solver.js) Added 'validateEquation' function that attempts to make sure an equation is solvable. Currently un-finished.
+- (page_layout.js) Changed 'resizePage' function so that the canvas is centered horizontally all the time. For aesthetic reasons only.
 
-Coursework 2019-02-21-16-40:
-- (calculator.html) Removed duplicate links to scripts. And changed script description comments.
+Matrix-Calculator 2018-08-15-00-43:
+- (base.html) Again, reworked the way themes are loaded via CSS variables.
+- (base.html) 3 new themes added, and 'Emerald Green' theme removed. Current themes: 'Salmon Pink', 'Electric Blue', 'Mustard Yellow', 'Slate Grey'.
+- (base.html) Changed default theme to 'Slate Grey'.
+- (equation_builder.js) Added fade in/fade out CSS animations, when items are added or deleted.
+- (equation_builder.js) Changed 'selectOperator' function so that it the user can now select the operator they need, from a small grid in the item.
+- (page_layout.js) Fixed bug where top row buttons do not resize properly with window size. Due button height being scaled down. Fixed by setting button height CSS to 100% in 'addTopRowButton' function.
+- (page_layout.js) Fixed bug where top row button text is incorrectly positioned vertically, caused by the previous fix. Fixed by changing the 'addTopRowButton' function so that text has CSS properties with display as 'table-cell' with vertical align as 'middle'.
 
-Coursework 2019-02-22-23-06:
-- (calculator_items.js) Improved efficiency of 'Matrix.get_determinant' function and removed duplicated lines of code for adding and subtracting from the determinant total.
-- Added more comments.
-- More writeup on technical solution.
-- Source code word doc needs to be changed.
+Matrix-Calculator 2018-08-13-21-44:
+- (base.html) Changed the way themes are loaded via CSS variables.
+- (base.html) Slightly changed the default 'Salmon Pink' color scheme.
+- (base.html) Added fade animation on page transition using CSS animation keyframes.
+- (base.html) Added rounded corners to currently selected/hovered navbar item.
+- (base.html) Added shadow to the bottom of the navbar.
+- (matrix_calculator.html) Added rounded corners and shadows to the buttons and canvas.
+- (equation_builder.js) Added 'selectOperator' function, it is currently an empty placeholder.
+- (equation_builder.js) Added 'addOperator' function that adds an operator item, however it is not currently working as it relies on the unfinished 'selectOperator' function.
+- (images folder) Changed item move up, move down and delete icons from PNG to SVG because they are vector graphics, so they scale without pixelation.
+
+Matrix-Calculator 2018-08-11-18-33:
+- (routes.py) Changed the outgoing HTTP response headers so that resource are not cached by browsers during development.
+- (about_matrices.html) Removed the loading screen, using CSS overflow as 'hidden' instead.
+
+Matrix-Calculator 2018-08-10-23-33:
+- Removed 'matrix_tools.html' and 'matrix_visualiser.html' in favour of 'matrix_calculator.html'.
+- (matrix_calculator.py) Seperated out the JavaScript into seperate files in the 'matrix_calculator' folder.
+- (__init__.py) Changed the 'Flask' folder structure from using 'static' and 'template' folders, to a single 'webroot' folder.
+- (canvas_webgl.js) Created.
+- (equation_builder.js) Created.
+- (page_layout.js) Created.
+
+Matrix-Calculator 2018-08-10-19-32:
+- (matrix_combo.html) Completely changed the way the page is rendered...
+- (matrix_combo.html) Added 'main' function to be run on page load.
+- (matrix_combo.html) Added 'createCanvasDiv' and 'createEquationDiv' functions that set up page layout.
+- (matrix_combo.html) Added 'pageResize' function that runs all other reisizing functions within the page.
+- (matrix_combo.html) Linked 'pageResize' to the window resize event handler, so that the page resizes every time the window is resized.
+- (matrix_combo.html) Removed border around canvas for aesthetic reasons.
+
+Matrix-Calculator 2018-08-08-23-40:
+- (base.html) Moved 'pxToFloat' function here so it can be shared by all pages.
+- (base.html) Added theme system that uses JavaScript to swap the values of CSS variables. Current themes: 'Salmon Pink', 'Emerald Green'.
+- (matrix_combo.html) Attempted to join 'matrix_tools.html' and 'matrix_visualiser.html' pages side by side in a single page. Not currently functional.
+
+Matrix-Calculator 2018-08-06-23-19:
+- (matrix_tools.html) Added 'addTopRowButton' function to create new button, to prevent code from being repeated multiple times.
+- (matrix_tools.html) Added 'recalculateTopRowButtonsSizes' function to resize the top row buttons depending on the width and height of the page.
+- (matrix_tools.html) Added 'createEmptyItem' function which returns the basic shell of an item e.g. scalar, matrix or operator. 
+- (matrix_tools.html) Added 'addMatrix' function to add a new matrix item, that is 2x2.
+- (matrix_tools.html) Added functions for adding/removing rows/columns of the matrix.
+- (matrix_tools.html) Added functions for moving items up and down and removing them.
+- (matrix_tools.html) Made the item numbering system dynamically update as you move and delete items.
+
+Matrix-Calculator 2018-08-03-22-05:
+- (matrix_tools.html) Created the layout of a scalar item using CSS grids. Each item has its own number.
+- (static folder) Created icons for use im the buttons on the scalar item e.g. move up, move down, delete (used in 'matrix_tools.html').
+- (matrix_tools.html) Added 'addScalar' function to add a new scalar item.
+- (matrix_tools.html) Added 'deleteItem' function to remove the selected item.
+- (matrix_tools.html) Move up and move down buttons added but dont work yet.
+- (matrix_tools.html) Copied 'pxToFloat' function here as well.
+
+Matrix-Calculator 2018-07-31-22-05:
+- (matrix_tools.html) Added buttons for creating 'Scalar' items.
+- (matrix_tools.html) Added 'pxToFloat' function for converting between the string 'px' values in CSS to a float value in Javascript.
+
+Matrix-Calculator 2018-07-28-22-52:
+- (about_matrices.html) Added more sections.
+- (about_matrices.html) Added a contents list to quickly jump between sections.
+- (about_matrices.html) Link at the bottom to jump back up to the top.
+- (about_matrices.html) Page is now hidden while the 'MathJax' loads, and then un-hidden. This prevents the page from jumping around and resizing while equations resize. Caused errors with whitespace appearing next to the navbar.
+
+Matrix-Calculator 2018-07-26-23-40:
+- Changed project from local files to web server.
+- 'Python' web server 'Flask' used to serve web pages.
+- Use the 'Jinja2' template system supported by 'Flask'.
+- Created default 'Flask' directory structure.
+- (templates folder) Created to hold HTML files.
+- (routes.py) Added template editing to hilight navbar item of the current page.
+- (base.html) Created as a template for all other pages.
+- (base.html) Added CSS styles used on each page, CSS variables used to theme page.
+- (base.html) Moved navbar used for each page to this file.
+- (base.html) Fixed bug on mobile where text was scaled up to large sizes on only some pages. Fixed by setting the CSS property "text-size-adjust" to "none" in the HTML body of every page.
+- (index.html) Changed to a simple greeting page.
+- (about_matrices.html) Created.
+- (about_matrices.html) Added explanation of the basic principles of matrix mathematics.
+- (about_matrices.html) 'MathJax' used which is a JavaScript library used to display mathematical notation.
+- (matrix_tools.html) Created.
+- (matrix_tools.html) Will solve matrix equations, but currently an empty placeholder.
+- (help.html) Created.
+- (help.html) Will contain tutorials of how to use the app, but currently a placeholder.
+- (matrix_visualiser.html) Created.
+- (matrix_visualiser.html) 'WebGL' canvas moved here from 'index.html'
+- (about_matrices.html) Added spacing to the equations to prevent them from overflowing left and causing the page to be too wide. Caused whitespace next to navbar.
+
+Matrix-Calculator 2018-07-17-10-33:
+- (index.html) Created.
+- (index.html) Font changed to 'Montserrat' from 'Google fonts'
+- (index.html) 'WebGL' canvas added, added in 'HTML5'.
+- (index.html) Functions added for 'WebGL' boilerplate setup code ('createCanvas', 'createShader', 'createProgram', 'prepareAttributes', 'render').
+- (index.html) In 'createCanvas' function, added algorithm to check screen orientation and size canvas accordingly.
+- (index.html) 'WebGL' vertex and fragment shaders created, with color attribute.
+- (index.html) 'WebGL' canvas has set of axes drawn in background.
+- (index.html) Added 'drawTriangles' function to add triangle vertices to the GPU array buffer, and draw them.
+- (index.html) Added 'createPolygon' function to add vertices for a new polygon to the vertices array, by creating many small triangles, each rotated by a small amount.
+- (index.html) 'WebGL' canvas supports clicking to add polygon ('mouseDown', 'mouseUp', 'mouseMove' functions handle clicks).
+- (index.html) Added 'canvasYToClipsace' and 'canvasXToClipspace' functions, for converting between clipspace and viewport coordinates for mouse events.
+- (index.html) Added 'rotateVertice' function for rotation a vertice using standard formula with Cosine and Sine.
+- (index.html) Added 'translateVertice' function for moving a vertice horizontally and vertically.
+- (index.html) Added functions for rotating/translating vertices on the 'WebGL' canvas.
+- (index.html) Added functions for drawing polygons and triangles on the 'WebGL' canvas.
