@@ -14,9 +14,9 @@ It also implements a few more specific ones such as determinant, transpose and c
 
 # Motivation
 
-This project was initally built as my A-Level final school project over the course of a few months.
+This was initally built as a school project over the course of a few months.
 <br />
-Eventually I decided to publish it on GitHub and continue to improve it.
+I decided to continue to improve it and eventually shared my work to GitHub.
 <br />
 Hope you enjoy!
 <br />
@@ -27,8 +27,11 @@ JavaScript/HTML/CSS - The main languages used for the web app itself.
 <br />
 [Python3](https://www.python.org) - Language used for the development tools and web server.
 <br />
+[WebGL](https://www.khronos.org/webgl) - Low-level graphics API used to render graphs.
+<br />
 [Jinja2](https://jinja.palletsprojects.com) - Template engine used to create the web page files.
 <br />
+
 
 # License
 
