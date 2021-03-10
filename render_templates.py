@@ -1,8 +1,4 @@
 import os
-import sys
-# Adds the packages folder to the system path so that the local modules can be accessed
-sys.path.append("packages")
-# Imports Jinja2 from the packages folder (and by extension markupsafe from the same directory)
 import jinja2
 
 

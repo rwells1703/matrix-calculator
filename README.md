@@ -29,7 +29,7 @@ JavaScript/HTML/CSS - The main languages used for the web app itself.
 <br />
 [WebGL](https://www.khronos.org/webgl) - Low-level graphics API used to render graphs.
 <br />
-[Jinja2](https://jinja.palletsprojects.com) - Template engine used to create the web page files.
+[Jinja2](https://jinja.palletsprojects.com) - Template engine used to create the web page files (install this Python module to recompile the HTML templates yourself).
 <br />
 
 
