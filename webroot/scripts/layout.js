@@ -61,7 +61,7 @@ layout = function ()
 		
 		// Creates a repeating grid where each button occupies one cell
 		buttonRow.style.display = "grid";
-		buttonRow.style.gridTemplateColumns = "repeat("+buttons.length+", 1fr)";
+		buttonRow.style.gridTemplateColumns = "repeat("+buttons.length+", minmax(0, 1fr))";
 		
 		// Loop through each button
 		var i = 0;

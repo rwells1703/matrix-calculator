@@ -208,8 +208,8 @@ calculator_build = function ()
 		itemWrapper.style.display = "grid";
 
 		// Use CSS 'fr' unit to calculate how the rows/columns should be proportioned to fit their container
-		itemWrapper.style.gridTemplateColumns = "repeat(10, 1fr)";
-		itemWrapper.style.gridTemplateRows = "repeat(8, 1fr)"; 
+		itemWrapper.style.gridTemplateColumns = "repeat(10, minmax(0, 1fr))";
+		itemWrapper.style.gridTemplateRows = "repeat(8, minmax(0, 1fr))"; 
 		
 		// Creates a div to hold the name of the item
 		var itemName = document.createElement("div");
