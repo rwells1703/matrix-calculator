@@ -72,7 +72,7 @@ theme = function ()
 		{
 			"box-shadow": "0px 2px 5px rgba(0,0,0,0.3)",
 			"box-shadow-navbar": "0px 2px 5px rgba(0,0,0,0.2)",
-			"box-shadow-navbar-item": "2px 0px 15px rgba(0,0,0,0.5), -2px 0px 15px rgba(0,0,0,0.5)",
+			"box-shadow-navbar-item": "1px 0px 7px rgba(0,0,0,0.3), -1px 0px 7px rgba(0,0,0,0.3)",
 			"border-radius": "0.6vh"
 		},
 		"Flat":
