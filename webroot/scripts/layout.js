@@ -76,6 +76,7 @@ layout = function ()
 		
 		return buttonRow;
 	};
+	
 	// Creates an empty div with a label that will hold the buttons for a setting e.g. color scheme
 	self.createSettingDiv = function (labelText)
 		{

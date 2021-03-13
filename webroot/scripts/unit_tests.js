@@ -141,7 +141,7 @@ unit_tests = function ()
 	];
 
 	// Makes sure the mathematical functions of the calculator give the correct outputs
-	self.test = function () {
+	self.test = function (showIndividualResults, showIO) {
 		// Save the time the testing began
 		var testBeginTime = Date.now();
 
@@ -170,35 +170,53 @@ unit_tests = function ()
 				var solution = "Error thrown: " + err
 			}
 
-			// Log the name and input equation of the test to the console
-			console.log("%c Test " + (testNumber+1) + " - " +  testEquations[testNumber][0], "font-weight: bold");
-			console.log("Equation input:");
-			console.log(equation);
+			if (showIndividualResults || showIO)
+			{
+				// Log the name and input equation of the test to the console
+				console.log("%c Test " + (testNumber+1) + " - " +  testEquations[testNumber][0], "font-weight: bold");
+			}
 
-			// Log the expected output of the test to the console
-			console.log("Expected outcome: ");
-			console.log(testEquations[testNumber][2]);
-			
-			// Log the actual output of the test to the console
-			console.log("Solution outcome:");
-			console.log(solution);
+			if (showIO)
+			{
+				console.log("Equation input:");
+				console.log(equation);
+
+				// Log the expected output of the test to the console
+				console.log("Expected outcome: ");
+				console.log(testEquations[testNumber][2]);
+				
+				// Log the actual output of the test to the console
+				console.log("Solution outcome:");
+				console.log(solution);
+			}
 			
 			// Compare the JSON string for the expected outcome against the JSON string for the soltuion
 			if (JSON.stringify(testEquations[testNumber][2]) == JSON.stringify(solution))
 			{
 				// If they are identical, the test passed
-				console.log("%c PASSED", "color: green");
+				if (showIndividualResults)
+				{
+					console.log("%c PASSED", "color: green");
+				}
+
 				passedCount += 1;
 			}
 			else
 			{
 				// If they are not identical, the test failed
-				console.log("%c FAILED", "color: red");
+				if (showIndividualResults)
+				{
+					console.log("%c FAILED", "color: red");
+				}
+
 				failedCount += 1;
 			}
 
-			// Add a blank line to seperate the tests
-			console.log("");
+			if (showIndividualResults)
+			{
+				// Add a blank line to seperate the tests
+				console.log("");
+			}
 
 			// Move on to the next test
 			testNumber += 1;

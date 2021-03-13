@@ -7,9 +7,6 @@ calculator_layout.createMainDiv();
 // Sets the counts for all the items to 0 ready for the user to edit the equation
 calculator_build.resetItemCounts();
 
-// Run the unit tests for the mathematical operations
-unit_tests.test();
-
 // Registers click events on the canvas
 calculator_canvas.registerMouseEvents();
 // Sets up the webgl context for the canvas

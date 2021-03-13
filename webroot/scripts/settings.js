@@ -135,6 +135,22 @@ settings = function ()
 		settingAngleUnitDiv.appendChild(settingAngleUnitButtonDiv);
 		// Add the themeAngleUnitDiv to the mainDiv
 		mainDiv.appendChild(settingAngleUnitDiv);
+		
+
+		// Create a unit test button
+		var unitTestDiv = layout.createSettingDiv("Perform Unit Testing");
+
+		// The unit test buttons
+		unitTestButtons = [];
+		unitTestButtons.push(layout.createButton("Overall summary", unit_tests.test.bind(null, false, false, false), "var(--theme-color-main)"));
+		unitTestButtons.push(layout.createButton("Individual summaries", unit_tests.test.bind(null, true, false, false), "var(--theme-color-main)"));
+		unitTestButtons.push(layout.createButton("Full test", unit_tests.test.bind(null, true, true, false), "var(--theme-color-main)"));
+		unitTestButtonDiv = layout.createButtonRow(unitTestButtons);
+		
+		// Add the unit test buttons to the unitTestDiv
+		unitTestDiv.appendChild(unitTestButtonDiv);
+		// Add the unitTestDiv to the mainDiv
+		mainDiv.appendChild(unitTestDiv);
 	};
 	
 	return self;
