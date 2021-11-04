@@ -22,7 +22,7 @@ layout = function ()
 		button.style.width = "70%";
 		button.style.margin = "0 auto";
 		// Prevents text from being too close to side of button
-		button.style.padding = "5%";
+		button.style.padding = "2.5vh";
 		
 		// Create a small table cell div that holds the button text so that it can be perfectly central
 		var text = document.createElement("div");
@@ -56,7 +56,7 @@ layout = function ()
 		var buttonRow = document.createElement("div");
 		
 		// Defines CSS styles
-		buttonRow.style.marginBottom = "5vh";
+		buttonRow.style.marginBottom = "10vh";
 		buttonRow.style.height = "10vh";
 		
 		// Creates a repeating grid where each button occupies one cell
