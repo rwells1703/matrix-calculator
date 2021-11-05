@@ -158,10 +158,10 @@ calculator_layout = function()
 		
 		// Creates all buttons for adding new items to the equation
 		var addItemButtons = [];
-		addItemButtons.push(layout.createButton("Scalar", calculator_build.addScalar, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Grid", calculator_build.addGrid, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Operation", calculator_build.addOperation, "var(--theme-color-main)"));
-		addItemButtons.push(layout.createButton("Bracket", calculator_build.addBracket, "var(--theme-color-main)"));
+		addItemButtons.push(layout.createButton("Scalar", calculator_build.addScalar, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		addItemButtons.push(layout.createButton("Grid", calculator_build.addGrid, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		addItemButtons.push(layout.createButton("Operation", calculator_build.addOperation, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		addItemButtons.push(layout.createButton("Bracket", calculator_build.addBracket, "var(--theme-color-main)", "var(--theme-color-main-light)"));
 
 		// Creates a row of the add item buttons
 		var equationAddItemButtonDiv = layout.createButtonRow(addItemButtons);
@@ -194,7 +194,7 @@ calculator_layout = function()
 			},200);
 		};
 		
-		var clearButton = layout.createButton("Clear", clearButtonClick, "var(--theme-color-main)");
+		var clearButton = layout.createButton("Clear", clearButtonClick, "var(--theme-color-main)", "var(--theme-color-main-light)");
 		
 		// Exports the equation and solution to a latex file
 		// This can be viewed in the users latex rendered of choice
@@ -290,7 +290,7 @@ calculator_layout = function()
 			fileAnchor.click();
 		};
 		
-		var exportButton = layout.createButton("Export", exportButtonClick, "var(--theme-color-main)");
+		var exportButton = layout.createButton("Export", exportButtonClick, "var(--theme-color-main)", "var(--theme-color-main-light)");
 		
 		finishItemButtons.push(clearButton);
 		finishItemButtons.push(exportButton);

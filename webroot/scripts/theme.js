@@ -146,7 +146,6 @@ theme = function ()
 
 		document.body.style.setProperty("--theme-box-shadow", self.styles[style]["box-shadow"]);
 		document.body.style.setProperty("--theme-box-shadow-navbar", self.styles[style]["box-shadow-navbar"]);
-		document.body.style.setProperty("--theme-box-shadow-navbar-item", self.styles[style]["box-shadow-navbar-item"]);
 		document.body.style.setProperty("--theme-border-radius", self.styles[style]["border-radius"]);
 	};
 

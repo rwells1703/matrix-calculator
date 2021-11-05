@@ -52,16 +52,16 @@ settings = function ()
 		
 		// The first row of color buttons
 		var themeColorButtonsTop = [];
-		themeColorButtonsTop.push(layout.createButton("Ruby Red", self.updateColor, theme.colors["Ruby Red"]["color-main"]));
-		themeColorButtonsTop.push(layout.createButton("Sapphire Blue", self.updateColor, theme.colors["Sapphire Blue"]["color-main"]));
-		themeColorButtonsTop.push(layout.createButton("Amber Yellow", self.updateColor, theme.colors["Amber Yellow"]["color-main"]));
+		themeColorButtonsTop.push(layout.createButton("Ruby Red", self.updateColor, theme.colors["Ruby Red"]["color-main"], theme.colors["Ruby Red"]["color-main-light"]));
+		themeColorButtonsTop.push(layout.createButton("Sapphire Blue", self.updateColor, theme.colors["Sapphire Blue"]["color-main"], theme.colors["Sapphire Blue"]["color-main-light"]));
+		themeColorButtonsTop.push(layout.createButton("Amber Yellow", self.updateColor, theme.colors["Amber Yellow"]["color-main"], theme.colors["Amber Yellow"]["color-main-light"]));
 		themeColorButtonTopDiv = layout.createButtonRow(themeColorButtonsTop);
 
 		// The second row of color buttons
 		var themeColorButtonsBottom = [];
-		themeColorButtonsBottom.push(layout.createButton("Slate Grey", self.updateColor, theme.colors["Slate Grey"]["color-main"]));
-		themeColorButtonsBottom.push(layout.createButton("Amethyst Purple", self.updateColor, theme.colors["Amethyst Purple"]["color-main"]));
-		themeColorButtonsBottom.push(layout.createButton("Emerald Green", self.updateColor, theme.colors["Emerald Green"]["color-main"]));
+		themeColorButtonsBottom.push(layout.createButton("Slate Grey", self.updateColor, theme.colors["Slate Grey"]["color-main"], theme.colors["Slate Grey"]["color-main-light"]));
+		themeColorButtonsBottom.push(layout.createButton("Amethyst Purple", self.updateColor, theme.colors["Amethyst Purple"]["color-main"], theme.colors["Amethyst Purple"]["color-main-light"]));
+		themeColorButtonsBottom.push(layout.createButton("Emerald Green", self.updateColor, theme.colors["Emerald Green"]["color-main"], theme.colors["Emerald Green"]["color-main-light"]));
 		themeColorButtonBottomDiv = layout.createButtonRow(themeColorButtonsBottom);
 
 		// Add the color buttons to the themeColorDiv
@@ -76,8 +76,8 @@ settings = function ()
 
 		// The shade buttons
 		var themeShadeButtons = [];
-		themeShadeButtons.push(layout.createButton("Light", self.updateShade, "var(--theme-color-main)"));
-		themeShadeButtons.push(layout.createButton("Dark", self.updateShade, "var(--theme-color-main)"));
+		themeShadeButtons.push(layout.createButton("Light", self.updateShade, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		themeShadeButtons.push(layout.createButton("Dark", self.updateShade, "var(--theme-color-main)", "var(--theme-color-main-light)"));
 		themeShadeButtonDiv = layout.createButtonRow(themeShadeButtons);
 
 		// Add the shade buttons to the themeShadeDiv
@@ -91,8 +91,8 @@ settings = function ()
 
 		// The style buttons
 		var themeStyleButtons = [];
-		themeStyleButtons.push(layout.createButton("Material", self.updateStyle, "var(--theme-color-main)"));
-		themeStyleButtons.push(layout.createButton("Flat", self.updateStyle, "var(--theme-color-main)"));
+		themeStyleButtons.push(layout.createButton("Material", self.updateStyle, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		themeStyleButtons.push(layout.createButton("Flat", self.updateStyle, "var(--theme-color-main)", "var(--theme-color-main-light)"));
 		themeStyleButtonDiv = layout.createButtonRow(themeStyleButtons);
 
 		// Add the style buttons to the themeStyleDiv
@@ -106,8 +106,8 @@ settings = function ()
 
 		// The calculator layout buttons
 		var themeCalculatorLayoutButtons = [];
-		themeCalculatorLayoutButtons.push(layout.createButton("Equation before solution", self.updateCalculatorLayout, "var(--theme-color-main)"));
-		themeCalculatorLayoutButtons.push(layout.createButton("Solution before equation", self.updateCalculatorLayout, "var(--theme-color-main)"));
+		themeCalculatorLayoutButtons.push(layout.createButton("Equation before solution", self.updateCalculatorLayout, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		themeCalculatorLayoutButtons.push(layout.createButton("Solution before equation", self.updateCalculatorLayout, "var(--theme-color-main)", "var(--theme-color-main-light)"));
 		themeCalculatorLayoutButtonDiv = layout.createButtonRow(themeCalculatorLayoutButtons);
 
 		// Add the calculator layout buttons to the themeCalculatorLayoutDiv
@@ -121,8 +121,8 @@ settings = function ()
 		
 		// The angle unit buttons
 		var settingAngleUnitButtons = [];
-		settingAngleUnitButtons.push(layout.createButton("Degrees", self.updateAngleUnit, "var(--theme-color-main)"));
-		settingAngleUnitButtons.push(layout.createButton("Radians", self.updateAngleUnit, "var(--theme-color-main)"));
+		settingAngleUnitButtons.push(layout.createButton("Degrees", self.updateAngleUnit, "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		settingAngleUnitButtons.push(layout.createButton("Radians", self.updateAngleUnit, "var(--theme-color-main)", "var(--theme-color-main-light)"));
 		settingAngleUnitButtonDiv = layout.createButtonRow(settingAngleUnitButtons);
 		
 		// Add the angle unit buttons to the themeAngleUnitDiv
@@ -136,9 +136,9 @@ settings = function ()
 
 		// The unit test buttons
 		unitTestButtons = [];
-		unitTestButtons.push(layout.createButton("Overall summary", unit_tests.test.bind(null, false, false, false), "var(--theme-color-main)"));
-		unitTestButtons.push(layout.createButton("Individual summaries", unit_tests.test.bind(null, true, false, false), "var(--theme-color-main)"));
-		unitTestButtons.push(layout.createButton("Full test", unit_tests.test.bind(null, true, true, false), "var(--theme-color-main)"));
+		unitTestButtons.push(layout.createButton("Overall summary", unit_tests.test.bind(null, false, false, false), "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		unitTestButtons.push(layout.createButton("Individual summaries", unit_tests.test.bind(null, true, false, false), "var(--theme-color-main)", "var(--theme-color-main-light)"));
+		unitTestButtons.push(layout.createButton("Full test", unit_tests.test.bind(null, true, true, false), "var(--theme-color-main)", "var(--theme-color-main-light)"));
 		unitTestButtonDiv = layout.createButtonRow(unitTestButtons);
 		
 		// Add the unit test buttons to the unitTestDiv

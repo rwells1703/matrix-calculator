@@ -10,7 +10,7 @@ layout = function ()
 	};
 
 	// Creates a new button with a label and a click event
-	self.createButton = function (innerHTML, clickFunction, backgroundColor)
+	self.createButton = function (innerHTML, clickFunction, backgroundColor, backgroundColorHover)
 	{
 		// Create new button element
 		var button = document.createElement("div");
@@ -23,7 +23,6 @@ layout = function ()
 		button.style.margin = "0 auto";
 
 		// Prevents text from being too close to side of button
-		//button.style.margin = "1em 0px";
 		button.style.padding = "0.5em 0.5em";
 
 		button.style.overflow = "hidden";
@@ -42,6 +41,14 @@ layout = function ()
 		button.style.color = "white";
 		button.style.backgroundColor = backgroundColor;
 
+		button.onmouseover = function() {
+			this.style.backgroundColor = backgroundColorHover;
+		}
+
+		button.onmouseout = function() {
+			this.style.backgroundColor = backgroundColor;
+		}
+		
 		// Apply site wide theme to the button
 		button.style.borderRadius = "var(--theme-border-radius)";
 		button.style.boxShadow = "var(--theme-box-shadow)";
