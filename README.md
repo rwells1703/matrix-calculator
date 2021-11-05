@@ -1,6 +1,6 @@
 # Matrix Calculator
 
-https://rwells1703.github.io/Matrix-Calculator/webroot
+https://rwells1703.github.io/Matrix-Calculator/webroot/index.html
 <br />
 <br />
 
