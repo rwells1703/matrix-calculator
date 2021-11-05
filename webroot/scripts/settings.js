@@ -3,16 +3,10 @@ settings = function ()
 {
 	var self = {};
 	
-	// Gets the label of the button that was pressed as text. Necessary because the buttons have padding and clicking inside the padding vs clicking outside, causes different click events to be registered.
+	// Gets the label of the button that was pressed as text
 	self.getButtonValue = function (clickEvent)
 	{
-		// If the user clicks directly on the button label, take the value from there
-		if (event["path"][0].style.display == "table-cell")
-		{
-			return event["path"][0].innerHTML;
-		}
-		// Otherwise, the user clicked on the button padding, so we must take the value from its child, the label
-		return event["path"][0].children[0].innerHTML;
+		return clickEvent["path"][0].innerHTML;
 	};
 
 	// Updates the color aspect of theme

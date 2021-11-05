@@ -16,23 +16,28 @@ layout = function ()
 		var button = document.createElement("div");
 		
 		// Define CSS styles
-		button.style.display = "table";
+		button.style.display = "block";
 		button.style.height = "100%";
 		// Keeps gaps between buttons and makes sure each is centered within its grid square
 		button.style.width = "70%";
 		button.style.margin = "0 auto";
+
 		// Prevents text from being too close to side of button
-		button.style.padding = "2.5vh";
+		//button.style.margin = "1em 0px";
+		button.style.padding = "0.5em 0.5em";
+
+		button.style.overflow = "hidden";
+		button.style.textAlign = "center";
+		button.style.lineHeight = "inherit";
 		
-		// Create a small table cell div that holds the button text so that it can be perfectly central
-		var text = document.createElement("div");
-		text.innerHTML = innerHTML;
-		text.style.display = "table-cell";
-		text.style.verticalAlign = "middle";
-		text.style.textAlign = "center";
-		// Append the text to the button element
-		button.appendChild(text);
-		
+		// If text overlaps, crop it instead of stretching the button
+		button.style.overflow = "hidden";
+		button.style.whiteSpace = "nowrap";
+		button.style.textOverflow = "ellipsis"
+
+		// Set button text
+		button.innerHTML = innerHTML;
+
 		// Text must always be white because black text on color buttons looks bad
 		button.style.color = "white";
 		button.style.backgroundColor = backgroundColor;
@@ -56,9 +61,12 @@ layout = function ()
 		var buttonRow = document.createElement("div");
 		
 		// Defines CSS styles
-		buttonRow.style.marginBottom = "10vh";
-		buttonRow.style.height = "10vh";
+		buttonRow.style.paddingBottom = "1em";
+		buttonRow.style.marginBottom = "1em";
 		
+		buttonRow.style.height = "3em";
+		buttonRow.style.lineHeight = "3em";
+
 		// Creates a repeating grid where each button occupies one cell
 		buttonRow.style.display = "grid";
 		buttonRow.style.gridTemplateColumns = "repeat("+buttons.length+", minmax(0, 1fr))";
@@ -82,10 +90,12 @@ layout = function ()
 		{
 		// The container div for this section of the setting panel
 		var settingDiv = document.createElement("div");
-		
+
 		// The label above the buttons
 		var label = document.createElement("div");
-		label.innerHTML = labelText + "<br><br><br>";
+		label.style.marginBottom = "1em";
+		label.innerHTML = labelText;
+
 		settingDiv.appendChild(label);
 		
 		return settingDiv;
