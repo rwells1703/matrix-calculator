@@ -82,11 +82,14 @@ calculator_build = function ()
 	};
 	
 	// Creates an icon button that can be placed within an item e.g. add column in the Grid item
-	self.createIconButton = function (iconName, iconFileExtension, onclick, gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd)
+	self.createIconButton = function (iconName, iconClass, iconFileExtension, onclick, gridRowStart, gridColumnStart,  gridRowEnd, gridColumnEnd)
 	{
 		// Create the new image element
 		var icon = document.createElement("img");
-		
+
+		// Label the icon with its type
+		icon.classList.add(iconClass);
+
 		// Changes the colour of the button (black or white) depending on the site theme
 		var iconColor = localStorage.getItem("themeShade");
 		if (iconColor == "Light")
@@ -201,7 +204,7 @@ calculator_build = function ()
 		var itemWrapper = self.createEmptyBox();
 
 		// Sets the HTML class of the item to match the item type
-		itemWrapper.className = itemClass;
+		itemWrapper.classList.add(itemClass);
 
 		// Make its HTML id equal to the itemCount of that item type
 		itemWrapper.id = itemCount;
@@ -229,9 +232,9 @@ calculator_build = function ()
 		itemName.innerHTML = itemWrapper.className + itemWrapper.id;
 		
 		// Adds the move and delete icon buttons to the side of the item
-		itemMoveUpIcon = self.createIconButton("images/move_up", ".svg", self.moveItemUp, 2, 3, 3, 4);
-		itemDeleteIcon = self.createIconButton("images/delete", ".svg", self.deleteItem, 2, 3, 5, 6);
-		itemMoveDownIcon = self.createIconButton("images/move_down", ".svg", self.moveItemDown, 2, 3, 7, 8);
+		itemMoveUpIcon = self.createIconButton("images/move_up", "move_up", ".svg", self.moveItemUp, 3, 2, 4, 3);
+		itemDeleteIcon = self.createIconButton("images/delete", "move_up", ".svg", self.deleteItem, 5, 2, 6, 3);
+		itemMoveDownIcon = self.createIconButton("images/move_down", "move_up", ".svg", self.moveItemDown, 7, 2, 8, 3);
 		
 		// Append all the individual parts of the item to its container div
 		itemWrapper.appendChild(itemName);
@@ -469,11 +472,11 @@ calculator_build = function ()
 		gridWrapper.setAttribute("columns", self.gridDefaultColumns);
 		
 		// Create icon buttons for adding and removing rows
-		var addGridRowIcon = self.createIconButton("images/add", ".svg", self.addGridRow, 4, 5, 8, 9);
-		var removeGridRowIcon = self.createIconButton("images/remove", ".svg", self.removeGridRow, 5, 6, 8, 9);
+		var addGridRowIcon = self.createIconButton("images/add", "add_grid_row_icon", ".svg", self.addGridRow, 4, 4, 5, 5);
+		var removeGridRowIcon = self.createIconButton("images/remove", "remove_grid_row_icon", ".svg", self.removeGridRow, 4, 5, 5, 6);
 		// And also for adding and removing columns
-		var addGridColumnIcon = self.createIconButton("images/add", ".svg", self.addGridColumn, 10, 11, 2, 3);
-		var removeGridColumnIcon = self.createIconButton("images/remove", ".svg", self.removeGridColumn, 10, 11, 3, 4);
+		var addGridColumnIcon = self.createIconButton("images/add", "add_grid_column_icon", ".svg", self.addGridColumn, 2, 6, 3, 7);
+		var removeGridColumnIcon = self.createIconButton("images/remove", "remove_grid_column_icon", ".svg", self.removeGridColumn, 3, 6, 4, 7);
 		
 		// Append all these icon buttons to the grid item wrapper
 		gridWrapper.appendChild(addGridRowIcon);
@@ -500,6 +503,19 @@ calculator_build = function ()
 		calculator_solve.evaluateItems();
 	};
 	
+	// Moves the + and - icons on the grid item as the grid grows/shrinks
+	self.moveGridIcons = function(gridWrapper, rowChange, columnChange) {
+		gridWrapper.querySelector(".add_grid_row_icon").style.gridRowStart = parseInt(gridWrapper.querySelector(".add_grid_row_icon").style.gridRowStart) + rowChange;
+		gridWrapper.querySelector(".add_grid_row_icon").style.gridRowEnd = parseInt(gridWrapper.querySelector(".add_grid_row_icon").style.gridRowEnd) + rowChange;
+		gridWrapper.querySelector(".remove_grid_row_icon").style.gridRowStart = parseInt(gridWrapper.querySelector(".remove_grid_row_icon").style.gridRowStart) + rowChange;
+		gridWrapper.querySelector(".remove_grid_row_icon").style.gridRowEnd = parseInt(gridWrapper.querySelector(".remove_grid_row_icon").style.gridRowEnd) + rowChange;
+
+		gridWrapper.querySelector(".add_grid_column_icon").style.gridColumnStart = parseInt(gridWrapper.querySelector(".add_grid_column_icon").style.gridColumnStart) + columnChange;
+		gridWrapper.querySelector(".add_grid_column_icon").style.gridColumnEnd = parseInt(gridWrapper.querySelector(".add_grid_column_icon").style.gridColumnEnd) + columnChange;
+		gridWrapper.querySelector(".remove_grid_column_icon").style.gridColumnStart = parseInt(gridWrapper.querySelector(".remove_grid_column_icon").style.gridColumnStart) + columnChange;
+		gridWrapper.querySelector(".remove_grid_column_icon").style.gridColumnEnd = parseInt(gridWrapper.querySelector(".remove_grid_column_icon").style.gridColumnEnd) + columnChange;
+	}
+
 	// Adds a new row to a grid item
 	self.addGridRow = function ()
 	{
@@ -523,6 +539,9 @@ calculator_build = function ()
 
 				c += 1;
 			}
+
+			// Shifts the + and - icons on the grid
+			self.moveGridIcons(gridWrapper, 1, 0);
 			
 			// Increment the rows DOM attribute
 			gridWrapper.setAttribute("rows", rows+1)
@@ -554,7 +573,10 @@ calculator_build = function ()
 
 				c += 1;
 			}
-			
+
+			// Shifts the + and - icons on the grid
+			self.moveGridIcons(gridWrapper, -1, 0);
+
 			// Decrement the rows DOM attribute
 			gridWrapper.setAttribute("rows", rows-1)
 		}
@@ -586,7 +608,10 @@ calculator_build = function ()
 
 				r += 1;
 			}
-			
+
+			// Shifts the + and - icons on the grid
+			self.moveGridIcons(gridWrapper, 0, 1);
+
 			// Increment the columns DOM attribute
 			gridWrapper.setAttribute("columns", columns+1)
 		}
@@ -619,6 +644,9 @@ calculator_build = function ()
 				r += 1;
 			}
 			
+			// Shifts the + and - icons on the grid
+			self.moveGridIcons(gridWrapper, 0, -1);
+
 			// Decrement the columns DOM attribute
 			gridWrapper.setAttribute("columns", columns-1);
 		}
