@@ -10,7 +10,7 @@ layout = function ()
 	};
 
 	// Creates a new button with a label and a click event
-	self.createButton = function (innerHTML, clickFunction, backgroundColor, backgroundColorHover)
+	self.createButton = function (innerHTML, clickFunction, backgroundColor="var(--theme-color-main)", backgroundColorHover="var(--theme-color-main-light)", textColor="var(--theme-color-text-foreground)")
 	{
 		// Create new button element
 		var button = document.createElement("div");
@@ -37,8 +37,7 @@ layout = function ()
 		// Set button text
 		button.innerHTML = innerHTML;
 
-		// Text must always be white because black text on color buttons looks bad
-		button.style.color = "white";
+		button.style.color = textColor;
 		button.style.backgroundColor = backgroundColor;
 
 		button.onmouseover = function() {

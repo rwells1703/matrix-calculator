@@ -27,11 +27,10 @@
 				margin: 0;
 				font-size: 2.5vh;
 				background-color: var(--theme-color-page-background);
-				color: var(--theme-color-text);
+				color: var(--theme-color-text-background);
 				font-family: 'Montserrat', sans-serif;
 			}
 
-			
 			/* The navbar on the top of each page */
 			div#navbar {
 				background-color: var(--theme-color-main);
@@ -47,31 +46,30 @@
 				padding: 2vh 2vw;
 				float: left;
 				
-				color: white;
+				color: var(--theme-color-text-foreground);
 				text-decoration: none;
 				font-size: 3vh;
 			}
 			
-			/* The navbar item being hovered over by the mouse */
-			a.navbar-item:hover {
-				background-color: var(--theme-color-main-dark);
-			}
-			
 			/* The navbar item of the current page */
 			a.navbar-item.active {
+				background-color: var(--theme-color-main);
+			}
+			
+			/* The navbar item being hovered over by the mouse */
+			a.navbar-item:hover {
 				background-color: var(--theme-color-main-light);
 			}
 			
-			
 			/* Regular hyperlinks */
 			a.link {
-				color: var(--theme-color-main-light);
+				color: var(--theme-color-text-background);
 				text-decoration: none;
 			}
 
 			/* Regular hyperlinks being hovered over by the mouse */
 			a.link:hover {
-				color: var(--theme-color-main-dark);
+				color: var(--theme-color-text-background-light);
 			}
 			
 			/* Div holding the main content on each page */

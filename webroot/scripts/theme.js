@@ -10,37 +10,43 @@ theme = function ()
 		{
 			"color-main": "#ff4c4c",
 			"color-main-dark": "#ed2d2d",
-			"color-main-light": "#ff7c7c"
+			"color-main-light": "#ff7c7c",
+			"color-text-foreground": "#ffffff"
 		},
 		"Sapphire Blue":
 		{
 			"color-main": "#0082d8",
 			"color-main-dark": "#0065a8",
-			"color-main-light": "#5cabe0"
+			"color-main-light": "#5cabe0",
+			"color-text-foreground": "#ffffff"
 		},
 		"Amber Yellow":
 		{
 			"color-main": "#e5b106",
 			"color-main-dark": "#e2a516",
-			"color-main-light": "#f7cf40"
+			"color-main-light": "#f7cf40",
+			"color-text-foreground": "#ffffff"
 		},
 		"Slate Grey":
 		{
 			"color-main": "#424242",
 			"color-main-dark": "#333333",
-			"color-main-light": "#898989"
+			"color-main-light": "#898989",
+			"color-text-foreground": "#ffffff"
 		},
 		"Amethyst Purple":
 		{
 			"color-main": "#9f18ba",
 			"color-main-dark": "#7d1393",
-			"color-main-light": "#c055d6"
+			"color-main-light": "#c055d6",
+			"color-text-foreground": "#ffffff"
 		},
 		"Emerald Green":
 		{
-			"color-main": "#15af70",
+			"color-main": "#2fe098",
 			"color-main-dark": "#0f9e60",
-			"color-main-light": "#1bd67e"
+			"color-main-light": "#1bd67e",
+			"color-text-foreground": "#ffffff"
 		}
 	};
 
@@ -51,7 +57,8 @@ theme = function ()
 		{
 			"color-page-background": "#fcfcfc",
 			"color-page-background-light": "#ffffff",
-			"color-text": "#000000",
+			"color-text-background": "#333333",
+			"color-text-background-light": "#a3a3a3",
 			"color-icon": "#000000",
 			"color-textbox-border": "#b2b2b2"
 		},
@@ -59,7 +66,8 @@ theme = function ()
 		{
 			"color-page-background": "#232323",
 			"color-page-background-light": "#424242",
-			"color-text": "#ffffff",
+			"color-text-background": "#ffffff",
+			"color-text-background-light": "#c9c9c9",
 			"color-icon": "#ffffff",
 			"color-textbox-border": "#555555"
 		}
@@ -113,6 +121,7 @@ theme = function ()
 		document.body.style.setProperty("--theme-color-main", self.colors[color]["color-main"]);
 		document.body.style.setProperty("--theme-color-main-dark", self.colors[color]["color-main-dark"]);
 		document.body.style.setProperty("--theme-color-main-light", self.colors[color]["color-main-light"]);
+		document.body.style.setProperty("--theme-color-text-foreground", self.colors[color]["color-text-foreground"]);
 	};
 	
 	// Sets the shade aspect of theme in local storage and in css variables
@@ -128,7 +137,8 @@ theme = function ()
 
 		document.body.style.setProperty("--theme-color-page-background", self.shades[shade]["color-page-background"]);
 		document.body.style.setProperty("--theme-color-page-background-light", self.shades[shade]["color-page-background-light"]);
-		document.body.style.setProperty("--theme-color-text", self.shades[shade]["color-text"]);
+		document.body.style.setProperty("--theme-color-text-background", self.shades[shade]["color-text-background"]);
+		document.body.style.setProperty("--theme-color-text-background-light", self.shades[shade]["color-text-background-light"]);
 		document.body.style.setProperty("--theme-color-icon", self.shades[shade]["color-icon"]);
 		document.body.style.setProperty("--theme-color-textbox-border", self.shades[shade]["color-textbox-border"]);
 	};

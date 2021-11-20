@@ -308,7 +308,7 @@ calculator_canvas = function ()
 		axisWidth = 0.9;
 		
 		// Gets the color of the graph background from the css variable and converts it from hex to rbg
-		var axisColorObject = self.hexToRgb(document.body.style.getPropertyValue("--theme-color-text"));
+		var axisColorObject = self.hexToRgb(document.body.style.getPropertyValue("--theme-color-text-background"));
 		var axisColor = [axisColorObject.r/255, axisColorObject.g/255, axisColorObject.b/255, 255/255];
 		
 		// X axis made of two thin right-angled triangles

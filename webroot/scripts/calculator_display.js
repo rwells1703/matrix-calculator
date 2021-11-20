@@ -70,7 +70,7 @@ calculator_display = function ()
 			// Generate the latex for the solution, and add this to the solution wrapper div
 			var tex = "$" + self.itemToLatex(solution) + "$";
 			solutionWrapperText.innerHTML = tex;
-			solutionWrapperText.style.color = "var(--theme-color-text)";
+			solutionWrapperText.style.color = "var(--theme-color-text-background)";
 		}
 		
 		// Re-render the MathJax on the page to show the solution

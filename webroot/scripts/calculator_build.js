@@ -40,7 +40,7 @@ calculator_build = function ()
 		// Apply the site wide colour theme
 		inputTextbox.style.borderColor = "var(--theme-color-textbox-border)";
 		inputTextbox.style.backgroundColor = "var(--theme-color-page-background)";
-		inputTextbox.style.color = "var(--theme-color-text)";
+		inputTextbox.style.color = "var(--theme-color-text-background)";
 
 		// Set the textbox position within its parent grid (allows grids of textboxes used for matrices/vectors)
 		// The column position
