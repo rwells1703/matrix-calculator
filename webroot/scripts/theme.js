@@ -20,12 +20,12 @@ theme = function ()
 			"color-main-light": "#5cabe0",
 			"color-text-foreground": "#ffffff"
 		},
-		"Amber Yellow":
+		"Diamond White":
 		{
-			"color-main": "#e5b106",
-			"color-main-dark": "#e2a516",
-			"color-main-light": "#f7cf40",
-			"color-text-foreground": "#ffffff"
+			"color-main": "#f0f0f0",
+			"color-main-dark": "#ffffff",
+			"color-main-light": "#fcfcfc",
+			"color-text-foreground": "#454545"
 		},
 		"Slate Grey":
 		{

@@ -54,7 +54,7 @@ settings = function ()
 		var themeColorButtonsTop = [];
 		themeColorButtonsTop.push(layout.createButton("Ruby Red", self.updateColor, theme.colors["Ruby Red"]["color-main"], theme.colors["Ruby Red"]["color-main-light"], theme.colors["Ruby Red"]["color-text-foreground"]));
 		themeColorButtonsTop.push(layout.createButton("Sapphire Blue", self.updateColor, theme.colors["Sapphire Blue"]["color-main"], theme.colors["Sapphire Blue"]["color-main-light"], theme.colors["Sapphire Blue"]["color-text-foreground"]));
-		themeColorButtonsTop.push(layout.createButton("Amber Yellow", self.updateColor, theme.colors["Amber Yellow"]["color-main"], theme.colors["Amber Yellow"]["color-main-light"], theme.colors["Amber Yellow"]["color-text-foreground"]));
+		themeColorButtonsTop.push(layout.createButton("Diamond White", self.updateColor, theme.colors["Diamond White"]["color-main"], theme.colors["Diamond White"]["color-main-light"], theme.colors["Diamond White"]["color-text-foreground"]));
 		themeColorButtonTopDiv = layout.createButtonRow(themeColorButtonsTop);
 
 		// The second row of color buttons
