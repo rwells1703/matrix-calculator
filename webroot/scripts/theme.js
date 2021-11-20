@@ -57,7 +57,7 @@ theme = function ()
 		{
 			"color-page-background": "#fcfcfc",
 			"color-page-background-light": "#ffffff",
-			"color-text-background": "#333333",
+			"color-text-background": "#454545",
 			"color-text-background-light": "#a3a3a3",
 			"color-icon": "#000000",
 			"color-textbox-border": "#b2b2b2"
