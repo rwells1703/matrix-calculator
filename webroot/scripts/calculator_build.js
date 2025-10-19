@@ -253,7 +253,7 @@ calculator_build = function ()
 	self.deleteItem = function (event)
 	{	
 		// Gets parent element of the delete icon that was clicked
-		var item = event["path"][1];
+		var item = event.composedPath()[1];
 		
 		// Update the item count, depending on the HTML class of the item clicked
 		if (item.className == "scalar")
@@ -318,7 +318,7 @@ calculator_build = function ()
 	self.moveItem = function (direction)
 	{
 		// Gets parent element of the delete icon that was clicked
-		var item = event["path"][1];
+		var item = event.composedPath()[1];
 		
 		// Specify the direction of the item movement
 		if (direction == "up")
@@ -520,7 +520,7 @@ calculator_build = function ()
 	self.addGridRow = function ()
 	{
 		// Get a DOM reference to the grid item clicked
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event.composedPath()[1];
 
 		// Get the number of rows and columns as integer values
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
@@ -555,7 +555,7 @@ calculator_build = function ()
 	self.removeGridRow = function ()
 	{
 		// Get a DOM reference to the grid item clicked
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event.composedPath()[1];
 
 		// Get the number of rows and columns as integer values
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
@@ -589,7 +589,7 @@ calculator_build = function ()
 	self.addGridColumn = function ()
 	{
 		// Get a DOM reference to the grid item clicked
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event.composedPath()[1];
 
 		// Get the number of rows and columns as integer values
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
@@ -624,7 +624,7 @@ calculator_build = function ()
 	self.removeGridColumn = function ()
 	{
 		// Get a DOM reference to the grid item clicked
-		var gridWrapper = event["path"][1];
+		var gridWrapper = event.composedPath()[1];
 
 		// Get the number of rows and columns as integer values
 		var rows = parseInt(gridWrapper.getAttribute("rows"));
@@ -783,8 +783,8 @@ calculator_build = function ()
 	self.selectButton = function (event)
 	{
 		// Gets a DOM reference to the button that was clicked
-		var selectedButton = event["path"][0];
-		
+		var selectedButton = event.composedPath()[0];
+		console.log(selectedButton);
 		// Resets all the other buttons so that they are unselected
 		var i = 0;
 		while (i < selectedButton.parentNode.children.length)

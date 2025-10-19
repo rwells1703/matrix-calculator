@@ -6,7 +6,7 @@ settings = function ()
 	// Gets the label of the button that was pressed as text
 	self.getButtonValue = function (clickEvent)
 	{
-		return clickEvent["path"][0].innerHTML;
+		return clickEvent.composedPath()[0].innerHTML;
 	};
 
 	// Updates the color aspect of theme
