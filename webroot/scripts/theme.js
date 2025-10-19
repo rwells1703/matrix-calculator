@@ -113,7 +113,7 @@ theme = function ()
 		// If no color is defined, set the default
 		if (color == null)
 		{
-			color = "Slate Grey";
+			color = "Diamond White";
 		}
 		
 		localStorage.setItem("themeColor", color);
